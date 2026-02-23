@@ -16,3 +16,4 @@ Encoding: UTF-8
 LazyData: true
 URL: https://github.com/huizezhang-sherry/tines
 BugReports: https://github.com/huizezhang-sherry/tines/issues
+RoxygenNote: 7.3.3

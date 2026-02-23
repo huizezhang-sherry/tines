@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 # tines
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/huizezhang-sherry/tines/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/huizezhang-sherry/tines/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The goal of tines is to ...
