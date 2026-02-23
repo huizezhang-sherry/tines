@@ -4,8 +4,8 @@ Title: Tines: Building the Prongs of Your Own Forking Paths
 Version: 0.1.0
 Authors@R: c(
     person(
-      "Jane", "Doe",
-      email = "jane@example.com",
+      "H. Sherry", "Zhang",
+      email = "huizezhangsh@gmail.com",
       role = c("aut", "cre")
     )
   )
@@ -17,3 +17,11 @@ LazyData: true
 URL: https://github.com/huizezhang-sherry/tines
 BugReports: https://github.com/huizezhang-sherry/tines/issues
 RoxygenNote: 7.3.3
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Imports: 
+    cli,
+    dplyr,
+    purrr,
+    tibble
