@@ -1,4 +1,19 @@
-url: ~
 template:
   bootstrap: 5
 
+reference:
+- title: "Class constructor"
+  contents:
+   - new_schema
+   - draw_tines
+- title: "Generate analytical alternatives"
+  contents:
+   - gen_alternatives
+- title: "Interfae with YAML files"
+  contents:
+   - draft_tines
+   - write_tines
+- title: "Utility"
+  contents:
+   - get_block_names
+   - example_schema

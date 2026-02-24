@@ -1,4 +1,4 @@
-#' Visualize and Inspect Tines Objects
+#' Visualize and inspect `tines` objects
 #'
 #' @description
 #' Functions to plot the tines object with Graphviz diagrams. `draw_tines()` and the `plot()` methods render the interactive widget. `inspect_dot()` formats and prints raw DOT strings to the console for debugging.
@@ -14,6 +14,7 @@
 #' @return
 #' `draw_tines()` and `plot()` return an `htmlwidget` object produced by `DiagrammeR::grViz()`. `inspect_dot()` invisibly returns `NULL` and prints to the console.
 #'
+#' @export
 #' @rdname print
 #' @examples
 #' schema <- example_schema()
@@ -23,6 +24,37 @@
 #' inspect_dot(schema)
 #' multiverse <- example_multiverse()
 #' draw_tines(multiverse, index = 2)
+plot.schema <- function(x, ...) {
+  draw_tines(x)
+}
+
+#' @export
+#' @rdname print
+plot.multiverse <- function(x, index = 1, ...) {
+  cli::cli_inform("Rendering path {index} of {length(x)}: {.val {names(x)[index]}}")
+  draw_tines(x, index = index)
+}
+
+#' @export
+#' @rdname print
+draw_tines <- function(x, index = 1, ...) {
+
+  if (!inherits(x, c("schema", "multiverse"))) {
+    cli::cli_abort(c(
+      "The object to write must be of class {.cls schema} or {.cls multiverse}.",
+      "i" = "Provided object is of class {.cls {class(x)}}."
+    ))
+  }
+
+  if (inherits(x, "multiverse")) {
+    dot_code <- tines2dotspec(x[[index]], ...)
+  } else{
+    dot_code <- tines2dotspec(x, ...)
+  }
+
+  DiagrammeR::grViz(dot_code)
+}
+
 tines2dotspec <- function(x, ...) {
 
   # TODO: not sure how to deal with ... yet
@@ -57,39 +89,6 @@ tines2dotspec <- function(x, ...) {
   )
 
   return(dot_code)
-}
-
-#' @export
-#' @rdname print
-plot.multiverse <- function(x, index = 1, ...) {
-  cli::cli_inform("Rendering path {index} of {length(x)}: {.val {names(x)[index]}}")
-  draw_tines(x, index = index)
-}
-
-#' @export
-#' @rdname print
-plot.schema <- function(x, ...) {
-  draw_tines(x)
-}
-
-#' @export
-#' @rdname print
-draw_tines <- function(x, index = 1, ...) {
-
-  if (!inherits(x, c("schema", "multiverse"))) {
-    cli::cli_abort(c(
-      "The object to write must be of class {.cls schema} or {.cls multiverse}.",
-      "i" = "Provided object is of class {.cls {class(x)}}."
-    ))
-  }
-
-  if (inherits(x, "multiverse")) {
-    dot_code <- tines2dotspec(x[[index]], ...)
-  } else{
-    dot_code <- tines2dotspec(x, ...)
-  }
-
-  DiagrammeR::grViz(dot_code)
 }
 
 #' @export

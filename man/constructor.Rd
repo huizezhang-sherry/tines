@@ -7,7 +7,7 @@
 \alias{build_multiverse}
 \alias{add_block}
 \alias{add_dependency}
-\title{Construct schemas and multiverses}
+\title{Construct `schema` and `multiverse` objects}
 \usage{
 new_schema(name = NULL, nodes = tibble(), edges = tibble())
 

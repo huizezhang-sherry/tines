@@ -3,6 +3,7 @@
 #' @importFrom purrr map_df
 #' @importFrom dplyr bind_rows distinct
 #' @importFrom yaml read_yaml write_yaml
+#' @importFrom ellmer google_upload chat_google_gemini
 #' @keywords internal
 "_PACKAGE"
 

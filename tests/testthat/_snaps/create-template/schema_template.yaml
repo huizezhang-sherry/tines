@@ -1,0 +1,15 @@
+meta:
+  type: schema
+  date: YYYY-MM-DD
+nodes:
+- tag: step1
+  action: describe your first step here
+  decision: describe your decision here
+  justification: explain your reasoning here
+- tag: step2
+  action: describe your next step here
+  decision: describe your decision here
+  justification: explain your reasoning here
+edges:
+- from: step1
+  to: step2

@@ -77,3 +77,24 @@ example_multiverse <- function(){
   my_multiverse <- build_multiverse(original = schema, reversed = schema2)
   return(my_multiverse)
 }
+
+#' Functions to access components of a tine object
+#' @param object A `schema` or `multiverse` object.
+#' @export
+#' @rdname get
+#' @examples
+#' get_block_names(example_schema())
+#' get_block_names(example_multiverse())
+get_block_names <- function(object){
+  if (inherits(object, "schema")) {
+    block_names <- object$nodes$tag
+  } else if (inherits(object, "multiverse")) {
+    block_names <- lapply(object, function(s) s$nodes$tag)
+  } else {
+    cli::cli_abort(c(
+      "Unsupported object type: {.cls {class(object)}}.",
+      "i" = "Expected an object of class {.cls schema} or {.cls multiverse}."
+    ))
+  }
+  return(block_names)
+}

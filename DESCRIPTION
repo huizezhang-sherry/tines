@@ -26,6 +26,7 @@ Imports:
     cli,
     DiagrammeR,
     dplyr,
+    ellmer,
     purrr,
     tibble,
     yaml
