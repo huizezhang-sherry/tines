@@ -1,4 +1,4 @@
-# Visualize and Inspect Tines Objects
+# Visualize and inspect \`tines\` objects
 
 Functions to plot the tines object with Graphviz diagrams.
 \`draw_tines()\` and the \`plot()\` methods render the interactive
@@ -8,13 +8,11 @@ console for debugging.
 ## Usage
 
 ``` r
-tines2dotspec(x, ...)
+# S3 method for class 'schema'
+plot(x, ...)
 
 # S3 method for class 'multiverse'
 plot(x, index = 1, ...)
-
-# S3 method for class 'schema'
-plot(x, ...)
 
 draw_tines(x, index = 1, ...)
 

@@ -1,4 +1,4 @@
-# Construct schemas and multiverses
+# Construct \`schema\` and \`multiverse\` objects
 
 Construct individual analytical paths (\`schema\`) and bundle them into
 a garden of forking paths (\`multiverse\`).
