@@ -133,8 +133,7 @@ garden of forking paths (`multiverse`).</p>
 <span class="r-in"><span>            justification <span class="op">=</span> <span class="st">"the geometric mean is more appropriate than arithmetic mean"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">schema</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> List of 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ name : chr "HDI Example"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> List of 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ nodes: tibble [3 × 6] (S3: tbl_df/tbl/data.frame)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ tag          : chr [1:3] "block-scaling" "block-education" "block-combine"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ action       : chr [1:3] "variables are in different scales" "combine the school variables into one dimension" "combine the three dimensions into a single index"</span>
@@ -154,6 +153,7 @@ garden of forking paths (`multiverse`).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ to  : chr "to=block-education"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ type: chr "type=sequential"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "class")= chr "schema"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "name")= chr "HDI Example"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">schema2</span> <span class="op">&lt;-</span> <span class="fu">build_schema</span><span class="op">(</span><span class="st">"HDI Example"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="co"># 1. The Education Block</span></span></span>
@@ -181,8 +181,7 @@ garden of forking paths (`multiverse`).</p>
 <span class="r-in"><span><span class="va">my_multiverse</span> <span class="op">&lt;-</span> <span class="fu">build_multiverse</span><span class="op">(</span>original <span class="op">=</span> <span class="va">schema</span>, reversed <span class="op">=</span> <span class="va">schema2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">my_multiverse</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> List of 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ original:List of 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ name : chr "HDI Example"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ original:List of 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ nodes: tibble [3 × 6] (S3: tbl_df/tbl/data.frame)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ tag          : chr [1:3] "block-scaling" "block-education" "block-combine"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ action       : chr [1:3] "variables are in different scales" "combine the school variables into one dimension" "combine the three dimensions into a single index"</span>
@@ -202,8 +201,8 @@ garden of forking paths (`multiverse`).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..$ to  : chr "to=block-education"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..$ type: chr "type=sequential"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "class")= chr "schema"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ reversed:List of 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ name : chr "HDI Example"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "name")= chr "HDI Example"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ reversed:List of 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ nodes: tibble [3 × 6] (S3: tbl_df/tbl/data.frame)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ tag          : chr [1:3] "block-education" "block-scaling" "block-combine"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ action       : chr [1:3] "combine the school variables into one dimension" "variables are in different scales" "combine the three dimensions into a single index"</span>
@@ -223,6 +222,7 @@ garden of forking paths (`multiverse`).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..$ to  : chr "to=block-scaling"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..$ type: chr "type=sequential"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "class")= chr "schema"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "name")= chr "HDI Example"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "class")= chr [1:2] "multiverse" "list"</span>
 </code></pre></div>
     </div>

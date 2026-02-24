@@ -101,8 +101,7 @@ schema <- build_schema("HDI Example") |>
             justification = "the geometric mean is more appropriate than arithmetic mean")
 
 str(schema)
-#> List of 3
-#>  $ name : chr "HDI Example"
+#> List of 2
 #>  $ nodes: tibble [3 × 6] (S3: tbl_df/tbl/data.frame)
 #>   ..$ tag          : chr [1:3] "block-scaling" "block-education" "block-combine"
 #>   ..$ action       : chr [1:3] "variables are in different scales" "combine the school variables into one dimension" "combine the three dimensions into a single index"
@@ -122,6 +121,7 @@ str(schema)
 #>   .. .. ..$ to  : chr "to=block-education"
 #>   .. .. ..$ type: chr "type=sequential"
 #>  - attr(*, "class")= chr "schema"
+#>  - attr(*, "name")= chr "HDI Example"
 
 schema2 <- build_schema("HDI Example") |>
   # 1. The Education Block
@@ -149,8 +149,7 @@ schema2 <- build_schema("HDI Example") |>
 my_multiverse <- build_multiverse(original = schema, reversed = schema2)
 str(my_multiverse)
 #> List of 2
-#>  $ original:List of 3
-#>   ..$ name : chr "HDI Example"
+#>  $ original:List of 2
 #>   ..$ nodes: tibble [3 × 6] (S3: tbl_df/tbl/data.frame)
 #>   .. ..$ tag          : chr [1:3] "block-scaling" "block-education" "block-combine"
 #>   .. ..$ action       : chr [1:3] "variables are in different scales" "combine the school variables into one dimension" "combine the three dimensions into a single index"
@@ -170,8 +169,8 @@ str(my_multiverse)
 #>   .. .. .. ..$ to  : chr "to=block-education"
 #>   .. .. .. ..$ type: chr "type=sequential"
 #>   ..- attr(*, "class")= chr "schema"
-#>  $ reversed:List of 3
-#>   ..$ name : chr "HDI Example"
+#>   ..- attr(*, "name")= chr "HDI Example"
+#>  $ reversed:List of 2
 #>   ..$ nodes: tibble [3 × 6] (S3: tbl_df/tbl/data.frame)
 #>   .. ..$ tag          : chr [1:3] "block-education" "block-scaling" "block-combine"
 #>   .. ..$ action       : chr [1:3] "combine the school variables into one dimension" "variables are in different scales" "combine the three dimensions into a single index"
@@ -191,5 +190,6 @@ str(my_multiverse)
 #>   .. .. .. ..$ to  : chr "to=block-scaling"
 #>   .. .. .. ..$ type: chr "type=sequential"
 #>   ..- attr(*, "class")= chr "schema"
+#>   ..- attr(*, "name")= chr "HDI Example"
 #>  - attr(*, "class")= chr [1:2] "multiverse" "list"
 ```
