@@ -73,7 +73,9 @@ new_schema <- function(name = NULL, nodes = tibble(), edges = tibble()) {
   stopifnot(is.data.frame(nodes))
   stopifnot(is.data.frame(edges))
 
-  structure(list(name = name, nodes = nodes, edges = edges), class = "schema")
+  res <- structure(list(nodes = nodes, edges = edges), class = "schema")
+  attr(res, "name") <- name
+  return(res)
 }
 
 #' @rdname constructor

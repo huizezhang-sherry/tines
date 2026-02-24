@@ -1,0 +1,63 @@
+meta:
+  type: multiverse
+  date: '2026-02-24'
+original:
+  nodes:
+  - tag: block-scaling
+    action: variables are in different scales
+    type: constraint
+    decision: apply min-max scaling to each variable
+    justification: to put them on the same scale for combination
+    status: VERIFIED
+  - tag: block-education
+    action: combine the school variables into one dimension
+    type: step
+    decision: average exp sch and avg sch
+    justification: the most intuitive way
+    status: VERIFIED
+  - tag: block-combine
+    action: combine the three dimensions into a single index
+    type: step
+    decision: use the geometric mean
+    justification: the geometric mean is more appropriate than arithmetic mean
+    status: VERIFIED
+  edges:
+  - from: block-scaling
+    to: block-education
+    type: sequential
+  - from: block-combine
+    to: block-scaling
+    type: motivated
+  - from: block-education
+    to: block-combine
+    type: sequential
+reversed:
+  nodes:
+  - tag: block-education
+    action: combine the school variables into one dimension
+    type: step
+    decision: average exp sch and avg sch
+    justification: the most intuitive way
+    status: VERIFIED
+  - tag: block-scaling
+    action: variables are in different scales
+    type: constraint
+    decision: apply min-max scaling to each variable
+    justification: to put them on the same scale for combination
+    status: VERIFIED
+  - tag: block-combine
+    action: combine the three dimensions into a single index
+    type: step
+    decision: use the geometric mean
+    justification: the geometric mean is more appropriate than arithmetic mean
+    status: VERIFIED
+  edges:
+  - from: block-education
+    to: block-scaling
+    type: sequential
+  - from: block-scaling
+    to: block-combine
+    type: sequential
+  - from: block-combine
+    to: block-scaling
+    type: motivated
