@@ -10,5 +10,8 @@
 - [`example_schema()`](example_tines.md)
   [`example_multiverse()`](example_tines.md) : Generate example tines
   objects
+- [`tines2dotspec()`](print.md) [`plot(`*`<multiverse>`*`)`](print.md)
+  [`plot(`*`<schema>`*`)`](print.md) [`draw_tines()`](print.md)
+  [`inspect_dot()`](print.md) : Visualize and Inspect Tines Objects
 - [`write_tines()`](read-write.md) [`read_tines()`](read-write.md) :
   Read and write tines schemas and multiverses to YAML files
