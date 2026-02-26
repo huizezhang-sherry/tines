@@ -3,34 +3,38 @@
 \name{example_schema}
 \alias{example_schema}
 \alias{example_multiverse}
-\title{Generate example tines objects}
+\alias{example_football}
+\alias{example_alternatives}
+\title{Generate examples}
 \usage{
 example_schema()
 
 example_multiverse()
+
+example_football()
+
+example_alternatives(case = c("football", "hdi"))
+}
+\arguments{
+\item{case}{A character string specifying which example alternatives to generate. Options are "football" or "hdi". Only applies to `example_alternatives()`.}
 }
 \value{
 * For `example_schema()`: An object of class `schema`.
 * For `example_multiverse()`: An object of class `multiverse`.
+* For `example_football()`: An object of class `schema`
+* For `example_alternatives()`: An object of class `alternatives`
 }
 \description{
 These functions generate pre-populated `schema` and `multiverse` objects.
 They are primarily designed for testing, running examples in the documentation,
 and helping new users explore the `tines` package without having to build a
 garden of forking paths from scratch.
-
-* `example_schema()` returns a single, validated `schema` object containing
-  a standard set of nodes (steps and constraints) and edges.
-* `example_multiverse()` returns a validated `multiverse` object containing
-  multiple variations of the example schema.
 }
 \examples{
 # Generate a single example schema
-my_schema <- example_schema()
-print(my_schema)
-
-# Generate an example multiverse containing multiple paths
-my_multi <- example_multiverse()
-print(my_multi)
+example_schema()
+example_multiverse()
+example_football()
+example_alternatives(case = "hdi")
 
 }

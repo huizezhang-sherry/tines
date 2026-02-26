@@ -70,7 +70,8 @@ tines2dotspec <- function(x, ...) {
   })
 
   # 2. Prepare Edge Definitions with Semantic Styling
-  edge_strings <- with(x$edges, {
+  # TODO: currently only doing sequential edges
+  edge_strings <- with(dplyr::filter(x$edges, type == "sequential"), {
     style <- "solid"
     color <- "block"
 
@@ -173,3 +174,6 @@ inspect_dot <- function(dot,
   cat(paste(out, collapse = "\n"), "\n")
 }
 
+
+
+globalVariables("type")

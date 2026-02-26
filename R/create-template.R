@@ -111,11 +111,11 @@ draft_alternatives <- function(x, block, file_path = NULL) {
   type: tines_alternative
   block: {block}
 alternatives:
-  - tag: block-YOUR-NEW-NAME-HERE
+  - tag: \"block-YOUR-NEW-NAME-HERE\"
     action: \"{current_action}\"
     decision: \"\"
     justification: >
- - tag: block-YOUR-NEW-NAME-HERE
+ - tag: \"block-YOUR-NEW-NAME-HERE\"
     action: \"{current_action}\"
     decision: \"\"
     justification: >

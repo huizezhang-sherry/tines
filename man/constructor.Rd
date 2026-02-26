@@ -7,6 +7,18 @@
 \alias{build_multiverse}
 \alias{add_block}
 \alias{add_dependency}
+\alias{as_schema}
+\alias{as_schema.default}
+\alias{as_schema.schema}
+\alias{as_schema.list}
+\alias{as_schema.character}
+\alias{as_multiverse}
+\alias{as_multiverse.default}
+\alias{as_multiverse.multiverse}
+\alias{as_multiverse.schema}
+\alias{as_multiverse.list}
+\alias{c.schema}
+\alias{c.multiverse}
 \title{Construct `schema` and `multiverse` objects}
 \usage{
 new_schema(name = NULL, nodes = tibble(), edges = tibble())
@@ -31,6 +43,30 @@ add_block(
 )
 
 add_dependency(object, ...)
+
+as_schema(x, ...)
+
+\method{as_schema}{default}(x, ...)
+
+\method{as_schema}{schema}(x, ...)
+
+\method{as_schema}{list}(x, ...)
+
+\method{as_schema}{character}(x, ...)
+
+as_multiverse(x, ...)
+
+\method{as_multiverse}{default}(x, ...)
+
+\method{as_multiverse}{multiverse}(x, ...)
+
+\method{as_multiverse}{schema}(x, ...)
+
+\method{as_multiverse}{list}(x, ...)
+
+\method{c}{schema}(...)
+
+\method{c}{multiverse}(...)
 }
 \arguments{
 \item{name}{An optional name for the schema.}
@@ -48,6 +84,8 @@ add_dependency(object, ...)
 \item{tag, type, action, decision, justification}{character strings to write a block - NOT SURE ABOUT THE DESIGN YET}
 
 \item{feeds, uses, solves, prompts}{Character vectors to describe the relationship between blocks - NOT SURE ABOUT THE DESIGN YET}
+
+\item{x}{An object to be coerced into a `schema` or `multiverse`.}
 }
 \value{
 * `build_schema()` and `new_schema()` return an object of class `schema`.
