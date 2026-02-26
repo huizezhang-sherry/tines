@@ -11,6 +11,7 @@
 #' @param object A `schema` object.
 #' @param tag,type,action,decision,justification character strings to write a block - NOT SURE ABOUT THE DESIGN YET
 #' @param feeds,uses,solves,prompts Character vectors to describe the relationship between blocks - NOT SURE ABOUT THE DESIGN YET
+#' @param x An object to be coerced into a `schema` or `multiverse`.
 #' @return
 #' * `build_schema()` and `new_schema()` return an object of class `schema`.
 #' * `build_multiverse()` and `new_multiverse()` return an object of class `c("multiverse", "list")`.
@@ -190,4 +191,129 @@ add_dependency <- function(object, ...) {
   object$edges <- rbind(object$edges, new_edges) |> unique()
 
   return(object)
+}
+
+
+
+#' @export
+#' @rdname constructor
+as_schema <- function(x, ...) {
+  UseMethod("as_schema")
+}
+
+#' @export
+#' @rdname constructor
+as_schema.default <- function(x, ...) {
+  cli::cli_abort("Cannot coerce an object of class {.cls {class(x)}} to a {.cls schema}.")
+}
+
+#' @rdname constructor
+#' @export
+as_schema.schema <- function(x, ...) {
+  x
+}
+
+#' @rdname constructor
+#' @export
+as_schema.list <- function(x, ...) {
+  # 1. Validate that the raw list has the required top-level components
+  req_names <- c("meta", "nodes", "edges")
+  missing_names <- setdiff(req_names, names(x))
+
+  if (length(missing_names) > 0) {
+    cli::cli_abort(
+      "Cannot coerce list to {.cls schema}. Missing required elements: {.val {missing_names}}."
+    )
+  }
+
+  # 2. Ensure the metadata explicitly tags it as a schema
+  if (is.null(x$meta$type) || x$meta$type != "schema") {
+    x$meta$type <- "schema"
+  }
+
+  # 3. Construct and return the strict object
+  structure(
+    list(
+      meta = x$meta,
+      nodes = x$nodes,
+      edges = x$edges
+    ),
+    class = "schema"
+  )
+}
+
+#' @rdname constructor
+#' @export
+as_schema.character <- function(x, ...) {
+  # If the user passes a character string, assume it is a file path
+  if (length(x) == 1 && file.exists(x)) {
+    raw_list <- yaml::read_yaml(x)
+
+    # Pass the parsed YAML list back through the generic to structure it
+    return(as_schema(raw_list))
+  }
+
+  cli::cli_abort("Character string must be a valid file path to a YAML schema.")
+}
+
+#' @rdname constructor
+#' @export
+as_multiverse <- function(x, ...) {
+  UseMethod("as_multiverse")
+}
+
+#' @rdname constructor
+#' @export
+as_multiverse.default <- function(x, ...) {
+  cli::cli_abort("Cannot coerce an object of class {.cls {class(x)}} to a {.cls multiverse}.")
+}
+
+#' @rdname constructor
+#' @export
+as_multiverse.multiverse <- function(x, ...) {
+  x
+}
+
+#' @rdname constructor
+#' @export
+as_multiverse.schema <- function(x, ...) {
+  # A single schema gracefully becomes a 1-branch multiverse
+  new_multiverse(list(x))
+}
+
+#' @rdname constructor
+#' @export
+as_multiverse.list <- function(x, ...) {
+  # The Workhorse: Flatten a mixed list of schemas, multiverses, and nested lists
+  flat_list <- list()
+
+  for (item in x) {
+    if (inherits(item, "schema")) {
+      flat_list <- append(flat_list, list(item))
+    } else if (inherits(item, "multiverse")) {
+      # Strip the class to extract the raw list of schemas, then append
+      flat_list <- append(flat_list, unclass(item))
+    } else if (is.list(item)) {
+      # Recursively flatten nested lists
+      flat_list <- append(flat_list, unclass(as_multiverse(item)))
+    } else {
+      cli::cli_abort("List contains items that cannot be coerced into the multiverse.")
+    }
+  }
+
+  new_multiverse(flat_list)
+}
+
+
+#' @export
+#' @rdname constructor
+c.schema <- function(...) {
+  # Capture all arguments as a list, then coerce to a flattened multiverse
+  as_multiverse(list(...))
+}
+
+#' @rdname constructor
+#' @export
+c.multiverse <- function(...) {
+  as_multiverse(list(...))
 }
