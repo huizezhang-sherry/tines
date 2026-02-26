@@ -55,30 +55,117 @@
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>You can install the development version of tines like so:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?</span></span></code></pre></div>
+<p>You can install the released version of cubble from CRAN with:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"tines"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>And the development version from GitHub with<span class="sc">:</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co"># install.packages("remotes")</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"huizezhang-sherry/tines"</span>)</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
-<p>This is a basic example which shows you how to solve a common problem:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/huizezhang-sherry/tines" class="external-link">tines</a></span><span class="op">)</span></span>
-<span><span class="co">## basic example code</span></span></code></pre></div>
-<p>What is special about using <code>README.Rmd</code> instead of just <code>README.md</code>? You can include R chunks like so:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span></span>
-<span><span class="co">#&gt;      speed           dist       </span></span>
-<span><span class="co">#&gt;  Min.   : 4.0   Min.   :  2.00  </span></span>
-<span><span class="co">#&gt;  1st Qu.:12.0   1st Qu.: 26.00  </span></span>
-<span><span class="co">#&gt;  Median :15.0   Median : 36.00  </span></span>
-<span><span class="co">#&gt;  Mean   :15.4   Mean   : 42.98  </span></span>
-<span><span class="co">#&gt;  3rd Qu.:19.0   3rd Qu.: 56.00  </span></span>
-<span><span class="co">#&gt;  Max.   :25.0   Max.   :120.00</span></span></code></pre></div>
-<p>You’ll still need to render <code>README.Rmd</code> regularly, to keep <code>README.md</code> up-to-date. <code>devtools::build_readme()</code> is handy for this.</p>
-<p>You can also embed plots, for example:</p>
-<p><img src="reference/figures/README-pressure-1.png" width="100%"></p>
-<p>In that case, don’t forget to commit and push the resulting figure files, so they display on GitHub and CRAN.</p>
+<span><span class="fu"><a href="reference/example_tines.html">example_schema</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $nodes</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 6</span></span>
+<span><span class="co">#&gt;   tag             action                     type  decision justification status</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;           &lt;chr&gt;                      &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;         &lt;chr&gt; </span></span>
+<span><span class="co">#&gt; 1 block-scaling   variables are in differen… cons… apply m… to put them … VERIF…</span></span>
+<span><span class="co">#&gt; 2 block-education combine the school variab… step  average… the most int… VERIF…</span></span>
+<span><span class="co">#&gt; 3 block-combine   combine the three dimensi… step  use the… the geometri… VERIF…</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $edges</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 3</span></span>
+<span><span class="co">#&gt;   from            to              type      </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;           &lt;chr&gt;           &lt;chr&gt;     </span></span>
+<span><span class="co">#&gt; 1 block-scaling   block-education sequential</span></span>
+<span><span class="co">#&gt; 2 block-combine   block-scaling   motivated </span></span>
+<span><span class="co">#&gt; 3 block-education block-combine   sequential</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; attr(,"class")</span></span>
+<span><span class="co">#&gt; [1] "schema"</span></span>
+<span><span class="co">#&gt; attr(,"name")</span></span>
+<span><span class="co">#&gt; [1] "HDI Example"</span></span>
+<span><span class="co">#plot(example_schema())</span></span>
+<span><span class="va">expanded</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/example_tines.html">example_schema</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="reference/expand.html">expand_tines</a></span><span class="op">(</span><span class="fu"><a href="reference/example_tines.html">example_alternatives</a></span><span class="op">(</span>case <span class="op">=</span> <span class="st">"hdi"</span><span class="op">)</span><span class="op">)</span> </span>
+<span><span class="va">expanded</span></span>
+<span><span class="co">#&gt; $original</span></span>
+<span><span class="co">#&gt; $nodes</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 6</span></span>
+<span><span class="co">#&gt;   tag             action                     type  decision justification status</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;           &lt;chr&gt;                      &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;         &lt;chr&gt; </span></span>
+<span><span class="co">#&gt; 1 block-scaling   variables are in differen… cons… apply m… to put them … VERIF…</span></span>
+<span><span class="co">#&gt; 2 block-education combine the school variab… step  average… the most int… VERIF…</span></span>
+<span><span class="co">#&gt; 3 block-combine   combine the three dimensi… step  use the… the geometri… VERIF…</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $edges</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 3</span></span>
+<span><span class="co">#&gt;   from            to              type      </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;           &lt;chr&gt;           &lt;chr&gt;     </span></span>
+<span><span class="co">#&gt; 1 block-scaling   block-education sequential</span></span>
+<span><span class="co">#&gt; 2 block-combine   block-scaling   motivated </span></span>
+<span><span class="co">#&gt; 3 block-education block-combine   sequential</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; attr(,"class")</span></span>
+<span><span class="co">#&gt; [1] "schema"</span></span>
+<span><span class="co">#&gt; attr(,"name")</span></span>
+<span><span class="co">#&gt; [1] "HDI Example"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $`block-arithmetic-mean`</span></span>
+<span><span class="co">#&gt; $nodes</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 6</span></span>
+<span><span class="co">#&gt;   tag                   action               type  decision justification status</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                 &lt;chr&gt;                &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;         &lt;chr&gt; </span></span>
+<span><span class="co">#&gt; 1 block-scaling         variables are in di… cons… apply m… to put them … VERIF…</span></span>
+<span><span class="co">#&gt; 2 block-education       combine the school … step  average… the most int… VERIF…</span></span>
+<span><span class="co">#&gt; 3 block-arithmetic-mean combine the three d… step  use a a… the old meth… VERIF…</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $edges</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 3</span></span>
+<span><span class="co">#&gt;   from                  to                    type      </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                 &lt;chr&gt;                 &lt;chr&gt;     </span></span>
+<span><span class="co">#&gt; 1 block-scaling         block-education       sequential</span></span>
+<span><span class="co">#&gt; 2 block-arithmetic-mean block-scaling         motivated </span></span>
+<span><span class="co">#&gt; 3 block-education       block-arithmetic-mean sequential</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; attr(,"class")</span></span>
+<span><span class="co">#&gt; [1] "schema"</span></span>
+<span><span class="co">#&gt; attr(,"name")</span></span>
+<span><span class="co">#&gt; [1] "HDI Example"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; attr(,"class")</span></span>
+<span><span class="co">#&gt; [1] "multiverse" "list"</span></span>
+<span><span class="co">#plot(expanded, index = 1)</span></span>
+<span><span class="co">#plot(expanded, index = 2)</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/example_tines.html">example_football</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $nodes</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 6</span></span>
+<span><span class="co">#&gt;   tag                            action      type  decision justification status</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                          &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;         &lt;chr&gt; </span></span>
+<span><span class="co">#&gt; 1 block-average-rater            define the… cons… average… incorporate … VERIF…</span></span>
+<span><span class="co">#&gt; 2 block-victory-tie-defeat-ratio control fo… step  victory… ratios are r… VERIF…</span></span>
+<span><span class="co">#&gt; 3 block-logistic-model           estimate t… step  fit a l… to answer th… VERIF…</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $edges</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 3</span></span>
+<span><span class="co">#&gt;   from                           to                   type      </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                          &lt;chr&gt;                &lt;chr&gt;     </span></span>
+<span><span class="co">#&gt; 1 block-average-rater            block-logistic-model sequential</span></span>
+<span><span class="co">#&gt; 2 block-logistic-model           block-average-rater  motivated </span></span>
+<span><span class="co">#&gt; 3 block-victory-tie-defeat-ratio block-logistic-model sequential</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; attr(,"class")</span></span>
+<span><span class="co">#&gt; [1] "schema"</span></span>
+<span><span class="co">#plot(example_football())</span></span>
+<span><span class="va">multi</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/example_tines.html">example_football</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="reference/expand.html">expand_tines</a></span><span class="op">(</span><span class="fu"><a href="reference/example_tines.html">example_alternatives</a></span><span class="op">(</span>case <span class="op">=</span> <span class="st">"football"</span><span class="op">)</span><span class="op">)</span> </span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">multi</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "original"                           "block-mixed-effects-logistic-model"</span></span>
+<span><span class="co">#&gt; [3] "block-probit-regression-model"      "block-bayesian-logistic-model"</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">

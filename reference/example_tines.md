@@ -1,14 +1,9 @@
-# Generate example tines objects
+# Generate examples
 
 These functions generate pre-populated \`schema\` and \`multiverse\`
 objects. They are primarily designed for testing, running examples in
 the documentation, and helping new users explore the \`tines\` package
 without having to build a garden of forking paths from scratch.
-
-\* \`example_schema()\` returns a single, validated \`schema\` object
-containing a standard set of nodes (steps and constraints) and edges. \*
-\`example_multiverse()\` returns a validated \`multiverse\` object
-containing multiple variations of the example schema.
 
 ## Usage
 
@@ -16,19 +11,32 @@ containing multiple variations of the example schema.
 example_schema()
 
 example_multiverse()
+
+example_football()
+
+example_alternatives(case = c("football", "hdi"))
 ```
+
+## Arguments
+
+- case:
+
+  A character string specifying which example alternatives to generate.
+  Options are "football" or "hdi". Only applies to
+  \`example_alternatives()\`.
 
 ## Value
 
 \* For \`example_schema()\`: An object of class \`schema\`. \* For
-\`example_multiverse()\`: An object of class \`multiverse\`.
+\`example_multiverse()\`: An object of class \`multiverse\`. \* For
+\`example_football()\`: An object of class \`schema\` \* For
+\`example_alternatives()\`: An object of class \`alternatives\`
 
 ## Examples
 
 ``` r
 # Generate a single example schema
-my_schema <- example_schema()
-print(my_schema)
+example_schema()
 #> $nodes
 #> # A tibble: 3 × 6
 #>   tag             action                     type  decision justification status
@@ -49,10 +57,7 @@ print(my_schema)
 #> [1] "schema"
 #> attr(,"name")
 #> [1] "HDI Example"
-
-# Generate an example multiverse containing multiple paths
-my_multi <- example_multiverse()
-print(my_multi)
+example_multiverse()
 #> $original
 #> $nodes
 #> # A tibble: 3 × 6
@@ -99,4 +104,42 @@ print(my_multi)
 #> 
 #> attr(,"class")
 #> [1] "multiverse" "list"      
+example_football()
+#> $nodes
+#> # A tibble: 3 × 6
+#>   tag                            action      type  decision justification status
+#>   <chr>                          <chr>       <chr> <chr>    <chr>         <chr> 
+#> 1 block-average-rater            define the… cons… average… incorporate … VERIF…
+#> 2 block-victory-tie-defeat-ratio control fo… step  victory… ratios are r… VERIF…
+#> 3 block-logistic-model           estimate t… step  fit a l… to answer th… VERIF…
+#> 
+#> $edges
+#> # A tibble: 3 × 3
+#>   from                           to                   type      
+#>   <chr>                          <chr>                <chr>     
+#> 1 block-average-rater            block-logistic-model sequential
+#> 2 block-logistic-model           block-average-rater  motivated 
+#> 3 block-victory-tie-defeat-ratio block-logistic-model sequential
+#> 
+#> attr(,"class")
+#> [1] "schema"
+example_alternatives(case = "hdi")
+#> [[1]]
+#> [[1]]$tag
+#> [1] "block-arithmetic-mean"
+#> 
+#> [[1]]$action
+#> [1] "combine the three dimensions into a single index"
+#> 
+#> [[1]]$decision
+#> [1] "use a arithmetic mean"
+#> 
+#> [[1]]$justification
+#> [1] "the old method"
+#> 
+#> 
+#> attr(,"class")
+#> [1] "alternatives" "list"        
+#> attr(,"block")
+#> [1] "block-combine"
 ```

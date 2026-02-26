@@ -28,6 +28,40 @@ add_block(
 )
 
 add_dependency(object, ...)
+
+as_schema(x, ...)
+
+# Default S3 method
+as_schema(x, ...)
+
+# S3 method for class 'schema'
+as_schema(x, ...)
+
+# S3 method for class 'list'
+as_schema(x, ...)
+
+# S3 method for class 'character'
+as_schema(x, ...)
+
+as_multiverse(x, ...)
+
+# Default S3 method
+as_multiverse(x, ...)
+
+# S3 method for class 'multiverse'
+as_multiverse(x, ...)
+
+# S3 method for class 'schema'
+as_multiverse(x, ...)
+
+# S3 method for class 'list'
+as_multiverse(x, ...)
+
+# S3 method for class 'schema'
+c(...)
+
+# S3 method for class 'multiverse'
+c(...)
 ```
 
 ## Arguments
@@ -67,6 +101,10 @@ add_dependency(object, ...)
 
   Character vectors to describe the relationship between blocks - NOT
   SURE ABOUT THE DESIGN YET
+
+- x:
+
+  An object to be coerced into a \`schema\` or \`multiverse\`.
 
 ## Value
 

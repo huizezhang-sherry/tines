@@ -11,7 +11,13 @@ instruction set sent to the LLM.
 ## Usage
 
 ``` r
-gen_alternatives(x, block, n = 3, provider = "gemini", file_path = NULL)
+gen_alternatives(x, block, n = 3, provider = "gemini", file_path = NULL, ...)
+
+# S3 method for class 'schema'
+gen_alternatives(x, block, n = 3, provider = "gemini", file_path = NULL, ...)
+
+# S3 method for class 'multiverse'
+gen_alternatives(x, block, ...)
 
 prompt_alternatives(block, n = 3, print = FALSE)
 ```
@@ -43,6 +49,11 @@ prompt_alternatives(block, n = 3, print = FALSE)
   A character string specifying where to save the generated YAML output.
   If \`NULL\` (the default), \`capture.output()\` will return the result
   as a character vector.
+
+- ...:
+
+  Additional arguments passed to methods or to
+  \`ellmer::chat_google_gemini()\`.
 
 - print:
 
