@@ -16,39 +16,115 @@ The goal of tines is to …
 
 You can install the development version of tines like so:
 
-``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
-```
+You can install the released version of cubble from CRAN with:
+
+    install.packages("tines")
+    And the development version from GitHub with:
+
+    # install.packages("remotes")
+    remotes::install_github("huizezhang-sherry/tines")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
-
 ``` r
 library(tines)
-## basic example code
+example_schema()
+#> $nodes
+#> # A tibble: 3 × 6
+#>   tag             action                     type  decision justification status
+#>   <chr>           <chr>                      <chr> <chr>    <chr>         <chr> 
+#> 1 block-scaling   variables are in differen… cons… apply m… to put them … VERIF…
+#> 2 block-education combine the school variab… step  average… the most int… VERIF…
+#> 3 block-combine   combine the three dimensi… step  use the… the geometri… VERIF…
+#> 
+#> $edges
+#> # A tibble: 3 × 3
+#>   from            to              type      
+#>   <chr>           <chr>           <chr>     
+#> 1 block-scaling   block-education sequential
+#> 2 block-combine   block-scaling   motivated 
+#> 3 block-education block-combine   sequential
+#> 
+#> attr(,"class")
+#> [1] "schema"
+#> attr(,"name")
+#> [1] "HDI Example"
+#plot(example_schema())
+expanded <- example_schema() |> 
+  expand_tines(example_alternatives(case = "hdi")) 
+expanded
+#> $original
+#> $nodes
+#> # A tibble: 3 × 6
+#>   tag             action                     type  decision justification status
+#>   <chr>           <chr>                      <chr> <chr>    <chr>         <chr> 
+#> 1 block-scaling   variables are in differen… cons… apply m… to put them … VERIF…
+#> 2 block-education combine the school variab… step  average… the most int… VERIF…
+#> 3 block-combine   combine the three dimensi… step  use the… the geometri… VERIF…
+#> 
+#> $edges
+#> # A tibble: 3 × 3
+#>   from            to              type      
+#>   <chr>           <chr>           <chr>     
+#> 1 block-scaling   block-education sequential
+#> 2 block-combine   block-scaling   motivated 
+#> 3 block-education block-combine   sequential
+#> 
+#> attr(,"class")
+#> [1] "schema"
+#> attr(,"name")
+#> [1] "HDI Example"
+#> 
+#> $`block-arithmetic-mean`
+#> $nodes
+#> # A tibble: 3 × 6
+#>   tag                   action               type  decision justification status
+#>   <chr>                 <chr>                <chr> <chr>    <chr>         <chr> 
+#> 1 block-scaling         variables are in di… cons… apply m… to put them … VERIF…
+#> 2 block-education       combine the school … step  average… the most int… VERIF…
+#> 3 block-arithmetic-mean combine the three d… step  use a a… the old meth… VERIF…
+#> 
+#> $edges
+#> # A tibble: 3 × 3
+#>   from                  to                    type      
+#>   <chr>                 <chr>                 <chr>     
+#> 1 block-scaling         block-education       sequential
+#> 2 block-arithmetic-mean block-scaling         motivated 
+#> 3 block-education       block-arithmetic-mean sequential
+#> 
+#> attr(,"class")
+#> [1] "schema"
+#> attr(,"name")
+#> [1] "HDI Example"
+#> 
+#> attr(,"class")
+#> [1] "multiverse" "list"
+#plot(expanded, index = 1)
+#plot(expanded, index = 2)
+
+example_football()
+#> $nodes
+#> # A tibble: 3 × 6
+#>   tag                            action      type  decision justification status
+#>   <chr>                          <chr>       <chr> <chr>    <chr>         <chr> 
+#> 1 block-average-rater            define the… cons… average… incorporate … VERIF…
+#> 2 block-victory-tie-defeat-ratio control fo… step  victory… ratios are r… VERIF…
+#> 3 block-logistic-model           estimate t… step  fit a l… to answer th… VERIF…
+#> 
+#> $edges
+#> # A tibble: 3 × 3
+#>   from                           to                   type      
+#>   <chr>                          <chr>                <chr>     
+#> 1 block-average-rater            block-logistic-model sequential
+#> 2 block-logistic-model           block-average-rater  motivated 
+#> 3 block-victory-tie-defeat-ratio block-logistic-model sequential
+#> 
+#> attr(,"class")
+#> [1] "schema"
+#plot(example_football())
+multi <- example_football() |> 
+  expand_tines(example_alternatives(case = "football")) 
+names(multi)
+#> [1] "original"                           "block-mixed-effects-logistic-model"
+#> [3] "block-probit-regression-model"      "block-bayesian-logistic-model"
 ```
-
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
-
-``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
-```
-
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this.
-
-You can also embed plots, for example:
-
-<img src="man/figures/README-pressure-1.png" width="100%" />
-
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.

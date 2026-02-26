@@ -6,13 +6,16 @@ reference:
   contents:
    - new_schema
    - draw_tines
+   - alternative
 - title: "Generate analytical alternatives"
   contents:
    - gen_alternatives
-- title: "Interfae with YAML files"
+   - expand_tines
+- title: "Interface with YAML files"
   contents:
    - draft_tines
    - write_tines
+   - write_alternatives
 - title: "Utility"
   contents:
    - get_block_names
