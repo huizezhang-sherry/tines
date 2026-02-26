@@ -25,14 +25,15 @@ The goal of tines is to ...
 
 ## Installation
 
-You can install the development version of tines like so:
-
-You can install the released version of cubble from CRAN with:
+You can install the released version of tines from CRAN with:
 
 ````
 install.packages("tines")
+````
+
 And the development version from GitHub with:
 
+````
 # install.packages("remotes")
 remotes::install_github("huizezhang-sherry/tines")
 ````
