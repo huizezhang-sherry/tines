@@ -1,6 +1,6 @@
 meta:
   type: multiverse
-  date: '2026-02-24'
+  date: YYYY-MM-DD
 original:
   nodes:
   - tag: block-scaling

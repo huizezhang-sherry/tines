@@ -2,11 +2,11 @@ meta:
   type: tines_alternative
   block: block-scaling
 alternatives:
-  - tag: block-YOUR-NEW-NAME-HERE
+  - tag: "block-YOUR-NEW-NAME-HERE"
     action: "variables are in different scales"
     decision: ""
     justification: >
- - tag: block-YOUR-NEW-NAME-HERE
+ - tag: "block-YOUR-NEW-NAME-HERE"
     action: "variables are in different scales"
     decision: ""
     justification: >

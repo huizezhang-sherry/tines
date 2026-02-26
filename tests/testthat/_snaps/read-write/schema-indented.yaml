@@ -1,6 +1,6 @@
 meta:
     type: schema
-    date: '2026-02-24'
+    date: YYYY-MM-DD
 nodes:
 -   tag: block-scaling
     action: variables are in different scales

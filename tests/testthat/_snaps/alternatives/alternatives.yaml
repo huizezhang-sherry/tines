@@ -1,0 +1,25 @@
+meta:
+  type: alternatives
+  block: block-logistic-model
+alternatives:
+- tag: block-mixed-effects-logistic-model
+  action: estimate the effect size of skin tone on red card
+  decision: fit a generalized linear mixed-effects model (GLMM) with random intercepts
+    for players and referees to account for hierarchical data structure
+  justification: mixed-effects models are appropriate for clustered data as they control
+    for non-independence of observations within players and referees, leading to more
+    reliable standard errors and effect estimates
+- tag: block-probit-regression-model
+  action: estimate the effect size of skin tone on red card
+  decision: fit a probit regression model using the average skin tone rating and specified
+    covariates
+  justification: probit models provide a methodologically valid alternative to logistic
+    regression by assuming a normally distributed latent variable, serving as a sensitivity
+    check for the choice of link function
+- tag: block-bayesian-logistic-model
+  action: estimate the effect size of skin tone on red card
+  decision: fit a Bayesian logistic regression model with the average skin tone rating
+    as a predictor and weakly informative priors
+  justification: the Bayesian approach provides a complete posterior distribution
+    of the effect size rather than a point estimate, allowing for a more nuanced probabilistic
+    interpretation of the skin tone effect and its uncertainty
