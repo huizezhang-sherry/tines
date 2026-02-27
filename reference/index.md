@@ -17,13 +17,15 @@
   [`new_alternatives()`](alternatives.md) : Construct \`alternatives\`
   objects
 
-## Generate analytical alternatives
+## Generate analytical alternatives and corresponding code
 
 - [`gen_alternatives()`](gen_alternatives.md)
   [`prompt_alternatives()`](gen_alternatives.md) : Generate analytical
   alternatives via LLM
 - [`expand_tines()`](expand.md) : Expand a schema with an alternative
   YAML into a multiverse
+- [`gen_code()`](gen_code.md) [`prompt_code()`](gen_code.md) : Generate
+  R code for a specific alternative branch
 
 ## Interface with YAML files
 

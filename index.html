@@ -61,11 +61,12 @@
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"huizezhang-sherry/tines"</span>)</span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+<h2 id="example---generate-alternatives-and-code-hdi">Example - generate alternatives and code (HDI)<a class="anchor" aria-label="anchor" href="#example---generate-alternatives-and-code-hdi"></a>
 </h2>
+<p>Start from a schema</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/huizezhang-sherry/tines" class="external-link">tines</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/example_tines.html">example_schema</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">(</span><span class="va">hdi</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/example_tines.html">example_schema</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $nodes</span></span>
 <span><span class="co">#&gt; # A tibble: 3 × 6</span></span>
 <span><span class="co">#&gt;   tag             action                     type  decision justification status</span></span>
@@ -85,61 +86,51 @@
 <span><span class="co">#&gt; attr(,"class")</span></span>
 <span><span class="co">#&gt; [1] "schema"</span></span>
 <span><span class="co">#&gt; attr(,"name")</span></span>
-<span><span class="co">#&gt; [1] "HDI Example"</span></span>
-<span><span class="co">#plot(example_schema())</span></span>
-<span><span class="va">expanded</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/example_tines.html">example_schema</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="reference/expand.html">expand_tines</a></span><span class="op">(</span><span class="fu"><a href="reference/example_tines.html">example_alternatives</a></span><span class="op">(</span>case <span class="op">=</span> <span class="st">"hdi"</span><span class="op">)</span><span class="op">)</span> </span>
-<span><span class="va">expanded</span></span>
-<span><span class="co">#&gt; $original</span></span>
-<span><span class="co">#&gt; $nodes</span></span>
-<span><span class="co">#&gt; # A tibble: 3 × 6</span></span>
-<span><span class="co">#&gt;   tag             action                     type  decision justification status</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;           &lt;chr&gt;                      &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;         &lt;chr&gt; </span></span>
-<span><span class="co">#&gt; 1 block-scaling   variables are in differen… cons… apply m… to put them … VERIF…</span></span>
-<span><span class="co">#&gt; 2 block-education combine the school variab… step  average… the most int… VERIF…</span></span>
-<span><span class="co">#&gt; 3 block-combine   combine the three dimensi… step  use the… the geometri… VERIF…</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $edges</span></span>
-<span><span class="co">#&gt; # A tibble: 3 × 3</span></span>
-<span><span class="co">#&gt;   from            to              type      </span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;           &lt;chr&gt;           &lt;chr&gt;     </span></span>
-<span><span class="co">#&gt; 1 block-scaling   block-education sequential</span></span>
-<span><span class="co">#&gt; 2 block-combine   block-scaling   motivated </span></span>
-<span><span class="co">#&gt; 3 block-education block-combine   sequential</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; attr(,"class")</span></span>
-<span><span class="co">#&gt; [1] "schema"</span></span>
-<span><span class="co">#&gt; attr(,"name")</span></span>
-<span><span class="co">#&gt; [1] "HDI Example"</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $`block-arithmetic-mean`</span></span>
-<span><span class="co">#&gt; $nodes</span></span>
-<span><span class="co">#&gt; # A tibble: 3 × 6</span></span>
-<span><span class="co">#&gt;   tag                   action               type  decision justification status</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;                 &lt;chr&gt;                &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;         &lt;chr&gt; </span></span>
-<span><span class="co">#&gt; 1 block-scaling         variables are in di… cons… apply m… to put them … VERIF…</span></span>
-<span><span class="co">#&gt; 2 block-education       combine the school … step  average… the most int… VERIF…</span></span>
-<span><span class="co">#&gt; 3 block-arithmetic-mean combine the three d… step  use a a… the old meth… VERIF…</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $edges</span></span>
-<span><span class="co">#&gt; # A tibble: 3 × 3</span></span>
-<span><span class="co">#&gt;   from                  to                    type      </span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;                 &lt;chr&gt;                 &lt;chr&gt;     </span></span>
-<span><span class="co">#&gt; 1 block-scaling         block-education       sequential</span></span>
-<span><span class="co">#&gt; 2 block-arithmetic-mean block-scaling         motivated </span></span>
-<span><span class="co">#&gt; 3 block-education       block-arithmetic-mean sequential</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; attr(,"class")</span></span>
-<span><span class="co">#&gt; [1] "schema"</span></span>
-<span><span class="co">#&gt; attr(,"name")</span></span>
-<span><span class="co">#&gt; [1] "HDI Example"</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; attr(,"class")</span></span>
-<span><span class="co">#&gt; [1] "multiverse" "list"</span></span>
-<span><span class="co">#plot(expanded, index = 1)</span></span>
-<span><span class="co">#plot(expanded, index = 2)</span></span>
+<span><span class="co">#&gt; [1] "HDI Example"</span></span></code></pre></div>
+<p>Generate an alternative at block-combine and write the result into a <code>yaml</code> file:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/gen_alternatives.html">gen_alternatives</a></span><span class="op">(</span><span class="va">hdi</span>, block <span class="op">=</span> <span class="st">"block-combine"</span>, n <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>                 file_path <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu">here</span><span class="op">(</span><span class="st">"inst/hdi-alt.yaml"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#(res &lt;- expand_tines(hdi, alternatives = here::here("inst/hdi-alt.yaml")))</span></span></code></pre></div>
+<p>Take the original schema, original code, and the alternatives and generate a new R script that implements the alternative:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/gen_code.html">gen_code</a></span><span class="op">(</span><span class="va">hdi</span>, </span>
+<span>         base_code <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu">here</span><span class="op">(</span><span class="st">"inst/hdi.R"</span><span class="op">)</span>, </span>
+<span>         alternative <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu">here</span><span class="op">(</span><span class="st">"inst/hdi-alt.yaml"</span><span class="op">)</span>,</span>
+<span>         output_dir <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu">here</span><span class="op">(</span><span class="st">"inst/"</span><span class="op">)</span></span>
+<span>         <span class="op">)</span></span></code></pre></div>
+<p>Run the generated code and compare the results:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">res_arith</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/source.html" class="external-link">source</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu">here</span><span class="op">(</span><span class="st">"inst/alt_01_block_combine_arithmetic.R"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──</span></span>
+<span><span class="co">#&gt; ✔ dplyr     1.1.4     ✔ readr     2.1.5</span></span>
+<span><span class="co">#&gt; ✔ forcats   1.0.0     ✔ stringr   1.5.2</span></span>
+<span><span class="co">#&gt; ✔ ggplot2   4.0.0     ✔ tibble    3.3.0</span></span>
+<span><span class="co">#&gt; ✔ lubridate 1.9.4     ✔ tidyr     1.3.1</span></span>
+<span><span class="co">#&gt; ✔ purrr     1.1.0     </span></span>
+<span><span class="co">#&gt; ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──</span></span>
+<span><span class="co">#&gt; ✖ dplyr::filter() masks stats::filter()</span></span>
+<span><span class="co">#&gt; ✖ dplyr::lag()    masks stats::lag()</span></span>
+<span><span class="co">#&gt; ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</span></span>
+<span><span class="co">#&gt; Registered S3 method overwritten by 'tsibble':</span></span>
+<span><span class="co">#&gt;   method               from </span></span>
+<span><span class="co">#&gt;   as_tibble.grouped_df dplyr</span></span>
 <span></span>
-<span><span class="fu"><a href="reference/example_tines.html">example_football</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">res_arith</span><span class="op">$</span><span class="va">value</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">hdi</span>, y <span class="op">=</span> <span class="va">hdi2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">theme</span><span class="op">(</span>aspect.ratio <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-6-1.png" width="100%"></p>
+</div>
+<div class="section level2">
+<h2 id="example---generate-alternatives-and-code-football">Example - generate alternatives and code (football)<a class="anchor" aria-label="anchor" href="#example---generate-alternatives-and-code-football"></a>
+</h2>
+<p>Currently restricted by a rate limit.</p>
+<p>Start from a schema</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/huizezhang-sherry/tines" class="external-link">tines</a></span><span class="op">)</span></span>
+<span><span class="op">(</span><span class="va">football</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/example_tines.html">example_football</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $nodes</span></span>
 <span><span class="co">#&gt; # A tibble: 3 × 6</span></span>
 <span><span class="co">#&gt;   tag                            action      type  decision justification status</span></span>
@@ -157,13 +148,19 @@
 <span><span class="co">#&gt; 3 block-victory-tie-defeat-ratio block-logistic-model sequential</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; attr(,"class")</span></span>
-<span><span class="co">#&gt; [1] "schema"</span></span>
-<span><span class="co">#plot(example_football())</span></span>
-<span><span class="va">multi</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/example_tines.html">example_football</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="reference/expand.html">expand_tines</a></span><span class="op">(</span><span class="fu"><a href="reference/example_tines.html">example_alternatives</a></span><span class="op">(</span>case <span class="op">=</span> <span class="st">"football"</span><span class="op">)</span><span class="op">)</span> </span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">multi</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "original"                           "block-mixed-effects-logistic-model"</span></span>
-<span><span class="co">#&gt; [3] "block-probit-regression-model"      "block-bayesian-logistic-model"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "schema"</span></span></code></pre></div>
+<p>Generate an alternative at block-combine and write the result into a <code>yaml</code> file:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/gen_alternatives.html">gen_alternatives</a></span><span class="op">(</span><span class="va">football</span>, block <span class="op">=</span> <span class="st">"block-logistic-model"</span>, n <span class="op">=</span> <span class="fl">2</span>, </span>
+<span>                 file_path <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu">here</span><span class="op">(</span><span class="st">"inst/football-alt.yaml"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Take the original schema, original code, and the alternatives and generate a new R script that implements the alternative:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/gen_code.html">gen_code</a></span><span class="op">(</span><span class="va">football</span>, </span>
+<span>         base_code <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu">here</span><span class="op">(</span><span class="st">"inst/football.R"</span><span class="op">)</span>, </span>
+<span>         alternative <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu">here</span><span class="op">(</span><span class="st">"inst/football-alt.yaml"</span><span class="op">)</span>,</span>
+<span>         output_dir <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu">here</span><span class="op">(</span><span class="st">"inst/"</span><span class="op">)</span></span>
+<span>         <span class="op">)</span></span></code></pre></div>
+<p>Run the generated code and compare the results:</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">

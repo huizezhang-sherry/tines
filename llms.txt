@@ -17,11 +17,13 @@ And the development version from GitHub with:
 remotes::install_github("huizezhang-sherry/tines")
 ```
 
-## Example
+## Example - generate alternatives and code (HDI)
+
+Start from a schema
 
 ``` r
 library(tines)
-example_schema()
+(hdi <- example_schema())
 #> $nodes
 #> # A tibble: 3 × 6
 #>   tag             action                     type  decision justification status
@@ -42,60 +44,66 @@ example_schema()
 #> [1] "schema"
 #> attr(,"name")
 #> [1] "HDI Example"
-#plot(example_schema())
-expanded <- example_schema() |> 
-  expand_tines(example_alternatives(case = "hdi")) 
-expanded
-#> $original
-#> $nodes
-#> # A tibble: 3 × 6
-#>   tag             action                     type  decision justification status
-#>   <chr>           <chr>                      <chr> <chr>    <chr>         <chr> 
-#> 1 block-scaling   variables are in differen… cons… apply m… to put them … VERIF…
-#> 2 block-education combine the school variab… step  average… the most int… VERIF…
-#> 3 block-combine   combine the three dimensi… step  use the… the geometri… VERIF…
-#> 
-#> $edges
-#> # A tibble: 3 × 3
-#>   from            to              type      
-#>   <chr>           <chr>           <chr>     
-#> 1 block-scaling   block-education sequential
-#> 2 block-combine   block-scaling   motivated 
-#> 3 block-education block-combine   sequential
-#> 
-#> attr(,"class")
-#> [1] "schema"
-#> attr(,"name")
-#> [1] "HDI Example"
-#> 
-#> $`block-arithmetic-mean`
-#> $nodes
-#> # A tibble: 3 × 6
-#>   tag                   action               type  decision justification status
-#>   <chr>                 <chr>                <chr> <chr>    <chr>         <chr> 
-#> 1 block-scaling         variables are in di… cons… apply m… to put them … VERIF…
-#> 2 block-education       combine the school … step  average… the most int… VERIF…
-#> 3 block-arithmetic-mean combine the three d… step  use a a… the old meth… VERIF…
-#> 
-#> $edges
-#> # A tibble: 3 × 3
-#>   from                  to                    type      
-#>   <chr>                 <chr>                 <chr>     
-#> 1 block-scaling         block-education       sequential
-#> 2 block-arithmetic-mean block-scaling         motivated 
-#> 3 block-education       block-arithmetic-mean sequential
-#> 
-#> attr(,"class")
-#> [1] "schema"
-#> attr(,"name")
-#> [1] "HDI Example"
-#> 
-#> attr(,"class")
-#> [1] "multiverse" "list"
-#plot(expanded, index = 1)
-#plot(expanded, index = 2)
+```
 
-example_football()
+Generate an alternative at block-combine and write the result into a
+`yaml` file:
+
+``` r
+gen_alternatives(hdi, block = "block-combine", n = 1, 
+                 file_path = here::here("inst/hdi-alt.yaml"))
+```
+
+``` r
+#(res <- expand_tines(hdi, alternatives = here::here("inst/hdi-alt.yaml")))
+```
+
+Take the original schema, original code, and the alternatives and
+generate a new R script that implements the alternative:
+
+``` r
+gen_code(hdi, 
+         base_code = here::here("inst/hdi.R"), 
+         alternative = here::here("inst/hdi-alt.yaml"),
+         output_dir = here::here("inst/")
+         )
+```
+
+Run the generated code and compare the results:
+
+``` r
+res_arith <- source(here::here("inst/alt_01_block_combine_arithmetic.R"))
+#> ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+#> ✔ dplyr     1.1.4     ✔ readr     2.1.5
+#> ✔ forcats   1.0.0     ✔ stringr   1.5.2
+#> ✔ ggplot2   4.0.0     ✔ tibble    3.3.0
+#> ✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+#> ✔ purrr     1.1.0     
+#> ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+#> ✖ dplyr::filter() masks stats::filter()
+#> ✖ dplyr::lag()    masks stats::lag()
+#> ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+#> Registered S3 method overwritten by 'tsibble':
+#>   method               from 
+#>   as_tibble.grouped_df dplyr
+
+res_arith$value |> 
+  ggplot(aes(x = hdi, y = hdi2)) + 
+  geom_point() + 
+  theme(aspect.ratio = 1)
+```
+
+![](reference/figures/README-unnamed-chunk-6-1.png)
+
+## Example - generate alternatives and code (football)
+
+Currently restricted by a rate limit.
+
+Start from a schema
+
+``` r
+library(tines)
+(football <- example_football())
 #> $nodes
 #> # A tibble: 3 × 6
 #>   tag                            action      type  decision justification status
@@ -114,13 +122,28 @@ example_football()
 #> 
 #> attr(,"class")
 #> [1] "schema"
-#plot(example_football())
-multi <- example_football() |> 
-  expand_tines(example_alternatives(case = "football")) 
-names(multi)
-#> [1] "original"                           "block-mixed-effects-logistic-model"
-#> [3] "block-probit-regression-model"      "block-bayesian-logistic-model"
 ```
+
+Generate an alternative at block-combine and write the result into a
+`yaml` file:
+
+``` r
+gen_alternatives(football, block = "block-logistic-model", n = 2, 
+                 file_path = here::here("inst/football-alt.yaml"))
+```
+
+Take the original schema, original code, and the alternatives and
+generate a new R script that implements the alternative:
+
+``` r
+gen_code(football, 
+         base_code = here::here("inst/football.R"), 
+         alternative = here::here("inst/football-alt.yaml"),
+         output_dir = here::here("inst/")
+         )
+```
+
+Run the generated code and compare the results:
 
 # Package index
 
@@ -141,13 +164,15 @@ names(multi)
   [`new_alternatives()`](alternatives.md) : Construct \`alternatives\`
   objects
 
-## Generate analytical alternatives
+## Generate analytical alternatives and corresponding code
 
 - [`gen_alternatives()`](gen_alternatives.md)
   [`prompt_alternatives()`](gen_alternatives.md) : Generate analytical
   alternatives via LLM
 - [`expand_tines()`](expand.md) : Expand a schema with an alternative
   YAML into a multiverse
+- [`gen_code()`](gen_code.md) [`prompt_code()`](gen_code.md) : Generate
+  R code for a specific alternative branch
 
 ## Interface with YAML files
 

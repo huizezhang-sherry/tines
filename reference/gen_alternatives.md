@@ -13,6 +13,9 @@ instruction set sent to the LLM.
 ``` r
 gen_alternatives(x, block, n = 3, provider = "gemini", file_path = NULL, ...)
 
+# S3 method for class 'character'
+gen_alternatives(x, ...)
+
 # S3 method for class 'schema'
 gen_alternatives(x, block, n = 3, provider = "gemini", file_path = NULL, ...)
 
@@ -78,12 +81,8 @@ configured correctly in your R environment (e.g., via the
 
 ``` r
 if (FALSE) { # \dontrun{
-# Generate 3 alternatives for the "handle-missing-data" step
-gen_alternatives(
-  x = my_schema,
-  block = "handle-missing-data",
-  n = 3,
-  file_path = "alternatives.yaml"
-)
+hdi <- example_schema()
+gen_alternatives(hdi, block = "block-combine", n = 1,
+                file_path = here::here("inst/hdi-alt.yaml"))
 } # }
 ```
