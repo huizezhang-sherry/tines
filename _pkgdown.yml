@@ -7,10 +7,11 @@ reference:
    - new_schema
    - draw_tines
    - alternative
-- title: "Generate analytical alternatives"
+- title: "Generate analytical alternatives and corresponding code"
   contents:
    - gen_alternatives
    - expand_tines
+   - gen_code
 - title: "Interface with YAML files"
   contents:
    - draft_tines

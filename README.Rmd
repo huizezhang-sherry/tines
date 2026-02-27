@@ -38,23 +38,78 @@ And the development version from GitHub with:
 remotes::install_github("huizezhang-sherry/tines")
 ````
 
-## Example
+## Example - generate alternatives and code (HDI)
 
-```{r example}
+Start from a schema
+
+```{r}
 library(tines)
-example_schema()
-#plot(example_schema())
-expanded <- example_schema() |> 
-  expand_tines(example_alternatives(case = "hdi")) 
-expanded
-#plot(expanded, index = 1)
-#plot(expanded, index = 2)
-
-example_football()
-#plot(example_football())
-multi <- example_football() |> 
-  expand_tines(example_alternatives(case = "football")) 
-names(multi)
-
+(hdi <- example_schema())
 ```
 
+Generate an alternative at block-combine and write the result into a `yaml` file:
+
+```{r eval = FALSE}
+gen_alternatives(hdi, block = "block-combine", n = 1, 
+                 file_path = here::here("inst/hdi-alt.yaml"))
+```
+
+
+```{r}
+#(res <- expand_tines(hdi, alternatives = here::here("inst/hdi-alt.yaml")))
+```
+
+Take the original schema, original code, and the alternatives and generate a new R script that implements the alternative:
+
+```{r eval = FALSE}
+gen_code(hdi, 
+         base_code = here::here("inst/hdi.R"), 
+         alternative = here::here("inst/hdi-alt.yaml"),
+         output_dir = here::here("inst/")
+         )
+```
+
+Run the generated code and compare the results:
+
+```{r}
+res_arith <- source(here::here("inst/alt_01_block_combine_arithmetic.R"))
+
+res_arith$value |> 
+  ggplot(aes(x = hdi, y = hdi2)) + 
+  geom_point() + 
+  theme(aspect.ratio = 1)
+```
+
+
+## Example - generate alternatives and code (football)
+
+Currently restricted by a rate limit.
+
+Start from a schema
+
+```{r}
+library(tines)
+(football <- example_football())
+```
+
+Generate an alternative at block-combine and write the result into a `yaml` file:
+
+```{r eval = FALSE}
+gen_alternatives(football, block = "block-logistic-model", n = 2, 
+                 file_path = here::here("inst/football-alt.yaml"))
+```
+
+Take the original schema, original code, and the alternatives and generate a new R script that implements the alternative:
+
+```{r eval = FALSE}
+gen_code(football, 
+         base_code = here::here("inst/football.R"), 
+         alternative = here::here("inst/football-alt.yaml"),
+         output_dir = here::here("inst/")
+         )
+```
+
+Run the generated code and compare the results:
+
+```{r}
+```

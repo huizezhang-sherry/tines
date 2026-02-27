@@ -2,12 +2,15 @@
 % Please edit documentation in R/gen-alternatives.R
 \name{gen_alternatives}
 \alias{gen_alternatives}
+\alias{gen_alternatives.character}
 \alias{gen_alternatives.schema}
 \alias{gen_alternatives.multiverse}
 \alias{prompt_alternatives}
 \title{Generate analytical alternatives via LLM}
 \usage{
 gen_alternatives(x, block, n = 3, provider = "gemini", file_path = NULL, ...)
+
+\method{gen_alternatives}{character}(x, ...)
 
 \method{gen_alternatives}{schema}(x, block, n = 3, provider = "gemini", file_path = NULL, ...)
 
@@ -56,12 +59,8 @@ this to work.
 }
 \examples{
 \dontrun{
-# Generate 3 alternatives for the "handle-missing-data" step
-gen_alternatives(
-  x = my_schema,
-  block = "handle-missing-data",
-  n = 3,
-  file_path = "alternatives.yaml"
-)
+hdi <- example_schema()
+gen_alternatives(hdi, block = "block-combine", n = 1,
+                file_path = here::here("inst/hdi-alt.yaml"))
 }
 }

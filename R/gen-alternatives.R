@@ -37,13 +37,9 @@
 #'
 #' @examples
 #' \dontrun{
-#' # Generate 3 alternatives for the "handle-missing-data" step
-#' gen_alternatives(
-#'   x = my_schema,
-#'   block = "handle-missing-data",
-#'   n = 3,
-#'   file_path = "alternatives.yaml"
-#' )
+#' hdi <- example_schema()
+#' gen_alternatives(hdi, block = "block-combine", n = 1,
+#'                 file_path = here::here("inst/hdi-alt.yaml"))
 #' }
 gen_alternatives <- function(x, block, n = 3,
                              provider = "gemini", file_path = NULL, ...){
@@ -52,19 +48,42 @@ gen_alternatives <- function(x, block, n = 3,
 
 #' @export
 #' @rdname gen_alternatives
+gen_alternatives.character <- function(x, ...){
+  if (!file.exists(x)) {
+    cli::cli_abort("File not found: {.val {x}}")
+  }
+  schema_data <- read_tines(x)
+
+  gen_alternatives(schema_data, ...)
+}
+
+#' @export
+#' @rdname gen_alternatives
 gen_alternatives.schema <- function(x, block, n = 3,
                              provider = "gemini", file_path = NULL, ...){
+  #browser()
+  if (is.null(file_path)) {
+    cli::cli_abort("You must provide a {.arg file_path} to save the generated alternatives.")
+  }
 
   # allow both a yaml file or a tine (schema/ multiverse) object
-  if (file.exists(x)) tine_str <- readLines(x) else tine_str <- write_tines(x)
-  temp_file_path <- tempfile(tmpdir = tempdir(), fileext = "yaml")
-  writeLines(tine_str, temp_file_path)
-  tine_file <- ellmer::google_upload(temp_file_path)
+  #if (file.exists(x)) tine_str <- readLines(x) else tine_str <- write_tines(x)
+  #tine_str <- write_tines(x)
+  # temp_file_path <- tempfile(tmpdir = tempdir(), fileext = ".yaml")
+  # writeLines(tine_str, temp_file_path)
+  # tine_file <- ellmer::google_upload(temp_file_path, mime_type = "application/x-yaml")
 
-  prompt <- prompt_alternatives(block = block, n = n)
+  base_prompt <- prompt_alternatives(block = block, n = n)
 
-  chat <- ellmer::chat_google_gemini(model = "gemini-3-flash-preview")
-  utils::capture.output(chat$chat(prompt, tine_file), file = file_path)
+  full_prompt <- paste0(
+    base_prompt,
+    "\n\n=== CURRENT SCHEMA ===\n",
+    yaml::as.yaml(x)
+
+  )
+
+  chat <- ellmer::chat_google_gemini(model = "gemini-2.5-pro")
+  utils::capture.output(chat$chat(full_prompt), file = file_path)
   invisible()
 }
 
@@ -122,7 +141,7 @@ For each alternative:
 Please output the result in **strictly valid YAML format**.
 
 **Crucial Formatting Rules:**
-1.  Include a `meta` section at the top with `type: alternative` and the `target_block`.
+1.  Include a `meta` section at the top with `type: alternative` and the `block`.
 2.  Output strictly valid YAML.
 Formatting Rule: All text values (decision, justification) must be enclosed in double quotes ("). Do not use block styles (| or >). Do not wrap lines or insert \n characters within the quotes; keep the text as a single continuous string."
 3.  Do not include markdown code fences (like ```yaml) or conversational text. Just the raw YAML.

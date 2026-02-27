@@ -1,0 +1,10 @@
+meta:
+  type: "alternative"
+  block: "block-combine"
+alternatives:
+  - tag: "block-combine-arithmetic"
+    action: "combine the three dimensions into a single index"
+    decision: "calculate the simple arithmetic mean of the three dimensions"
+    justification: "the arithmetic mean is a standard and transparent aggregation
+method that assumes perfect substitutability between components and is easier to
+communicate to stakeholders than the geometric mean"
