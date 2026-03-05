@@ -140,13 +140,22 @@ schema <- build_schema("HDI Example") |>
 
 str(schema)
 #> List of 2
-#>  $ nodes: tibble [3 × 6] (S3: tbl_df/tbl/data.frame)
+#>  $ nodes: tibble [3 × 9] (S3: tbl_df/tbl/data.frame)
 #>   ..$ tag          : chr [1:3] "block-scaling" "block-education" "block-combine"
 #>   ..$ action       : chr [1:3] "variables are in different scales" "combine the school variables into one dimension" "combine the three dimensions into a single index"
 #>   ..$ type         : chr [1:3] "constraint" "step" "step"
 #>   ..$ decision     : chr [1:3] "apply min-max scaling to each variable" "average exp sch and avg sch" "use the geometric mean"
 #>   ..$ justification: chr [1:3] "to put them on the same scale for combination" "the most intuitive way" "the geometric mean is more appropriate than arithmetic mean"
 #>   ..$ status       : chr [1:3] "VERIFIED" "VERIFIED" "VERIFIED"
+#>   ..$ inputs       :List of 3
+#>   .. ..$ : logi NA
+#>   .. ..$ : logi NA
+#>   .. ..$ : logi NA
+#>   ..$ outputs      :List of 3
+#>   .. ..$ : logi NA
+#>   .. ..$ : logi NA
+#>   .. ..$ : logi NA
+#>   ..$ source_schema: logi [1:3] NA NA NA
 #>  $ edges: tibble [3 × 3] (S3: tbl_df/tbl/data.frame)
 #>   ..$ from: chr [1:3] "block-scaling" "block-combine" "block-education"
 #>   ..$ to  : chr [1:3] "block-education" "block-scaling" "block-combine"
@@ -188,13 +197,22 @@ my_multiverse <- build_multiverse(original = schema, reversed = schema2)
 str(my_multiverse)
 #> List of 2
 #>  $ original:List of 2
-#>   ..$ nodes: tibble [3 × 6] (S3: tbl_df/tbl/data.frame)
+#>   ..$ nodes: tibble [3 × 9] (S3: tbl_df/tbl/data.frame)
 #>   .. ..$ tag          : chr [1:3] "block-scaling" "block-education" "block-combine"
 #>   .. ..$ action       : chr [1:3] "variables are in different scales" "combine the school variables into one dimension" "combine the three dimensions into a single index"
 #>   .. ..$ type         : chr [1:3] "constraint" "step" "step"
 #>   .. ..$ decision     : chr [1:3] "apply min-max scaling to each variable" "average exp sch and avg sch" "use the geometric mean"
 #>   .. ..$ justification: chr [1:3] "to put them on the same scale for combination" "the most intuitive way" "the geometric mean is more appropriate than arithmetic mean"
 #>   .. ..$ status       : chr [1:3] "VERIFIED" "VERIFIED" "VERIFIED"
+#>   .. ..$ inputs       :List of 3
+#>   .. .. ..$ : logi NA
+#>   .. .. ..$ : logi NA
+#>   .. .. ..$ : logi NA
+#>   .. ..$ outputs      :List of 3
+#>   .. .. ..$ : logi NA
+#>   .. .. ..$ : logi NA
+#>   .. .. ..$ : logi NA
+#>   .. ..$ source_schema: logi [1:3] NA NA NA
 #>   ..$ edges: tibble [3 × 3] (S3: tbl_df/tbl/data.frame)
 #>   .. ..$ from: chr [1:3] "block-scaling" "block-combine" "block-education"
 #>   .. ..$ to  : chr [1:3] "block-education" "block-scaling" "block-combine"
@@ -209,13 +227,22 @@ str(my_multiverse)
 #>   ..- attr(*, "class")= chr "schema"
 #>   ..- attr(*, "name")= chr "HDI Example"
 #>  $ reversed:List of 2
-#>   ..$ nodes: tibble [3 × 6] (S3: tbl_df/tbl/data.frame)
+#>   ..$ nodes: tibble [3 × 9] (S3: tbl_df/tbl/data.frame)
 #>   .. ..$ tag          : chr [1:3] "block-education" "block-scaling" "block-combine"
 #>   .. ..$ action       : chr [1:3] "combine the school variables into one dimension" "variables are in different scales" "combine the three dimensions into a single index"
 #>   .. ..$ type         : chr [1:3] "step" "constraint" "step"
 #>   .. ..$ decision     : chr [1:3] "average exp sch and avg sch" "apply min-max scaling to each variable" "use the geometric mean"
 #>   .. ..$ justification: chr [1:3] "the most intuitive way" "to put them on the same scale for combination" "the geometric mean is more appropriate than arithmetic mean"
 #>   .. ..$ status       : chr [1:3] "VERIFIED" "VERIFIED" "VERIFIED"
+#>   .. ..$ inputs       :List of 3
+#>   .. .. ..$ : logi NA
+#>   .. .. ..$ : logi NA
+#>   .. .. ..$ : logi NA
+#>   .. ..$ outputs      :List of 3
+#>   .. .. ..$ : logi NA
+#>   .. .. ..$ : logi NA
+#>   .. .. ..$ : logi NA
+#>   .. ..$ source_schema: logi [1:3] NA NA NA
 #>   ..$ edges: tibble [3 × 3] (S3: tbl_df/tbl/data.frame)
 #>   .. ..$ from: chr [1:3] "block-education" "block-scaling" "block-combine"
 #>   .. ..$ to  : chr [1:3] "block-scaling" "block-combine" "block-scaling"

@@ -38,12 +38,12 @@ example_alternatives(case = c("football", "hdi"))
 # Generate a single example schema
 example_schema()
 #> $nodes
-#> # A tibble: 3 × 6
-#>   tag             action                     type  decision justification status
-#>   <chr>           <chr>                      <chr> <chr>    <chr>         <chr> 
-#> 1 block-scaling   variables are in differen… cons… apply m… to put them … VERIF…
-#> 2 block-education combine the school variab… step  average… the most int… VERIF…
-#> 3 block-combine   combine the three dimensi… step  use the… the geometri… VERIF…
+#> # A tibble: 3 × 9
+#>   tag    action type  decision justification status inputs outputs source_schema
+#>   <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
+#> 1 block… varia… cons… apply m… to put them … VERIF… <lgl>  <lgl>   NA           
+#> 2 block… combi… step  average… the most int… VERIF… <lgl>  <lgl>   NA           
+#> 3 block… combi… step  use the… the geometri… VERIF… <lgl>  <lgl>   NA           
 #> 
 #> $edges
 #> # A tibble: 3 × 3
@@ -60,12 +60,12 @@ example_schema()
 example_multiverse()
 #> $original
 #> $nodes
-#> # A tibble: 3 × 6
-#>   tag             action                     type  decision justification status
-#>   <chr>           <chr>                      <chr> <chr>    <chr>         <chr> 
-#> 1 block-scaling   variables are in differen… cons… apply m… to put them … VERIF…
-#> 2 block-education combine the school variab… step  average… the most int… VERIF…
-#> 3 block-combine   combine the three dimensi… step  use the… the geometri… VERIF…
+#> # A tibble: 3 × 9
+#>   tag    action type  decision justification status inputs outputs source_schema
+#>   <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
+#> 1 block… varia… cons… apply m… to put them … VERIF… <lgl>  <lgl>   NA           
+#> 2 block… combi… step  average… the most int… VERIF… <lgl>  <lgl>   NA           
+#> 3 block… combi… step  use the… the geometri… VERIF… <lgl>  <lgl>   NA           
 #> 
 #> $edges
 #> # A tibble: 3 × 3
@@ -82,12 +82,12 @@ example_multiverse()
 #> 
 #> $reversed
 #> $nodes
-#> # A tibble: 3 × 6
-#>   tag             action                     type  decision justification status
-#>   <chr>           <chr>                      <chr> <chr>    <chr>         <chr> 
-#> 1 block-education combine the school variab… step  average… the most int… VERIF…
-#> 2 block-scaling   variables are in differen… cons… apply m… to put them … VERIF…
-#> 3 block-combine   combine the three dimensi… step  use the… the geometri… VERIF…
+#> # A tibble: 3 × 9
+#>   tag    action type  decision justification status inputs outputs source_schema
+#>   <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
+#> 1 block… combi… step  average… the most int… VERIF… <lgl>  <lgl>   NA           
+#> 2 block… varia… cons… apply m… to put them … VERIF… <lgl>  <lgl>   NA           
+#> 3 block… combi… step  use the… the geometri… VERIF… <lgl>  <lgl>   NA           
 #> 
 #> $edges
 #> # A tibble: 3 × 3
@@ -106,12 +106,12 @@ example_multiverse()
 #> [1] "multiverse" "list"      
 example_football()
 #> $nodes
-#> # A tibble: 3 × 6
-#>   tag                            action      type  decision justification status
-#>   <chr>                          <chr>       <chr> <chr>    <chr>         <chr> 
-#> 1 block-average-rater            define the… cons… average… incorporate … VERIF…
-#> 2 block-victory-tie-defeat-ratio control fo… step  victory… ratios are r… VERIF…
-#> 3 block-logistic-model           estimate t… step  fit a l… to answer th… VERIF…
+#> # A tibble: 3 × 9
+#>   tag    action type  decision justification status inputs outputs source_schema
+#>   <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
+#> 1 block… defin… cons… average… incorporate … VERIF… <lgl>  <lgl>   NA           
+#> 2 block… contr… step  victory… ratios are r… VERIF… <lgl>  <lgl>   NA           
+#> 3 block… estim… step  fit a l… to answer th… VERIF… <lgl>  <lgl>   NA           
 #> 
 #> $edges
 #> # A tibble: 3 × 3

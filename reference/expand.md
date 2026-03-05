@@ -42,12 +42,12 @@ alts <- example_alternatives(case = "football")
 expand_tines(base_schema, alts)
 #> $original
 #> $nodes
-#> # A tibble: 3 × 6
-#>   tag                            action      type  decision justification status
-#>   <chr>                          <chr>       <chr> <chr>    <chr>         <chr> 
-#> 1 block-average-rater            define the… cons… average… incorporate … VERIF…
-#> 2 block-victory-tie-defeat-ratio control fo… step  victory… ratios are r… VERIF…
-#> 3 block-logistic-model           estimate t… step  fit a l… to answer th… VERIF…
+#> # A tibble: 3 × 9
+#>   tag    action type  decision justification status inputs outputs source_schema
+#>   <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
+#> 1 block… defin… cons… average… incorporate … VERIF… <lgl>  <lgl>   NA           
+#> 2 block… contr… step  victory… ratios are r… VERIF… <lgl>  <lgl>   NA           
+#> 3 block… estim… step  fit a l… to answer th… VERIF… <lgl>  <lgl>   NA           
 #> 
 #> $edges
 #> # A tibble: 3 × 3
@@ -62,12 +62,12 @@ expand_tines(base_schema, alts)
 #> 
 #> $`block-mixed-effects-logistic-model`
 #> $nodes
-#> # A tibble: 3 × 6
-#>   tag                                action  type  decision justification status
-#>   <chr>                              <chr>   <chr> <chr>    <chr>         <chr> 
-#> 1 block-average-rater                define… cons… average… incorporate … VERIF…
-#> 2 block-victory-tie-defeat-ratio     contro… step  victory… ratios are r… VERIF…
-#> 3 block-mixed-effects-logistic-model estima… step  fit a g… mixed-effect… VERIF…
+#> # A tibble: 3 × 9
+#>   tag    action type  decision justification status inputs outputs source_schema
+#>   <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
+#> 1 block… defin… cons… average… incorporate … VERIF… <lgl>  <lgl>   NA           
+#> 2 block… contr… step  victory… ratios are r… VERIF… <lgl>  <lgl>   NA           
+#> 3 block… estim… step  fit a g… mixed-effect… VERIF… <lgl>  <lgl>   NA           
 #> 
 #> $edges
 #> # A tibble: 3 × 3
@@ -82,12 +82,12 @@ expand_tines(base_schema, alts)
 #> 
 #> $`block-probit-regression-model`
 #> $nodes
-#> # A tibble: 3 × 6
-#>   tag                            action      type  decision justification status
-#>   <chr>                          <chr>       <chr> <chr>    <chr>         <chr> 
-#> 1 block-average-rater            define the… cons… average… incorporate … VERIF…
-#> 2 block-victory-tie-defeat-ratio control fo… step  victory… ratios are r… VERIF…
-#> 3 block-probit-regression-model  estimate t… step  fit a p… probit model… VERIF…
+#> # A tibble: 3 × 9
+#>   tag    action type  decision justification status inputs outputs source_schema
+#>   <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
+#> 1 block… defin… cons… average… incorporate … VERIF… <lgl>  <lgl>   NA           
+#> 2 block… contr… step  victory… ratios are r… VERIF… <lgl>  <lgl>   NA           
+#> 3 block… estim… step  fit a p… probit model… VERIF… <lgl>  <lgl>   NA           
 #> 
 #> $edges
 #> # A tibble: 3 × 3
@@ -102,12 +102,12 @@ expand_tines(base_schema, alts)
 #> 
 #> $`block-bayesian-logistic-model`
 #> $nodes
-#> # A tibble: 3 × 6
-#>   tag                            action      type  decision justification status
-#>   <chr>                          <chr>       <chr> <chr>    <chr>         <chr> 
-#> 1 block-average-rater            define the… cons… average… incorporate … VERIF…
-#> 2 block-victory-tie-defeat-ratio control fo… step  victory… ratios are r… VERIF…
-#> 3 block-bayesian-logistic-model  estimate t… step  fit a B… the Bayesian… VERIF…
+#> # A tibble: 3 × 9
+#>   tag    action type  decision justification status inputs outputs source_schema
+#>   <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
+#> 1 block… defin… cons… average… incorporate … VERIF… <lgl>  <lgl>   NA           
+#> 2 block… contr… step  victory… ratios are r… VERIF… <lgl>  <lgl>   NA           
+#> 3 block… estim… step  fit a B… the Bayesian… VERIF… <lgl>  <lgl>   NA           
 #> 
 #> $edges
 #> # A tibble: 3 × 3
@@ -126,16 +126,16 @@ expand_tines(base_schema, alts)
 # read the alternatives from a YAML file
 tmp_file <- tempfile(fileext = ".yaml")
 write_alternatives(alts, tmp_file)
-#> ✔ Successfully wrote alternatives to /tmp/RtmpCNhybc/file198567fb34ff.yaml
+#> ✔ Successfully wrote alternatives to /tmp/RtmprzLSEV/file198e6f43e571.yaml
 expand_tines(base_schema, tmp_file)
 #> $original
 #> $nodes
-#> # A tibble: 3 × 6
-#>   tag                            action      type  decision justification status
-#>   <chr>                          <chr>       <chr> <chr>    <chr>         <chr> 
-#> 1 block-average-rater            define the… cons… average… incorporate … VERIF…
-#> 2 block-victory-tie-defeat-ratio control fo… step  victory… ratios are r… VERIF…
-#> 3 block-logistic-model           estimate t… step  fit a l… to answer th… VERIF…
+#> # A tibble: 3 × 9
+#>   tag    action type  decision justification status inputs outputs source_schema
+#>   <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
+#> 1 block… defin… cons… average… incorporate … VERIF… <lgl>  <lgl>   NA           
+#> 2 block… contr… step  victory… ratios are r… VERIF… <lgl>  <lgl>   NA           
+#> 3 block… estim… step  fit a l… to answer th… VERIF… <lgl>  <lgl>   NA           
 #> 
 #> $edges
 #> # A tibble: 3 × 3
@@ -150,12 +150,12 @@ expand_tines(base_schema, tmp_file)
 #> 
 #> $`block-mixed-effects-logistic-model`
 #> $nodes
-#> # A tibble: 3 × 6
-#>   tag                                action  type  decision justification status
-#>   <chr>                              <chr>   <chr> <chr>    <chr>         <chr> 
-#> 1 block-average-rater                define… cons… average… incorporate … VERIF…
-#> 2 block-victory-tie-defeat-ratio     contro… step  victory… ratios are r… VERIF…
-#> 3 block-mixed-effects-logistic-model estima… step  fit a g… mixed-effect… VERIF…
+#> # A tibble: 3 × 9
+#>   tag    action type  decision justification status inputs outputs source_schema
+#>   <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
+#> 1 block… defin… cons… average… incorporate … VERIF… <lgl>  <lgl>   NA           
+#> 2 block… contr… step  victory… ratios are r… VERIF… <lgl>  <lgl>   NA           
+#> 3 block… estim… step  fit a g… mixed-effect… VERIF… <lgl>  <lgl>   NA           
 #> 
 #> $edges
 #> # A tibble: 3 × 3
@@ -170,12 +170,12 @@ expand_tines(base_schema, tmp_file)
 #> 
 #> $`block-probit-regression-model`
 #> $nodes
-#> # A tibble: 3 × 6
-#>   tag                            action      type  decision justification status
-#>   <chr>                          <chr>       <chr> <chr>    <chr>         <chr> 
-#> 1 block-average-rater            define the… cons… average… incorporate … VERIF…
-#> 2 block-victory-tie-defeat-ratio control fo… step  victory… ratios are r… VERIF…
-#> 3 block-probit-regression-model  estimate t… step  fit a p… probit model… VERIF…
+#> # A tibble: 3 × 9
+#>   tag    action type  decision justification status inputs outputs source_schema
+#>   <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
+#> 1 block… defin… cons… average… incorporate … VERIF… <lgl>  <lgl>   NA           
+#> 2 block… contr… step  victory… ratios are r… VERIF… <lgl>  <lgl>   NA           
+#> 3 block… estim… step  fit a p… probit model… VERIF… <lgl>  <lgl>   NA           
 #> 
 #> $edges
 #> # A tibble: 3 × 3
@@ -190,12 +190,12 @@ expand_tines(base_schema, tmp_file)
 #> 
 #> $`block-bayesian-logistic-model`
 #> $nodes
-#> # A tibble: 3 × 6
-#>   tag                            action      type  decision justification status
-#>   <chr>                          <chr>       <chr> <chr>    <chr>         <chr> 
-#> 1 block-average-rater            define the… cons… average… incorporate … VERIF…
-#> 2 block-victory-tie-defeat-ratio control fo… step  victory… ratios are r… VERIF…
-#> 3 block-bayesian-logistic-model  estimate t… step  fit a B… the Bayesian… VERIF…
+#> # A tibble: 3 × 9
+#>   tag    action type  decision justification status inputs outputs source_schema
+#>   <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
+#> 1 block… defin… cons… average… incorporate … VERIF… <lgl>  <lgl>   NA           
+#> 2 block… contr… step  victory… ratios are r… VERIF… <lgl>  <lgl>   NA           
+#> 3 block… estim… step  fit a B… the Bayesian… VERIF… <lgl>  <lgl>   NA           
 #> 
 #> $edges
 #> # A tibble: 3 × 3
@@ -217,12 +217,12 @@ alts <- example_alternatives(case = "hdi")
 expand_tines(multiverse, alts)
 #> $original
 #> $nodes
-#> # A tibble: 3 × 6
-#>   tag             action                     type  decision justification status
-#>   <chr>           <chr>                      <chr> <chr>    <chr>         <chr> 
-#> 1 block-scaling   variables are in differen… cons… apply m… to put them … VERIF…
-#> 2 block-education combine the school variab… step  average… the most int… VERIF…
-#> 3 block-combine   combine the three dimensi… step  use the… the geometri… VERIF…
+#> # A tibble: 3 × 9
+#>   tag    action type  decision justification status inputs outputs source_schema
+#>   <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
+#> 1 block… varia… cons… apply m… to put them … VERIF… <lgl>  <lgl>   NA           
+#> 2 block… combi… step  average… the most int… VERIF… <lgl>  <lgl>   NA           
+#> 3 block… combi… step  use the… the geometri… VERIF… <lgl>  <lgl>   NA           
 #> 
 #> $edges
 #> # A tibble: 3 × 3
@@ -239,12 +239,12 @@ expand_tines(multiverse, alts)
 #> 
 #> $reversed
 #> $nodes
-#> # A tibble: 3 × 6
-#>   tag             action                     type  decision justification status
-#>   <chr>           <chr>                      <chr> <chr>    <chr>         <chr> 
-#> 1 block-education combine the school variab… step  average… the most int… VERIF…
-#> 2 block-scaling   variables are in differen… cons… apply m… to put them … VERIF…
-#> 3 block-combine   combine the three dimensi… step  use the… the geometri… VERIF…
+#> # A tibble: 3 × 9
+#>   tag    action type  decision justification status inputs outputs source_schema
+#>   <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
+#> 1 block… combi… step  average… the most int… VERIF… <lgl>  <lgl>   NA           
+#> 2 block… varia… cons… apply m… to put them … VERIF… <lgl>  <lgl>   NA           
+#> 3 block… combi… step  use the… the geometri… VERIF… <lgl>  <lgl>   NA           
 #> 
 #> $edges
 #> # A tibble: 3 × 3
@@ -261,12 +261,12 @@ expand_tines(multiverse, alts)
 #> 
 #> $`block-arithmetic-mean`
 #> $nodes
-#> # A tibble: 3 × 6
-#>   tag                   action               type  decision justification status
-#>   <chr>                 <chr>                <chr> <chr>    <chr>         <chr> 
-#> 1 block-scaling         variables are in di… cons… apply m… to put them … VERIF…
-#> 2 block-education       combine the school … step  average… the most int… VERIF…
-#> 3 block-arithmetic-mean combine the three d… step  use a a… the old meth… VERIF…
+#> # A tibble: 3 × 9
+#>   tag    action type  decision justification status inputs outputs source_schema
+#>   <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
+#> 1 block… varia… cons… apply m… to put them … VERIF… <lgl>  <lgl>   NA           
+#> 2 block… combi… step  average… the most int… VERIF… <lgl>  <lgl>   NA           
+#> 3 block… combi… step  use a a… the old meth… VERIF… <lgl>  <lgl>   NA           
 #> 
 #> $edges
 #> # A tibble: 3 × 3
@@ -283,12 +283,12 @@ expand_tines(multiverse, alts)
 #> 
 #> $`block-arithmetic-mean`
 #> $nodes
-#> # A tibble: 3 × 6
-#>   tag                   action               type  decision justification status
-#>   <chr>                 <chr>                <chr> <chr>    <chr>         <chr> 
-#> 1 block-education       combine the school … step  average… the most int… VERIF…
-#> 2 block-scaling         variables are in di… cons… apply m… to put them … VERIF…
-#> 3 block-arithmetic-mean combine the three d… step  use a a… the old meth… VERIF…
+#> # A tibble: 3 × 9
+#>   tag    action type  decision justification status inputs outputs source_schema
+#>   <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
+#> 1 block… combi… step  average… the most int… VERIF… <lgl>  <lgl>   NA           
+#> 2 block… varia… cons… apply m… to put them … VERIF… <lgl>  <lgl>   NA           
+#> 3 block… combi… step  use a a… the old meth… VERIF… <lgl>  <lgl>   NA           
 #> 
 #> $edges
 #> # A tibble: 3 × 3
