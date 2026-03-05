@@ -18,11 +18,46 @@
 #'          output_dir = here::here("inst/"))
 #' }
 #'
-gen_code <- function(base_schema, base_code, alternatives,
-                     output_dir = "scripts", provider = "gemini") {
+gen_code <- function(base_schema, base_code = NULL, alternatives = NULL,
+                     output = "scripts", provider = "gemini") {
 
+  # currently I provide the option of not providing alternatives and base code,
+  # but I don't think they would work very well
+  is_file <- endsWith(output, ".R") || endsWith(output, ".r")
 
-  if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
+  if (is.null(alternatives)){
+
+    if (is_file) {
+      target_file <- output
+      target_dir  <- dirname(output)
+    } else {
+      target_dir  <- output
+      target_file <- file.path(output, "pipeline.R")
+    }
+
+    if (!dir.exists(output)) dir.create(target_dir, recursive = TRUE)
+    cli::cli_alert_info("Generating script directly from schema")
+
+    gen_code_single(
+      base_schema = base_schema,
+      base_code = NULL,
+      alternative = NULL,
+      file_path = target_file
+    )
+
+    cli::cli_alert_success("Script generated successfully at {.val {target_file}}!")
+    return(invisible())
+  }
+
+  if (is_file) {
+    cli::cli_abort(c(
+      "x" = "Conflicting arguments.",
+      "i" = "You provided {.arg alternatives}, which generates multiple files.",
+      "!" = "{.arg output} must be a directory, not a specific file path like {.val {output}}."
+    ))
+  }
+
+  if (!dir.exists(output)) dir.create(output, recursive = TRUE)
 
   alts <- read_alternatives(alternatives)
   block <- attr(alts, "block")
@@ -54,14 +89,17 @@ gen_code <- function(base_schema, base_code, alternatives,
 }
 
 #' @keywords internal
-gen_code_single <- function(base_schema, base_code, alternative,
+gen_code_single <- function(base_schema, base_code = NULL, alternative = NULL,
                             provider = "gemini", file_path = NULL) {
 
   if (is.null(file_path)) {
     cli::cli_abort("You must provide a {.arg file_path} to save the generated code.")
   }
 
-  base_prompt <- prompt_code()
+  has_code <- !is.null(base_code)
+  has_alt  <- !is.null(alternative)
+
+  base_prompt <- prompt_code(has_base_code = has_code, has_alternative = has_alt)
   txt_input <- format_llm_context(base_schema, base_code, alternative)
 
   full_prompt <- paste0(
@@ -70,7 +108,7 @@ gen_code_single <- function(base_schema, base_code, alternative,
     txt_input
   )
 
-  chat <- ellmer::chat_google_gemini(model = "gemini-2.5-pro")
+  chat <- ellmer::chat_google_gemini(model = "gemini-2.5-flash")
   utils::capture.output(chat$chat(full_prompt), file = file_path)
 
 
@@ -79,41 +117,53 @@ gen_code_single <- function(base_schema, base_code, alternative,
 
 
 #' @keywords internal
-format_llm_context <- function(base_schema, base_code, alternative) {
+format_llm_context <- function(base_schema, base_code = NULL, alternative = NULL) {
 
-  base_schema_txt <- yaml::as.yaml(base_schema)
+  txt_input <- paste0("=== SCHEMA ===\n", yaml::as.yaml(base_schema), "\n")
 
-  if (!file.exists(base_code)) {
-    cli::cli_abort("Base code file not found: {.val {base_code}}")
+  if (!is.null(base_code)) {
+    if (!file.exists(base_code)) {
+      cli::cli_abort("Base code file not found: {.val {base_code}}")
+    }
+    base_code_txt <- paste(readLines(base_code), collapse = "\n")
+    txt_input <- paste0(txt_input, "\n=== BASE R CODE ===\n", base_code_txt, "\n")
   }
-  base_code_txt <- paste(readLines(base_code), collapse = "\n")
 
-  alt_txt <- yaml::as.yaml(alternative)
-
-  txt_input <- paste0(
-    "=== BASE SCHEMA ===", base_schema_txt,
-    "\n=== BASE R CODE ===", base_code_txt,
-    "\n=== ALTERNATIVE TO IMPLEMENT ===", alt_txt
-  )
+  if (!is.null(alternative)) {
+    alt_txt <- yaml::as.yaml(alternative)
+    txt_input <- paste0(txt_input, "\n=== ALTERNATIVE TO IMPLEMENT ===\n", alt_txt, "\n")
+  }
 
   return(txt_input)
 }
 
 #' @export
 #' @rdname gen_code
-prompt_code <- function(print = FALSE) {
+prompt_code <- function(has_base_code = FALSE, has_alternative = FALSE,
+                        print = FALSE) {
+  if (has_base_code && has_alternative) {
+    # The Multiverse Prompt
+    prompt <- cli::format_inline(
+      "You are an expert R programmer assisting a data analyst with a multiverse analysis. ",
+      "Attached is a text document containing three sections: SCHEMA, BASE R CODE, and ALTERNATIVE TO IMPLEMENT.\n\n",
+      "Your task is to rewrite the BASE R CODE to implement the requested alternative. ",
+      "Locate the code corresponding to the 'Block', and rewrite only that section using the new 'Decision'. ",
+      "Keep all other data loading, processing, and reporting steps exactly the same. ",
+      "Output ONLY the complete, updated R script. Do not start with markdown formatting blocks (like ```R) or backticks."
+    )
+  } else {
+    # The From-Scratch Prompt
+    prompt <- cli::format_inline(
+      "You are an expert R programmer. ",
+      "Attached is a text document containing a SCHEMA that defines a data processing pipeline.\n\n",
+      "Your task is to write a complete, working R script from scratch that implements this pipeline step-by-step. ",
+      "Use modern R practices (like dplyr or base pipe) and ensure variables flow correctly from one step to the next as defined by the inputs and outputs. ",
+      "Output ONLY the complete R script. Do not start with markdown formatting blocks (like ```R) or backticks."
+    )
+  }
 
-  prompt <- cli::format_inline(
-    "You are an expert R programmer assisting a data analyst with a multiverse analysis. ",
-    "Attached is a text document containing three sections:\n",
-    "1. BASE SCHEMA: The pipeline outline.\n",
-    "2. BASE R CODE: The working R script that executes the base schema.\n",
-    "3. ALTERNATIVE TO IMPLEMENT: The specific modification to make to the pipeline.\n\n",
-    "Your task is to rewrite the BASE R CODE to implement the requested alternative. ",
-    "Locate the code corresponding to the 'Block', and rewrite only that section using the new 'Decision'. ",
-    "Keep all other data loading, processing, and reporting steps exactly the same. ",
-    "Output ONLY the complete, updated R script. Do not start with markdown formatting blocks (like ```R) or backticks."
-  )
-
-  if (print) cat(prompt) else prompt
+  if (print)
+    cat(prompt)
+  else
+    prompt
 }
