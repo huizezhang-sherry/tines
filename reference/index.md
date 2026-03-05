@@ -16,6 +16,8 @@
 - [`alternative()`](alternatives.md)
   [`new_alternatives()`](alternatives.md) : Construct \`alternatives\`
   objects
+- [`import_block()`](import.md) [`generate_edges()`](import.md) : Import
+  a block from a source schema into the current schema
 
 ## Generate analytical alternatives and corresponding code
 
@@ -44,4 +46,7 @@
 - [`example_schema()`](example_tines.md)
   [`example_multiverse()`](example_tines.md)
   [`example_football()`](example_tines.md)
-  [`example_alternatives()`](example_tines.md) : Generate examples
+  [`example_alternatives()`](example_tines.md)
+  [`example_spei()`](example_tines.md)
+  [`example_spi()`](example_tines.md)
+  [`example_rdi()`](example_tines.md) : Generate examples

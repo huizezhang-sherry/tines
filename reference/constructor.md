@@ -21,10 +21,14 @@ add_block(
   type = "STEP",
   decision = "",
   justification = "",
+  inputs = NA,
+  outputs = NA,
+  source_schema = NA,
   feeds = NULL,
   uses = NULL,
   prompts = NULL,
-  solves = NULL
+  solves = NULL,
+  ...
 )
 
 add_dependency(object, ...)

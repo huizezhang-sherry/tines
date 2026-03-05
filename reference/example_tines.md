@@ -15,6 +15,12 @@ example_multiverse()
 example_football()
 
 example_alternatives(case = c("football", "hdi"))
+
+example_spei()
+
+example_spi()
+
+example_rdi()
 ```
 
 ## Arguments

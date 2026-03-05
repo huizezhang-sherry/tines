@@ -68,12 +68,12 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/huizezhang-sherry/tines" class="external-link">tines</a></span><span class="op">)</span></span>
 <span><span class="op">(</span><span class="va">hdi</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/example_tines.html">example_schema</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $nodes</span></span>
-<span><span class="co">#&gt; # A tibble: 3 × 6</span></span>
-<span><span class="co">#&gt;   tag             action                     type  decision justification status</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;           &lt;chr&gt;                      &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;         &lt;chr&gt; </span></span>
-<span><span class="co">#&gt; 1 block-scaling   variables are in differen… cons… apply m… to put them … VERIF…</span></span>
-<span><span class="co">#&gt; 2 block-education combine the school variab… step  average… the most int… VERIF…</span></span>
-<span><span class="co">#&gt; 3 block-combine   combine the three dimensi… step  use the… the geometri… VERIF…</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 8</span></span>
+<span><span class="co">#&gt;   tag             action      type  decision justification status inputs outputs</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;           &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;         &lt;chr&gt;  &lt;list&gt; &lt;list&gt; </span></span>
+<span><span class="co">#&gt; 1 block-scaling   variables … cons… apply m… to put them … VERIF… &lt;lgl&gt;  &lt;lgl&gt;  </span></span>
+<span><span class="co">#&gt; 2 block-education combine th… step  average… the most int… VERIF… &lt;lgl&gt;  &lt;lgl&gt;  </span></span>
+<span><span class="co">#&gt; 3 block-combine   combine th… step  use the… the geometri… VERIF… &lt;lgl&gt;  &lt;lgl&gt;  </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $edges</span></span>
 <span><span class="co">#&gt; # A tibble: 3 × 3</span></span>
@@ -132,12 +132,12 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/huizezhang-sherry/tines" class="external-link">tines</a></span><span class="op">)</span></span>
 <span><span class="op">(</span><span class="va">football</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/example_tines.html">example_football</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $nodes</span></span>
-<span><span class="co">#&gt; # A tibble: 3 × 6</span></span>
-<span><span class="co">#&gt;   tag                            action      type  decision justification status</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;                          &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;         &lt;chr&gt; </span></span>
-<span><span class="co">#&gt; 1 block-average-rater            define the… cons… average… incorporate … VERIF…</span></span>
-<span><span class="co">#&gt; 2 block-victory-tie-defeat-ratio control fo… step  victory… ratios are r… VERIF…</span></span>
-<span><span class="co">#&gt; 3 block-logistic-model           estimate t… step  fit a l… to answer th… VERIF…</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 8</span></span>
+<span><span class="co">#&gt;   tag                  action type  decision justification status inputs outputs</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;         &lt;chr&gt;  &lt;list&gt; &lt;list&gt; </span></span>
+<span><span class="co">#&gt; 1 block-average-rater  defin… cons… average… incorporate … VERIF… &lt;lgl&gt;  &lt;lgl&gt;  </span></span>
+<span><span class="co">#&gt; 2 block-victory-tie-d… contr… step  victory… ratios are r… VERIF… &lt;lgl&gt;  &lt;lgl&gt;  </span></span>
+<span><span class="co">#&gt; 3 block-logistic-model estim… step  fit a l… to answer th… VERIF… &lt;lgl&gt;  &lt;lgl&gt;  </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $edges</span></span>
 <span><span class="co">#&gt; # A tibble: 3 × 3</span></span>
@@ -161,6 +161,32 @@
 <span>         output_dir <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu">here</span><span class="op">(</span><span class="st">"inst/"</span><span class="op">)</span></span>
 <span>         <span class="op">)</span></span></code></pre></div>
 <p>Run the generated code and compare the results:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">schema</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/example_tines.html">example_rdi</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">code</span> <span class="op">&lt;-</span> <span class="fu">gen_composite_code</span><span class="op">(</span></span>
+<span>  schema       <span class="op">=</span> <span class="va">schema</span>,</span>
+<span>   base_scripts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>     spei_template <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu">here</span><span class="op">(</span><span class="st">"inst/spei.R"</span><span class="op">)</span>,</span>
+<span>     spi_template  <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu">here</span><span class="op">(</span><span class="st">"inst/spi.R"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  output_file  <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu">here</span><span class="op">(</span><span class="st">"inst/rdi.R"</span><span class="op">)</span></span>
+<span> <span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://spei.csic.es" class="external-link">SPEI</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">wichita</span><span class="op">)</span></span>
+<span><span class="va">climate_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.Date.html" class="external-link">seq.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"1980-01-01"</span><span class="op">)</span>, by <span class="op">=</span> <span class="st">"month"</span>, length.out <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">wichita</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  prcp <span class="op">=</span> <span class="va">wichita</span><span class="op">$</span><span class="va">PRCP</span>,</span>
+<span>  temp <span class="op">=</span> <span class="va">wichita</span><span class="op">$</span><span class="va">TMED</span>,</span>
+<span>  lat  <span class="op">=</span> <span class="fl">37.7</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/source.html" class="external-link">source</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu">here</span><span class="op">(</span><span class="st">"inst/rdi.R"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">run_with_data</span><span class="op">(</span></span>
+<span>  script_path <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu">here</span><span class="op">(</span><span class="st">"inst/rdi.R"</span><span class="op">)</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">climate_df</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
