@@ -142,8 +142,9 @@ build_multiverse <- function(...) {
 #' @rdname constructor
 #' @export
 add_block <- function(object, tag, action = "", type = "STEP",
-                      decision = "", justification = "",
-                      feeds = NULL, uses = NULL, prompts = NULL, solves = NULL) {
+                      decision = "", justification = "", inputs = NA, outputs = NA, source_schema = NA,
+                      feeds = NULL, uses = NULL, prompts = NULL, solves = NULL, ...) {
+  #browser()
 
   if (!inherits(object, "schema")) cli::cli_abort("object must be of class {.cls schema}")
   if (tag %in% object$nodes$tag) cli::cli_abort("Tag {.val {tag}} already exists!")
@@ -152,7 +153,7 @@ add_block <- function(object, tag, action = "", type = "STEP",
   new_node <- tibble::tibble(
     tag = tag, action = action, type = type,
     decision = decision, justification = justification,
-    status = "VERIFIED"
+    status = "VERIFIED", inputs = list(inputs), outputs = list(outputs), source_schema = source_schema
   )
   object$nodes <- rbind(object$nodes, new_node)
 

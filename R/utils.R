@@ -148,6 +148,131 @@ example_alternatives <- function(case = c("football", "hdi")){
   }
 }
 
+#' @rdname example_tines
+#' @export
+example_spei <- function(){
+  build_schema(
+  # data_dictionary = list(
+  #   .proxy_prcp = "precipitation_mm",
+  #   .proxy_tavg = "average_temperature_c"
+  # )
+) |>
+  add_block(tag = "block-calc-pet",
+            action = "transform average temperature to obtain potential evapotranspiration (PET)",
+            type = "step",
+            decision = "use Thornthwaite equation",
+            justification = "estimates PET using only mean temperature and latitude",
+            inputs = c(".proxy_tavg"),
+            outputs = c(".proxy_pet")) |>
+
+  add_block(tag = "block-calc-diff",
+            action = "calculate difference series between precipitation and PET",
+            type = "step",
+            decision = "subtract PET from Precipitation (P - PET)",
+            justification = "represents the climatic water balance (surplus or deficit)",
+            inputs = c(".proxy_prcp", ".proxy_pet"),
+            outputs = c(".proxy_diff")) |>
+
+  add_block(tag = "block-temporal-agg",
+            action = "perform temporal aggregation on the difference series",
+            type = "step",
+            decision = "calculate rolling sum of the P-PET difference",
+            justification = "accumulates water balance over a specific time scale",
+            inputs = c(".proxy_diff"),
+            outputs = c(".proxy_agg")) |>
+
+  add_block(tag = "block-dist-fit",
+            action = "fit a probability distribution to the aggregated series",
+            type = "step",
+            decision = "fit a Log-Logistic distribution",
+            justification = "difference series can be negative, so Gamma cannot be used; Log-Logistic handles negative values",
+            inputs = c(".proxy_agg"),
+            outputs = c(".proxy_fit")) |>
+
+  add_block(tag = "block-normalize",
+            action = "normalize the fitted values",
+            type = "step",
+            decision = "transform to standard normal z-scores",
+            justification = "standardizes the index",
+            inputs = c(".proxy_fit"),
+            outputs = c(".proxy_index")) |> 
+    generate_edges()
+}
+
+#' @rdname example_tines
+#' @export
+example_spi <- function(){
+  build_schema(
+  #data_dictionary = list(.proxy_prcp = "precipitation_mm")
+) |>
+  add_block(tag = "block-temporal-agg",
+            action = "perform temporal aggregation on the input precipitation series",
+            type = "step",
+            decision = "calculate rolling sum over user-defined time scale",
+            justification = "droughts operate on varying time scales (e.g., 3-month, 6-month)",
+            inputs = c(".proxy_prcp"),
+            outputs = c(".proxy_agg")) |>
+
+  add_block(tag = "block-dist-fit",
+            action = "fit a probability distribution to the aggregated series",
+            type = "step",
+            decision = "fit a Gamma distribution",
+            justification = "precipitation is zero-bounded and highly skewed; Gamma fits well",
+            inputs = c(".proxy_agg"),
+            outputs = c(".proxy_fit")) |>
+
+  add_block(tag = "block-normalize",
+            action = "normalize the fitted values",
+            type = "step",
+            decision = "transform the cumulative probabilities to standard normal z-scores",
+            justification = "allows comparison of SPI values across different climates",
+            inputs = c(".proxy_fit"),
+            outputs = c(".proxy_index")) |> 
+    generate_edges()
+}
+
+#' @rdname example_tines
+#' @export
+example_rdi <- function(){
+  spi_template  <- example_spi()
+  spei_template <- example_spei()
+
+  build_schema() |>
+
+    import_block(source_schema = spei_template,
+                 source_schema_name = "spei_template",
+                 tag = "block-calc-pet") |>
+
+    add_block(tag = "block-calc-ratio",
+              action = "calculate the ratio of precipitation to PET",
+              type = "step",
+              decision = "divide precipitation by PET",
+              justification = "RDI relies on the P/PET ratio rather than difference",
+              inputs = c(".proxy_prcp", ".proxy_pet"),
+              outputs = c(".proxy_ratio")) |>
+
+    import_block(source_schema = spi_template,
+                 source_schema_name = "spi_template",
+                 tag = "block-temporal-agg",
+                 inputs = c(".proxy_ratio")) |>
+
+    add_block(tag = "block-log-transform",
+              action = "take log10 of aggregated series",
+              type = "step",
+              decision = "apply log10 transformation",
+              justification = "to normalize the heavily skewed ratio distribution",
+              inputs = c(".proxy_agg"),
+              outputs = c(".proxy_y")) |>
+
+    add_block(tag = "block-zscore",
+              action = "rescale to standard normal",
+              type = "step",
+              decision = "calculate z-score (y - mean / sd)",
+              justification = "final step to obtain the standardized RDI index",
+              inputs = c(".proxy_y"),
+              outputs = c(".proxy_index")) |>
+    generate_edges()
+}
 
 #' Functions to access components of a tine object
 #' @param object A `schema` or `multiverse` object.
@@ -169,3 +294,5 @@ get_block_names <- function(object){
   }
   return(block_names)
 }
+
+
