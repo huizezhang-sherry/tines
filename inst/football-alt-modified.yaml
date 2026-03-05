@@ -19,3 +19,11 @@ of a red card."
 (e.g., skin tone) and the log-odds of the outcome (red card) through smoothing functions. This approach is
 less restrictive than assuming a strictly linear relationship, potentially capturing more nuanced effects
 and improving model fit without sacrificing interpretability."
+  - tag: block-random-effect
+    action: "estimate the effect size of skin tone on red card"
+    decision: "Fit a random effect model with a logistic link with only referee number as the random effect"
+    justification: "Given the number of referee, it is better treated as a random effect if included in the model"
+  - tag: block-random-effect-2
+    action: "estimate the effect size of skin tone on red card"
+    decision: "Fit a random effect model with a logistic link with referee number and player ID as the random effect"
+    justification: "Given the number of referees and players, they are better treated as random effects if included in the model"
