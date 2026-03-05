@@ -28,6 +28,13 @@
   YAML into a multiverse
 - [`gen_code()`](gen_code.md) [`prompt_code()`](gen_code.md) : Generate
   R code for a specific alternative branch
+- [`validate_script()`](validate_script.md) : Auto-Fix an R Script via
+  Iterative LLM Debugging
+
+## Create new tines from existing tines
+
+- [`gen_composite_code()`](gen_composite_code.md) : Generate R code from
+  a composite schema assembled from multiple source schemas
 
 ## Interface with YAML files
 

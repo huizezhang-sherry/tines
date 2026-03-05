@@ -10,6 +10,7 @@
 <url><loc>/reference/expand.html</loc></url>
 <url><loc>/reference/gen_alternatives.html</loc></url>
 <url><loc>/reference/gen_code.html</loc></url>
+<url><loc>/reference/gen_composite_code.html</loc></url>
 <url><loc>/reference/get.html</loc></url>
 <url><loc>/reference/import.html</loc></url>
 <url><loc>/reference/index.html</loc></url>
@@ -18,5 +19,6 @@
 <url><loc>/reference/read-write.html</loc></url>
 <url><loc>/reference/template.html</loc></url>
 <url><loc>/reference/tines-package.html</loc></url>
+<url><loc>/reference/validate_script.html</loc></url>
 </urlset>
 
