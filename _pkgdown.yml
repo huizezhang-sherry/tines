@@ -13,6 +13,10 @@ reference:
    - gen_alternatives
    - expand_tines
    - gen_code
+   - validate_script
+- title: "Create new tines from existing tines"
+  contents:
+   - gen_composite_code
 - title: "Interface with YAML files"
   contents:
    - draft_tines
