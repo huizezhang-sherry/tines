@@ -126,6 +126,7 @@ code <- gen_composite_code(
   output_file  = here::here("inst/rdi.R")
  )
 
+validate_script(here::here("inst/rdi.R"), verbose = TRUE)
 ```
 
 

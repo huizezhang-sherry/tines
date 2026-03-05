@@ -31,12 +31,12 @@ Start from a schema
 library(tines)
 (hdi <- example_schema())
 #> $nodes
-#> # A tibble: 3 × 8
-#>   tag             action      type  decision justification status inputs outputs
-#>   <chr>           <chr>       <chr> <chr>    <chr>         <chr>  <list> <list> 
-#> 1 block-scaling   variables … cons… apply m… to put them … VERIF… <lgl>  <lgl>  
-#> 2 block-education combine th… step  average… the most int… VERIF… <lgl>  <lgl>  
-#> 3 block-combine   combine th… step  use the… the geometri… VERIF… <lgl>  <lgl>  
+#> # A tibble: 3 × 9
+#>   tag    action type  decision justification status inputs outputs source_schema
+#>   <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
+#> 1 block… varia… cons… apply m… to put them … VERIF… <lgl>  <lgl>   NA           
+#> 2 block… combi… step  average… the most int… VERIF… <lgl>  <lgl>   NA           
+#> 3 block… combi… step  use the… the geometri… VERIF… <lgl>  <lgl>   NA           
 #> 
 #> $edges
 #> # A tibble: 3 × 3
@@ -79,13 +79,13 @@ Run the generated code and compare the results:
 
 ``` r
 res_arith <- source(here::here("inst/alt_01_block_combine_arithmetic.R"))
-#> ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+#> ── Attaching core tidyverse packages ──────────────────────────────────────────────────────────────────────── tidyverse 2.0.0 ──
 #> ✔ dplyr     1.1.4     ✔ readr     2.1.5
 #> ✔ forcats   1.0.0     ✔ stringr   1.5.2
 #> ✔ ggplot2   4.0.0     ✔ tibble    3.3.0
 #> ✔ lubridate 1.9.4     ✔ tidyr     1.3.1
 #> ✔ purrr     1.1.0     
-#> ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+#> ── Conflicts ────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 #> ✖ dplyr::filter() masks stats::filter()
 #> ✖ dplyr::lag()    masks stats::lag()
 #> ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
@@ -111,12 +111,12 @@ Start from a schema
 library(tines)
 (football <- example_football())
 #> $nodes
-#> # A tibble: 3 × 8
-#>   tag                  action type  decision justification status inputs outputs
-#>   <chr>                <chr>  <chr> <chr>    <chr>         <chr>  <list> <list> 
-#> 1 block-average-rater  defin… cons… average… incorporate … VERIF… <lgl>  <lgl>  
-#> 2 block-victory-tie-d… contr… step  victory… ratios are r… VERIF… <lgl>  <lgl>  
-#> 3 block-logistic-model estim… step  fit a l… to answer th… VERIF… <lgl>  <lgl>  
+#> # A tibble: 3 × 9
+#>   tag    action type  decision justification status inputs outputs source_schema
+#>   <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
+#> 1 block… defin… cons… average… incorporate … VERIF… <lgl>  <lgl>   NA           
+#> 2 block… contr… step  victory… ratios are r… VERIF… <lgl>  <lgl>   NA           
+#> 3 block… estim… step  fit a l… to answer th… VERIF… <lgl>  <lgl>   NA           
 #> 
 #> $edges
 #> # A tibble: 3 × 3
@@ -161,6 +161,8 @@ code <- gen_composite_code(
   ),
   output_file  = here::here("inst/rdi.R")
  )
+
+validate_script(here::here("inst/rdi.R"), verbose = TRUE)
 ```
 
 ``` r
