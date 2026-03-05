@@ -5,6 +5,9 @@
 \alias{example_multiverse}
 \alias{example_football}
 \alias{example_alternatives}
+\alias{example_spei}
+\alias{example_spi}
+\alias{example_rdi}
 \title{Generate examples}
 \usage{
 example_schema()
@@ -14,6 +17,12 @@ example_multiverse()
 example_football()
 
 example_alternatives(case = c("football", "hdi"))
+
+example_spei()
+
+example_spi()
+
+example_rdi()
 }
 \arguments{
 \item{case}{A character string specifying which example alternatives to generate. Options are "football" or "hdi". Only applies to `example_alternatives()`.}

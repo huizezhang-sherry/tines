@@ -31,12 +31,12 @@ Start from a schema
 library(tines)
 (hdi <- example_schema())
 #> $nodes
-#> # A tibble: 3 × 6
-#>   tag             action                     type  decision justification status
-#>   <chr>           <chr>                      <chr> <chr>    <chr>         <chr> 
-#> 1 block-scaling   variables are in differen… cons… apply m… to put them … VERIF…
-#> 2 block-education combine the school variab… step  average… the most int… VERIF…
-#> 3 block-combine   combine the three dimensi… step  use the… the geometri… VERIF…
+#> # A tibble: 3 × 8
+#>   tag             action      type  decision justification status inputs outputs
+#>   <chr>           <chr>       <chr> <chr>    <chr>         <chr>  <list> <list> 
+#> 1 block-scaling   variables … cons… apply m… to put them … VERIF… <lgl>  <lgl>  
+#> 2 block-education combine th… step  average… the most int… VERIF… <lgl>  <lgl>  
+#> 3 block-combine   combine th… step  use the… the geometri… VERIF… <lgl>  <lgl>  
 #> 
 #> $edges
 #> # A tibble: 3 × 3
@@ -111,12 +111,12 @@ Start from a schema
 library(tines)
 (football <- example_football())
 #> $nodes
-#> # A tibble: 3 × 6
-#>   tag                            action      type  decision justification status
-#>   <chr>                          <chr>       <chr> <chr>    <chr>         <chr> 
-#> 1 block-average-rater            define the… cons… average… incorporate … VERIF…
-#> 2 block-victory-tie-defeat-ratio control fo… step  victory… ratios are r… VERIF…
-#> 3 block-logistic-model           estimate t… step  fit a l… to answer th… VERIF…
+#> # A tibble: 3 × 8
+#>   tag                  action type  decision justification status inputs outputs
+#>   <chr>                <chr>  <chr> <chr>    <chr>         <chr>  <list> <list> 
+#> 1 block-average-rater  defin… cons… average… incorporate … VERIF… <lgl>  <lgl>  
+#> 2 block-victory-tie-d… contr… step  victory… ratios are r… VERIF… <lgl>  <lgl>  
+#> 3 block-logistic-model estim… step  fit a l… to answer th… VERIF… <lgl>  <lgl>  
 #> 
 #> $edges
 #> # A tibble: 3 × 3
@@ -150,3 +150,33 @@ gen_code(football,
 ```
 
 Run the generated code and compare the results:
+
+``` r
+schema <- example_rdi()
+code <- gen_composite_code(
+  schema       = schema,
+   base_scripts = list(
+     spei_template = here::here("inst/spei.R"),
+     spi_template  = here::here("inst/spi.R")
+  ),
+  output_file  = here::here("inst/rdi.R")
+ )
+```
+
+``` r
+library(SPEI)
+data(wichita)
+climate_df <- data.frame(
+  date = seq.Date(as.Date("1980-01-01"), by = "month", length.out = nrow(wichita)),
+  prcp = wichita$PRCP,
+  temp = wichita$TMED,
+  lat  = 37.7
+)
+
+source(here::here("inst/rdi.R"))
+
+res <- run_with_data(
+  script_path = here::here("inst/rdi.R"),
+  data = climate_df
+)
+```

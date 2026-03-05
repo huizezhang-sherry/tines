@@ -82,7 +82,7 @@ gen_alternatives.schema <- function(x, block, n = 3,
 
   )
 
-  chat <- ellmer::chat_google_gemini(model = "gemini-2.5-pro")
+  chat <- ellmer::chat_google_gemini(model = "gemini-2.5-flash")
   utils::capture.output(chat$chat(full_prompt), file = file_path)
   invisible()
 }

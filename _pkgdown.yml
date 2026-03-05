@@ -7,6 +7,7 @@ reference:
    - new_schema
    - draw_tines
    - alternative
+   - import_block
 - title: "Generate analytical alternatives and corresponding code"
   contents:
    - gen_alternatives
