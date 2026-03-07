@@ -130,20 +130,3 @@ validate_script(here::here("inst/rdi.R"), verbose = TRUE)
 ```
 
 
-```{r eval = FALSE}
-library(SPEI)
-data(wichita)
-climate_df <- data.frame(
-  date = seq.Date(as.Date("1980-01-01"), by = "month", length.out = nrow(wichita)),
-  prcp = wichita$PRCP,
-  temp = wichita$TMED,
-  lat  = 37.7
-)
-
-source(here::here("inst/rdi.R"))
-
-res <- run_with_data(
-  script_path = here::here("inst/rdi.R"),
-  data = climate_df
-)
-```
