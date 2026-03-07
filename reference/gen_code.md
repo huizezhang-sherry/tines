@@ -30,6 +30,11 @@ prompt_code(has_base_code = FALSE, has_alternative = FALSE, print = FALSE)
 
   A single alternative object (list with tag, decision, etc.).
 
+- output:
+
+  The directory where the generated R script will be saved. Defaults to
+  "scripts".
+
 - provider:
 
   The LLM provider to use for code generation. Currently only "gemini".
@@ -40,11 +45,6 @@ prompt_code(has_base_code = FALSE, has_alternative = FALSE, print = FALSE)
   \`prompt_alternatives()\` will be printed to the console in a readable
   format. Default to \`FALSE\`
 
-- output_dir:
-
-  The directory where the generated R script will be saved. Defaults to
-  "scripts".
-
 ## Examples
 
 ``` r
@@ -53,6 +53,6 @@ hdi <- example_schema()
 gen_code(hdi,
          base_code = system.file("hdi.R", package = "tines"),
          alternative = system.file("hdi-alt.yaml", package = "tines"),
-         output_dir = here::here("inst/"))
+         output = here::here("inst/"))
 } # }
 ```

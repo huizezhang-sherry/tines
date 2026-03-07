@@ -41,7 +41,7 @@ code <- gen_composite_code(
     spei_template = here::here("inst/spei_template.R"),
     spi_template  = here::here("inst/spi_template.R")
   ),
-  output_file  = here::here("output/rdi.R")
+  output_file  = here::here("inst/rdi.R")
 )
 } # }
 ```
