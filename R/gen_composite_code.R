@@ -6,6 +6,7 @@
 #'   base R scripts, e.g. `list(spei_template = here::here("inst/spei.R"))`.
 #' @param output_file Path to write the generated R script.
 #' @return Invisibly returns the generated code as a character string.
+#' @export
 #' @examples
 #' \dontrun{
 #' schema <- example_rdi()
@@ -13,10 +14,10 @@
 #' code <- gen_composite_code(
 #'   schema       = schema,
 #'   base_scripts = list(
-#'     spei_template = here::here("inst/spei_template.R"),
-#'     spi_template  = here::here("inst/spi_template.R")
+#'     spei_template = here::here("inst/spei.R"),
+#'     spi_template  = here::here("inst/spi.R")
 #'   ),
-#'   output_file  = here::here("output/rdi.R")
+#'   output_file  = here::here("inst/rdi.R")
 #' )
 #' }
 gen_composite_code <- function(schema, base_scripts, output_file) {

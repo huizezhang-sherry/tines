@@ -12,5 +12,6 @@ df <- df_raw |>
 
 mod <- glm(redcard ~ skin_tone + position + weight + height +
              leagueCountry + victory_ratio + defeat_ratio,
-           data = df_ind, family = "binomial", na.action = na.omit)
+           data = df, family = "binomial", na.action = na.omit)
 summary(mod)
+exp(tidy(mod)$estimate[2])

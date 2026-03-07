@@ -53,8 +53,8 @@ script. This loop repeats up to \code{max_runs} times.
 \examples{
 \dontrun{
 validate_script(
-  file = here::here("test/dplyr-filter-equal.R"),
-  data = here::here("data/dplyr-filter-equal.csv")
+  file = here::here("inst/dplyr-filter-equal.R"),
+  data = here::here("inst/dplyr-filter-equal.csv")
 )
 }
 

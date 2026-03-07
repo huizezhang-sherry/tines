@@ -28,8 +28,8 @@
 #' @examples
 #' \dontrun{
 #' validate_script(
-#'   file = here::here("test/dplyr-filter-equal.R"),
-#'   data = here::here("data/dplyr-filter-equal.csv")
+#'   file = here::here("inst/dplyr-filter-equal.R"),
+#'   data = here::here("inst/dplyr-filter-equal.csv")
 #' )
 #' }
 #'
@@ -42,46 +42,40 @@ validate_script <- function(file, data = NULL, max_runs = 5,
   attempt <- 1
   success <- FALSE
   extracted_data <- NULL
+  
+  sys_prompt <- build_sys_prompt(data)
+  chat <- ellmer::chat_google_gemini(model = model)
+
+  if (engine == "callr") {
+    sandbox <- setup_sandbox(file, data)
+    on.exit({
+      unlink(sandbox$dir, recursive = TRUE)
+      cli::cli_inform("Sandbox destroyed.")
+    }, add = TRUE)
+  }
 
   while (attempt <= max_runs && !success) {
     cli::cli_inform(c(
       "i" = "[Attempt {attempt} of {max_runs}] Running script in sandbox..."
     ))
 
-    if (verbose) save_verbose_iteration(sandbox$script, file, attempt)
-
-    # run the script either in a docker or with callr (either in the console or as a background job - not implemented yet)
     if (engine == "docker") {
       # TODO: not tested
       res <- execute_in_docker(sandbox$script, sandbox$dir)
     } else {
-      
-      # setup a temp directory sandbox for running with callr
-      sandbox <- setup_sandbox(file, data)
-      on.exit({
-        unlink(sandbox$dir, recursive = TRUE)
-        cli::cli_inform("Sandbox destroyed.")
-      },
-        add = TRUE
-      )
-
+      if (verbose) save_verbose_iteration(sandbox$script, file, attempt)
       if (scan_code) scan_file_system_commands(sandbox$script)
       res <- execute_in_callr(sandbox$script, sandbox$dir, as_job = as_job)
     }
 
-    # check result and ask LLM to fix
     if (res$ok) {
       cli::cli_inform(c("v" = "Success! Script ran perfectly."))
       success <- TRUE
       extracted_data <- res$data
-      file.copy(sandbox$script, file, overwrite = TRUE)
     } else {
       cli::cli_inform(c("x" = "Execution Failed: {res$err_msg}"))
       if (attempt < max_runs) {
-        # as LLM to fix
         cli::cli_inform(c("i" = "Asking LLM to fix it..."))
-        sys_prompt <- build_sys_prompt(data)
-        chat <- ellmer::chat_google_gemini(model = model)
         ask_llm_for_fix(chat, sys_prompt, sandbox$script, res)
       }
     }
