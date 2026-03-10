@@ -97,7 +97,8 @@ c(...)
 
   A \`schema\` object.
 
-- tag, type, action, decision, justification:
+- tag, type, action, decision, justification, inputs, outputs,
+  source_schema:
 
   character strings to write a block - NOT SURE ABOUT THE DESIGN YET
 

@@ -38,8 +38,8 @@ schema <- example_rdi()
 code <- gen_composite_code(
   schema       = schema,
   base_scripts = list(
-    spei_template = here::here("inst/spei_template.R"),
-    spi_template  = here::here("inst/spi_template.R")
+    spei_template = here::here("inst/spei.R"),
+    spi_template  = here::here("inst/spi.R")
   ),
   output_file  = here::here("inst/rdi.R")
 )
