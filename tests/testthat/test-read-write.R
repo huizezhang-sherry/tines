@@ -13,6 +13,7 @@ test_that("read and write", {
   schema <- example_schema()
   temp_path <- withr::local_tempfile(fileext = ".yaml")
   write_tines(schema, temp_path)
+  scrub_date_for_snapshot(temp_path)
   schema_read <- read_tines(temp_path)
   expect_snapshot_file(temp_path, name = "schema.yaml")
   expect_snapshot(schema_read)

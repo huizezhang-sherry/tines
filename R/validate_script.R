@@ -211,6 +211,13 @@ execute_in_docker <- function(sandbox_script, sandbox_dir) {
     basename(sandbox_script)
   )
 
+  if (!requireNamespace("processx", quietly = TRUE)) {
+    cli::cli_abort(
+      "Package {.pkg processx} is required for Docker execution. Install it with {.code install.packages('processx')}."
+    )
+  }
+
+
   res <- processx::run("docker", args, error_on_status = FALSE)
 
   if (res$status == 0) {

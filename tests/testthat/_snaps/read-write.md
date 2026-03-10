@@ -4,12 +4,12 @@
       schema_read
     Output
       $nodes
-      # A tibble: 3 x 6
-        tag             action                     type  decision justification status
-        <chr>           <chr>                      <chr> <chr>    <chr>         <chr> 
-      1 block-scaling   variables are in differen~ cons~ apply m~ to put them ~ VERIF~
-      2 block-education combine the school variab~ step  average~ the most int~ VERIF~
-      3 block-combine   combine the three dimensi~ step  use the~ the geometri~ VERIF~
+      # A tibble: 3 x 9
+        tag    action type  decision justification status inputs outputs source_schema
+        <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
+      1 block~ varia~ cons~ apply m~ to put them ~ VERIF~ <NULL> <NULL>  NA           
+      2 block~ combi~ step  average~ the most int~ VERIF~ <NULL> <NULL>  NA           
+      3 block~ combi~ step  use the~ the geometri~ VERIF~ <NULL> <NULL>  NA           
       
       $edges
       # A tibble: 3 x 3

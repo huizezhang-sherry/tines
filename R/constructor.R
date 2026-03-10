@@ -9,7 +9,7 @@
 #' @param ... One or more `schema` objects to be included in the multiverse.
 #' @param schemas A single list containing objects of class `schema`. Defaults to an empty list.
 #' @param object A `schema` object.
-#' @param tag,type,action,decision,justification character strings to write a block - NOT SURE ABOUT THE DESIGN YET
+#' @param tag,type,action,decision,justification,inputs,outputs,source_schema character strings to write a block - NOT SURE ABOUT THE DESIGN YET
 #' @param feeds,uses,solves,prompts Character vectors to describe the relationship between blocks - NOT SURE ABOUT THE DESIGN YET
 #' @param x An object to be coerced into a `schema` or `multiverse`.
 #' @return

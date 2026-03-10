@@ -9,18 +9,33 @@ original:
     decision: apply min-max scaling to each variable
     justification: to put them on the same scale for combination
     status: VERIFIED
+    inputs:
+    - ~
+    outputs:
+    - ~
+    source_schema: .na
   - tag: block-education
     action: combine the school variables into one dimension
     type: step
     decision: average exp sch and avg sch
     justification: the most intuitive way
     status: VERIFIED
+    inputs:
+    - ~
+    outputs:
+    - ~
+    source_schema: .na
   - tag: block-combine
     action: combine the three dimensions into a single index
     type: step
     decision: use the geometric mean
     justification: the geometric mean is more appropriate than arithmetic mean
     status: VERIFIED
+    inputs:
+    - ~
+    outputs:
+    - ~
+    source_schema: .na
   edges:
   - from: block-scaling
     to: block-education
@@ -39,18 +54,33 @@ reversed:
     decision: average exp sch and avg sch
     justification: the most intuitive way
     status: VERIFIED
+    inputs:
+    - ~
+    outputs:
+    - ~
+    source_schema: .na
   - tag: block-scaling
     action: variables are in different scales
     type: constraint
     decision: apply min-max scaling to each variable
     justification: to put them on the same scale for combination
     status: VERIFIED
+    inputs:
+    - ~
+    outputs:
+    - ~
+    source_schema: .na
   - tag: block-combine
     action: combine the three dimensions into a single index
     type: step
     decision: use the geometric mean
     justification: the geometric mean is more appropriate than arithmetic mean
     status: VERIFIED
+    inputs:
+    - ~
+    outputs:
+    - ~
+    source_schema: .na
   edges:
   - from: block-education
     to: block-scaling

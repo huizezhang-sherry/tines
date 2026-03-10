@@ -85,7 +85,7 @@ as_multiverse(x, ...)
 
 \item{object}{A `schema` object.}
 
-\item{tag, type, action, decision, justification}{character strings to write a block - NOT SURE ABOUT THE DESIGN YET}
+\item{tag, type, action, decision, justification, inputs, outputs, source_schema}{character strings to write a block - NOT SURE ABOUT THE DESIGN YET}
 
 \item{feeds, uses, solves, prompts}{Character vectors to describe the relationship between blocks - NOT SURE ABOUT THE DESIGN YET}
 
