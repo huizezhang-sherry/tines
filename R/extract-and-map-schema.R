@@ -1,0 +1,84 @@
+#' Extract Pipeline Schema from Text
+#'
+#' @description 
+#' Takes a plain English description of a methodology or analysis plan and uses 
+#' an LLM to translate it into a structured YAML schema. The output YAML is 
+#' designed to be human-readable and editable before being parsed into R.
+#'
+#' @param text A character string containing the methodology description.
+#' @param output_file The file path where the YAML should be saved.
+#' @param model The LLM to use (defaults to Gemini 2.5 Pro).
+#'
+#' @return The file path to the generated YAML file (invisibly).
+#' @export
+#' @examples
+#' str_24 <- "Multilevel linear modelling. Multilevel modelling takes into account hierarchical structure of data. In the case of the current dataset, it means that it can model effects of individual players and referees. Position, height, weight as predictors; player and referee as random effects / age and average number of goals were dropped from predictors because they increased AIC. The full model with all covariates was specified and subsequently covariates that increased AIC were discarded from the model."
+#' str_20 <- 'Transformation: 1. We created unique identifier for players, clubs, and leagues using the variables "playerShort," "club," and "leagueCountry." /  / 2. For players with missing data ("NA") in position, we used Wikipedia to find out what position they played. We coded them using 4 categories: goalkeeper, defender, midfielder, and forward/winger. We used these 4 categories because Wikipedia did not provide specific enough information for certain players. We then transformed the original position variable using these 4 categories: goalkeeper, defender (center back, left fullback, and right fullback), midfielder (defensive midfielder, center midfielder, attacking midfielder, left midfielder, and right midfielder), and forward/winger (forward, left winger, and right winger). /  / 3. We created the age variable from "birthday." Specifically, we subtracted the last 4 characters of the "birthday" variable from 2013. /  / 4. We created the variable "rater" by averaging the ratings of skin tone from the two raters ("rater1" and "rater2"). We used the variable "rater" as our predictor. /  / 5. We grand-mean centered all predictors and covariates ("rater," "meanIAT," "meanExp," "height," "weight," "games," "victories," "defeats," "goals," and "age"). To clarify, grand-mean centering means that we computed the mean of a variable and subtracted each value of the variable from the mean. This procedure improves the interpretability of the intercept and the interaction terms. Players with missing data on skin tone because skin tone is the main predictor in the current study. A four-level multilevel negative-binomial model. We used a multilevel model with player-referee dyads as level-1, players as level-2, clubs as level-3, and leagues as level-4. This model accounts for the interdependence within players, clubs, and leagues. The likelihood of receiving a red card may differ from players to players, from clubs to clubs, and from leagues to leagues. As a hypothetical example, Arsenal as a club may tend to receive more red cards compared to Manchester United. The multilevel structure helps account for similarities in likelihood to receive red cards within Arsenal and within Manchester United. /  / We used a negative-binomial model because the dependent variable (redCards) is a count variable. Covariates: Games, victories, defeats, height, weight, age, positions, goals. We controlled for numbers of games because encountering a referee more time increases the likelihood of receiving a red card. /  / Players may be less likely to commit a foul (and thus receive a red card) if their team won the game. In contrast, they may play more aggressive defense and commit fouls if their team lost the game. Thus, we controlled for the outcomes of the games (victories and defeats) and number of goals. /  / We controlled for height and weight because conceivably, bigger players may have more advantage fighting for position and thus be more likely to engage in bodily contact, which may increase the chance of committing fouls (and thus, receiving red cards). /  / We controlled for positions because defensive players (goalkeepers and defenders) may commit more fouls and thus receive more red cards. /  / We controlled for age because impulsivity, which may be associated with receiving red cards, tends to decrease with age (Steinberg et al., 2008).'
+extract_and_map_schema <- function(text, data, output_file = "draft_schema.yml", model = "gemini-2.5-pro") {
+  
+  # Create a compact data dictionary
+  data_summary <- colnames(readr::read_csv(data))
+  
+  system_prompt <- paste0(
+    "You are an expert methodologist and data pipeline architect. I will provide a text describing ",
+    "a multiverse analysis and a summary of the actual dataset being used.\n\n",
+    "YOUR TASK: Extract a chronological list of methodological decisions (nodes) AND map the ",
+    "exact data flow (inputs/outputs) for each node simultaneously.\n\n",
+    "RULES:\n",
+    "1. THEORY EXTRACTION: For each node, extract:\n",
+    "   - 'id': A unique snake_case identifier.\n",
+    "   - 'fork': MUST be framed as an open methodological goal that invites multiple possible approaches. It must NOT describe the final choice.\n",
+    "   - 'path': A 'path' is strictly a POSITIVE methodological decision that has potential theoretical alternatives, chosen to resolve the 'fork'.\n",
+    "   - 'rationale': WHY that decision (the path) was made, extracted from the text.\n",
+    "   - 'status': default to 'DRAFT'.\n",
+    "2. DATA MAPPING: Assign 'inputs' (EXACT column names from the dataset OR outputs from previous nodes) ",
+    "and 'outputs' (invented snake_case objects like 'df_clean' or 'ranef_spec').\n",
+    "3. ANTI-ABSTRACTION (CRITICAL): If the text lists specific variables (e.g., 'centered rater, meanIAT'), ",
+    "DO NOT summarize them away. You MUST capture those specific variables in the 'inputs' array.\n",
+    "4. INLINE ARRAYS: Format arrays strictly on one line: `inputs: [var1, var2]`.\n",
+    "5. CONFIDENCE & CLARIFICATION: Rate your mapping confidence (HIGH, MEDIUM, LOW). ",
+    "If the text abstracts a step and you cannot confidently match it to specific dataset columns, ",
+    "set confidence to LOW and autogenerate a 'clarification_question' asking the user which exact ",
+    "columns to use. If HIGH, output 'null'.\n",
+    "6. Output ONLY valid YAML without markdown formatting.",
+
+    "=== REQUIRED YAML STRUCTURE EXAMPLE ===\n",
+    "meta:\n",
+    "  type: schema\n",
+    "nodes:\n",
+    "- fork: variables are in different scales\n",
+    "  type: constraint\n",
+    "  path: apply min-max scaling to each variable\n",
+    "  justification: to put them on the same scale for combination\n",
+    "  tag: block-scaling\n",
+    "  status: VERIFIED\n",
+    "  confidence: high",
+    "- fork: combine the school variables into one dimension\n",
+    "  type: step\n",
+    "  path: average exp sch and avg sch\n",
+    "  justification: the most intuitive way\n",
+    "  tag: block-education\n",
+    "  status: DRAFT\n",
+    "  confidence: low",
+    "edges:\n",
+    "- from: block-scaling\n",
+    "  to: block-education\n",
+    "  type: sequential\n"
+  )
+  
+  full_prompt <- paste0(
+    system_prompt, 
+    "\n=== DATASET SUMMARY ===\n", data_summary,
+    "\n\n=== METHODOLOGY TEXT ===\n", text
+  )
+  
+  cli::cli_alert_info("Extracting schema and mapping data flow simultaneously...")
+  chat <- ellmer::chat_google_gemini(model = model)
+  yaml_out <- chat$chat(full_prompt)
+  
+  clean_yaml <- gsub("^```yaml\n|^```\n|```$", "", trimws(yaml_out))
+  writeLines(clean_yaml, output_file)
+  
+  cli::cli_alert_success("DAG schema drafted and mapped successfully to {.file {output_file}}")
+  return(invisible(output_file))
+}

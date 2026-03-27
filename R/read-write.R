@@ -59,8 +59,20 @@ read_tines <- function(path, ...){
   type <- raw$meta$type
 
   rebuild_schema <- function(raw) {
+    nodes <- purrr::map(raw$nodes, function(node) {
+      # Keep inputs/outputs as lists, coerce everything else to scalar
+      list_cols <- c("inputs", "outputs")
+      scalar_fields <- setdiff(names(node), list_cols)
+      row <- tibble::as_tibble(lapply(node[scalar_fields], function(x) {
+        if (length(x) == 0) NA_character_ else as.character(x[[1]])
+      }))
+      for (col in list_cols) {
+        row[[col]] <- list(if (is.null(node[[col]])) character(0) else as.character(node[[col]]))
+      }
+      row
+    })
     new_schema(
-      nodes = purrr::map_dfr(raw$nodes, tibble::as_tibble),
+      nodes = dplyr::bind_rows(nodes),
       edges = purrr::map_dfr(raw$edges, tibble::as_tibble)
     )
   }

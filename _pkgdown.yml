@@ -12,6 +12,7 @@ reference:
   contents:
    - gen_alternatives
    - expand_tines
+   - extract_and_map_schema
    - gen_code
    - validate_script
 - title: "Create new tines from existing tines"

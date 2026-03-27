@@ -9,11 +9,17 @@ gen_code(
   base_schema,
   base_code = NULL,
   alternatives = NULL,
+  data = NULL,
   output = "scripts",
   provider = "gemini"
 )
 
-prompt_code(has_base_code = FALSE, has_alternative = FALSE, print = FALSE)
+prompt_code(
+  has_base_code = FALSE,
+  has_alternative = FALSE,
+  has_data = FALSE,
+  print = FALSE
+)
 }
 \arguments{
 \item{base_schema}{The original schema object or file path.}
@@ -21,6 +27,10 @@ prompt_code(has_base_code = FALSE, has_alternative = FALSE, print = FALSE)
 \item{base_code}{The file path to the original R script.}
 
 \item{alternatives}{A single alternative object (list with tag, decision, etc.).}
+
+\item{data}{Optional. Either a file path to a data file (e.g., CSV) or a
+string like `"packagename::dataset"` indicating a built-in package dataset.
+If `NULL`, the LLM will not receive any data instructions.}
 
 \item{output}{The directory where the generated R script will be saved. Defaults to "scripts".}
 
