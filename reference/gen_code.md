@@ -9,11 +9,17 @@ gen_code(
   base_schema,
   base_code = NULL,
   alternatives = NULL,
+  data = NULL,
   output = "scripts",
   provider = "gemini"
 )
 
-prompt_code(has_base_code = FALSE, has_alternative = FALSE, print = FALSE)
+prompt_code(
+  has_base_code = FALSE,
+  has_alternative = FALSE,
+  has_data = FALSE,
+  print = FALSE
+)
 ```
 
 ## Arguments
@@ -29,6 +35,12 @@ prompt_code(has_base_code = FALSE, has_alternative = FALSE, print = FALSE)
 - alternatives:
 
   A single alternative object (list with tag, decision, etc.).
+
+- data:
+
+  Optional. Either a file path to a data file (e.g., CSV) or a string
+  like \`"packagename::dataset"\` indicating a built-in package dataset.
+  If \`NULL\`, the LLM will not receive any data instructions.
 
 - output:
 
