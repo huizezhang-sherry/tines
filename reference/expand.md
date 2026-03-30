@@ -126,7 +126,7 @@ expand_tines(base_schema, alts)
 # read the alternatives from a YAML file
 tmp_file <- tempfile(fileext = ".yaml")
 write_alternatives(alts, tmp_file)
-#> ✔ Successfully wrote alternatives to /tmp/RtmpksNWxZ/file1bfc4230f0c7.yaml
+#> ✔ Successfully wrote alternatives to /tmp/RtmpJrqFvF/file1bb53c4c026b.yaml
 expand_tines(base_schema, tmp_file)
 #> $original
 #> $nodes

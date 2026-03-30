@@ -51,7 +51,7 @@ prompt_gen_code(
 
   The LLM provider to use for code generation. Currently only "gemini".
 
-- has_base_code, has_alternative:
+- has_base_code, has_alternative, has_data:
 
   A logical. If \`TRUE\`, the prompt will include instructions to
   rewrite an existing base code or implement a specific alternative.
