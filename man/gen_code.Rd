@@ -2,7 +2,7 @@
 % Please edit documentation in R/gen-code.R
 \name{gen_code}
 \alias{gen_code}
-\alias{prompt_code}
+\alias{prompt_gen_code}
 \title{Generate R code for a specific alternative branch}
 \usage{
 gen_code(
@@ -14,7 +14,7 @@ gen_code(
   provider = "gemini"
 )
 
-prompt_code(
+prompt_gen_code(
   has_base_code = FALSE,
   has_alternative = FALSE,
   has_data = FALSE,

@@ -164,7 +164,7 @@ format_llm_context <- function(base_schema, base_code = NULL, alternative = NULL
 
 #' @export
 #' @rdname gen_code
-prompt_code <- function(has_base_code = FALSE, has_alternative = FALSE,
+prompt_gen_code <- function(has_base_code = FALSE, has_alternative = FALSE,
                         has_data = FALSE, print = FALSE) {
   data_instruction <- if (has_data) {
     paste0(

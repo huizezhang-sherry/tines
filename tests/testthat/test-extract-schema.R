@@ -12,7 +12,7 @@ test_that("multiplication works", {
   # validate_script(here::here("scripts/pipeline.R"), data = "inst/football.csv")
 
 
-  # extract_and_map_schema(str_20, data = "inst/football.csv", output_file = here::here("draft_schema_mapped.yml"))
+  # extract_schema(str_20, data = "inst/football.csv", output_file = here::here("draft_schema_mapped.yml"))
 
   # obj <- read_tines(here::here("draft_schema_mapped.yml"))
   # gen_code(obj, data = "inst/football.csv")
