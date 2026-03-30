@@ -26,10 +26,11 @@
   alternatives via LLM
 - [`expand_tines()`](expand.md) : Expand a schema with an alternative
   YAML into a multiverse
-- [`extract_and_map_schema()`](extract_and_map_schema.md) : Extract
-  Pipeline Schema from Text
-- [`gen_code()`](gen_code.md) [`prompt_code()`](gen_code.md) : Generate
-  R code for a specific alternative branch
+- [`extract_schema()`](extract_schema.md)
+  [`prompt_extract_schema()`](extract_schema.md) : Extract schema from
+  descriptive text
+- [`gen_code()`](gen_code.md) [`prompt_gen_code()`](gen_code.md) :
+  Generate R code for a specific alternative branch
 - [`validate_script()`](validate_script.md) : Auto-Fix an R Script via
   Iterative LLM Debugging
 

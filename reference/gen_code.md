@@ -14,7 +14,7 @@ gen_code(
   provider = "gemini"
 )
 
-prompt_code(
+prompt_gen_code(
   has_base_code = FALSE,
   has_alternative = FALSE,
   has_data = FALSE,
