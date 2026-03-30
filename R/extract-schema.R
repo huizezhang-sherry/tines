@@ -46,7 +46,7 @@ extract_schema <- function(text, data_dict, output_file = "draft_schema.yml", mo
     cli::cli_abort("{.arg data_dict} must be a character vector or a data frame.")
   }
 
-  full_prompt <- build_schema_prompt(data_dict, text)
+  full_prompt <- prompt_extract_schema(data_dict, text)
   
   cli::cli_alert_info("Extracting schema and mapping data flow simultaneously...")
   chat <- ellmer::chat_google_gemini(model = model)

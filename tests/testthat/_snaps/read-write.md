@@ -5,11 +5,11 @@
     Output
       $nodes
       # A tibble: 3 x 9
-        tag    action type  decision justification status inputs outputs source_schema
-        <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
-      1 block~ varia~ cons~ apply m~ to put them ~ VERIF~ <NULL> <NULL>  NA           
-      2 block~ combi~ step  average~ the most int~ VERIF~ <NULL> <NULL>  NA           
-      3 block~ combi~ step  use the~ the geometri~ VERIF~ <NULL> <NULL>  NA           
+        tag    action type  decision justification status source_schema inputs outputs
+        <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <chr>         <list> <list> 
+      1 block~ varia~ cons~ apply m~ to put them ~ VERIF~ <NA>          <chr>  <chr>  
+      2 block~ combi~ step  average~ the most int~ VERIF~ <NA>          <chr>  <chr>  
+      3 block~ combi~ step  use the~ the geometri~ VERIF~ <NA>          <chr>  <chr>  
       
       $edges
       # A tibble: 3 x 3
