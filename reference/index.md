@@ -59,3 +59,5 @@
   [`example_spei()`](example_tines.md)
   [`example_spi()`](example_tines.md)
   [`example_rdi()`](example_tines.md) : Generate examples
+- [`football_grp20`](football_grp20.md) : Football red cards study
+  methodology text (Group 20)
