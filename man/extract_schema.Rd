@@ -12,7 +12,7 @@ extract_schema(
   model = "gemini-2.5-pro"
 )
 
-prompt_extract_schema(data_dict, text)
+prompt_extract_schema(data_dict, text, print = TRUE, width = 70)
 }
 \arguments{
 \item{text}{A character string containing the methodology description.}
@@ -23,6 +23,10 @@ with at least a `name` column and an optional `description` column.}
 \item{output_file}{The file path where the YAML should be saved.}
 
 \item{model}{The LLM to use (defaults to Gemini 2.5 Pro).}
+
+\item{print}{If `TRUE`, prints the prompt to console instead of returning it.}
+
+\item{width}{If `print = TRUE`, the width to wrap the printed prompt (default 70).}
 }
 \value{
 The file path to the generated YAML file (invisibly).
@@ -36,14 +40,18 @@ methodological steps, identifying inputs and outputs for each node
 in the analysis pipeline.
 }
 \examples{
-\dontrun{
-# Example usage:
 text <- football_grp20
 data_dict <- c("playerShort", "player", "club", "leagueCountry", "birthday", "height",
                "weight", "position", "games", "victories", "ties", "defeats",
                "goals", "yellowCards", "yellowReds", "redCards", "photoID", "rater1",
                "rater2", "refNum", "refCountry", "Alpha_3", "meanIAT", "nIAT",
                "seIAT", "meanExp", "nExp", "seExp")
+
+\dontrun{
 extract_schema(text, data_dict, output_file = "draft_schema.yml")
 }
+
+# The prompt generation function can be used directly to see the full prompt sent to the LLM
+prompt_extract_schema(data_dict = paste0(data_dict, collapse = ", "), text = text, print = TRUE)
+
 }

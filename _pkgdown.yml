@@ -2,7 +2,7 @@ template:
   bootstrap: 5
 
 reference:
-- title: "Class constructor"
+- title: "Create a `tine`/ `multiverse` object"
   contents:
    - new_schema
    - draw_tines
@@ -14,10 +14,8 @@ reference:
    - gen_alternatives
    - expand_tines
    - gen_code
-   - validate_script
-- title: "Create new tines from existing tines"
-  contents:
    - gen_composite_code
+   - validate_script
 - title: "Interface with YAML files"
   contents:
    - draft_tines

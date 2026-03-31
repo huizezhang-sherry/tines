@@ -13,23 +13,31 @@
 #'   with at least a `name` column and an optional `description` column.
 #' @param output_file The file path where the YAML should be saved.
 #' @param model The LLM to use (defaults to Gemini 2.5 Pro).
+#' @param print If `TRUE`, prints the prompt to console instead of returning it.
+#' @param width If `print = TRUE`, the width to wrap the printed prompt (default 70).
+#' @
 #'
 #' @rdname extract_schema
 #' @return The file path to the generated YAML file (invisibly).
 #' @export
 #' @examples
-#' \dontrun{
-#' # Example usage:
 #' text <- football_grp20
 #' data_dict <- c("playerShort", "player", "club", "leagueCountry", "birthday", "height",
 #'                "weight", "position", "games", "victories", "ties", "defeats",
 #'                "goals", "yellowCards", "yellowReds", "redCards", "photoID", "rater1",
 #'                "rater2", "refNum", "refCountry", "Alpha_3", "meanIAT", "nIAT",
 #'                "seIAT", "meanExp", "nExp", "seExp")
+#' 
+#' \dontrun{
 #' extract_schema(text, data_dict, output_file = "draft_schema.yml")
 #' }
+#' 
+#' # The prompt generation function can be used directly to see the full prompt sent to the LLM
+#' prompt_extract_schema(data_dict = paste0(data_dict, collapse = ", "), text = text, print = TRUE)
+#' 
+
 extract_schema <- function(text, data_dict, output_file = "draft_schema.yml", model = "gemini-2.5-pro") {
-  
+
   # Format data_dict into a data dictionary string
   data_summary <- if (is.data.frame(data_dict)) {
     if (!"name" %in% names(data_dict)) {
@@ -61,30 +69,30 @@ extract_schema <- function(text, data_dict, output_file = "draft_schema.yml", mo
 
 #' @export
 #' @rdname extract_schema
-prompt_extract_schema <- function(data_dict, text) {
+prompt_extract_schema <- function(data_dict, text, print = TRUE, width = 70) {
   system_prompt <- paste0(
     "You are an expert methodologist and data pipeline architect. I will provide a text describing ",
     "a multiverse analysis and a summary of the actual dataset being used.\n\n",
-    "YOUR TASK: Extract a chronological list of methodological decisions (nodes) AND map the ",
+    "=== YOUR TASK === \n\n Extract a chronological list of methodological decisions (nodes) AND map the ",
     "exact data flow (inputs/outputs) for each node simultaneously.\n\n",
-    "RULES:\n",
-    "1. THEORY EXTRACTION: For each node, extract:\n",
-    "   - 'id': A unique snake_case identifier.\n",
-    "   - 'fork': MUST be framed as an open methodological goal that invites multiple possible approaches. It must NOT describe the final choice.\n",
-    "   - 'path': A 'path' is strictly a POSITIVE methodological decision that has potential theoretical alternatives, chosen to resolve the 'fork'.\n",
-    "   - 'rationale': WHY that decision (the path) was made, extracted from the text.\n",
-    "   - 'status': default to 'DRAFT'.\n",
+    "=== RULES === \n\n",
+    "1. THEORY EXTRACTION: For each node, extract:\n\n",
+    "   - 'id': A unique snake_case identifier.\n\n",
+    "   - 'fork': MUST be framed as an open methodological goal that invites multiple possible approaches. It must NOT describe the final choice.\n\n",
+    "   - 'path': A 'path' is strictly a POSITIVE methodological decision that has potential theoretical alternatives, chosen to resolve the 'fork'.\n\n",
+    "   - 'rationale': WHY that decision (the path) was made, extracted from the text.\n\n",
+    "   - 'status': default to 'DRAFT'.\n\n",
     "2. DATA MAPPING: Assign 'inputs' (EXACT column names from the dataset OR outputs from previous nodes) ",
-    "and 'outputs' (invented snake_case objects like 'df_clean' or 'ranef_spec').\n",
+    "and 'outputs' (invented snake_case objects like 'df_clean' or 'ranef_spec').\n\n",
     "3. ANTI-ABSTRACTION (CRITICAL): If the text lists specific variables (e.g., 'centered rater, meanIAT'), ",
-    "DO NOT summarize them away. You MUST capture those specific variables in the 'inputs' array.\n",
-    "4. INLINE ARRAYS: Format arrays strictly on one line: `inputs: [var1, var2]`.\n",
+    "DO NOT summarize them away. You MUST capture those specific variables in the 'inputs' array.\n\n",
+    "4. INLINE ARRAYS: Format arrays strictly on one line: `inputs: [var1, var2]`.\n\n",
     "5. CONFIDENCE & CLARIFICATION: Rate your mapping confidence (HIGH, MEDIUM, LOW). ",
     "If the text abstracts a step and you cannot confidently match it to specific dataset columns, ",
     "set confidence to LOW and autogenerate a 'clarification_question' asking the user which exact ",
-    "columns to use. If HIGH, output 'null'.\n",
-    "6. Output ONLY valid YAML without markdown formatting.",
-    "=== REQUIRED YAML STRUCTURE EXAMPLE ===\n",
+    "columns to use. If HIGH, output 'null'.\n\n",
+    "6. Output ONLY valid YAML without markdown formatting.\n\n",
+    "=== REQUIRED YAML STRUCTURE EXAMPLE ===\n\n",
     "meta:\n",
     "  type: schema\n",
     "nodes:\n",
@@ -109,9 +117,12 @@ prompt_extract_schema <- function(data_dict, text) {
   )
   
 
-  paste0(
+  full_prompt <- paste0(
     system_prompt,
-    "\n=== DATASET SUMMARY ===\n", data_dict,
-    "\n\n=== METHODOLOGY TEXT ===\n", text
+    "\n=== DATASET SUMMARY ===\n\n", data_dict,
+    "\n\n=== METHODOLOGY TEXT ===\n\n", text
   )
+
+print_prompt(full_prompt, print = print)
+
 }

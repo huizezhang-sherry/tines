@@ -296,3 +296,14 @@ get_block_names <- function(object){
 }
 
 
+#' 
+print_prompt <- function(prompt, print, width = 70) {
+  
+  if (print) {
+    cat(strwrap(prompt, width = width), sep = "\n")
+    invisible(prompt)
+  } else {
+    prompt
+    
+  }
+}
