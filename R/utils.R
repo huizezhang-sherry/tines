@@ -274,6 +274,13 @@ example_rdi <- function(){
     generate_edges()
 }
 
+#' @rdname example_tines
+#' @export
+example_football_grp20 <- function(){
+  read_tines(system.file("football-grp20.yaml", package = "tines"))
+}
+
+
 #' Functions to access components of a tine object
 #' @param object A `schema` or `multiverse` object.
 #' @export
@@ -294,6 +301,7 @@ get_block_names <- function(object){
   }
   return(block_names)
 }
+
 
 
 #' 
