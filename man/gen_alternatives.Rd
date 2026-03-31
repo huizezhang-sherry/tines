@@ -22,7 +22,7 @@ prompt_alternatives(schema = NULL, block, n = 3, print = TRUE, width = 70)
 \item{x}{A `schema` or `multiverse` object, or a character string specifying
 the file path to a valid `tines` YAML file.}
 
-\item{block}{A character string. The exact `tag` of the step/node you want
+\item{block}{A character string. The exact `id` of the step/node you want
 the LLM to generate alternatives for.}
 
 \item{n}{An integer. The number of distinct alternatives you want the LLM

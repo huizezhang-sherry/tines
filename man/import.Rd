@@ -5,7 +5,7 @@
 \alias{generate_edges}
 \title{Import a block from a source schema into the current schema}
 \usage{
-import_block(schema, source_schema, tag, source_schema_name = NULL, ...)
+import_block(schema, source_schema, id, source_schema_name = NULL, ...)
 
 generate_edges(schema)
 }
@@ -15,7 +15,7 @@ list-columns.}
 
 \item{source_schema}{The schema to import the block from.}
 
-\item{tag}{The tag of the block to import.}
+\item{id}{The id of the block to import.}
 
 \item{source_schema_name}{Optional. A string to use as the provenance key,
 matched against `base_scripts` in `gen_composite_code()`. Defaults to

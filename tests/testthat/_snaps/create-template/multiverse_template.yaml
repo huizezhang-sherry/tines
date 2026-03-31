@@ -4,11 +4,11 @@ meta:
 schemas:
   schema 1:
     nodes:
-    - tag: step1
+    - id: step1
       action: path A branch
       decision: describe your decision here
       justification: explain your reasoning here
-    - tag: step2
+    - id: step2
       action: path A branch
       decision: describe your decision here
       justification: explain your reasoning here
@@ -17,11 +17,11 @@ schemas:
       to: step2
   schema 1:
     nodes:
-    - tag: step1
+    - id: step1
       action: path B branch
       decision: describe your decision here
       justification: explain your reasoning here
-    - tag: step2
+    - id: step2
       action: path B branch
       decision: describe your decision here
       justification: explain your reasoning here

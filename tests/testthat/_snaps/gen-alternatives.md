@@ -3,14 +3,14 @@
     Code
       prompt_alternatives(block = "clean-missing-data", print = FALSE)
     Output
-      [1] "You are an expert Data Analyst and Methodologist. You are reviewing an analysis schema to identify \"Forking Paths\" -- alternative analytical choices that are equally valid but distinct from the current approach.\n\n=== DEFINITIONS ===\n\nThe schema provided to you consists of blocks with:\n\n- **ACTION**: The goal of the block (What needs to be done).\n\n- **DECISION**: The specific implementation chosen (How it is done).\n\n- **JUSTIFICATION**: The reasoning behind that decision.\n\n- **TAG**: The unique identifier for the block (kebab-case).\n\n=== TASK ===\n\nFocus specifically on the block tagged: \"clean-missing-data\".\nYour goal is to generate 3 distinct, valid alternatives for this block.\n\nFor each alternative:\n1. **Keep the same ACTION** (the goal remains constant).\n\n2. **Change the DECISION** to a different but methodologically sound approach.\n\n3. **Provide a new JUSTIFICATION** explaining why this alternative is valid.\n\n4. **Create a new TAG** that reflects the new decision (must be kebab-case).\n\n=== OUTPUT FORMAT ===\n\nPlease output the result in **strictly valid YAML format**.\n\n**Crucial Formatting Rules:**\n\n1. Include a `meta` section at the top with `type: alternative` and the `block`.\n\n2. Output strictly valid YAML. All text values (decision, justification) must be enclosed in double quotes (\"). Do not use block styles (| or >). Do not wrap lines or insert \\n characters within the quotes; keep the text as a single continuous string.\n\n3. Do not include markdown code fences (like ```yaml) or conversational text. Just the raw YAML.\n\n=== REQUIRED YAML STRUCTURE EXAMPLE ===\n\nmeta:\n  type: tines_alternative\n  block: clean-missing-data\nalternatives:\n  - tag: block-new-method-name\n    action: Repeat the original action\n    decision: \"Description of the new decision...\"\n    justification: \"This is the reasoning for why this alternative is valid.\"\n  - tag: block-another-method\n    ...\n"
+      [1] "You are an expert Data Analyst and Methodologist. You are reviewing an analysis schema to identify \"Forking Paths\" -- alternative analytical choices that are equally valid but distinct from the current approach.\n\n=== DEFINITIONS ===\n\nThe schema provided to you consists of blocks with:\n\n- **ACTION**: The goal of the block (What needs to be done).\n\n- **DECISION**: The specific implementation chosen (How it is done).\n\n- **JUSTIFICATION**: The reasoning behind that decision.\n\n- **ID**: The unique identifier for the block (kebab-case).\n\n=== TASK ===\n\nFocus specifically on the block tagged: \"clean-missing-data\".\nYour goal is to generate 3 distinct, valid alternatives for this block.\n\nFor each alternative:\n1. **Keep the same ACTION** (the goal remains constant).\n\n2. **Change the DECISION** to a different but methodologically sound approach.\n\n3. **Provide a new JUSTIFICATION** explaining why this alternative is valid.\n\n4. **Create a new ID** that reflects the new decision (must be kebab-case).\n\n=== OUTPUT FORMAT ===\n\nPlease output the result in **strictly valid YAML format**.\n\n**Crucial Formatting Rules:**\n\n1. Include a `meta` section at the top with `type: alternative` and the `block`.\n\n2. Output strictly valid YAML. All text values (decision, justification) must be enclosed in double quotes (\"). Do not use block styles (| or >). Do not wrap lines or insert \\n characters within the quotes; keep the text as a single continuous string.\n\n3. Do not include markdown code fences (like ```yaml) or conversational text. Just the raw YAML.\n\n=== REQUIRED YAML STRUCTURE EXAMPLE ===\n\nmeta:\n  type: tines_alternative\n  block: clean-missing-data\nalternatives:\n  - id: block-new-method-name\n    action: Repeat the original action\n    decision: \"Description of the new decision...\"\n    justification: \"This is the reasoning for why this alternative is valid.\"\n  - id: block-another-method\n    ...\n"
 
 ---
 
     Code
       prompt_alternatives(block = "my-target-block", n = 2, print = FALSE)
     Output
-      [1] "You are an expert Data Analyst and Methodologist. You are reviewing an analysis schema to identify \"Forking Paths\" -- alternative analytical choices that are equally valid but distinct from the current approach.\n\n=== DEFINITIONS ===\n\nThe schema provided to you consists of blocks with:\n\n- **ACTION**: The goal of the block (What needs to be done).\n\n- **DECISION**: The specific implementation chosen (How it is done).\n\n- **JUSTIFICATION**: The reasoning behind that decision.\n\n- **TAG**: The unique identifier for the block (kebab-case).\n\n=== TASK ===\n\nFocus specifically on the block tagged: \"my-target-block\".\nYour goal is to generate 2 distinct, valid alternatives for this block.\n\nFor each alternative:\n1. **Keep the same ACTION** (the goal remains constant).\n\n2. **Change the DECISION** to a different but methodologically sound approach.\n\n3. **Provide a new JUSTIFICATION** explaining why this alternative is valid.\n\n4. **Create a new TAG** that reflects the new decision (must be kebab-case).\n\n=== OUTPUT FORMAT ===\n\nPlease output the result in **strictly valid YAML format**.\n\n**Crucial Formatting Rules:**\n\n1. Include a `meta` section at the top with `type: alternative` and the `block`.\n\n2. Output strictly valid YAML. All text values (decision, justification) must be enclosed in double quotes (\"). Do not use block styles (| or >). Do not wrap lines or insert \\n characters within the quotes; keep the text as a single continuous string.\n\n3. Do not include markdown code fences (like ```yaml) or conversational text. Just the raw YAML.\n\n=== REQUIRED YAML STRUCTURE EXAMPLE ===\n\nmeta:\n  type: tines_alternative\n  block: my-target-block\nalternatives:\n  - tag: block-new-method-name\n    action: Repeat the original action\n    decision: \"Description of the new decision...\"\n    justification: \"This is the reasoning for why this alternative is valid.\"\n  - tag: block-another-method\n    ...\n"
+      [1] "You are an expert Data Analyst and Methodologist. You are reviewing an analysis schema to identify \"Forking Paths\" -- alternative analytical choices that are equally valid but distinct from the current approach.\n\n=== DEFINITIONS ===\n\nThe schema provided to you consists of blocks with:\n\n- **ACTION**: The goal of the block (What needs to be done).\n\n- **DECISION**: The specific implementation chosen (How it is done).\n\n- **JUSTIFICATION**: The reasoning behind that decision.\n\n- **ID**: The unique identifier for the block (kebab-case).\n\n=== TASK ===\n\nFocus specifically on the block tagged: \"my-target-block\".\nYour goal is to generate 2 distinct, valid alternatives for this block.\n\nFor each alternative:\n1. **Keep the same ACTION** (the goal remains constant).\n\n2. **Change the DECISION** to a different but methodologically sound approach.\n\n3. **Provide a new JUSTIFICATION** explaining why this alternative is valid.\n\n4. **Create a new ID** that reflects the new decision (must be kebab-case).\n\n=== OUTPUT FORMAT ===\n\nPlease output the result in **strictly valid YAML format**.\n\n**Crucial Formatting Rules:**\n\n1. Include a `meta` section at the top with `type: alternative` and the `block`.\n\n2. Output strictly valid YAML. All text values (decision, justification) must be enclosed in double quotes (\"). Do not use block styles (| or >). Do not wrap lines or insert \\n characters within the quotes; keep the text as a single continuous string.\n\n3. Do not include markdown code fences (like ```yaml) or conversational text. Just the raw YAML.\n\n=== REQUIRED YAML STRUCTURE EXAMPLE ===\n\nmeta:\n  type: tines_alternative\n  block: my-target-block\nalternatives:\n  - id: block-new-method-name\n    action: Repeat the original action\n    decision: \"Description of the new decision...\"\n    justification: \"This is the reasoning for why this alternative is valid.\"\n  - id: block-another-method\n    ...\n"
 
 ---
 
@@ -32,7 +32,7 @@
       
       - **JUSTIFICATION**: The reasoning behind that decision.
       
-      - **TAG**: The unique identifier for the block (kebab-case).
+      - **ID**: The unique identifier for the block (kebab-case).
       
       === TASK ===
       
@@ -48,7 +48,7 @@
       3. **Provide a new JUSTIFICATION** explaining why this alternative is
       valid.
       
-      4. **Create a new TAG** that reflects the new decision (must be
+      4. **Create a new ID** that reflects the new decision (must be
       kebab-case).
       
       === OUTPUT FORMAT ===
@@ -71,9 +71,9 @@
       === REQUIRED YAML STRUCTURE EXAMPLE ===
       
       meta: type: tines_alternative block: my-target-block alternatives: -
-      tag: block-new-method-name action: Repeat the original action
+      id: block-new-method-name action: Repeat the original action
       decision: "Description of the new decision..."  justification: "This
-      is the reasoning for why this alternative is valid."  - tag:
+      is the reasoning for why this alternative is valid."  - id:
       block-another-method ...
 
 # expand_tines
@@ -83,12 +83,12 @@
     Output
       $original
       $nodes
-      # A tibble: 3 x 9
-        tag    action type  decision justification status inputs outputs source_schema
-        <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
-      1 block~ defin~ cons~ average~ incorporate ~ VERIF~ <lgl>  <lgl>   NA           
-      2 block~ contr~ step  victory~ ratios are r~ VERIF~ <lgl>  <lgl>   NA           
-      3 block~ estim~ step  fit a l~ to answer th~ VERIF~ <lgl>  <lgl>   NA           
+      # A tibble: 3 x 8
+        id            action type  decision justification inputs outputs source_schema
+        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
+      1 block-averag~ defin~ cons~ average~ incorporate ~ <lgl>  <lgl>   NA           
+      2 block-victor~ contr~ step  victory~ ratios are r~ <lgl>  <lgl>   NA           
+      3 block-logist~ estim~ step  fit a l~ to answer th~ <lgl>  <lgl>   NA           
       
       $edges
       # A tibble: 3 x 3
@@ -103,12 +103,12 @@
       
       $`block-mixed-effects-logistic-model`
       $nodes
-      # A tibble: 3 x 9
-        tag    action type  decision justification status inputs outputs source_schema
-        <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
-      1 block~ defin~ cons~ average~ incorporate ~ VERIF~ <lgl>  <lgl>   NA           
-      2 block~ contr~ step  victory~ ratios are r~ VERIF~ <lgl>  <lgl>   NA           
-      3 block~ estim~ step  fit a g~ mixed-effect~ VERIF~ <lgl>  <lgl>   NA           
+      # A tibble: 3 x 8
+        id            action type  decision justification inputs outputs source_schema
+        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
+      1 block-averag~ defin~ cons~ average~ incorporate ~ <lgl>  <lgl>   NA           
+      2 block-victor~ contr~ step  victory~ ratios are r~ <lgl>  <lgl>   NA           
+      3 block-mixed-~ estim~ step  fit a g~ mixed-effect~ <lgl>  <lgl>   NA           
       
       $edges
       # A tibble: 3 x 3
@@ -123,12 +123,12 @@
       
       $`block-probit-regression-model`
       $nodes
-      # A tibble: 3 x 9
-        tag    action type  decision justification status inputs outputs source_schema
-        <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
-      1 block~ defin~ cons~ average~ incorporate ~ VERIF~ <lgl>  <lgl>   NA           
-      2 block~ contr~ step  victory~ ratios are r~ VERIF~ <lgl>  <lgl>   NA           
-      3 block~ estim~ step  fit a p~ probit model~ VERIF~ <lgl>  <lgl>   NA           
+      # A tibble: 3 x 8
+        id            action type  decision justification inputs outputs source_schema
+        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
+      1 block-averag~ defin~ cons~ average~ incorporate ~ <lgl>  <lgl>   NA           
+      2 block-victor~ contr~ step  victory~ ratios are r~ <lgl>  <lgl>   NA           
+      3 block-probit~ estim~ step  fit a p~ probit model~ <lgl>  <lgl>   NA           
       
       $edges
       # A tibble: 3 x 3
@@ -143,12 +143,12 @@
       
       $`block-bayesian-logistic-model`
       $nodes
-      # A tibble: 3 x 9
-        tag    action type  decision justification status inputs outputs source_schema
-        <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
-      1 block~ defin~ cons~ average~ incorporate ~ VERIF~ <lgl>  <lgl>   NA           
-      2 block~ contr~ step  victory~ ratios are r~ VERIF~ <lgl>  <lgl>   NA           
-      3 block~ estim~ step  fit a B~ the Bayesian~ VERIF~ <lgl>  <lgl>   NA           
+      # A tibble: 3 x 8
+        id            action type  decision justification inputs outputs source_schema
+        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
+      1 block-averag~ defin~ cons~ average~ incorporate ~ <lgl>  <lgl>   NA           
+      2 block-victor~ contr~ step  victory~ ratios are r~ <lgl>  <lgl>   NA           
+      3 block-bayesi~ estim~ step  fit a B~ the Bayesian~ <lgl>  <lgl>   NA           
       
       $edges
       # A tibble: 3 x 3
@@ -171,12 +171,12 @@
     Output
       $original
       $nodes
-      # A tibble: 3 x 9
-        tag    action type  decision justification status inputs outputs source_schema
-        <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
-      1 block~ defin~ cons~ average~ incorporate ~ VERIF~ <lgl>  <lgl>   NA           
-      2 block~ contr~ step  victory~ ratios are r~ VERIF~ <lgl>  <lgl>   NA           
-      3 block~ estim~ step  fit a l~ to answer th~ VERIF~ <lgl>  <lgl>   NA           
+      # A tibble: 3 x 8
+        id            action type  decision justification inputs outputs source_schema
+        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
+      1 block-averag~ defin~ cons~ average~ incorporate ~ <lgl>  <lgl>   NA           
+      2 block-victor~ contr~ step  victory~ ratios are r~ <lgl>  <lgl>   NA           
+      3 block-logist~ estim~ step  fit a l~ to answer th~ <lgl>  <lgl>   NA           
       
       $edges
       # A tibble: 3 x 3
@@ -191,12 +191,12 @@
       
       $`block-mixed-effects-logistic-model`
       $nodes
-      # A tibble: 3 x 9
-        tag    action type  decision justification status inputs outputs source_schema
-        <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
-      1 block~ defin~ cons~ average~ incorporate ~ VERIF~ <lgl>  <lgl>   NA           
-      2 block~ contr~ step  victory~ ratios are r~ VERIF~ <lgl>  <lgl>   NA           
-      3 block~ estim~ step  fit a g~ mixed-effect~ VERIF~ <lgl>  <lgl>   NA           
+      # A tibble: 3 x 8
+        id            action type  decision justification inputs outputs source_schema
+        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
+      1 block-averag~ defin~ cons~ average~ incorporate ~ <lgl>  <lgl>   NA           
+      2 block-victor~ contr~ step  victory~ ratios are r~ <lgl>  <lgl>   NA           
+      3 block-mixed-~ estim~ step  fit a g~ mixed-effect~ <lgl>  <lgl>   NA           
       
       $edges
       # A tibble: 3 x 3
@@ -211,12 +211,12 @@
       
       $`block-probit-regression-model`
       $nodes
-      # A tibble: 3 x 9
-        tag    action type  decision justification status inputs outputs source_schema
-        <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
-      1 block~ defin~ cons~ average~ incorporate ~ VERIF~ <lgl>  <lgl>   NA           
-      2 block~ contr~ step  victory~ ratios are r~ VERIF~ <lgl>  <lgl>   NA           
-      3 block~ estim~ step  fit a p~ probit model~ VERIF~ <lgl>  <lgl>   NA           
+      # A tibble: 3 x 8
+        id            action type  decision justification inputs outputs source_schema
+        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
+      1 block-averag~ defin~ cons~ average~ incorporate ~ <lgl>  <lgl>   NA           
+      2 block-victor~ contr~ step  victory~ ratios are r~ <lgl>  <lgl>   NA           
+      3 block-probit~ estim~ step  fit a p~ probit model~ <lgl>  <lgl>   NA           
       
       $edges
       # A tibble: 3 x 3
@@ -231,12 +231,12 @@
       
       $`block-bayesian-logistic-model`
       $nodes
-      # A tibble: 3 x 9
-        tag    action type  decision justification status inputs outputs source_schema
-        <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
-      1 block~ defin~ cons~ average~ incorporate ~ VERIF~ <lgl>  <lgl>   NA           
-      2 block~ contr~ step  victory~ ratios are r~ VERIF~ <lgl>  <lgl>   NA           
-      3 block~ estim~ step  fit a B~ the Bayesian~ VERIF~ <lgl>  <lgl>   NA           
+      # A tibble: 3 x 8
+        id            action type  decision justification inputs outputs source_schema
+        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
+      1 block-averag~ defin~ cons~ average~ incorporate ~ <lgl>  <lgl>   NA           
+      2 block-victor~ contr~ step  victory~ ratios are r~ <lgl>  <lgl>   NA           
+      3 block-bayesi~ estim~ step  fit a B~ the Bayesian~ <lgl>  <lgl>   NA           
       
       $edges
       # A tibble: 3 x 3
@@ -263,12 +263,12 @@
     Output
       $original
       $nodes
-      # A tibble: 3 x 9
-        tag    action type  decision justification status inputs outputs source_schema
-        <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
-      1 block~ varia~ cons~ apply m~ to put them ~ VERIF~ <lgl>  <lgl>   NA           
-      2 block~ combi~ step  average~ the most int~ VERIF~ <lgl>  <lgl>   NA           
-      3 block~ combi~ step  use the~ the geometri~ VERIF~ <lgl>  <lgl>   NA           
+      # A tibble: 3 x 8
+        id            action type  decision justification inputs outputs source_schema
+        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
+      1 block-scaling varia~ cons~ apply m~ to put them ~ <lgl>  <lgl>   NA           
+      2 block-educat~ combi~ step  average~ the most int~ <lgl>  <lgl>   NA           
+      3 block-combine combi~ step  use the~ the geometri~ <lgl>  <lgl>   NA           
       
       $edges
       # A tibble: 3 x 3
@@ -285,12 +285,12 @@
       
       $reversed
       $nodes
-      # A tibble: 3 x 9
-        tag    action type  decision justification status inputs outputs source_schema
-        <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
-      1 block~ combi~ step  average~ the most int~ VERIF~ <lgl>  <lgl>   NA           
-      2 block~ varia~ cons~ apply m~ to put them ~ VERIF~ <lgl>  <lgl>   NA           
-      3 block~ combi~ step  use the~ the geometri~ VERIF~ <lgl>  <lgl>   NA           
+      # A tibble: 3 x 8
+        id            action type  decision justification inputs outputs source_schema
+        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
+      1 block-educat~ combi~ step  average~ the most int~ <lgl>  <lgl>   NA           
+      2 block-scaling varia~ cons~ apply m~ to put them ~ <lgl>  <lgl>   NA           
+      3 block-combine combi~ step  use the~ the geometri~ <lgl>  <lgl>   NA           
       
       $edges
       # A tibble: 3 x 3
@@ -307,12 +307,12 @@
       
       $`block-arithmetic-mean`
       $nodes
-      # A tibble: 3 x 9
-        tag    action type  decision justification status inputs outputs source_schema
-        <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
-      1 block~ varia~ cons~ apply m~ to put them ~ VERIF~ <lgl>  <lgl>   NA           
-      2 block~ combi~ step  average~ the most int~ VERIF~ <lgl>  <lgl>   NA           
-      3 block~ combi~ step  use a a~ the old meth~ VERIF~ <lgl>  <lgl>   NA           
+      # A tibble: 3 x 8
+        id            action type  decision justification inputs outputs source_schema
+        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
+      1 block-scaling varia~ cons~ apply m~ to put them ~ <lgl>  <lgl>   NA           
+      2 block-educat~ combi~ step  average~ the most int~ <lgl>  <lgl>   NA           
+      3 block-arithm~ combi~ step  use a a~ the old meth~ <lgl>  <lgl>   NA           
       
       $edges
       # A tibble: 3 x 3
@@ -329,12 +329,12 @@
       
       $`block-arithmetic-mean`
       $nodes
-      # A tibble: 3 x 9
-        tag    action type  decision justification status inputs outputs source_schema
-        <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
-      1 block~ combi~ step  average~ the most int~ VERIF~ <lgl>  <lgl>   NA           
-      2 block~ varia~ cons~ apply m~ to put them ~ VERIF~ <lgl>  <lgl>   NA           
-      3 block~ combi~ step  use a a~ the old meth~ VERIF~ <lgl>  <lgl>   NA           
+      # A tibble: 3 x 8
+        id            action type  decision justification inputs outputs source_schema
+        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
+      1 block-educat~ combi~ step  average~ the most int~ <lgl>  <lgl>   NA           
+      2 block-scaling varia~ cons~ apply m~ to put them ~ <lgl>  <lgl>   NA           
+      3 block-arithm~ combi~ step  use a a~ the old meth~ <lgl>  <lgl>   NA           
       
       $edges
       # A tibble: 3 x 3

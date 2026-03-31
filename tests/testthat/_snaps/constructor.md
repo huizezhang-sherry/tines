@@ -4,12 +4,12 @@
       schema
     Output
       $nodes
-      # A tibble: 3 x 9
-        tag    action type  decision justification status inputs outputs source_schema
-        <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
-      1 block~ varia~ cons~ apply m~ to put them ~ VERIF~ <lgl>  <lgl>   NA           
-      2 block~ combi~ step  average~ the most int~ VERIF~ <lgl>  <lgl>   NA           
-      3 block~ combi~ step  use the~ the geometri~ VERIF~ <lgl>  <lgl>   NA           
+      # A tibble: 3 x 8
+        id            action type  decision justification inputs outputs source_schema
+        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
+      1 block-scaling varia~ cons~ apply m~ to put them ~ <lgl>  <lgl>   NA           
+      2 block-educat~ combi~ step  average~ the most int~ <lgl>  <lgl>   NA           
+      3 block-combine combi~ step  use the~ the geometri~ <lgl>  <lgl>   NA           
       
       $edges
       # A tibble: 3 x 3
@@ -31,12 +31,12 @@
     Output
       $original
       $nodes
-      # A tibble: 3 x 9
-        tag    action type  decision justification status inputs outputs source_schema
-        <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
-      1 block~ varia~ cons~ apply m~ to put them ~ VERIF~ <lgl>  <lgl>   NA           
-      2 block~ combi~ step  average~ the most int~ VERIF~ <lgl>  <lgl>   NA           
-      3 block~ combi~ step  use the~ the geometri~ VERIF~ <lgl>  <lgl>   NA           
+      # A tibble: 3 x 8
+        id            action type  decision justification inputs outputs source_schema
+        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
+      1 block-scaling varia~ cons~ apply m~ to put them ~ <lgl>  <lgl>   NA           
+      2 block-educat~ combi~ step  average~ the most int~ <lgl>  <lgl>   NA           
+      3 block-combine combi~ step  use the~ the geometri~ <lgl>  <lgl>   NA           
       
       $edges
       # A tibble: 3 x 3
@@ -53,12 +53,12 @@
       
       $reversed
       $nodes
-      # A tibble: 3 x 9
-        tag    action type  decision justification status inputs outputs source_schema
-        <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
-      1 block~ combi~ step  average~ the most int~ VERIF~ <lgl>  <lgl>   NA           
-      2 block~ varia~ cons~ apply m~ to put them ~ VERIF~ <lgl>  <lgl>   NA           
-      3 block~ combi~ step  use the~ the geometri~ VERIF~ <lgl>  <lgl>   NA           
+      # A tibble: 3 x 8
+        id            action type  decision justification inputs outputs source_schema
+        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
+      1 block-educat~ combi~ step  average~ the most int~ <lgl>  <lgl>   NA           
+      2 block-scaling varia~ cons~ apply m~ to put them ~ <lgl>  <lgl>   NA           
+      3 block-combine combi~ step  use the~ the geometri~ <lgl>  <lgl>   NA           
       
       $edges
       # A tibble: 3 x 3

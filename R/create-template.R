@@ -6,7 +6,7 @@
 #' @param type The type of template to create. Options are "schema" for a new analysis schema template, and "multiverse" for a multiverse analysis template.
 #' @param file_path The file path where the template should be saved. If NULL, the template will be saved in the current working directory with a default name based on the type.
 #' @param x A `schema` or `multiverse` object. Required for `draft_alternatives()` to generate a template based on an existing block.
-#' @param block A character string specifying the `tag` of the block in the schema
+#' @param block A character string specifying the `id` of the block in the schema
 #' @param overwrite Logical. If TRUE, will overwrite an existing file at the specified file_path. Defaults to FALSE.
 #' @return NULL
 #' @export
@@ -42,9 +42,9 @@ draft_tines <- function(type = c("schema", "multiverse"), file_path = NULL, over
         date = as.character(Sys.Date())
       ),
       nodes = list(
-        list(tag = "step1", action = "describe your first step here",
+        list(id = "step1", action = "describe your first step here",
              decision = "describe your decision here", justification = "explain your reasoning here"),
-        list(tag = "step2", action = "describe your next step here",
+        list(id = "step2", action = "describe your next step here",
              decision = "describe your decision here", justification = "explain your reasoning here")
       ),
       edges = list(
@@ -59,19 +59,19 @@ draft_tines <- function(type = c("schema", "multiverse"), file_path = NULL, over
       ),
       schemas = list(
         "schema 1" = list(
-          nodes = list(list(tag = "step1", action = "path A branch",
+          nodes = list(list(id = "step1", action = "path A branch",
                             decision = "describe your decision here",
                             justification = "explain your reasoning here"),
-                       list(tag = "step2", action = "path A branch",
+                       list(id = "step2", action = "path A branch",
                             decision = "describe your decision here",
                             justification = "explain your reasoning here")),
           edges = list(from = "step1", to = "step2")
         ),
         "schema 1" = list(
-          nodes = list(list(tag = "step1", action = "path B branch",
+          nodes = list(list(id = "step1", action = "path B branch",
                             decision = "describe your decision here",
                             justification = "explain your reasoning here"),
-                       list(tag = "step2", action = "path B branch",
+                       list(id = "step2", action = "path B branch",
                             decision = "describe your decision here",
                             justification = "explain your reasoning here")),
           edges = list(from = "step1", to = "step2")
@@ -98,12 +98,12 @@ draft_tines <- function(type = c("schema", "multiverse"), file_path = NULL, over
 #' @rdname template
 draft_alternatives <- function(x, block, file_path = NULL) {
 
-  if (!block %in% x$nodes$tag) {
+  if (!block %in% x$nodes$id) {
     cli::cli_abort("Block {.val {block}} not found in the {class(x)} object")
   }
 
   # Get the current action
-  idx <- which(x$nodes$tag == block)
+  idx <- which(x$nodes$id == block)
   current_action <- x$nodes$action[idx]
 
   template <- cli::format_inline(
@@ -111,11 +111,11 @@ draft_alternatives <- function(x, block, file_path = NULL) {
   type: tines_alternative
   block: {block}
 alternatives:
-  - tag: \"block-YOUR-NEW-NAME-HERE\"
+  - id: \"block-YOUR-NEW-NAME-HERE\"
     action: \"{current_action}\"
     decision: \"\"
     justification: >
- - tag: \"block-YOUR-NEW-NAME-HERE\"
+ - id: \"block-YOUR-NEW-NAME-HERE\"
     action: \"{current_action}\"
     decision: \"\"
     justification: >

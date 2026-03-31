@@ -64,9 +64,9 @@ tines2dotspec <- function(x, ...) {
     cli::cli_abort("Object must be a {.cls schema}")
   }
 
-  # 1. Prepare Node Definitions: use the tag as the ID and the action/tag as the label
+  # 1. Prepare Node Definitions: use the id as the ID and the action/id as the label
   node_strings <- with(x$nodes, {
-    paste0('  "', tag, '" [label="', tag, '\n(', action, ')", shape=box, style=filled, fillcolor=white]')
+    paste0('  "', id, '" [label="', id, '\n(', action, ')", shape=box, style=filled, fillcolor=white]')
   })
 
   # 2. Prepare Edge Definitions with Semantic Styling

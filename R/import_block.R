@@ -2,7 +2,7 @@
 #'
 #' @param schema The current schema being built.
 #' @param source_schema The schema to import the block from.
-#' @param tag The tag of the block to import.
+#' @param id The id of the block to import.
 #' @param source_schema_name Optional. A string to use as the provenance key,
 #'   matched against `base_scripts` in `gen_composite_code()`. Defaults to
 #'   the deparsed name of `source_schema`.
@@ -10,16 +10,16 @@
 #' @return The updated schema with the imported block appended.
 #' @export
 #' @rdname import
-import_block <- function(schema, source_schema, tag, source_schema_name = NULL, ...) {
+import_block <- function(schema, source_schema, id, source_schema_name = NULL, ...) {
   
   to_import <- source_schema$nodes |>
-    dplyr::filter(tag == !!tag)
+    dplyr::filter(id == !!id)
   
   if (nrow(to_import) == 0) {
-    stop(sprintf("Could not find block with tag '%s' in the source schema.", tag))
+    stop(sprintf("Could not find block with id '%s' in the source schema.", id))
   }
   if (nrow(to_import) > 1) {
-    warning(sprintf("Multiple blocks found with tag '%s'. Using the first.", tag))
+    warning(sprintf("Multiple blocks found with id '%s'. Using the first.", id))
     to_import <- to_import |> dplyr::slice(1)
   }
   
@@ -57,14 +57,14 @@ generate_edges <- function(schema) {
   var_sources <- list()
   
   for (i in seq_len(nrow(schema$nodes))) {
-    current_tag     <- schema$nodes$id[i]
+    current_id     <- schema$nodes$id[i]
     current_inputs  <- unlist(schema$nodes$inputs[[i]])
     
     if (length(current_inputs) > 0) {
       for (inp in current_inputs) {
         if (inp %in% names(var_sources)) {
           edges <- dplyr::bind_rows(edges, data.frame(
-            from = var_sources[[inp]], to = current_tag,
+            from = var_sources[[inp]], to = current_id,
             stringsAsFactors = FALSE
           ))
         }
@@ -73,7 +73,7 @@ generate_edges <- function(schema) {
     
     current_outputs <- unlist(schema$nodes$outputs[[i]])
     if (length(current_outputs) > 0) {
-      for (outp in current_outputs) var_sources[[outp]] <- current_tag
+      for (outp in current_outputs) var_sources[[outp]] <- current_id
     }
   }
   

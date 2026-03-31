@@ -16,7 +16,7 @@
 #'
 #' @param x A `schema` or `multiverse` object, or a character string specifying
 #'   the file path to a valid `tines` YAML file.
-#' @param block A character string. The exact `tag` of the step/node you want
+#' @param block A character string. The exact `id` of the step/node you want
 #'   the LLM to generate alternatives for.
 #' @param n An integer. The number of distinct alternatives you want the LLM
 #'   to generate. Defaults to `3`.
@@ -86,8 +86,8 @@ gen_alternatives.multiverse <- function(x, block, ...){
 
   # find the first schema in the multiverse that contains the target block
   for (schema in x) {
-    tags <- purrr::map_chr(schema$nodes, "tag")
-    if (block %in% tags) {
+    ids <- purrr::map_chr(schema$nodes, "id")
+    if (block %in% ids) {
       valid_schema <- schema
       break
     }
@@ -116,7 +116,7 @@ prompt_alternatives <- function(schema = NULL, block, n = 3, print = TRUE, width
     "- **ACTION**: The goal of the block (What needs to be done).\n\n",
     "- **DECISION**: The specific implementation chosen (How it is done).\n\n",
     "- **JUSTIFICATION**: The reasoning behind that decision.\n\n",
-    "- **TAG**: The unique identifier for the block (kebab-case).\n\n",
+    "- **ID**: The unique identifier for the block (kebab-case).\n\n",
     "=== TASK ===\n\n",
     "Focus specifically on the block tagged: \"", block, "\".\n",
     "Your goal is to generate ", n, " distinct, valid alternatives for this block.\n\n",
@@ -124,7 +124,7 @@ prompt_alternatives <- function(schema = NULL, block, n = 3, print = TRUE, width
     "1. **Keep the same ACTION** (the goal remains constant).\n\n",
     "2. **Change the DECISION** to a different but methodologically sound approach.\n\n",
     "3. **Provide a new JUSTIFICATION** explaining why this alternative is valid.\n\n",
-    "4. **Create a new TAG** that reflects the new decision (must be kebab-case).\n\n",
+    "4. **Create a new ID** that reflects the new decision (must be kebab-case).\n\n",
     "=== OUTPUT FORMAT ===\n\n",
     "Please output the result in **strictly valid YAML format**.\n\n",
     "**Crucial Formatting Rules:**\n\n",
@@ -138,11 +138,11 @@ prompt_alternatives <- function(schema = NULL, block, n = 3, print = TRUE, width
     "  type: tines_alternative\n",
     "  block: ", block, "\n",
     "alternatives:\n",
-    "  - tag: block-new-method-name\n",
+    "  - id: block-new-method-name\n",
     "    action: Repeat the original action\n",
     "    decision: \"Description of the new decision...\"\n",
     "    justification: \"This is the reasoning for why this alternative is valid.\"\n",
-    "  - tag: block-another-method\n",
+    "  - id: block-another-method\n",
     "    ...\n"
   )
 
@@ -204,26 +204,26 @@ expand_tines.schema <- function(x, alternatives, include_original = TRUE, ...) {
   target <- attr(alts_data,"block")
 
 
-  tags <- x$nodes$tag
-  if (!target %in% tags) {
+  ids <- x$nodes$id
+  if (!target %in% ids) {
     cli::cli_abort("Target block {.val {target}} not found in the base schema.")
   }
-  idx <- which(tags == target)
+  idx <- which(ids == target)
 
 
   new_schemas <- lapply(alts_data, function(alt) {
     branch <- x
 
-    branch$nodes$tag[[idx]] <- alt$tag
+    branch$nodes$id[[idx]] <- alt$id
     branch$nodes$decision[[idx]] <- alt$decision
     branch$nodes$justification[[idx]] <- alt$justification
 
     # Rewire the edges!
-    branch$edges$from[branch$edges$from == target] <- alt$tag
-    branch$edges$to[branch$edges$to == target] <- alt$tag
+    branch$edges$from[branch$edges$from == target] <- alt$id
+    branch$edges$to[branch$edges$to == target] <- alt$id
     return(branch)
   })
-  names(new_schemas) <- vapply(alts_data, function(a) a$tag, character(1))
+  names(new_schemas) <- vapply(alts_data, function(a) a$id, character(1))
 
 
   if (include_original) new_schemas <- c(list(original = x), new_schemas)
@@ -246,9 +246,9 @@ expand_tines.multiverse <- function(x, alternatives, ...) {
 
   expanded_list <- lapply(x, function(single_schema) {
 
-    tags <- single_schema$nodes$tag
+    ids <- single_schema$nodes$id
 
-    if (target %in% tags) {
+    if (target %in% ids) {
       # It has the block! Expand it, and extract the resulting list of schemas
       expanded_mini_multi <- expand_tines(single_schema, alternatives, include_original = FALSE)
       return(expanded_mini_multi)

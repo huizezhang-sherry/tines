@@ -22,7 +22,7 @@ draft_alternatives(x, block, file_path = NULL)
 
 \item{x}{A `schema` or `multiverse` object. Required for `draft_alternatives()` to generate a template based on an existing block.}
 
-\item{block}{A character string specifying the `tag` of the block in the schema}
+\item{block}{A character string specifying the `id` of the block in the schema}
 }
 \description{
 Generates a starter YAML file for a `schema` or `multiverse` to help you

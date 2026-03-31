@@ -25,20 +25,20 @@
 #'
 example_schema <- function(){
   schema <- build_schema("HDI Example") |>
-    add_block(tag = "block-scaling",
+    add_block(id = "block-scaling",
               type = "constraint",
               action = "variables are in different scales",
               decision = "apply min-max scaling to each variable",
               justification = "to put them on the same scale for combination",
               solves = "block-combine",
               feeds = "block-education") |>
-    add_block(tag = "block-education",
+    add_block(id = "block-education",
               type = "step",
               action = "combine the school variables into one dimension",
               decision = "average exp sch and avg sch",
               justification = "the most intuitive way",
               feeds = "block-combine") |>
-    add_block(tag = "block-combine",
+    add_block(id = "block-combine",
               type = "step",
               action = "combine the three dimensions into a single index",
               decision = "use the geometric mean",
@@ -51,20 +51,20 @@ example_schema <- function(){
 example_multiverse <- function(){
   schema <- example_schema()
   schema2 <- build_schema("HDI Example") |>
-    add_block(tag = "block-education",
+    add_block(id = "block-education",
               type = "step",
               action = "combine the school variables into one dimension",
               decision = "average exp sch and avg sch",
               justification = "the most intuitive way",
               feeds = "block-scaling") |>
-    add_block(tag = "block-scaling",
+    add_block(id = "block-scaling",
               type = "constraint",
               action = "variables are in different scales",
               decision = "apply min-max scaling to each variable",
               justification = "to put them on the same scale for combination",
               solves = "block-combine",
               feeds = "block-combine") |>
-    add_block(tag = "block-combine",
+    add_block(id = "block-combine",
               type = "step",
               action = "combine the three dimensions into a single index",
               decision = "use the geometric mean",
@@ -78,20 +78,20 @@ example_multiverse <- function(){
 #' @export
 example_football <- function(){
   build_schema() |>
-    add_block(tag = "block-average-rater",
+    add_block(id = "block-average-rater",
               action = "define the dependent variable",
               type = "constraint",
               decision = "average the two ratings",
               justification = "incorporate both rater to avoid bias",
               solves = "block-logistic-model",
               feeds = "block-logistic-model") |>
-    add_block(tag = "block-victory-tie-defeat-ratio",
+    add_block(id = "block-victory-tie-defeat-ratio",
               action = "control for team performance",
               type = "step",
               decision = "victory or tie or defeat over total number of game",
               justification = "ratios are robust to variations in season length compared to raw win counts.",
               feeds = "block-logistic-model") |>
-    add_block(tag = "block-logistic-model",
+    add_block(id = "block-logistic-model",
               action = "estimate the effect size of skin tone on red card",
               type = "step",
               decision = "fit a logistic regression model with the average rating as the dependent variable and other covariates",
@@ -107,7 +107,7 @@ example_alternatives <- function(case = c("football", "hdi")){
     block = "block-combine",
 
     alternative(
-      tag = "block-arithmetic-mean",
+      id = "block-arithmetic-mean",
       action = "combine the three dimensions into a single index",
       decision = "use a arithmetic mean",
       justification = "the old method"
@@ -118,21 +118,21 @@ example_alternatives <- function(case = c("football", "hdi")){
     block = "block-logistic-model",
 
     alternative(
-      tag = "block-mixed-effects-logistic-model",
+      id = "block-mixed-effects-logistic-model",
       action = "estimate the effect size of skin tone on red card",
       decision = "fit a generalized linear mixed-effects model (GLMM) with random intercepts for players and referees to account for hierarchical data structure",
       justification = "mixed-effects models are appropriate for clustered data as they control for non-independence of observations within players and referees, leading to more reliable standard errors and effect estimates"
     ),
 
     alternative(
-      tag = "block-probit-regression-model",
+      id = "block-probit-regression-model",
       action = "estimate the effect size of skin tone on red card",
       decision = "fit a probit regression model using the average skin tone rating and specified covariates",
       justification = "probit models provide a methodologically valid alternative to logistic regression by assuming a normally distributed latent variable, serving as a sensitivity check for the choice of link function"
     ),
 
     alternative(
-      tag = "block-bayesian-logistic-model",
+      id = "block-bayesian-logistic-model",
       action = "estimate the effect size of skin tone on red card",
       decision = "fit a Bayesian logistic regression model with the average skin tone rating as a predictor and weakly informative priors",
       justification = "the Bayesian approach provides a complete posterior distribution of the effect size rather than a point estimate, allowing for a more nuanced probabilistic interpretation of the skin tone effect and its uncertainty"
@@ -151,13 +151,8 @@ example_alternatives <- function(case = c("football", "hdi")){
 #' @rdname example_tines
 #' @export
 example_spei <- function(){
-  build_schema(
-  # data_dictionary = list(
-  #   .proxy_prcp = "precipitation_mm",
-  #   .proxy_tavg = "average_temperature_c"
-  # )
-) |>
-  add_block(tag = "block-calc-pet",
+  build_schema() |>
+  add_block(id = "block-calc-pet",
             action = "transform average temperature to obtain potential evapotranspiration (PET)",
             type = "step",
             decision = "use Thornthwaite equation",
@@ -165,7 +160,7 @@ example_spei <- function(){
             inputs = c(".proxy_tavg"),
             outputs = c(".proxy_pet")) |>
 
-  add_block(tag = "block-calc-diff",
+  add_block(id = "block-calc-diff",
             action = "calculate difference series between precipitation and PET",
             type = "step",
             decision = "subtract PET from Precipitation (P - PET)",
@@ -173,7 +168,7 @@ example_spei <- function(){
             inputs = c(".proxy_prcp", ".proxy_pet"),
             outputs = c(".proxy_diff")) |>
 
-  add_block(tag = "block-temporal-agg",
+  add_block(id = "block-temporal-agg",
             action = "perform temporal aggregation on the difference series",
             type = "step",
             decision = "calculate rolling sum of the P-PET difference",
@@ -181,7 +176,7 @@ example_spei <- function(){
             inputs = c(".proxy_diff"),
             outputs = c(".proxy_agg")) |>
 
-  add_block(tag = "block-dist-fit",
+  add_block(id = "block-dist-fit",
             action = "fit a probability distribution to the aggregated series",
             type = "step",
             decision = "fit a Log-Logistic distribution",
@@ -189,7 +184,7 @@ example_spei <- function(){
             inputs = c(".proxy_agg"),
             outputs = c(".proxy_fit")) |>
 
-  add_block(tag = "block-normalize",
+  add_block(id = "block-normalize",
             action = "normalize the fitted values",
             type = "step",
             decision = "transform to standard normal z-scores",
@@ -202,10 +197,8 @@ example_spei <- function(){
 #' @rdname example_tines
 #' @export
 example_spi <- function(){
-  build_schema(
-  #data_dictionary = list(.proxy_prcp = "precipitation_mm")
-) |>
-  add_block(tag = "block-temporal-agg",
+  build_schema() |>
+  add_block(id = "block-temporal-agg",
             action = "perform temporal aggregation on the input precipitation series",
             type = "step",
             decision = "calculate rolling sum over user-defined time scale",
@@ -213,7 +206,7 @@ example_spi <- function(){
             inputs = c(".proxy_prcp"),
             outputs = c(".proxy_agg")) |>
 
-  add_block(tag = "block-dist-fit",
+  add_block(id = "block-dist-fit",
             action = "fit a probability distribution to the aggregated series",
             type = "step",
             decision = "fit a Gamma distribution",
@@ -221,7 +214,7 @@ example_spi <- function(){
             inputs = c(".proxy_agg"),
             outputs = c(".proxy_fit")) |>
 
-  add_block(tag = "block-normalize",
+  add_block(id = "block-normalize",
             action = "normalize the fitted values",
             type = "step",
             decision = "transform the cumulative probabilities to standard normal z-scores",
@@ -241,9 +234,9 @@ example_rdi <- function(){
 
     import_block(source_schema = spei_template,
                  source_schema_name = "spei_template",
-                 tag = "block-calc-pet") |>
+                 id = "block-calc-pet") |>
 
-    add_block(tag = "block-calc-ratio",
+    add_block(id = "block-calc-ratio",
               action = "calculate the ratio of precipitation to PET",
               type = "step",
               decision = "divide precipitation by PET",
@@ -253,10 +246,10 @@ example_rdi <- function(){
 
     import_block(source_schema = spi_template,
                  source_schema_name = "spi_template",
-                 tag = "block-temporal-agg",
+                 id = "block-temporal-agg",
                  inputs = c(".proxy_ratio")) |>
 
-    add_block(tag = "block-log-transform",
+    add_block(id = "block-log-transform",
               action = "take log10 of aggregated series",
               type = "step",
               decision = "apply log10 transformation",
@@ -264,7 +257,7 @@ example_rdi <- function(){
               inputs = c(".proxy_agg"),
               outputs = c(".proxy_y")) |>
 
-    add_block(tag = "block-zscore",
+    add_block(id = "block-zscore",
               action = "rescale to standard normal",
               type = "step",
               decision = "calculate z-score (y - mean / sd)",
@@ -290,9 +283,9 @@ example_football_grp20 <- function(){
 #' get_block_names(example_multiverse())
 get_block_names <- function(object){
   if (inherits(object, "schema")) {
-    block_names <- object$nodes$tag
+    block_names <- object$nodes$id
   } else if (inherits(object, "multiverse")) {
-    block_names <- lapply(object, function(s) s$nodes$tag)
+    block_names <- lapply(object, function(s) s$nodes$id)
   } else {
     cli::cli_abort(c(
       "Unsupported object type: {.cls {class(object)}}.",

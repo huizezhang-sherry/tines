@@ -1,6 +1,6 @@
 #' Construct `alternatives` objects
 #'
-#' @param tag Unique identifier for this alternative (kebab-case).
+#' @param id Unique identifier for this alternative (kebab-case).
 #' @param action The goal of the step (should match the original).
 #' @param decision The new method/implementation.
 #' @param justification Why this method is valid.
@@ -12,14 +12,14 @@
 #' @examples
 #' example_alternatives(case = "football")
 #'
-alternative <- function(tag, action, decision, justification) {
+alternative <- function(id, action, decision, justification) {
   # Quick validation to ensure no missing pieces
-  if (missing(tag) || missing(action) || missing(decision) || missing(justification)) {
-    cli::cli_abort("All arguments (`tag`, `action`, `decision`, `justification`) are required.")
+  if (missing(id) || missing(action) || missing(decision) || missing(justification)) {
+    cli::cli_abort("All arguments (`id`, `action`, `decision`, `justification`) are required.")
   }
 
   list(
-    tag = tag,
+    id = id,
     action = action,
     decision = decision,
     justification = justification
@@ -87,7 +87,7 @@ read_alternatives <- function(file, ...) {
   # 3. Convert the raw list items into validated `alternative()` objects
   parsed_alts <- purrr::map(raw_yaml$alternatives, function(a) {
     alternative(
-      tag = a$tag,
+      id = a$id,
       action = a$action,
       decision = a$decision,
       justification = a$justification

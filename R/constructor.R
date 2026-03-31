@@ -9,7 +9,7 @@
 #' @param ... One or more `schema` objects to be included in the multiverse.
 #' @param schemas A single list containing objects of class `schema`. Defaults to an empty list.
 #' @param object A `schema` object.
-#' @param tag,type,action,decision,justification,inputs,outputs,source_schema character strings to write a block - NOT SURE ABOUT THE DESIGN YET
+#' @param id,type,action,decision,justification,inputs,outputs,source_schema character strings to write a block - NOT SURE ABOUT THE DESIGN YET
 #' @param feeds,uses,solves,prompts Character vectors to describe the relationship between blocks - NOT SURE ABOUT THE DESIGN YET
 #' @param x An object to be coerced into a `schema` or `multiverse`.
 #' @return
@@ -22,7 +22,7 @@
 #' @examples
 #' schema <- build_schema("HDI Example") |>
 #'   # 1. The Scaling Block
-#'   add_block(tag = "block-scaling",
+#'   add_block(id = "block-scaling",
 #'             type = "constraint",
 #'             action = "variables are in different scales",
 #'             decision = "apply min-max scaling to each variable",
@@ -30,14 +30,14 @@
 #'             solves = "block-combine",       # Motivation comes from the end
 #'             feeds = "block-education") |>
 #'   # 2. The Education Block
-#'   add_block(tag = "block-education",
+#'   add_block(id = "block-education",
 #'             type = "step",
 #'             action = "combine the school variables into one dimension",
 #'             decision = "average exp sch and avg sch",
 #'             justification = "the most intuitive way",
 #'             feeds = "block-combine") |>
 #'   # 3. The Combine Block
-#'   add_block(tag = "block-combine",
+#'   add_block(id = "block-combine",
 #'             type = "step",
 #'             action = "combine the three dimensions into a single index",
 #'             decision = "use the geometric mean",
@@ -47,14 +47,14 @@
 #'
 #' schema2 <- build_schema("HDI Example") |>
 #'   # 1. The Education Block
-#'   add_block(tag = "block-education",
+#'   add_block(id = "block-education",
 #'             type = "step",
 #'             action = "combine the school variables into one dimension",
 #'             decision = "average exp sch and avg sch",
 #'             justification = "the most intuitive way",
 #'             feeds = "block-scaling") |>
 #'   # 2. The Scaling Block
-#'   add_block(tag = "block-scaling",
+#'   add_block(id = "block-scaling",
 #'             type = "constraint",
 #'             action = "variables are in different scales",
 #'             decision = "apply min-max scaling to each variable",
@@ -62,7 +62,7 @@
 #'             solves = "block-combine",       # Motivation comes from the end
 #'             feeds = "block-combine") |>
 #'   # 3. The Combine Block
-#'   add_block(tag = "block-combine",
+#'   add_block(id = "block-combine",
 #'             type = "step",
 #'             action = "combine the three dimensions into a single index",
 #'             decision = "use the geometric mean",
@@ -83,9 +83,8 @@ new_schema <- function(name = NULL, nodes = tibble(), edges = tibble()) {
 #' @export
 build_schema <- function(name = NULL) {
   nodes <- tibble(
-    action = character(), type = character(),
-    decision = character(), justification = character(),
-    tag = character()
+    id = character(), action = character(), type = character(),
+    decision = character(), justification = character()
   )
   edges <- tibble(from = character(), to = character(), type = character())
 
@@ -124,13 +123,13 @@ build_multiverse <- function(...) {
     return(new_multiverse(list()))
   }
 
-  # 2. Auto-naming: If the user didn't name them, try to find tags
+  # 2. Auto-naming: If the user didn't name them, try to find ids
   if (is.null(names(schemas))) {
     names(schemas) <- vapply(schemas, function(s) {
-      # Grab the tag of the last node as a default name
+      # Grab the id of the last node as a default name
       # Ensuring we handle empty nodes gracefully
-      tag <- s$nodes$tag[nrow(s$nodes)]
-      if (length(tag) == 0 || is.na(tag)) "unnamed_path" else tag
+      id <- s$nodes$id[nrow(s$nodes)]
+      if (length(id) == 0 || is.na(id)) "unnamed_path" else id
     }, FUN.VALUE = character(1))
   }
 
@@ -141,28 +140,26 @@ build_multiverse <- function(...) {
 ########################################################################
 #' @rdname constructor
 #' @export
-add_block <- function(object, tag, action = "", type = "STEP",
+add_block <- function(object, id, action = "", type = "STEP",
                       decision = "", justification = "", inputs = NA, outputs = NA, source_schema = NA,
                       feeds = NULL, uses = NULL, prompts = NULL, solves = NULL, ...) {
   #browser()
 
   if (!inherits(object, "schema")) cli::cli_abort("object must be of class {.cls schema}")
-  if (tag %in% object$nodes$tag) cli::cli_abort("Tag {.val {tag}} already exists!")
+  if (id %in% object$nodes$id) cli::cli_abort("Id {.val {id}} already exists!")
 
 
   new_node <- tibble::tibble(
-    tag = tag, action = action, type = type,
+    id = id, action = action, type = type,
     decision = decision, justification = justification,
     inputs = list(inputs), outputs = list(outputs), source_schema = source_schema
   )
   object$nodes <- rbind(object$nodes, new_node)
 
-  # TODO add tag if not there
-
-  if (!is.null(feeds))   object <- add_dependency(object, feeds(from = tag, to = feeds))
-  if (!is.null(uses))    object <- add_dependency(object, uses(to = tag, from = uses))
-  if (!is.null(prompts)) object <- add_dependency(object, prompts(from = tag, to = prompts))
-  if (!is.null(solves))  object <- add_dependency(object, solves(to = tag, from = solves))
+  if (!is.null(feeds))   object <- add_dependency(object, feeds(from = id, to = feeds))
+  if (!is.null(uses))    object <- add_dependency(object, uses(to = id, from = uses))
+  if (!is.null(prompts)) object <- add_dependency(object, prompts(from = id, to = prompts))
+  if (!is.null(solves))  object <- add_dependency(object, solves(to = id, from = solves))
 
   return(object)
 }
@@ -184,10 +181,10 @@ add_dependency <- function(object, ...) {
                 stringsAsFactors = FALSE) |> tibble::as_tibble()
   })
 
-  # Validation: Check if all mentioned tags actually exist in the nodes table
-  all_tags <- object$nodes$tag
-  involved_tags <- unique(c(new_edges$from, new_edges$to))
-  missing_tags <- setdiff(involved_tags, all_tags)
+  # Validation: Check if all mentioned ids actually exist in the nodes table
+  all_ids <- object$nodes$id
+  involved_ids <- unique(c(new_edges$from, new_edges$to))
+  missing_ids <- setdiff(involved_ids, all_ids)
 
   object$edges <- rbind(object$edges, new_edges) |> unique()
 
@@ -227,7 +224,7 @@ as_schema.list <- function(x, ...) {
     )
   }
 
-  # 2. Ensure the metadata explicitly tags it as a schema
+  # 2. Ensure the metadata explicitly id it as a schema
   if (is.null(x$meta$type) || x$meta$type != "schema") {
     x$meta$type <- "schema"
   }

@@ -3,7 +3,7 @@
     Code
       an_alternative
     Output
-      $tag
+      $id
       [1] "test-tag"
       
       $action
@@ -18,7 +18,7 @@
 
 ---
 
-    All arguments (`tag`, `action`, `decision`, `justification`) are required.
+    All arguments (`id`, `action`, `decision`, `justification`) are required.
 
 ---
 
@@ -26,7 +26,7 @@
       alt_obj
     Output
       [[1]]
-      [[1]]$tag
+      [[1]]$id
       [1] "tag1"
       
       [[1]]$action
@@ -50,7 +50,7 @@
       read_alternatives(tmp_file)
     Output
       [[1]]
-      [[1]]$tag
+      [[1]]$id
       [1] "block-mixed-effects-logistic-model"
       
       [[1]]$action
@@ -64,7 +64,7 @@
       
       
       [[2]]
-      [[2]]$tag
+      [[2]]$id
       [1] "block-probit-regression-model"
       
       [[2]]$action
@@ -78,7 +78,7 @@
       
       
       [[3]]
-      [[3]]$tag
+      [[3]]$id
       [1] "block-bayesian-logistic-model"
       
       [[3]]$action

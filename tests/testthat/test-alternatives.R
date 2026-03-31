@@ -12,13 +12,13 @@ scrub_date_for_snapshot <- function(file_path) {
 test_that("alternative() constructs a valid list and catches missing arguments", {
   # 1. Snapshot the successful creation
   an_alternative <- alternative(
-    tag = "test-tag",
+    id = "test-tag",
     action = "test action",
     decision = "test decision",
     justification = "test justification"
   )
   expect_snapshot(an_alternative)
-  expect_snapshot_error({alternative(tag = "test-tag")})
+  expect_snapshot_error({alternative(id = "test-tag")})
 
   alt_obj <-  new_alternatives(
     "block-target",

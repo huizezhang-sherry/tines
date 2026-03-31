@@ -5,23 +5,25 @@
     Output
       nodes:
         - id: calculate_age
-          fork: "How to operationalize the age of participants?"
-          path: "Calculate age by subtracting birth year from the reference year 2012."
-          rationale: "Not specified in text."
-          status: "DRAFT"
-          inputs: [birthday]
-          outputs: [age_calculated]
+          fork: how to determine a participant's age
+          path: subtract birth year from the year 2012
+          rationale: null
+          inputs: [birth_year]
+          outputs: [age]
           confidence: LOW
-          clarification_question: "The text specifies 'birth year' but the dataset summary provides 'birthday'. Does the 'birthday' column contain only the year, or is it a full date from which the year must be extracted first?"
-        - id: define_skin_tone_scale
-          fork: "How to operationalize skin tone?"
-          path: "Skin tone is measured using a 1-5 rating scale."
-          rationale: "Not specified in text."
-          status: "DRAFT"
+          clarification_question: The methodology describes calculating age from 'birth year', but the provided dataset summary ('skin_tone') does not include this variable. Please specify the column name for the birth year data.
+        - id: interpret_skin_tone_variable
+          fork: how to operationalize the skin tone measure
+          path: use the provided skin tone rating as a 1-5 scale
+          rationale: null
           inputs: [skin_tone]
-          outputs: [skin_tone_validated]
-          confidence: MEDIUM
-          clarification_question: "The text states 'Skin tone was rated' and the dataset includes 'rater1', 'rater2', and 'skin_tone'. Is the 'skin_tone' column a raw variable or is it derived from an aggregation of 'rater1' and 'rater2'?"
+          outputs: [skin_tone]
+          confidence: HIGH
+          clarification_question: null
+      edges:
+        - from: calculate_age
+          to: interpret_skin_tone_variable
+          type: sequential
       
 
 ---
@@ -35,57 +37,64 @@
       [1] "calculate_age"
       
       $nodes[[1]]$fork
-      [1] "How to operationalize the age of participants?"
+      [1] "how to determine a participant's age"
       
       $nodes[[1]]$path
-      [1] "Calculate age by subtracting birth year from the reference year 2012."
+      [1] "subtract birth year from the year 2012"
       
       $nodes[[1]]$rationale
-      [1] "Not specified in text."
-      
-      $nodes[[1]]$status
-      [1] "DRAFT"
+      NULL
       
       $nodes[[1]]$inputs
-      [1] "birthday"
+      [1] "birth_year"
       
       $nodes[[1]]$outputs
-      [1] "age_calculated"
+      [1] "age"
       
       $nodes[[1]]$confidence
       [1] "LOW"
       
       $nodes[[1]]$clarification_question
-      [1] "The text specifies 'birth year' but the dataset summary provides 'birthday'. Does the 'birthday' column contain only the year, or is it a full date from which the year must be extracted first?"
+      [1] "The methodology describes calculating age from 'birth year', but the provided dataset summary ('skin_tone') does not include this variable. Please specify the column name for the birth year data."
       
       
       $nodes[[2]]
       $nodes[[2]]$id
-      [1] "define_skin_tone_scale"
+      [1] "interpret_skin_tone_variable"
       
       $nodes[[2]]$fork
-      [1] "How to operationalize skin tone?"
+      [1] "how to operationalize the skin tone measure"
       
       $nodes[[2]]$path
-      [1] "Skin tone is measured using a 1-5 rating scale."
+      [1] "use the provided skin tone rating as a 1-5 scale"
       
       $nodes[[2]]$rationale
-      [1] "Not specified in text."
-      
-      $nodes[[2]]$status
-      [1] "DRAFT"
+      NULL
       
       $nodes[[2]]$inputs
       [1] "skin_tone"
       
       $nodes[[2]]$outputs
-      [1] "skin_tone_validated"
+      [1] "skin_tone"
       
       $nodes[[2]]$confidence
-      [1] "MEDIUM"
+      [1] "HIGH"
       
       $nodes[[2]]$clarification_question
-      [1] "The text states 'Skin tone was rated' and the dataset includes 'rater1', 'rater2', and 'skin_tone'. Is the 'skin_tone' column a raw variable or is it derived from an aggregation of 'rater1' and 'rater2'?"
+      NULL
+      
+      
+      
+      $edges
+      $edges[[1]]
+      $edges[[1]]$from
+      [1] "calculate_age"
+      
+      $edges[[1]]$to
+      [1] "interpret_skin_tone_variable"
+      
+      $edges[[1]]$type
+      [1] "sequential"
       
       
       
@@ -113,8 +122,6 @@
       
          - 'rationale': WHY that decision (the path) was made, extracted from the text.
       
-         - 'status': default to 'DRAFT'.
-      
       2. DATA MAPPING: Assign 'inputs' (EXACT column names from the dataset OR outputs from previous nodes) and 'outputs' (invented snake_case objects like 'df_clean' or 'ranef_spec').
       
       3. ANTI-ABSTRACTION (CRITICAL): If the text lists specific variables (e.g., 'centered rater, meanIAT'), DO NOT summarize them away. You MUST capture those specific variables in the 'inputs' array.
@@ -134,15 +141,15 @@
         type: constraint
         path: apply min-max scaling to each variable
         justification: to put them on the same scale for combination
-        tag: block-scaling
-        status: VERIFIED
-        confidence: high- fork: combine the school variables into one dimension
+        id: block-scaling
+        confidence: high
+      - fork: combine the school variables into one dimension
         type: step
         path: average exp sch and avg sch
         justification: the most intuitive way
-        tag: block-education
-        status: DRAFT
-        confidence: lowedges:
+        id: block-education
+        confidence: low
+      edges:
       - from: block-scaling
         to: block-education
         type: sequential
@@ -171,8 +178,6 @@
       
          - 'rationale': WHY that decision (the path) was made, extracted from the text.
       
-         - 'status': default to 'DRAFT'.
-      
       2. DATA MAPPING: Assign 'inputs' (EXACT column names from the dataset OR outputs from previous nodes) and 'outputs' (invented snake_case objects like 'df_clean' or 'ranef_spec').
       
       3. ANTI-ABSTRACTION (CRITICAL): If the text lists specific variables (e.g., 'centered rater, meanIAT'), DO NOT summarize them away. You MUST capture those specific variables in the 'inputs' array.
@@ -192,15 +197,15 @@
         type: constraint
         path: apply min-max scaling to each variable
         justification: to put them on the same scale for combination
-        tag: block-scaling
-        status: VERIFIED
-        confidence: high- fork: combine the school variables into one dimension
+        id: block-scaling
+        confidence: high
+      - fork: combine the school variables into one dimension
         type: step
         path: average exp sch and avg sch
         justification: the most intuitive way
-        tag: block-education
-        status: DRAFT
-        confidence: lowedges:
+        id: block-education
+        confidence: low
+      edges:
       - from: block-scaling
         to: block-education
         type: sequential
@@ -229,8 +234,6 @@
       
          - 'rationale': WHY that decision (the path) was made, extracted from the text.
       
-         - 'status': default to 'DRAFT'.
-      
       2. DATA MAPPING: Assign 'inputs' (EXACT column names from the dataset OR outputs from previous nodes) and 'outputs' (invented snake_case objects like 'df_clean' or 'ranef_spec').
       
       3. ANTI-ABSTRACTION (CRITICAL): If the text lists specific variables (e.g., 'centered rater, meanIAT'), DO NOT summarize them away. You MUST capture those specific variables in the 'inputs' array.
@@ -250,15 +253,15 @@
         type: constraint
         path: apply min-max scaling to each variable
         justification: to put them on the same scale for combination
-        tag: block-scaling
-        status: VERIFIED
-        confidence: high- fork: combine the school variables into one dimension
+        id: block-scaling
+        confidence: high
+      - fork: combine the school variables into one dimension
         type: step
         path: average exp sch and avg sch
         justification: the most intuitive way
-        tag: block-education
-        status: DRAFT
-        confidence: lowedges:
+        id: block-education
+        confidence: low
+      edges:
       - from: block-scaling
         to: block-education
         type: sequential

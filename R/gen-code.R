@@ -90,12 +90,12 @@ gen_code.multiverse <- function(x, base_code = NULL, data = NULL,
   paths <- character(length(x))
   
   for (i in seq_along(x)) {
-    tag <- names(x)[i] %||% sprintf("branch_%02d", i)
-    safe_tag <- gsub("[^a-zA-Z0-9]+", "_", tag)
-    safe_tag <- gsub("^_|_$", "", safe_tag)
-    file_path <- file.path(output, paste0(safe_tag, ".R"))
+    id <- names(x)[i] %||% sprintf("branch_%02d", i)
+    safe_id <- gsub("[^a-zA-Z0-9]+", "_", id)
+    safe_id <- gsub("^_|_$", "", safe_id)
+    file_path <- file.path(output, paste0(safe_id, ".R"))
     
-    cli::cli_alert_info("Generating {i}/{length(x)}: {.val {tag}}")
+    cli::cli_alert_info("Generating {i}/{length(x)}: {.val {id}}")
     
     gen_code_single(
       base_schema = x[[i]],

@@ -5,12 +5,12 @@
 \alias{new_alternatives}
 \title{Construct `alternatives` objects}
 \usage{
-alternative(tag, action, decision, justification)
+alternative(id, action, decision, justification)
 
 new_alternatives(block, ...)
 }
 \arguments{
-\item{tag}{Unique identifier for this alternative (kebab-case).}
+\item{id}{Unique identifier for this alternative (kebab-case).}
 
 \item{action}{The goal of the step (should match the original).}
 

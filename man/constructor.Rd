@@ -31,7 +31,7 @@ build_multiverse(...)
 
 add_block(
   object,
-  tag,
+  id,
   action = "",
   type = "STEP",
   decision = "",
@@ -85,7 +85,7 @@ as_multiverse(x, ...)
 
 \item{object}{A `schema` object.}
 
-\item{tag, type, action, decision, justification, inputs, outputs, source_schema}{character strings to write a block - NOT SURE ABOUT THE DESIGN YET}
+\item{id, type, action, decision, justification, inputs, outputs, source_schema}{character strings to write a block - NOT SURE ABOUT THE DESIGN YET}
 
 \item{feeds, uses, solves, prompts}{Character vectors to describe the relationship between blocks - NOT SURE ABOUT THE DESIGN YET}
 
@@ -102,7 +102,7 @@ garden of forking paths (`multiverse`).
 \examples{
 schema <- build_schema("HDI Example") |>
   # 1. The Scaling Block
-  add_block(tag = "block-scaling",
+  add_block(id = "block-scaling",
             type = "constraint",
             action = "variables are in different scales",
             decision = "apply min-max scaling to each variable",
@@ -110,14 +110,14 @@ schema <- build_schema("HDI Example") |>
             solves = "block-combine",       # Motivation comes from the end
             feeds = "block-education") |>
   # 2. The Education Block
-  add_block(tag = "block-education",
+  add_block(id = "block-education",
             type = "step",
             action = "combine the school variables into one dimension",
             decision = "average exp sch and avg sch",
             justification = "the most intuitive way",
             feeds = "block-combine") |>
   # 3. The Combine Block
-  add_block(tag = "block-combine",
+  add_block(id = "block-combine",
             type = "step",
             action = "combine the three dimensions into a single index",
             decision = "use the geometric mean",
@@ -127,14 +127,14 @@ str(schema)
 
 schema2 <- build_schema("HDI Example") |>
   # 1. The Education Block
-  add_block(tag = "block-education",
+  add_block(id = "block-education",
             type = "step",
             action = "combine the school variables into one dimension",
             decision = "average exp sch and avg sch",
             justification = "the most intuitive way",
             feeds = "block-scaling") |>
   # 2. The Scaling Block
-  add_block(tag = "block-scaling",
+  add_block(id = "block-scaling",
             type = "constraint",
             action = "variables are in different scales",
             decision = "apply min-max scaling to each variable",
@@ -142,7 +142,7 @@ schema2 <- build_schema("HDI Example") |>
             solves = "block-combine",       # Motivation comes from the end
             feeds = "block-combine") |>
   # 3. The Combine Block
-  add_block(tag = "block-combine",
+  add_block(id = "block-combine",
             type = "step",
             action = "combine the three dimensions into a single index",
             decision = "use the geometric mean",

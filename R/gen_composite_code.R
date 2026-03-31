@@ -36,7 +36,7 @@ gen_composite_code <- function(schema, base_scripts, output_file) {
 
   for (i in seq_len(nrow(nodes))) {
     node <- nodes[i, ]
-    tag  <- node$tag
+    id  <- node$id
     
     # source_schema is set by import_block(); absent for add_block() nodes
     source_nm <- if ("source_schema" %in% names(node)) node$source_schema else NA
@@ -47,12 +47,12 @@ gen_composite_code <- function(schema, base_scripts, output_file) {
       
       if (is.null(script_path)) {
         cli::cli_abort(c(
-          "Block {.val {tag}} was imported from {.val {source_nm}}",
+          "Block {.val {id}} was imported from {.val {source_nm}}",
           "x" = "No matching entry found in {.arg base_scripts}."
         ))
       }
       
-      code_chunks[[i]] <- extract_tagged_chunk(script_path, tag)
+      code_chunks[[i]] <- extract_tagged_chunk(script_path, id)
       
     } else {
        prior_chunks <- paste(
@@ -74,10 +74,10 @@ gen_composite_code <- function(schema, base_scripts, output_file) {
   )
 
  body_chunks <- paste(
-    mapply(function(chunk, tag) {
+    mapply(function(chunk, id) {
       code <- paste0("  ", gsub("\n", "\n  ", chunk))
-      sprintf("  # [%s]\n%s\n  # [/%s]", tag, code, tag)
-    }, code_chunks, nodes$tag),
+      sprintf("  # [%s]\n%s\n  # [/%s]", id, code, id)
+    }, code_chunks, nodes$id),
     collapse = "\n\n"
   )
   body_chunks <- sub("\\s*\\|>\\s*$", "", body_chunks)
@@ -90,27 +90,27 @@ gen_composite_code <- function(schema, base_scripts, output_file) {
   invisible(full_code)
 }
 
-# Extract chunk between # [tag] and # [/tag] markers --------------------------
-extract_tagged_chunk <- function(script_path, tag) {
+# Extract chunk between # [id] and # [/id] markers --------------------------
+extract_tagged_chunk <- function(script_path, id) {
   lines <- readLines(script_path)
-  start <- which(trimws(lines) == sprintf("# [%s]", tag))
-  end   <- which(trimws(lines) == sprintf("# [/%s]", tag))
+  start <- which(trimws(lines) == sprintf("# [%s]", id))
+  end   <- which(trimws(lines) == sprintf("# [/%s]", id))
   
   if (length(start) == 0 || length(end) == 0) {
     cli::cli_abort(
-      "Could not find tag markers for {.val {tag}} in {.path {script_path}}"
+      "Could not find id markers for {.val {id}} in {.path {script_path}}"
     )
   }
   
   paste(lines[(start + 1):(end - 1)], collapse = "\n")
 }
 
-# Extract lines before the first tag marker -----------------------------------
+# Extract lines before the first id marker -----------------------------------
 extract_preamble <- function(script_path) {
   lines <- readLines(script_path)
-  first_tag <- which(grepl("^\\s*# \\[", lines))[1]
-  if (is.na(first_tag) || first_tag <= 1) return("")
-  paste(lines[seq_len(first_tag - 1)], collapse = "\n")
+  first_id <- which(grepl("^\\s*# \\[", lines))[1]
+  if (is.na(first_id) || first_id <= 1) return("")
+  paste(lines[seq_len(first_id - 1)], collapse = "\n")
 }
 
 # LLM code generation for new blocks ------------------------------------------
@@ -124,7 +124,7 @@ llm_generate_block <- function(node, style_context) {
     ```
     
     Write R code for the following step. Reference the style above:
-    - Tag: {node$tag}
+    - ID: {node$id}
     - Action: {node$action}
     - Decision: {node$decision}
     - Justification: {node$justification}
