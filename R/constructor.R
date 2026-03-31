@@ -85,7 +85,7 @@ build_schema <- function(name = NULL) {
   nodes <- tibble(
     action = character(), type = character(),
     decision = character(), justification = character(),
-    tag = character(), status = character()
+    tag = character()
   )
   edges <- tibble(from = character(), to = character(), type = character())
 
@@ -153,7 +153,7 @@ add_block <- function(object, tag, action = "", type = "STEP",
   new_node <- tibble::tibble(
     tag = tag, action = action, type = type,
     decision = decision, justification = justification,
-    status = "VERIFIED", inputs = list(inputs), outputs = list(outputs), source_schema = source_schema
+    inputs = list(inputs), outputs = list(outputs), source_schema = source_schema
   )
   object$nodes <- rbind(object$nodes, new_node)
 

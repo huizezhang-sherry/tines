@@ -15,7 +15,6 @@
 #' @param model The LLM to use (defaults to Gemini 2.5 Pro).
 #' @param print If `TRUE`, prints the prompt to console instead of returning it.
 #' @param width If `print = TRUE`, the width to wrap the printed prompt (default 70).
-#' @
 #'
 #' @rdname extract_schema
 #' @return The file path to the generated YAML file (invisibly).
@@ -81,7 +80,6 @@ prompt_extract_schema <- function(data_dict, text, print = TRUE, width = 70) {
     "   - 'fork': MUST be framed as an open methodological goal that invites multiple possible approaches. It must NOT describe the final choice.\n\n",
     "   - 'path': A 'path' is strictly a POSITIVE methodological decision that has potential theoretical alternatives, chosen to resolve the 'fork'.\n\n",
     "   - 'rationale': WHY that decision (the path) was made, extracted from the text.\n\n",
-    "   - 'status': default to 'DRAFT'.\n\n",
     "2. DATA MAPPING: Assign 'inputs' (EXACT column names from the dataset OR outputs from previous nodes) ",
     "and 'outputs' (invented snake_case objects like 'df_clean' or 'ranef_spec').\n\n",
     "3. ANTI-ABSTRACTION (CRITICAL): If the text lists specific variables (e.g., 'centered rater, meanIAT'), ",
@@ -101,15 +99,13 @@ prompt_extract_schema <- function(data_dict, text, print = TRUE, width = 70) {
     "  path: apply min-max scaling to each variable\n",
     "  justification: to put them on the same scale for combination\n",
     "  tag: block-scaling\n",
-    "  status: VERIFIED\n",
-    "  confidence: high",
+    "  confidence: high\n",
     "- fork: combine the school variables into one dimension\n",
     "  type: step\n",
     "  path: average exp sch and avg sch\n",
     "  justification: the most intuitive way\n",
     "  tag: block-education\n",
-    "  status: DRAFT\n",
-    "  confidence: low",
+    "  confidence: low\n",
     "edges:\n",
     "- from: block-scaling\n",
     "  to: block-education\n",
