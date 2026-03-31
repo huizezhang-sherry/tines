@@ -1,0 +1,93 @@
+meta:
+  type: schema
+nodes:
+- id: create_age_variable
+  fork: How to operationalize player age?
+  path: Calculate age by subtracting the birth year (from the 'birthday' variable) from the year 2013.
+  rationale: To create an age variable for use as a covariate in the model.
+  status: DRAFT
+  inputs: [birthday]
+  outputs: [age]
+  confidence: HIGH
+  clarification_question: null
+- id: create_skin_tone_rating
+  fork: How to synthesize skin tone ratings from multiple observers?
+  path: Average the ratings from the two raters ('rater1' and 'rater2').
+  rationale: To create a single, continuous measure of skin tone for use as the main predictor.
+  status: DRAFT
+  inputs: [rater1, rater2]
+  outputs: [skin_tone_rating]
+  confidence: HIGH
+  clarification_question: null
+- id: handle_missing_position_data
+  fork: How to address missing player position data?
+  path: Manually look up missing positions on Wikipedia.
+  rationale: To increase the number of observations with known positions.
+  status: DRAFT
+  inputs: [position]
+  outputs: [position_imputed]
+  confidence: HIGH
+  clarification_question: null
+- id: recode_player_positions
+  fork: How to categorize player positions for analysis?
+  path: Recode the specific positions into four general categories (goalkeeper, defender, midfielder, forward/winger).
+  rationale: Wikipedia did not provide specific enough information for some players, and this procedure increased the number of usable observations.
+  status: DRAFT
+  inputs: [position_imputed]
+  outputs: [position_recoded]
+  confidence: HIGH
+  clarification_question: null
+- id: exclude_missing_skin_tone
+  fork: How to handle observations with missing data for the primary predictor variable?
+  path: Exclude players with missing data on skin tone ('rater1' or 'rater2').
+  rationale: Skin tone is the main predictor in the current study.
+  status: DRAFT
+  inputs: [rater1, rater2]
+  outputs: [df_filtered]
+  confidence: HIGH
+  clarification_question: null
+- id: center_continuous_predictors
+  fork: How to transform continuous predictor variables for model interpretation?
+  path: Apply grand-mean centering to skin-tone rating, height, weight, number of games, number of victories, number of defeats, number of goals, and age.
+  rationale: This procedure improves the interpretability of the intercept and the interaction terms.
+  status: DRAFT
+  inputs: [skin_tone_rating, height, weight, games, victories, defeats, goals, age]
+  outputs: [skin_tone_rating_c, height_c, weight_c, games_c, victories_c, defeats_c, goals_c, age_c]
+  confidence: HIGH
+  clarification_question: null
+- id: standardize_bias_scores
+  fork: How to transform the racial bias scores for inclusion in the model?
+  path: Standardize the scores for implicit and explicit racial bias.
+  rationale: Not explicitly stated, but typically done to put variables on a common scale.
+  status: DRAFT
+  inputs: [implicit_racial_bias, explicit_racial_bias]
+  outputs: [implicit_racial_bias_z, explicit_racial_bias_z]
+  confidence: LOW
+  clarification_question: The methodology text refers to 'implicit racial bias' and 'explicit racial bias' scores. Could you please provide the exact column names from the dataset that correspond to these two variables?
+- id: choose_model_distribution
+  fork: What statistical distribution should be assumed for the count-based dependent variable?
+  path: Use a negative-binomial model.
+  rationale: The dependent variable (number of red cards received; 'redCards') was a count variable.
+  status: DRAFT
+  inputs: [redCards]
+  outputs: [model_distribution_spec]
+  confidence: HIGH
+  clarification_question: null
+- id: specify_multilevel_structure
+  fork: How to account for the nested, non-independent structure of the data?
+  path: Use a four-level multilevel model (dyads in players, players in clubs, clubs in leagues).
+  rationale: To account for the interdependence within players, clubs, and leagues.
+  status: DRAFT
+  inputs: [player_id, referee_id, club_id, league_id]
+  outputs: [model_random_effects_spec]
+  confidence: LOW
+  clarification_question: The model specifies a four-level structure. Could you please provide the exact column names for the identifiers corresponding to players, referees, clubs, and leagues?
+- id: specify_model_predictors
+  fork: Which variables should be included in the final statistical model?
+  path: Include skin-tone rating, implicit/explicit racial bias, their interactions with skin tone, number of games, victories, defeats, height, weight, age, goals, and dummy-coded positions as predictors for red cards.
+  rationale: To control for potential confounding variables related to game exposure, game outcomes, player characteristics, on-field roles, and age-related impulsivity.
+  status: DRAFT
+  inputs: [redCards, skin_tone_rating_c, implicit_racial_bias_z, explicit_racial_bias_z, games_c, victories_c, defeats_c, height_c, weight_c, age_c, goals_c, position_recoded]
+  outputs: [fitted_model]
+  confidence: HIGH
+  clarification_question: null
