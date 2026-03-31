@@ -138,8 +138,6 @@ with at least a `name` column and an optional `description` column.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> - 'rationale': WHY that decision (the path) was made, extracted from</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> the text.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> - 'status': default to 'DRAFT'.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2. DATA MAPPING: Assign 'inputs' (EXACT column names from the dataset</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> OR outputs from previous nodes) and 'outputs' (invented snake_case</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> objects like 'df_clean' or 'ranef_spec').</span>
@@ -164,11 +162,11 @@ with at least a `name` column and an optional `description` column.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> meta: type: schema nodes: - fork: variables are in different scales</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> type: constraint path: apply min-max scaling to each variable</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> justification: to put them on the same scale for combination tag:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> block-scaling status: VERIFIED confidence: high- fork: combine the</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> school variables into one dimension type: step path: average exp sch</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> and avg sch justification: the most intuitive way tag:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> block-education status: DRAFT confidence: lowedges: - from:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> block-scaling to: block-education type: sequential</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> block-scaling confidence: high - fork: combine the school variables</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> into one dimension type: step path: average exp sch and avg sch</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> justification: the most intuitive way tag: block-education</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> confidence: low edges: - from: block-scaling to: block-education</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> type: sequential</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> === DATASET SUMMARY ===</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>

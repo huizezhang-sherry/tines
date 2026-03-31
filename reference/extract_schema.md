@@ -94,8 +94,6 @@ prompt_extract_schema(data_dict = paste0(data_dict, collapse = ", "), text = tex
 #> - 'rationale': WHY that decision (the path) was made, extracted from
 #> the text.
 #> 
-#> - 'status': default to 'DRAFT'.
-#> 
 #> 2. DATA MAPPING: Assign 'inputs' (EXACT column names from the dataset
 #> OR outputs from previous nodes) and 'outputs' (invented snake_case
 #> objects like 'df_clean' or 'ranef_spec').
@@ -120,11 +118,11 @@ prompt_extract_schema(data_dict = paste0(data_dict, collapse = ", "), text = tex
 #> meta: type: schema nodes: - fork: variables are in different scales
 #> type: constraint path: apply min-max scaling to each variable
 #> justification: to put them on the same scale for combination tag:
-#> block-scaling status: VERIFIED confidence: high- fork: combine the
-#> school variables into one dimension type: step path: average exp sch
-#> and avg sch justification: the most intuitive way tag:
-#> block-education status: DRAFT confidence: lowedges: - from:
-#> block-scaling to: block-education type: sequential
+#> block-scaling confidence: high - fork: combine the school variables
+#> into one dimension type: step path: average exp sch and avg sch
+#> justification: the most intuitive way tag: block-education
+#> confidence: low edges: - from: block-scaling to: block-education
+#> type: sequential
 #> 
 #> === DATASET SUMMARY ===
 #> 

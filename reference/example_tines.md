@@ -21,6 +21,8 @@ example_spei()
 example_spi()
 
 example_rdi()
+
+example_football_grp20()
 ```
 
 ## Arguments
@@ -44,12 +46,12 @@ example_rdi()
 # Generate a single example schema
 example_schema()
 #> $nodes
-#> # A tibble: 3 × 9
-#>   tag    action type  decision justification status inputs outputs source_schema
-#>   <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
-#> 1 block… varia… cons… apply m… to put them … VERIF… <lgl>  <lgl>   NA           
-#> 2 block… combi… step  average… the most int… VERIF… <lgl>  <lgl>   NA           
-#> 3 block… combi… step  use the… the geometri… VERIF… <lgl>  <lgl>   NA           
+#> # A tibble: 3 × 8
+#>   tag           action type  decision justification inputs outputs source_schema
+#>   <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
+#> 1 block-scaling varia… cons… apply m… to put them … <lgl>  <lgl>   NA           
+#> 2 block-educat… combi… step  average… the most int… <lgl>  <lgl>   NA           
+#> 3 block-combine combi… step  use the… the geometri… <lgl>  <lgl>   NA           
 #> 
 #> $edges
 #> # A tibble: 3 × 3
@@ -66,12 +68,12 @@ example_schema()
 example_multiverse()
 #> $original
 #> $nodes
-#> # A tibble: 3 × 9
-#>   tag    action type  decision justification status inputs outputs source_schema
-#>   <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
-#> 1 block… varia… cons… apply m… to put them … VERIF… <lgl>  <lgl>   NA           
-#> 2 block… combi… step  average… the most int… VERIF… <lgl>  <lgl>   NA           
-#> 3 block… combi… step  use the… the geometri… VERIF… <lgl>  <lgl>   NA           
+#> # A tibble: 3 × 8
+#>   tag           action type  decision justification inputs outputs source_schema
+#>   <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
+#> 1 block-scaling varia… cons… apply m… to put them … <lgl>  <lgl>   NA           
+#> 2 block-educat… combi… step  average… the most int… <lgl>  <lgl>   NA           
+#> 3 block-combine combi… step  use the… the geometri… <lgl>  <lgl>   NA           
 #> 
 #> $edges
 #> # A tibble: 3 × 3
@@ -88,12 +90,12 @@ example_multiverse()
 #> 
 #> $reversed
 #> $nodes
-#> # A tibble: 3 × 9
-#>   tag    action type  decision justification status inputs outputs source_schema
-#>   <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
-#> 1 block… combi… step  average… the most int… VERIF… <lgl>  <lgl>   NA           
-#> 2 block… varia… cons… apply m… to put them … VERIF… <lgl>  <lgl>   NA           
-#> 3 block… combi… step  use the… the geometri… VERIF… <lgl>  <lgl>   NA           
+#> # A tibble: 3 × 8
+#>   tag           action type  decision justification inputs outputs source_schema
+#>   <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
+#> 1 block-educat… combi… step  average… the most int… <lgl>  <lgl>   NA           
+#> 2 block-scaling varia… cons… apply m… to put them … <lgl>  <lgl>   NA           
+#> 3 block-combine combi… step  use the… the geometri… <lgl>  <lgl>   NA           
 #> 
 #> $edges
 #> # A tibble: 3 × 3
@@ -112,12 +114,12 @@ example_multiverse()
 #> [1] "multiverse" "list"      
 example_football()
 #> $nodes
-#> # A tibble: 3 × 9
-#>   tag    action type  decision justification status inputs outputs source_schema
-#>   <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
-#> 1 block… defin… cons… average… incorporate … VERIF… <lgl>  <lgl>   NA           
-#> 2 block… contr… step  victory… ratios are r… VERIF… <lgl>  <lgl>   NA           
-#> 3 block… estim… step  fit a l… to answer th… VERIF… <lgl>  <lgl>   NA           
+#> # A tibble: 3 × 8
+#>   tag           action type  decision justification inputs outputs source_schema
+#>   <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
+#> 1 block-averag… defin… cons… average… incorporate … <lgl>  <lgl>   NA           
+#> 2 block-victor… contr… step  victory… ratios are r… <lgl>  <lgl>   NA           
+#> 3 block-logist… estim… step  fit a l… to answer th… <lgl>  <lgl>   NA           
 #> 
 #> $edges
 #> # A tibble: 3 × 3

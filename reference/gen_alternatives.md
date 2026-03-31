@@ -164,9 +164,8 @@ prompt_alternatives(schema = hdi, block = "block-combine", print = TRUE)
 #> each variable - average exp sch and avg sch - use the geometric mean
 #> justification: - to put them on the same scale for combination - the
 #> most intuitive way - the geometric mean is more appropriate than
-#> arithmetic mean status: - VERIFIED - VERIFIED - VERIFIED inputs: -
-#> .na - .na - .na outputs: - .na - .na - .na source_schema: - .na - .na
-#> - .na edges: from: - block-scaling - block-combine - block-education
-#> to: - block-education - block-scaling - block-combine type: -
-#> sequential - motivated - sequential
+#> arithmetic mean inputs: - .na - .na - .na outputs: - .na - .na - .na
+#> source_schema: - .na - .na - .na edges: from: - block-scaling -
+#> block-combine - block-education to: - block-education - block-scaling
+#> - block-combine type: - sequential - motivated - sequential
 ```
