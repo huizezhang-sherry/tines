@@ -1,6 +1,6 @@
 # Package index
 
-## Class constructor
+## Create a `tine`/ `multiverse` object
 
 - [`new_schema()`](constructor.md) [`build_schema()`](constructor.md)
   [`new_multiverse()`](constructor.md)
@@ -30,14 +30,11 @@
 - [`expand_tines()`](expand.md) : Expand a schema with an alternative
   YAML into a multiverse
 - [`gen_code()`](gen_code.md) [`prompt_gen_code()`](gen_code.md) :
-  Generate R code for a specific alternative branch
-- [`validate_script()`](validate_script.md) : Auto-Fix an R Script via
-  Iterative LLM Debugging
-
-## Create new tines from existing tines
-
+  Generate R code from a schema or multiverse
 - [`gen_composite_code()`](gen_composite_code.md) : Generate R code from
   a composite schema assembled from multiple source schemas
+- [`validate_script()`](validate_script.md) : Auto-Fix an R Script via
+  Iterative LLM Debugging
 
 ## Interface with YAML files
 

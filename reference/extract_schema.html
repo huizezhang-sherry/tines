@@ -60,7 +60,7 @@ in the analysis pipeline.</p>
 <span>  model <span class="op">=</span> <span class="st">"gemini-2.5-pro"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">prompt_extract_schema</span><span class="op">(</span><span class="va">data_dict</span>, <span class="va">text</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">prompt_extract_schema</span><span class="op">(</span><span class="va">data_dict</span>, <span class="va">text</span>, print <span class="op">=</span> <span class="cn">TRUE</span>, width <span class="op">=</span> <span class="fl">70</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -83,6 +83,14 @@ with at least a `name` column and an optional `description` column.</p></dd>
 <dt id="arg-model">model<a class="anchor" aria-label="anchor" href="#arg-model"></a></dt>
 <dd><p>The LLM to use (defaults to Gemini 2.5 Pro).</p></dd>
 
+
+<dt id="arg-print">print<a class="anchor" aria-label="anchor" href="#arg-print"></a></dt>
+<dd><p>If `TRUE`, prints the prompt to console instead of returning it.</p></dd>
+
+
+<dt id="arg-width">width<a class="anchor" aria-label="anchor" href="#arg-width"></a></dt>
+<dd><p>If `print = TRUE`, the width to wrap the printed prompt (default 70).</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -91,16 +99,151 @@ with at least a `name` column and an optional `description` column.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="co"># Example usage:</span></span></span>
-<span class="r-in"><span><span class="va">text</span> <span class="op">&lt;-</span> <span class="va">football_grp20</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">text</span> <span class="op">&lt;-</span> <span class="va">football_grp20</span></span></span>
 <span class="r-in"><span><span class="va">data_dict</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"playerShort"</span>, <span class="st">"player"</span>, <span class="st">"club"</span>, <span class="st">"leagueCountry"</span>, <span class="st">"birthday"</span>, <span class="st">"height"</span>,</span></span>
 <span class="r-in"><span>               <span class="st">"weight"</span>, <span class="st">"position"</span>, <span class="st">"games"</span>, <span class="st">"victories"</span>, <span class="st">"ties"</span>, <span class="st">"defeats"</span>,</span></span>
 <span class="r-in"><span>               <span class="st">"goals"</span>, <span class="st">"yellowCards"</span>, <span class="st">"yellowReds"</span>, <span class="st">"redCards"</span>, <span class="st">"photoID"</span>, <span class="st">"rater1"</span>,</span></span>
 <span class="r-in"><span>               <span class="st">"rater2"</span>, <span class="st">"refNum"</span>, <span class="st">"refCountry"</span>, <span class="st">"Alpha_3"</span>, <span class="st">"meanIAT"</span>, <span class="st">"nIAT"</span>,</span></span>
 <span class="r-in"><span>               <span class="st">"seIAT"</span>, <span class="st">"meanExp"</span>, <span class="st">"nExp"</span>, <span class="st">"seExp"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="fu">extract_schema</span><span class="op">(</span><span class="va">text</span>, <span class="va">data_dict</span>, output_file <span class="op">=</span> <span class="st">"draft_schema.yml"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># The prompt generation function can be used directly to see the full prompt sent to the LLM</span></span></span>
+<span class="r-in"><span><span class="fu">prompt_extract_schema</span><span class="op">(</span>data_dict <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">data_dict</span>, collapse <span class="op">=</span> <span class="st">", "</span><span class="op">)</span>, text <span class="op">=</span> <span class="va">text</span>, print <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> You are an expert methodologist and data pipeline architect. I will</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> provide a text describing a multiverse analysis and a summary of the</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> actual dataset being used.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> === YOUR TASK ===</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Extract a chronological list of methodological decisions (nodes) AND</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> map the exact data flow (inputs/outputs) for each node</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> simultaneously.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> === RULES ===</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1. THEORY EXTRACTION: For each node, extract:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - 'id': A unique snake_case identifier.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - 'fork': MUST be framed as an open methodological goal that invites</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> multiple possible approaches. It must NOT describe the final choice.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - 'path': A 'path' is strictly a POSITIVE methodological decision</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> that has potential theoretical alternatives, chosen to resolve the</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 'fork'.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - 'rationale': WHY that decision (the path) was made, extracted from</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> the text.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - 'status': default to 'DRAFT'.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2. DATA MAPPING: Assign 'inputs' (EXACT column names from the dataset</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> OR outputs from previous nodes) and 'outputs' (invented snake_case</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> objects like 'df_clean' or 'ranef_spec').</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3. ANTI-ABSTRACTION (CRITICAL): If the text lists specific variables</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (e.g., 'centered rater, meanIAT'), DO NOT summarize them away. You</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> MUST capture those specific variables in the 'inputs' array.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4. INLINE ARRAYS: Format arrays strictly on one line: `inputs: [var1,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> var2]`.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5. CONFIDENCE &amp; CLARIFICATION: Rate your mapping confidence (HIGH,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> MEDIUM, LOW). If the text abstracts a step and you cannot confidently</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> match it to specific dataset columns, set confidence to LOW and</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> autogenerate a 'clarification_question' asking the user which exact</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> columns to use. If HIGH, output 'null'.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6. Output ONLY valid YAML without markdown formatting.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> === REQUIRED YAML STRUCTURE EXAMPLE ===</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> meta: type: schema nodes: - fork: variables are in different scales</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> type: constraint path: apply min-max scaling to each variable</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> justification: to put them on the same scale for combination tag:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> block-scaling status: VERIFIED confidence: high- fork: combine the</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> school variables into one dimension type: step path: average exp sch</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> and avg sch justification: the most intuitive way tag:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> block-education status: DRAFT confidence: lowedges: - from:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> block-scaling to: block-education type: sequential</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> === DATASET SUMMARY ===</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> playerShort, player, club, leagueCountry, birthday, height, weight,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> position, games, victories, ties, defeats, goals, yellowCards,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> yellowReds, redCards, photoID, rater1, rater2, refNum, refCountry,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Alpha_3, meanIAT, nIAT, seIAT, meanExp, nExp, seExp</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> === METHODOLOGY TEXT ===</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Two variables – age and rating of skin tone – were created. Age was</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> created by subtracting the last four characters of the “birthday”</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> variable (which represented birth years) from 2013. Rating of skin</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> tone was created by averaging the ratings of skin tone (coded 0-1)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> from the two raters ("rater1" and "rater2"). For players with missing</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> data ("NA") in the “position” variable, Wikipedia was used to find</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> out what positions these players played. Positions were coded using 4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> categories: goalkeeper, defender, midfielder, and forward/winger.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> These 4 categories were used because Wikipedia did not provide</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> specific enough information for certain players. The original</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> position variable was then recoded using these 4 categories:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> goalkeeper, defender (center back, left fullback, and right</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> fullback), midfielder (defensive midfielder, center midfielder,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attacking midfielder, left midfielder, and right midfielder), and</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> forward/winger (forward, left winger, and right winger). While some</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> information was lost by merging some of the categories, this</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> procedure increased the number of observations with known positions</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> from 115,457 to 124,468. Several predictors and covariates were</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> grand-mean centered (skin-tone rating, height, weight, number of</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> games, number of victories, number of defeats, number of goals, and</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> age). To clarify, grand-mean centering means that we computed the</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> mean of a variable and subtracted each value of the variable from the</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> mean. This procedure improves the interpretability of the intercept</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> and the interaction terms. Scores on implicit racial bias and</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> explicit racial bias were standardized. Players with missing data on</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> skin tone (“rater1” and “rater2”) were excluded because skin tone is</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> the main predictor in the current study.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> A four-level multilevel negative-binomial model was used to test the</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hypotheses. A multilevel model with player-referee dyads as level-1,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> players as level-2, clubs as level-3, and leagues as level-4 was</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> used. This model accounts for the interdependence within players,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> clubs, and leagues. That is, the likelihood of receiving a red card</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> may differ from players to players, from clubs to clubs, and from</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> leagues to leagues. As a hypothetical example, Arsenal as a club may</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> tend to receive more red cards compared to Manchester United. The</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> multilevel structure helps account for similarities in likelihood to</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> receive red cards within Arsenal and within Manchester United. A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> negative-binomial model was used because the dependent variable</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (number of red cards received; “redCards”) was a count variable.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of red cards received was entered as the dependent variable.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Skin-tone rating, implicit racial bias, explicit racial bias, the</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> interaction between skin-tone and implicit racial bias, the</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> interaction between skin-tone and explicit racial bias, number of</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> games, victories, and defeats, height, weight, age, number of goals,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> and dummy-coded positions were all entered as predictors. Research</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> question 1 can be evaluated by examining the statistical significance</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> of skin-tone rating.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of games was controlled for because encountering a referee</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> more time increases the likelihood of receiving a red card. We</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> controlled for the outcomes of the games (victories and defeats) and</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> number of goals. Players may be less likely to commit a foul (and</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> thus receive a red card) if their team won the game. In contrast,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> they may play more aggressive defense and commit fouls if their team</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> lost the game. We controlled for height and weight because</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> conceivably, bigger players may have more advantage fighting for</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> position and thus be more likely to engage in bodily contact, which</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> may increase the chance of committing fouls (and thus, receiving red</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> cards). We controlled for positions because defensive players</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (goalkeepers and defenders) may commit more fouls and thus receive</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> more red cards. We controlled for age because impulsivity, which may</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> be associated with receiving red cards, tends to decrease with age</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Steinberg et al., 2008).</span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
