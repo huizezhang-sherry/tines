@@ -8,6 +8,7 @@
 \alias{example_spei}
 \alias{example_spi}
 \alias{example_rdi}
+\alias{example_football_grp20}
 \title{Generate examples}
 \usage{
 example_schema()
@@ -23,6 +24,8 @@ example_spei()
 example_spi()
 
 example_rdi()
+
+example_football_grp20()
 }
 \arguments{
 \item{case}{A character string specifying which example alternatives to generate. Options are "football" or "hdi". Only applies to `example_alternatives()`.}
