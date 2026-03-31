@@ -5,16 +5,16 @@ Construct \`alternatives\` objects
 ## Usage
 
 ``` r
-alternative(tag, action, decision, justification)
+alternative(id, action, decision, justification)
 
-new_alternatives(block, ...)
+new_alternatives(id, ...)
 ```
 
 ## Arguments
 
-- tag:
+- id:
 
-  Unique identifier for this alternative (kebab-case).
+  The target step ID in the schema that these alternatives pertain to.
 
 - action:
 
@@ -28,10 +28,6 @@ new_alternatives(block, ...)
 
   Why this method is valid.
 
-- block:
-
-  The target block in the schema that these alternatives pertain to.
-
 - ...:
 
   One or more alternative branches created by \`alternative()\`.
@@ -40,23 +36,12 @@ new_alternatives(block, ...)
 
 ``` r
 example_alternatives(case = "football")
-#> [[1]]
-#> [[1]]$tag
-#> [1] "block-mixed-effects-logistic-model"
-#> 
-#> [[1]]$action
-#> [1] "estimate the effect size of skin tone on red card"
-#> 
-#> [[1]]$decision
-#> [1] "fit a generalized linear mixed-effects model (GLMM) with random intercepts for players and referees to account for hierarchical data structure"
-#> 
-#> [[1]]$justification
-#> [1] "mixed-effects models are appropriate for clustered data as they control for non-independence of observations within players and referees, leading to more reliable standard errors and effect estimates"
-#> 
+#> $step
+#> [1] "step-logistic-model"
 #> 
 #> [[2]]
-#> [[2]]$tag
-#> [1] "block-probit-regression-model"
+#> [[2]]$id
+#> [1] "step-probit-regression-model"
 #> 
 #> [[2]]$action
 #> [1] "estimate the effect size of skin tone on red card"
@@ -69,8 +54,8 @@ example_alternatives(case = "football")
 #> 
 #> 
 #> [[3]]
-#> [[3]]$tag
-#> [1] "block-bayesian-logistic-model"
+#> [[3]]$id
+#> [1] "step-bayesian-logistic-model"
 #> 
 #> [[3]]$action
 #> [1] "estimate the effect size of skin tone on red card"
@@ -84,6 +69,17 @@ example_alternatives(case = "football")
 #> 
 #> attr(,"class")
 #> [1] "alternatives" "list"        
-#> attr(,"block")
-#> [1] "block-logistic-model"
+#> attr(,"id")
+#> attr(,"id")$id
+#> [1] "step-mixed-effects-logistic-model"
+#> 
+#> attr(,"id")$action
+#> [1] "estimate the effect size of skin tone on red card"
+#> 
+#> attr(,"id")$decision
+#> [1] "fit a generalized linear mixed-effects model (GLMM) with random intercepts for players and referees to account for hierarchical data structure"
+#> 
+#> attr(,"id")$justification
+#> [1] "mixed-effects models are appropriate for clustered data as they control for non-independence of observations within players and referees, leading to more reliable standard errors and effect estimates"
+#> 
 ```

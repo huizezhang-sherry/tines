@@ -47,7 +47,7 @@ begin building your garden of forking paths.</p>
 <span>  overwrite <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">draft_alternatives</span><span class="op">(</span><span class="va">x</span>, <span class="va">block</span>, file_path <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">draft_alternatives</span><span class="op">(</span><span class="va">x</span>, <span class="va">id</span>, file_path <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -67,11 +67,11 @@ begin building your garden of forking paths.</p>
 
 
 <dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>A `schema` or `multiverse` object. Required for `draft_alternatives()` to generate a template based on an existing block.</p></dd>
+<dd><p>A `schema` or `multiverse` object. Required for `draft_alternatives()` to generate a template based on an existing step.</p></dd>
 
 
-<dt id="arg-block">block<a class="anchor" aria-label="anchor" href="#arg-block"></a></dt>
-<dd><p>A character string specifying the `tag` of the block in the schema</p></dd>
+<dt id="arg-id">id<a class="anchor" aria-label="anchor" href="#arg-id"></a></dt>
+<dd><p>A character string specifying the `id` of the step in the schema</p></dd>
 
 </dl></div>
 
@@ -80,7 +80,7 @@ begin building your garden of forking paths.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create a new schema template</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="fu">draft_tines</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"schema"</span>, file_path <span class="op">=</span> <span class="st">"schema_template.yaml"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">draft_alternatives</span><span class="op">(</span>x <span class="op">=</span> <span class="va">my_schema</span>, block <span class="op">=</span> <span class="st">"data-cleaning"</span>, file_path <span class="op">=</span> <span class="st">"alternative_template.yaml"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">draft_alternatives</span><span class="op">(</span>x <span class="op">=</span> <span class="va">my_schema</span>, id <span class="op">=</span> <span class="st">"data-cleaning"</span>, file_path <span class="op">=</span> <span class="st">"alternative_template.yaml"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>

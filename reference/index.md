@@ -4,7 +4,7 @@
 
 - [`new_schema()`](constructor.md) [`build_schema()`](constructor.md)
   [`new_multiverse()`](constructor.md)
-  [`build_multiverse()`](constructor.md) [`add_block()`](constructor.md)
+  [`build_multiverse()`](constructor.md) [`add_step()`](constructor.md)
   [`add_dependency()`](constructor.md) [`as_schema()`](constructor.md)
   [`as_multiverse()`](constructor.md)
   [`c(`*`<schema>`*`)`](constructor.md)
@@ -16,8 +16,8 @@
 - [`alternative()`](alternatives.md)
   [`new_alternatives()`](alternatives.md) : Construct \`alternatives\`
   objects
-- [`import_block()`](import.md) [`generate_edges()`](import.md) : Import
-  a block from a source schema into the current schema
+- [`import_step()`](import.md) [`generate_edges()`](import.md) : Import
+  a Step from a source schema into the current schema
 
 ## Generate analytical alternatives and corresponding code
 
@@ -48,7 +48,7 @@
 
 ## Utility
 
-- [`get_block_names()`](get.md) : Functions to access components of a
+- [`get_step_names()`](get.md) : Functions to access components of a
   tine object
 - [`example_schema()`](example_tines.md)
   [`example_multiverse()`](example_tines.md)

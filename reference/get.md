@@ -5,7 +5,7 @@ Functions to access components of a tine object
 ## Usage
 
 ``` r
-get_block_names(object)
+get_step_names(object)
 ```
 
 ## Arguments
@@ -17,13 +17,13 @@ get_block_names(object)
 ## Examples
 
 ``` r
-get_block_names(example_schema())
-#> [1] "block-scaling"   "block-education" "block-combine"  
-get_block_names(example_multiverse())
+get_step_names(example_schema())
+#> [1] "step-scaling"   "step-education" "step-combine"  
+get_step_names(example_multiverse())
 #> $original
-#> [1] "block-scaling"   "block-education" "block-combine"  
+#> [1] "step-scaling"   "step-education" "step-combine"  
 #> 
 #> $reversed
-#> [1] "block-education" "block-scaling"   "block-combine"  
+#> [1] "step-education" "step-scaling"   "step-combine"  
 #> 
 ```

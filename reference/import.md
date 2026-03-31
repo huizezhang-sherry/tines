@@ -1,13 +1,13 @@
-# Import a block from a source schema into the current schema
+# Import a Step from a source schema into the current schema
 
-Import a block from a source schema into the current schema
+Import a Step from a source schema into the current schema
 
 Generate edges from a schema based on input/output variable matching
 
 ## Usage
 
 ``` r
-import_block(schema, source_schema, tag, source_schema_name = NULL, ...)
+import_step(schema, source_schema, id, source_schema_name = NULL, ...)
 
 generate_edges(schema)
 ```
@@ -21,11 +21,11 @@ generate_edges(schema)
 
 - source_schema:
 
-  The schema to import the block from.
+  The schema to import the step from.
 
-- tag:
+- id:
 
-  The tag of the block to import.
+  The id of the step to import.
 
 - source_schema_name:
 
@@ -39,6 +39,6 @@ generate_edges(schema)
 
 ## Value
 
-The updated schema with the imported block appended.
+The updated schema with the imported step appended.
 
 The schema with \`edges\` populated.

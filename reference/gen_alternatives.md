@@ -2,8 +2,7 @@
 
 \`gen_alternatives()\` takes an existing \`schema\` or \`multiverse\`
 and asks a Large Language Model to suggest methodologically valid,
-alternative approaches for a specific step (block) in your analysis
-pipeline.
+alternative approaches for a specific step in your analysis pipeline.
 
 \`prompt_alternatives()\` is a helper function that constructs the exact
 instruction set sent to the LLM.
@@ -11,18 +10,18 @@ instruction set sent to the LLM.
 ## Usage
 
 ``` r
-gen_alternatives(x, block, n = 3, provider = "gemini", file_path = NULL, ...)
+gen_alternatives(x, step, n = 3, provider = "gemini", file_path = NULL, ...)
 
 # S3 method for class 'character'
 gen_alternatives(x, ...)
 
 # S3 method for class 'schema'
-gen_alternatives(x, block, n = 3, provider = "gemini", file_path = NULL, ...)
+gen_alternatives(x, step, n = 3, provider = "gemini", file_path = NULL, ...)
 
 # S3 method for class 'multiverse'
-gen_alternatives(x, block, ...)
+gen_alternatives(x, step, ...)
 
-prompt_alternatives(schema = NULL, block, n = 3, print = TRUE, width = 70)
+prompt_alternatives(schema = NULL, step, n = 3, print = TRUE, width = 70)
 ```
 
 ## Arguments
@@ -32,10 +31,10 @@ prompt_alternatives(schema = NULL, block, n = 3, print = TRUE, width = 70)
   A \`schema\` or \`multiverse\` object, or a character string
   specifying the file path to a valid \`tines\` YAML file.
 
-- block:
+- step:
 
-  A character string. The exact \`tag\` of the step/node you want the
-  LLM to generate alternatives for.
+  A character string. The exact \`id\` of the step you want the LLM to
+  generate alternatives for.
 
 - n:
 
@@ -90,12 +89,12 @@ configured correctly in your R environment (e.g., via the
 hdi <- example_schema()
 
 if (FALSE) { # \dontrun{
-gen_alternatives(hdi, block = "block-combine", n = 1,
+gen_alternatives(hdi, step = "step-combine", n = 1,
                 file_path = here::here("inst/hdi-alt.yaml"))
 } # }
 
 # The prompt generation function can be used directly to see the full prompt sent to the LLM
-prompt_alternatives(schema = hdi, block = "block-combine", print = TRUE)
+prompt_alternatives(schema = hdi, step = "step-combine", print = TRUE)
 #> You are an expert Data Analyst and Methodologist. You are reviewing
 #> an analysis schema to identify "Forking Paths" -- alternative
 #> analytical choices that are equally valid but distinct from the
@@ -103,20 +102,20 @@ prompt_alternatives(schema = hdi, block = "block-combine", print = TRUE)
 #> 
 #> === DEFINITIONS ===
 #> 
-#> The schema provided to you consists of blocks with:
+#> The schema provided to you consists of steps with:
 #> 
-#> - **ACTION**: The goal of the block (What needs to be done).
+#> - **ACTION**: The goal of the step (What needs to be done).
 #> 
 #> - **DECISION**: The specific implementation chosen (How it is done).
 #> 
 #> - **JUSTIFICATION**: The reasoning behind that decision.
 #> 
-#> - **TAG**: The unique identifier for the block (kebab-case).
+#> - **ID**: The unique identifier for the step (kebab-case).
 #> 
 #> === TASK ===
 #> 
-#> Focus specifically on the block tagged: "block-combine". Your goal is
-#> to generate 3 distinct, valid alternatives for this block.
+#> Focus specifically on the step tagged: "step-combine". Your goal is
+#> to generate 3 distinct, valid alternatives for this step.
 #> 
 #> For each alternative: 1. **Keep the same ACTION** (the goal remains
 #> constant).
@@ -127,7 +126,7 @@ prompt_alternatives(schema = hdi, block = "block-combine", print = TRUE)
 #> 3. **Provide a new JUSTIFICATION** explaining why this alternative is
 #> valid.
 #> 
-#> 4. **Create a new TAG** that reflects the new decision (must be
+#> 4. **Create a new ID** that reflects the new decision (must be
 #> kebab-case).
 #> 
 #> === OUTPUT FORMAT ===
@@ -137,7 +136,7 @@ prompt_alternatives(schema = hdi, block = "block-combine", print = TRUE)
 #> **Crucial Formatting Rules:**
 #> 
 #> 1. Include a `meta` section at the top with `type: alternative` and
-#> the `block`.
+#> the `step`.
 #> 
 #> 2. Output strictly valid YAML. All text values (decision,
 #> justification) must be enclosed in double quotes ("). Do not use
@@ -149,23 +148,23 @@ prompt_alternatives(schema = hdi, block = "block-combine", print = TRUE)
 #> 
 #> === REQUIRED YAML STRUCTURE EXAMPLE ===
 #> 
-#> meta: type: tines_alternative block: block-combine alternatives: -
-#> tag: block-new-method-name action: Repeat the original action
-#> decision: "Description of the new decision..."  justification: "This
-#> is the reasoning for why this alternative is valid."  - tag:
-#> block-another-method ...
+#> meta: type: tines_alternative step: step-combine alternatives: - id:
+#> step-new-method-name action: Repeat the original action decision:
+#> "Description of the new decision..."  justification: "This is the
+#> reasoning for why this alternative is valid."  - id:
+#> step-another-method ...
 #> 
 #> === CURRENT SCHEMA ===
 #> 
-#> nodes: tag: - block-scaling - block-education - block-combine action:
-#> - variables are in different scales - combine the school variables
-#> into one dimension - combine the three dimensions into a single index
+#> nodes: id: - step-scaling - step-education - step-combine action: -
+#> variables are in different scales - combine the school variables into
+#> one dimension - combine the three dimensions into a single index
 #> type: - constraint - step - step decision: - apply min-max scaling to
 #> each variable - average exp sch and avg sch - use the geometric mean
 #> justification: - to put them on the same scale for combination - the
 #> most intuitive way - the geometric mean is more appropriate than
 #> arithmetic mean inputs: - .na - .na - .na outputs: - .na - .na - .na
-#> source_schema: - .na - .na - .na edges: from: - block-scaling -
-#> block-combine - block-education to: - block-education - block-scaling
-#> - block-combine type: - sequential - motivated - sequential
+#> source_schema: - .na - .na - .na edges: from: - step-scaling -
+#> step-combine - step-education to: - step-education - step-scaling -
+#> step-combine type: - sequential - motivated - sequential
 ```

@@ -49,9 +49,9 @@ garden of forking paths (`multiverse`).</p>
 <span></span>
 <span><span class="fu">build_multiverse</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">add_block</span><span class="op">(</span></span>
+<span><span class="fu">add_step</span><span class="op">(</span></span>
 <span>  <span class="va">object</span>,</span>
-<span>  <span class="va">tag</span>,</span>
+<span>  <span class="va">id</span>,</span>
 <span>  action <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"STEP"</span>,</span>
 <span>  decision <span class="op">=</span> <span class="st">""</span>,</span>
@@ -131,12 +131,12 @@ garden of forking paths (`multiverse`).</p>
 <dd><p>A `schema` object.</p></dd>
 
 
-<dt id="arg-tag-type-action-decision-justification-inputs-outputs-source-schema">tag, type, action, decision, justification, inputs, outputs, source_schema<a class="anchor" aria-label="anchor" href="#arg-tag-type-action-decision-justification-inputs-outputs-source-schema"></a></dt>
-<dd><p>character strings to write a block - NOT SURE ABOUT THE DESIGN YET</p></dd>
+<dt id="arg-id-type-action-decision-justification-inputs-outputs-source-schema">id, type, action, decision, justification, inputs, outputs, source_schema<a class="anchor" aria-label="anchor" href="#arg-id-type-action-decision-justification-inputs-outputs-source-schema"></a></dt>
+<dd><p>character strings to write a step - NOT SURE ABOUT THE DESIGN YET</p></dd>
 
 
 <dt id="arg-feeds-uses-solves-prompts">feeds, uses, solves, prompts<a class="anchor" aria-label="anchor" href="#arg-feeds-uses-solves-prompts"></a></dt>
-<dd><p>Character vectors to describe the relationship between blocks - NOT SURE ABOUT THE DESIGN YET</p></dd>
+<dd><p>Character vectors to describe the relationship between steps - NOT SURE ABOUT THE DESIGN YET</p></dd>
 
 
 <dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
@@ -152,23 +152,23 @@ garden of forking paths (`multiverse`).</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">schema</span> <span class="op">&lt;-</span> <span class="fu">build_schema</span><span class="op">(</span><span class="st">"HDI Example"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="co"># 1. The Scaling Block</span></span></span>
-<span class="r-in"><span>  <span class="fu">add_block</span><span class="op">(</span>tag <span class="op">=</span> <span class="st">"block-scaling"</span>,</span></span>
+<span class="r-in"><span>  <span class="co"># 1. The Scaling step</span></span></span>
+<span class="r-in"><span>  <span class="fu">add_step</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"step-scaling"</span>,</span></span>
 <span class="r-in"><span>            type <span class="op">=</span> <span class="st">"constraint"</span>,</span></span>
 <span class="r-in"><span>            action <span class="op">=</span> <span class="st">"variables are in different scales"</span>,</span></span>
 <span class="r-in"><span>            decision <span class="op">=</span> <span class="st">"apply min-max scaling to each variable"</span>,</span></span>
 <span class="r-in"><span>            justification <span class="op">=</span> <span class="st">"to put them on the same scale for combination"</span>,</span></span>
-<span class="r-in"><span>            solves <span class="op">=</span> <span class="st">"block-combine"</span>,       <span class="co"># Motivation comes from the end</span></span></span>
-<span class="r-in"><span>            feeds <span class="op">=</span> <span class="st">"block-education"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="co"># 2. The Education Block</span></span></span>
-<span class="r-in"><span>  <span class="fu">add_block</span><span class="op">(</span>tag <span class="op">=</span> <span class="st">"block-education"</span>,</span></span>
+<span class="r-in"><span>            solves <span class="op">=</span> <span class="st">"step-combine"</span>,       <span class="co"># Motivation comes from the end</span></span></span>
+<span class="r-in"><span>            feeds <span class="op">=</span> <span class="st">"step-education"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="co"># 2. The Education step</span></span></span>
+<span class="r-in"><span>  <span class="fu">add_step</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"step-education"</span>,</span></span>
 <span class="r-in"><span>            type <span class="op">=</span> <span class="st">"step"</span>,</span></span>
 <span class="r-in"><span>            action <span class="op">=</span> <span class="st">"combine the school variables into one dimension"</span>,</span></span>
 <span class="r-in"><span>            decision <span class="op">=</span> <span class="st">"average exp sch and avg sch"</span>,</span></span>
 <span class="r-in"><span>            justification <span class="op">=</span> <span class="st">"the most intuitive way"</span>,</span></span>
-<span class="r-in"><span>            feeds <span class="op">=</span> <span class="st">"block-combine"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="co"># 3. The Combine Block</span></span></span>
-<span class="r-in"><span>  <span class="fu">add_block</span><span class="op">(</span>tag <span class="op">=</span> <span class="st">"block-combine"</span>,</span></span>
+<span class="r-in"><span>            feeds <span class="op">=</span> <span class="st">"step-combine"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="co"># 3. The Combine step</span></span></span>
+<span class="r-in"><span>  <span class="fu">add_step</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"step-combine"</span>,</span></span>
 <span class="r-in"><span>            type <span class="op">=</span> <span class="st">"step"</span>,</span></span>
 <span class="r-in"><span>            action <span class="op">=</span> <span class="st">"combine the three dimensions into a single index"</span>,</span></span>
 <span class="r-in"><span>            decision <span class="op">=</span> <span class="st">"use the geometric mean"</span>,</span></span>
@@ -177,7 +177,7 @@ garden of forking paths (`multiverse`).</p>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">schema</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> List of 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ nodes: tibble [3 × 8] (S3: tbl_df/tbl/data.frame)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ tag          : chr [1:3] "block-scaling" "block-education" "block-combine"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ id           : chr [1:3] "step-scaling" "step-education" "step-combine"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ action       : chr [1:3] "variables are in different scales" "combine the school variables into one dimension" "combine the three dimensions into a single index"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ type         : chr [1:3] "constraint" "step" "step"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ decision     : chr [1:3] "apply min-max scaling to each variable" "average exp sch and avg sch" "use the geometric mean"</span>
@@ -192,37 +192,37 @@ garden of forking paths (`multiverse`).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ : logi NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ source_schema: logi [1:3] NA NA NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ edges: tibble [3 × 3] (S3: tbl_df/tbl/data.frame)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ from: chr [1:3] "block-scaling" "block-combine" "block-education"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ to  : chr [1:3] "block-education" "block-scaling" "block-combine"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ from: chr [1:3] "step-scaling" "step-combine" "step-education"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ to  : chr [1:3] "step-education" "step-scaling" "step-combine"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ type: chr [1:3] "sequential" "motivated" "sequential"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "out.attrs")=List of 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ dim     : Named int [1:3] 1 1 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "names")= chr [1:3] "from" "to" "type"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ dimnames:List of 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ from: chr "from=block-scaling"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ to  : chr "to=block-education"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ from: chr "from=step-scaling"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ to  : chr "to=step-education"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ type: chr "type=sequential"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "class")= chr "schema"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "name")= chr "HDI Example"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">schema2</span> <span class="op">&lt;-</span> <span class="fu">build_schema</span><span class="op">(</span><span class="st">"HDI Example"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="co"># 1. The Education Block</span></span></span>
-<span class="r-in"><span>  <span class="fu">add_block</span><span class="op">(</span>tag <span class="op">=</span> <span class="st">"block-education"</span>,</span></span>
+<span class="r-in"><span>  <span class="co"># 1. The Education Step</span></span></span>
+<span class="r-in"><span>  <span class="fu">add_step</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"step-education"</span>,</span></span>
 <span class="r-in"><span>            type <span class="op">=</span> <span class="st">"step"</span>,</span></span>
 <span class="r-in"><span>            action <span class="op">=</span> <span class="st">"combine the school variables into one dimension"</span>,</span></span>
 <span class="r-in"><span>            decision <span class="op">=</span> <span class="st">"average exp sch and avg sch"</span>,</span></span>
 <span class="r-in"><span>            justification <span class="op">=</span> <span class="st">"the most intuitive way"</span>,</span></span>
-<span class="r-in"><span>            feeds <span class="op">=</span> <span class="st">"block-scaling"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="co"># 2. The Scaling Block</span></span></span>
-<span class="r-in"><span>  <span class="fu">add_block</span><span class="op">(</span>tag <span class="op">=</span> <span class="st">"block-scaling"</span>,</span></span>
+<span class="r-in"><span>            feeds <span class="op">=</span> <span class="st">"step-scaling"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="co"># 2. The Scaling Step</span></span></span>
+<span class="r-in"><span>  <span class="fu">add_step</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"step-scaling"</span>,</span></span>
 <span class="r-in"><span>            type <span class="op">=</span> <span class="st">"constraint"</span>,</span></span>
 <span class="r-in"><span>            action <span class="op">=</span> <span class="st">"variables are in different scales"</span>,</span></span>
 <span class="r-in"><span>            decision <span class="op">=</span> <span class="st">"apply min-max scaling to each variable"</span>,</span></span>
 <span class="r-in"><span>            justification <span class="op">=</span> <span class="st">"to put them on the same scale for combination"</span>,</span></span>
-<span class="r-in"><span>            solves <span class="op">=</span> <span class="st">"block-combine"</span>,       <span class="co"># Motivation comes from the end</span></span></span>
-<span class="r-in"><span>            feeds <span class="op">=</span> <span class="st">"block-combine"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="co"># 3. The Combine Block</span></span></span>
-<span class="r-in"><span>  <span class="fu">add_block</span><span class="op">(</span>tag <span class="op">=</span> <span class="st">"block-combine"</span>,</span></span>
+<span class="r-in"><span>            solves <span class="op">=</span> <span class="st">"step-combine"</span>,       <span class="co"># Motivation comes from the end</span></span></span>
+<span class="r-in"><span>            feeds <span class="op">=</span> <span class="st">"step-combine"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="co"># 3. The Combine Step</span></span></span>
+<span class="r-in"><span>  <span class="fu">add_step</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"step-combine"</span>,</span></span>
 <span class="r-in"><span>            type <span class="op">=</span> <span class="st">"step"</span>,</span></span>
 <span class="r-in"><span>            action <span class="op">=</span> <span class="st">"combine the three dimensions into a single index"</span>,</span></span>
 <span class="r-in"><span>            decision <span class="op">=</span> <span class="st">"use the geometric mean"</span>,</span></span>
@@ -233,7 +233,7 @@ garden of forking paths (`multiverse`).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> List of 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ original:List of 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ nodes: tibble [3 × 8] (S3: tbl_df/tbl/data.frame)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ tag          : chr [1:3] "block-scaling" "block-education" "block-combine"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ id           : chr [1:3] "step-scaling" "step-education" "step-combine"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ action       : chr [1:3] "variables are in different scales" "combine the school variables into one dimension" "combine the three dimensions into a single index"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ type         : chr [1:3] "constraint" "step" "step"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ decision     : chr [1:3] "apply min-max scaling to each variable" "average exp sch and avg sch" "use the geometric mean"</span>
@@ -248,21 +248,21 @@ garden of forking paths (`multiverse`).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ : logi NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ source_schema: logi [1:3] NA NA NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ edges: tibble [3 × 3] (S3: tbl_df/tbl/data.frame)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ from: chr [1:3] "block-scaling" "block-combine" "block-education"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ to  : chr [1:3] "block-education" "block-scaling" "block-combine"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ from: chr [1:3] "step-scaling" "step-combine" "step-education"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ to  : chr [1:3] "step-education" "step-scaling" "step-combine"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ type: chr [1:3] "sequential" "motivated" "sequential"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "out.attrs")=List of 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ dim     : Named int [1:3] 1 1 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..- attr(*, "names")= chr [1:3] "from" "to" "type"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ dimnames:List of 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..$ from: chr "from=block-scaling"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..$ to  : chr "to=block-education"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..$ from: chr "from=step-scaling"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..$ to  : chr "to=step-education"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..$ type: chr "type=sequential"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "class")= chr "schema"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "name")= chr "HDI Example"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ reversed:List of 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ nodes: tibble [3 × 8] (S3: tbl_df/tbl/data.frame)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ tag          : chr [1:3] "block-education" "block-scaling" "block-combine"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ id           : chr [1:3] "step-education" "step-scaling" "step-combine"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ action       : chr [1:3] "combine the school variables into one dimension" "variables are in different scales" "combine the three dimensions into a single index"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ type         : chr [1:3] "step" "constraint" "step"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ decision     : chr [1:3] "average exp sch and avg sch" "apply min-max scaling to each variable" "use the geometric mean"</span>
@@ -277,15 +277,15 @@ garden of forking paths (`multiverse`).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ : logi NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ source_schema: logi [1:3] NA NA NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ edges: tibble [3 × 3] (S3: tbl_df/tbl/data.frame)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ from: chr [1:3] "block-education" "block-scaling" "block-combine"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ to  : chr [1:3] "block-scaling" "block-combine" "block-scaling"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ from: chr [1:3] "step-education" "step-scaling" "step-combine"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ to  : chr [1:3] "step-scaling" "step-combine" "step-scaling"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ type: chr [1:3] "sequential" "sequential" "motivated"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "out.attrs")=List of 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ dim     : Named int [1:3] 1 1 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..- attr(*, "names")= chr [1:3] "from" "to" "type"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ dimnames:List of 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..$ from: chr "from=block-education"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..$ to  : chr "to=block-scaling"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..$ from: chr "from=step-education"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..$ to  : chr "to=step-scaling"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..$ type: chr "type=sequential"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "class")= chr "schema"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "name")= chr "HDI Example"</span>

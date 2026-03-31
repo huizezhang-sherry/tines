@@ -13,8 +13,8 @@ gen_composite_code(schema, base_scripts, output_file)
 
 - schema:
 
-  A schema object assembled via \`build_schema()\`, \`import_block()\`,
-  and \`add_block()\`.
+  A schema object assembled via \`build_schema()\`, \`import_step()\`,
+  and \`add_step()\`.
 
 - base_scripts:
 

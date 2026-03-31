@@ -86,19 +86,19 @@ garden of forking paths from scratch.</p>
 <span class="r-in"><span><span class="fu">example_schema</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nodes</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 8</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   tag           action type  decision justification inputs outputs source_schema</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   id            action type  decision justification inputs outputs source_schema</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> block-scaling varia… cons… apply m… to put them … <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> block-educat… combi… step  average… the most int… <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> block-combine combi… step  use the… the geometri… <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> step-scaling  varia… cons… apply m… to put them … <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> step-educati… combi… step  average… the most int… <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> step-combine  combi… step  use the… the geometri… <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $edges</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   from            to              type      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> block-scaling   block-education sequential</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> block-combine   block-scaling   motivated </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> block-education block-combine   sequential</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   from           to             type      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> step-scaling   step-education sequential</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> step-combine   step-scaling   motivated </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> step-education step-combine   sequential</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "schema"</span>
@@ -108,19 +108,19 @@ garden of forking paths from scratch.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $original</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nodes</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 8</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   tag           action type  decision justification inputs outputs source_schema</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   id            action type  decision justification inputs outputs source_schema</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> block-scaling varia… cons… apply m… to put them … <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> block-educat… combi… step  average… the most int… <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> block-combine combi… step  use the… the geometri… <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> step-scaling  varia… cons… apply m… to put them … <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> step-educati… combi… step  average… the most int… <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> step-combine  combi… step  use the… the geometri… <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $edges</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   from            to              type      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> block-scaling   block-education sequential</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> block-combine   block-scaling   motivated </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> block-education block-combine   sequential</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   from           to             type      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> step-scaling   step-education sequential</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> step-combine   step-scaling   motivated </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> step-education step-combine   sequential</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "schema"</span>
@@ -130,19 +130,19 @@ garden of forking paths from scratch.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $reversed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nodes</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 8</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   tag           action type  decision justification inputs outputs source_schema</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   id            action type  decision justification inputs outputs source_schema</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> block-educat… combi… step  average… the most int… <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> block-scaling varia… cons… apply m… to put them … <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> block-combine combi… step  use the… the geometri… <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> step-educati… combi… step  average… the most int… <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> step-scaling  varia… cons… apply m… to put them … <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> step-combine  combi… step  use the… the geometri… <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $edges</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   from            to            type      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> block-education block-scaling sequential</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> block-scaling   block-combine sequential</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> block-combine   block-scaling motivated </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   from           to           type      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> step-education step-scaling sequential</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> step-scaling   step-combine sequential</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> step-combine   step-scaling motivated </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "schema"</span>
@@ -154,41 +154,41 @@ garden of forking paths from scratch.</p>
 <span class="r-in"><span><span class="fu">example_football</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nodes</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 8</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   tag           action type  decision justification inputs outputs source_schema</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   id            action type  decision justification inputs outputs source_schema</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> block-averag… defin… cons… average… incorporate … <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> block-victor… contr… step  victory… ratios are r… <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> block-logist… estim… step  fit a l… to answer th… <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> step-average… defin… cons… average… incorporate … <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> step-victory… contr… step  victory… ratios are r… <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> step-logisti… estim… step  fit a l… to answer th… <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $edges</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   from                           to                   type      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> block-average-rater            block-logistic-model sequential</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> block-logistic-model           block-average-rater  motivated </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> block-victory-tie-defeat-ratio block-logistic-model sequential</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   from                          to                  type      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> step-average-rater            step-logistic-model sequential</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> step-logistic-model           step-average-rater  motivated </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> step-victory-tie-defeat-ratio step-logistic-model sequential</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "schema"</span>
 <span class="r-in"><span><span class="fu">example_alternatives</span><span class="op">(</span>case <span class="op">=</span> <span class="st">"hdi"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]$tag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "block-arithmetic-mean"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]$action</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "combine the three dimensions into a single index"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]$decision</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "use a arithmetic mean"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]$justification</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "the old method"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $step</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "step-combine"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "alternatives" "list"        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"block")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "block-combine"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"id")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"id")$id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "step-arithmetic-mean"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"id")$action</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "combine the three dimensions into a single index"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"id")$decision</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "use a arithmetic mean"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"id")$justification</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "the old method"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

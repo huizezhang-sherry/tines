@@ -38,17 +38,17 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">alternative</span><span class="op">(</span><span class="va">tag</span>, <span class="va">action</span>, <span class="va">decision</span>, <span class="va">justification</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">alternative</span><span class="op">(</span><span class="va">id</span>, <span class="va">action</span>, <span class="va">decision</span>, <span class="va">justification</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">new_alternatives</span><span class="op">(</span><span class="va">block</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">new_alternatives</span><span class="op">(</span><span class="va">id</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-tag">tag<a class="anchor" aria-label="anchor" href="#arg-tag"></a></dt>
-<dd><p>Unique identifier for this alternative (kebab-case).</p></dd>
+<dl><dt id="arg-id">id<a class="anchor" aria-label="anchor" href="#arg-id"></a></dt>
+<dd><p>The target step ID in the schema that these alternatives pertain to.</p></dd>
 
 
 <dt id="arg-action">action<a class="anchor" aria-label="anchor" href="#arg-action"></a></dt>
@@ -63,10 +63,6 @@
 <dd><p>Why this method is valid.</p></dd>
 
 
-<dt id="arg-block">block<a class="anchor" aria-label="anchor" href="#arg-block"></a></dt>
-<dd><p>The target block in the schema that these alternatives pertain to.</p></dd>
-
-
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>One or more alternative branches created by `alternative()`.</p></dd>
 
@@ -75,23 +71,12 @@
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="example_tines.html">example_alternatives</a></span><span class="op">(</span>case <span class="op">=</span> <span class="st">"football"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]$tag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "block-mixed-effects-logistic-model"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]$action</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "estimate the effect size of skin tone on red card"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]$decision</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "fit a generalized linear mixed-effects model (GLMM) with random intercepts for players and referees to account for hierarchical data structure"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]$justification</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "mixed-effects models are appropriate for clustered data as they control for non-independence of observations within players and referees, leading to more reliable standard errors and effect estimates"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $step</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "step-logistic-model"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]$tag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "block-probit-regression-model"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]$id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "step-probit-regression-model"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]$action</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "estimate the effect size of skin tone on red card"</span>
@@ -104,8 +89,8 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]$tag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "block-bayesian-logistic-model"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]$id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "step-bayesian-logistic-model"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]$action</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "estimate the effect size of skin tone on red card"</span>
@@ -119,8 +104,19 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "alternatives" "list"        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"block")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "block-logistic-model"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"id")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"id")$id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "step-mixed-effects-logistic-model"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"id")$action</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "estimate the effect size of skin tone on red card"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"id")$decision</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "fit a generalized linear mixed-effects model (GLMM) with random intercepts for players and referees to account for hierarchical data structure"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"id")$justification</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "mixed-effects models are appropriate for clustered data as they control for non-independence of observations within players and referees, leading to more reliable standard errors and effect estimates"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

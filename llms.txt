@@ -25,20 +25,20 @@ Start from a schema
 library(tines)
 (hdi <- example_schema())
 #> $nodes
-#> # A tibble: 3 × 9
-#>   tag    action type  decision justification status inputs outputs source_schema
-#>   <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
-#> 1 block… varia… cons… apply m… to put them … VERIF… <lgl>  <lgl>   NA           
-#> 2 block… combi… step  average… the most int… VERIF… <lgl>  <lgl>   NA           
-#> 3 block… combi… step  use the… the geometri… VERIF… <lgl>  <lgl>   NA           
+#> # A tibble: 3 × 8
+#>   id            action type  decision justification inputs outputs source_schema
+#>   <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
+#> 1 step-scaling  varia… cons… apply m… to put them … <lgl>  <lgl>   NA           
+#> 2 step-educati… combi… step  average… the most int… <lgl>  <lgl>   NA           
+#> 3 step-combine  combi… step  use the… the geometri… <lgl>  <lgl>   NA           
 #> 
 #> $edges
 #> # A tibble: 3 × 3
-#>   from            to              type      
-#>   <chr>           <chr>           <chr>     
-#> 1 block-scaling   block-education sequential
-#> 2 block-combine   block-scaling   motivated 
-#> 3 block-education block-combine   sequential
+#>   from           to             type      
+#>   <chr>          <chr>          <chr>     
+#> 1 step-scaling   step-education sequential
+#> 2 step-combine   step-scaling   motivated 
+#> 3 step-education step-combine   sequential
 #> 
 #> attr(,"class")
 #> [1] "schema"
@@ -50,7 +50,7 @@ Generate an alternative at block-combine and write the result into a
 `yaml` file:
 
 ``` r
-gen_alternatives(hdi, block = "block-combine", n = 1, 
+gen_alternatives(hdi, id = "block-combine", n = 1, 
                  file_path = here::here("inst/hdi-alt.yaml"))
 ```
 
@@ -73,13 +73,18 @@ Run the generated code and compare the results:
 
 ``` r
 res_arith <- source(here::here("inst/alt_01_block_combine_arithmetic.R"))
-#> ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-#> ✔ dplyr     1.1.4     ✔ readr     2.1.5
-#> ✔ forcats   1.0.0     ✔ stringr   1.5.2
-#> ✔ ggplot2   4.0.0     ✔ tibble    3.3.0
-#> ✔ lubridate 1.9.4     ✔ tidyr     1.3.1
-#> ✔ purrr     1.1.0     
-#> ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+#> Warning: package 'tibble' was built under R version 4.5.2
+#> Warning: package 'tidyr' was built under R version 4.5.2
+#> Warning: package 'purrr' was built under R version 4.5.2
+#> Warning: package 'dplyr' was built under R version 4.5.2
+#> Warning: package 'lubridate' was built under R version 4.5.2
+#> ── Attaching core tidyverse packages ─────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 2.0.0 ──
+#> ✔ dplyr     1.2.0     ✔ readr     2.1.5
+#> ✔ forcats   1.0.0     ✔ stringr   1.6.0
+#> ✔ ggplot2   4.0.0     ✔ tibble    3.3.1
+#> ✔ lubridate 1.9.5     ✔ tidyr     1.3.2
+#> ✔ purrr     1.2.1     
+#> ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 #> ✖ dplyr::filter() masks stats::filter()
 #> ✖ dplyr::lag()    masks stats::lag()
 #> ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
@@ -105,20 +110,20 @@ Start from a schema
 library(tines)
 (football <- example_football())
 #> $nodes
-#> # A tibble: 3 × 9
-#>   tag    action type  decision justification status inputs outputs source_schema
-#>   <chr>  <chr>  <chr> <chr>    <chr>         <chr>  <list> <list>  <lgl>        
-#> 1 block… defin… cons… average… incorporate … VERIF… <lgl>  <lgl>   NA           
-#> 2 block… contr… step  victory… ratios are r… VERIF… <lgl>  <lgl>   NA           
-#> 3 block… estim… step  fit a l… to answer th… VERIF… <lgl>  <lgl>   NA           
+#> # A tibble: 3 × 8
+#>   id            action type  decision justification inputs outputs source_schema
+#>   <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
+#> 1 step-average… defin… cons… average… incorporate … <lgl>  <lgl>   NA           
+#> 2 step-victory… contr… step  victory… ratios are r… <lgl>  <lgl>   NA           
+#> 3 step-logisti… estim… step  fit a l… to answer th… <lgl>  <lgl>   NA           
 #> 
 #> $edges
 #> # A tibble: 3 × 3
-#>   from                           to                   type      
-#>   <chr>                          <chr>                <chr>     
-#> 1 block-average-rater            block-logistic-model sequential
-#> 2 block-logistic-model           block-average-rater  motivated 
-#> 3 block-victory-tie-defeat-ratio block-logistic-model sequential
+#>   from                          to                  type      
+#>   <chr>                         <chr>               <chr>     
+#> 1 step-average-rater            step-logistic-model sequential
+#> 2 step-logistic-model           step-average-rater  motivated 
+#> 3 step-victory-tie-defeat-ratio step-logistic-model sequential
 #> 
 #> attr(,"class")
 #> [1] "schema"
@@ -128,7 +133,7 @@ Generate an alternative at block-combine and write the result into a
 `yaml` file:
 
 ``` r
-gen_alternatives(football, block = "block-logistic-model", n = 2, 
+gen_alternatives(football, id = "block-logistic-model", n = 2, 
                  file_path = here::here("inst/football-alt.yaml"))
 ```
 
@@ -165,7 +170,7 @@ validate_script(here::here("inst/rdi.R"), verbose = TRUE)
 
 - [`new_schema()`](constructor.md) [`build_schema()`](constructor.md)
   [`new_multiverse()`](constructor.md)
-  [`build_multiverse()`](constructor.md) [`add_block()`](constructor.md)
+  [`build_multiverse()`](constructor.md) [`add_step()`](constructor.md)
   [`add_dependency()`](constructor.md) [`as_schema()`](constructor.md)
   [`as_multiverse()`](constructor.md)
   [`c(`*`<schema>`*`)`](constructor.md)
@@ -177,8 +182,8 @@ validate_script(here::here("inst/rdi.R"), verbose = TRUE)
 - [`alternative()`](alternatives.md)
   [`new_alternatives()`](alternatives.md) : Construct \`alternatives\`
   objects
-- [`import_block()`](import.md) [`generate_edges()`](import.md) : Import
-  a block from a source schema into the current schema
+- [`import_step()`](import.md) [`generate_edges()`](import.md) : Import
+  a Step from a source schema into the current schema
 
 ## Generate analytical alternatives and corresponding code
 
@@ -209,7 +214,7 @@ validate_script(here::here("inst/rdi.R"), verbose = TRUE)
 
 ## Utility
 
-- [`get_block_names()`](get.md) : Functions to access components of a
+- [`get_step_names()`](get.md) : Functions to access components of a
   tine object
 - [`example_schema()`](example_tines.md)
   [`example_multiverse()`](example_tines.md)

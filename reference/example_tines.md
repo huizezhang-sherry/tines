@@ -47,19 +47,19 @@ example_football_grp20()
 example_schema()
 #> $nodes
 #> # A tibble: 3 × 8
-#>   tag           action type  decision justification inputs outputs source_schema
+#>   id            action type  decision justification inputs outputs source_schema
 #>   <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
-#> 1 block-scaling varia… cons… apply m… to put them … <lgl>  <lgl>   NA           
-#> 2 block-educat… combi… step  average… the most int… <lgl>  <lgl>   NA           
-#> 3 block-combine combi… step  use the… the geometri… <lgl>  <lgl>   NA           
+#> 1 step-scaling  varia… cons… apply m… to put them … <lgl>  <lgl>   NA           
+#> 2 step-educati… combi… step  average… the most int… <lgl>  <lgl>   NA           
+#> 3 step-combine  combi… step  use the… the geometri… <lgl>  <lgl>   NA           
 #> 
 #> $edges
 #> # A tibble: 3 × 3
-#>   from            to              type      
-#>   <chr>           <chr>           <chr>     
-#> 1 block-scaling   block-education sequential
-#> 2 block-combine   block-scaling   motivated 
-#> 3 block-education block-combine   sequential
+#>   from           to             type      
+#>   <chr>          <chr>          <chr>     
+#> 1 step-scaling   step-education sequential
+#> 2 step-combine   step-scaling   motivated 
+#> 3 step-education step-combine   sequential
 #> 
 #> attr(,"class")
 #> [1] "schema"
@@ -69,19 +69,19 @@ example_multiverse()
 #> $original
 #> $nodes
 #> # A tibble: 3 × 8
-#>   tag           action type  decision justification inputs outputs source_schema
+#>   id            action type  decision justification inputs outputs source_schema
 #>   <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
-#> 1 block-scaling varia… cons… apply m… to put them … <lgl>  <lgl>   NA           
-#> 2 block-educat… combi… step  average… the most int… <lgl>  <lgl>   NA           
-#> 3 block-combine combi… step  use the… the geometri… <lgl>  <lgl>   NA           
+#> 1 step-scaling  varia… cons… apply m… to put them … <lgl>  <lgl>   NA           
+#> 2 step-educati… combi… step  average… the most int… <lgl>  <lgl>   NA           
+#> 3 step-combine  combi… step  use the… the geometri… <lgl>  <lgl>   NA           
 #> 
 #> $edges
 #> # A tibble: 3 × 3
-#>   from            to              type      
-#>   <chr>           <chr>           <chr>     
-#> 1 block-scaling   block-education sequential
-#> 2 block-combine   block-scaling   motivated 
-#> 3 block-education block-combine   sequential
+#>   from           to             type      
+#>   <chr>          <chr>          <chr>     
+#> 1 step-scaling   step-education sequential
+#> 2 step-combine   step-scaling   motivated 
+#> 3 step-education step-combine   sequential
 #> 
 #> attr(,"class")
 #> [1] "schema"
@@ -91,19 +91,19 @@ example_multiverse()
 #> $reversed
 #> $nodes
 #> # A tibble: 3 × 8
-#>   tag           action type  decision justification inputs outputs source_schema
+#>   id            action type  decision justification inputs outputs source_schema
 #>   <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
-#> 1 block-educat… combi… step  average… the most int… <lgl>  <lgl>   NA           
-#> 2 block-scaling varia… cons… apply m… to put them … <lgl>  <lgl>   NA           
-#> 3 block-combine combi… step  use the… the geometri… <lgl>  <lgl>   NA           
+#> 1 step-educati… combi… step  average… the most int… <lgl>  <lgl>   NA           
+#> 2 step-scaling  varia… cons… apply m… to put them … <lgl>  <lgl>   NA           
+#> 3 step-combine  combi… step  use the… the geometri… <lgl>  <lgl>   NA           
 #> 
 #> $edges
 #> # A tibble: 3 × 3
-#>   from            to            type      
-#>   <chr>           <chr>         <chr>     
-#> 1 block-education block-scaling sequential
-#> 2 block-scaling   block-combine sequential
-#> 3 block-combine   block-scaling motivated 
+#>   from           to           type      
+#>   <chr>          <chr>        <chr>     
+#> 1 step-education step-scaling sequential
+#> 2 step-scaling   step-combine sequential
+#> 3 step-combine   step-scaling motivated 
 #> 
 #> attr(,"class")
 #> [1] "schema"
@@ -115,39 +115,39 @@ example_multiverse()
 example_football()
 #> $nodes
 #> # A tibble: 3 × 8
-#>   tag           action type  decision justification inputs outputs source_schema
+#>   id            action type  decision justification inputs outputs source_schema
 #>   <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
-#> 1 block-averag… defin… cons… average… incorporate … <lgl>  <lgl>   NA           
-#> 2 block-victor… contr… step  victory… ratios are r… <lgl>  <lgl>   NA           
-#> 3 block-logist… estim… step  fit a l… to answer th… <lgl>  <lgl>   NA           
+#> 1 step-average… defin… cons… average… incorporate … <lgl>  <lgl>   NA           
+#> 2 step-victory… contr… step  victory… ratios are r… <lgl>  <lgl>   NA           
+#> 3 step-logisti… estim… step  fit a l… to answer th… <lgl>  <lgl>   NA           
 #> 
 #> $edges
 #> # A tibble: 3 × 3
-#>   from                           to                   type      
-#>   <chr>                          <chr>                <chr>     
-#> 1 block-average-rater            block-logistic-model sequential
-#> 2 block-logistic-model           block-average-rater  motivated 
-#> 3 block-victory-tie-defeat-ratio block-logistic-model sequential
+#>   from                          to                  type      
+#>   <chr>                         <chr>               <chr>     
+#> 1 step-average-rater            step-logistic-model sequential
+#> 2 step-logistic-model           step-average-rater  motivated 
+#> 3 step-victory-tie-defeat-ratio step-logistic-model sequential
 #> 
 #> attr(,"class")
 #> [1] "schema"
 example_alternatives(case = "hdi")
-#> [[1]]
-#> [[1]]$tag
-#> [1] "block-arithmetic-mean"
-#> 
-#> [[1]]$action
-#> [1] "combine the three dimensions into a single index"
-#> 
-#> [[1]]$decision
-#> [1] "use a arithmetic mean"
-#> 
-#> [[1]]$justification
-#> [1] "the old method"
-#> 
+#> $step
+#> [1] "step-combine"
 #> 
 #> attr(,"class")
 #> [1] "alternatives" "list"        
-#> attr(,"block")
-#> [1] "block-combine"
+#> attr(,"id")
+#> attr(,"id")$id
+#> [1] "step-arithmetic-mean"
+#> 
+#> attr(,"id")$action
+#> [1] "combine the three dimensions into a single index"
+#> 
+#> attr(,"id")$decision
+#> [1] "use a arithmetic mean"
+#> 
+#> attr(,"id")$justification
+#> [1] "the old method"
+#> 
 ```

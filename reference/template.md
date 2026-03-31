@@ -12,7 +12,7 @@ draft_tines(
   overwrite = FALSE
 )
 
-draft_alternatives(x, block, file_path = NULL)
+draft_alternatives(x, id, file_path = NULL)
 ```
 
 ## Arguments
@@ -38,11 +38,11 @@ draft_alternatives(x, block, file_path = NULL)
 
   A \`schema\` or \`multiverse\` object. Required for
   \`draft_alternatives()\` to generate a template based on an existing
-  block.
+  step.
 
-- block:
+- id:
 
-  A character string specifying the \`tag\` of the block in the schema
+  A character string specifying the \`id\` of the step in the schema
 
 ## Examples
 
@@ -50,7 +50,7 @@ draft_alternatives(x, block, file_path = NULL)
 # Create a new schema template
 if (FALSE) { # \dontrun{
 draft_tines(type = "schema", file_path = "schema_template.yaml")
-draft_alternatives(x = my_schema, block = "data-cleaning", file_path = "alternative_template.yaml")
+draft_alternatives(x = my_schema, id = "data-cleaning", file_path = "alternative_template.yaml")
 } # }
 
 ```
