@@ -3,7 +3,7 @@
 #' @description
 #' `gen_alternatives()` takes an existing `schema` or `multiverse` and asks a
 #' Large Language Model to suggest methodologically valid, alternative approaches for
-#' a specific step (block) in your analysis pipeline.
+#' a specific step in your analysis pipeline.
 #'
 #' `prompt_alternatives()` is a helper function that constructs the exact instruction
 #' set sent to the LLM.
@@ -16,7 +16,7 @@
 #'
 #' @param x A `schema` or `multiverse` object, or a character string specifying
 #'   the file path to a valid `tines` YAML file.
-#' @param block A character string. The exact `id` of the step/node you want
+#' @param step A character string. The exact `id` of the step you want
 #'   the LLM to generate alternatives for.
 #' @param n An integer. The number of distinct alternatives you want the LLM
 #'   to generate. Defaults to `3`.
@@ -40,14 +40,14 @@
 #' hdi <- example_schema()
 #' 
 #' \dontrun{
-#' gen_alternatives(hdi, block = "block-combine", n = 1,
+#' gen_alternatives(hdi, step = "step-combine", n = 1,
 #'                 file_path = here::here("inst/hdi-alt.yaml"))
 #' }
 #' 
 #' # The prompt generation function can be used directly to see the full prompt sent to the LLM
-#' prompt_alternatives(schema = hdi, block = "block-combine", print = TRUE)
+#' prompt_alternatives(schema = hdi, step = "step-combine", print = TRUE)
 #' 
-gen_alternatives <- function(x, block, n = 3,
+gen_alternatives <- function(x, step, n = 3,
                              provider = "gemini", file_path = NULL, ...){
   UseMethod("gen_alternatives")
 }
@@ -65,13 +65,13 @@ gen_alternatives.character <- function(x, ...){
 
 #' @export
 #' @rdname gen_alternatives
-gen_alternatives.schema <- function(x, block, n = 3,
+gen_alternatives.schema <- function(x, step, n = 3,
                              provider = "gemini", file_path = NULL, ...){
   if (is.null(file_path)) {
     cli::cli_abort("You must provide a {.arg file_path} to save the generated alternatives.")
   }
 
-  full_prompt <- prompt_alternatives(schema = x, block = block, n = n)
+  full_prompt <- prompt_alternatives(schema = x, step = step, n = n)
 
   chat <- ellmer::chat_google_gemini(model = "gemini-2.5-flash")
   utils::capture.output(chat$chat(full_prompt), file = file_path)
@@ -81,13 +81,13 @@ gen_alternatives.schema <- function(x, block, n = 3,
 
 #' @export
 #' @rdname gen_alternatives
-gen_alternatives.multiverse <- function(x, block, ...){
+gen_alternatives.multiverse <- function(x, step, ...){
   valid_schema <- NULL
 
-  # find the first schema in the multiverse that contains the target block
+  # find the first schema in the multiverse that contains the target step
   for (schema in x) {
     ids <- purrr::map_chr(schema$nodes, "id")
-    if (block %in% ids) {
+    if (step %in% ids) {
       valid_schema <- schema
       break
     }
@@ -95,11 +95,11 @@ gen_alternatives.multiverse <- function(x, block, ...){
 
   if (is.null(valid_schema)) {
     cli::cli_abort(
-      "Target block {.val {block}} not found in any branch of this multiverse."
+      "Target step {.val {step}} not found in any branch of this multiverse."
     )
   }
 
-  gen_alternatives(valid_schema, block, ...)
+  gen_alternatives(valid_schema, step, ...)
 
 }
 
@@ -107,19 +107,19 @@ gen_alternatives.multiverse <- function(x, block, ...){
 #' @export
 #' @rdname gen_alternatives
 #' @param schema A schema object to include in the prompt.
-prompt_alternatives <- function(schema = NULL, block, n = 3, print = TRUE, width = 70){
+prompt_alternatives <- function(schema = NULL, step, n = 3, print = TRUE, width = 70){
   system_prompt <- paste0(
     "You are an expert Data Analyst and Methodologist. You are reviewing an analysis schema to identify ",
     "\"Forking Paths\" -- alternative analytical choices that are equally valid but distinct from the current approach.\n\n",
     "=== DEFINITIONS ===\n\n",
-    "The schema provided to you consists of blocks with:\n\n",
-    "- **ACTION**: The goal of the block (What needs to be done).\n\n",
+    "The schema provided to you consists of steps with:\n\n",
+    "- **ACTION**: The goal of the step (What needs to be done).\n\n",
     "- **DECISION**: The specific implementation chosen (How it is done).\n\n",
     "- **JUSTIFICATION**: The reasoning behind that decision.\n\n",
-    "- **ID**: The unique identifier for the block (kebab-case).\n\n",
+    "- **ID**: The unique identifier for the step (kebab-case).\n\n",
     "=== TASK ===\n\n",
-    "Focus specifically on the block tagged: \"", block, "\".\n",
-    "Your goal is to generate ", n, " distinct, valid alternatives for this block.\n\n",
+    "Focus specifically on the step tagged: \"", step, "\".\n",
+    "Your goal is to generate ", n, " distinct, valid alternatives for this step.\n\n",
     "For each alternative:\n",
     "1. **Keep the same ACTION** (the goal remains constant).\n\n",
     "2. **Change the DECISION** to a different but methodologically sound approach.\n\n",
@@ -128,7 +128,7 @@ prompt_alternatives <- function(schema = NULL, block, n = 3, print = TRUE, width
     "=== OUTPUT FORMAT ===\n\n",
     "Please output the result in **strictly valid YAML format**.\n\n",
     "**Crucial Formatting Rules:**\n\n",
-    "1. Include a `meta` section at the top with `type: alternative` and the `block`.\n\n",
+    "1. Include a `meta` section at the top with `type: alternative` and the `step`.\n\n",
     "2. Output strictly valid YAML. All text values (decision, justification) must be enclosed in double quotes (\"). ",
     "Do not use block styles (| or >). Do not wrap lines or insert \\n characters within the quotes; ",
     "keep the text as a single continuous string.\n\n",
@@ -136,13 +136,13 @@ prompt_alternatives <- function(schema = NULL, block, n = 3, print = TRUE, width
     "=== REQUIRED YAML STRUCTURE EXAMPLE ===\n\n",
     "meta:\n",
     "  type: tines_alternative\n",
-    "  block: ", block, "\n",
+    "  step: ", step, "\n",
     "alternatives:\n",
-    "  - id: block-new-method-name\n",
+    "  - id: step-new-method-name\n",
     "    action: Repeat the original action\n",
     "    decision: \"Description of the new decision...\"\n",
     "    justification: \"This is the reasoning for why this alternative is valid.\"\n",
-    "  - id: block-another-method\n",
+    "  - id: step-another-method\n",
     "    ...\n"
   )
 
@@ -201,12 +201,12 @@ expand_tines.schema <- function(x, alternatives, include_original = TRUE, ...) {
     alts_data <- alternatives
   }
 
-  target <- attr(alts_data,"block")
+  target <- attr(alts_data, "step")
 
 
   ids <- x$nodes$id
   if (!target %in% ids) {
-    cli::cli_abort("Target block {.val {target}} not found in the base schema.")
+    cli::cli_abort("Target step {.val {target}} not found in the base schema.")
   }
   idx <- which(ids == target)
 
@@ -242,18 +242,18 @@ expand_tines.multiverse <- function(x, alternatives, ...) {
   } else {
     alts_data <- alternatives
   }
-  target <- attr(alts_data,"block")
+  target <- attr(alts_data, "step")
 
   expanded_list <- lapply(x, function(single_schema) {
 
     ids <- single_schema$nodes$id
 
     if (target %in% ids) {
-      # It has the block! Expand it, and extract the resulting list of schemas
+      # It has the step! Expand it, and extract the resulting list of schemas
       expanded_mini_multi <- expand_tines(single_schema, alternatives, include_original = FALSE)
       return(expanded_mini_multi)
     } else {
-      # It DOES NOT have the block! Return it untouched, wrapped in a list
+      # It DOES NOT have the step! Return it untouched, wrapped in a list
       # so it can be cleanly flattened with the others later.
       return(list(single_schema))
     }

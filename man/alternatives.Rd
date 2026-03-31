@@ -7,18 +7,16 @@
 \usage{
 alternative(id, action, decision, justification)
 
-new_alternatives(block, ...)
+new_alternatives(id, ...)
 }
 \arguments{
-\item{id}{Unique identifier for this alternative (kebab-case).}
+\item{id}{The target step ID in the schema that these alternatives pertain to.}
 
 \item{action}{The goal of the step (should match the original).}
 
 \item{decision}{The new method/implementation.}
 
 \item{justification}{Why this method is valid.}
-
-\item{block}{The target block in the schema that these alternatives pertain to.}
 
 \item{...}{One or more alternative branches created by `alternative()`.}
 }

@@ -11,7 +11,7 @@ draft_tines(
   overwrite = FALSE
 )
 
-draft_alternatives(x, block, file_path = NULL)
+draft_alternatives(x, id, file_path = NULL)
 }
 \arguments{
 \item{type}{The type of template to create. Options are "schema" for a new analysis schema template, and "multiverse" for a multiverse analysis template.}
@@ -20,9 +20,9 @@ draft_alternatives(x, block, file_path = NULL)
 
 \item{overwrite}{Logical. If TRUE, will overwrite an existing file at the specified file_path. Defaults to FALSE.}
 
-\item{x}{A `schema` or `multiverse` object. Required for `draft_alternatives()` to generate a template based on an existing block.}
+\item{x}{A `schema` or `multiverse` object. Required for `draft_alternatives()` to generate a template based on an existing step.}
 
-\item{block}{A character string specifying the `id` of the block in the schema}
+\item{id}{A character string specifying the `id` of the step in the schema}
 }
 \description{
 Generates a starter YAML file for a `schema` or `multiverse` to help you
@@ -32,7 +32,7 @@ begin building your garden of forking paths.
 # Create a new schema template
 \dontrun{
 draft_tines(type = "schema", file_path = "schema_template.yaml")
-draft_alternatives(x = my_schema, block = "data-cleaning", file_path = "alternative_template.yaml")
+draft_alternatives(x = my_schema, id = "data-cleaning", file_path = "alternative_template.yaml")
 }
 
 

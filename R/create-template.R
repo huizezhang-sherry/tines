@@ -5,8 +5,8 @@
 #'
 #' @param type The type of template to create. Options are "schema" for a new analysis schema template, and "multiverse" for a multiverse analysis template.
 #' @param file_path The file path where the template should be saved. If NULL, the template will be saved in the current working directory with a default name based on the type.
-#' @param x A `schema` or `multiverse` object. Required for `draft_alternatives()` to generate a template based on an existing block.
-#' @param block A character string specifying the `id` of the block in the schema
+#' @param x A `schema` or `multiverse` object. Required for `draft_alternatives()` to generate a template based on an existing step.
+#' @param id A character string specifying the `id` of the step in the schema
 #' @param overwrite Logical. If TRUE, will overwrite an existing file at the specified file_path. Defaults to FALSE.
 #' @return NULL
 #' @export
@@ -15,7 +15,7 @@
 #' # Create a new schema template
 #' \dontrun{
 #' draft_tines(type = "schema", file_path = "schema_template.yaml")
-#' draft_alternatives(x = my_schema, block = "data-cleaning", file_path = "alternative_template.yaml")
+#' draft_alternatives(x = my_schema, id = "data-cleaning", file_path = "alternative_template.yaml")
 #' }
 #'
 #'
@@ -96,26 +96,26 @@ draft_tines <- function(type = c("schema", "multiverse"), file_path = NULL, over
 
 #' @export
 #' @rdname template
-draft_alternatives <- function(x, block, file_path = NULL) {
+draft_alternatives <- function(x, id, file_path = NULL) {
 
-  if (!block %in% x$nodes$id) {
-    cli::cli_abort("Block {.val {block}} not found in the {class(x)} object")
+  if (!id %in% x$nodes$id) {
+    cli::cli_abort("Step {.val {id}} not found in the {class(x)} object")
   }
 
   # Get the current action
-  idx <- which(x$nodes$id == block)
+  idx <- which(x$nodes$id == id)
   current_action <- x$nodes$action[idx]
 
   template <- cli::format_inline(
     "meta:
   type: tines_alternative
-  block: {block}
+  step: {id}
 alternatives:
-  - id: \"block-YOUR-NEW-NAME-HERE\"
+  - id: \"YOUR-NEW-NAME-HERE\"
     action: \"{current_action}\"
     decision: \"\"
     justification: >
- - id: \"block-YOUR-NEW-NAME-HERE\"
+ - id: \"YOUR-NEW-NAME-HERE\"
     action: \"{current_action}\"
     decision: \"\"
     justification: >
@@ -123,7 +123,7 @@ alternatives:
   )
 
   if (is.null(file_path)) {
-    file_path <- paste0("alt_", block, ".yaml")
+    file_path <- paste0("alt_", id, ".yaml")
   }
 
   writeLines(cli::ansi_strip(template), file_path)

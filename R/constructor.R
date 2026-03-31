@@ -9,8 +9,8 @@
 #' @param ... One or more `schema` objects to be included in the multiverse.
 #' @param schemas A single list containing objects of class `schema`. Defaults to an empty list.
 #' @param object A `schema` object.
-#' @param id,type,action,decision,justification,inputs,outputs,source_schema character strings to write a block - NOT SURE ABOUT THE DESIGN YET
-#' @param feeds,uses,solves,prompts Character vectors to describe the relationship between blocks - NOT SURE ABOUT THE DESIGN YET
+#' @param id,type,action,decision,justification,inputs,outputs,source_schema character strings to write a step - NOT SURE ABOUT THE DESIGN YET
+#' @param feeds,uses,solves,prompts Character vectors to describe the relationship between steps - NOT SURE ABOUT THE DESIGN YET
 #' @param x An object to be coerced into a `schema` or `multiverse`.
 #' @return
 #' * `build_schema()` and `new_schema()` return an object of class `schema`.
@@ -21,23 +21,23 @@
 #'
 #' @examples
 #' schema <- build_schema("HDI Example") |>
-#'   # 1. The Scaling Block
-#'   add_block(id = "block-scaling",
+#'   # 1. The Scaling step
+#'   add_step(id = "step-scaling",
 #'             type = "constraint",
 #'             action = "variables are in different scales",
 #'             decision = "apply min-max scaling to each variable",
 #'             justification = "to put them on the same scale for combination",
-#'             solves = "block-combine",       # Motivation comes from the end
-#'             feeds = "block-education") |>
-#'   # 2. The Education Block
-#'   add_block(id = "block-education",
+#'             solves = "step-combine",       # Motivation comes from the end
+#'             feeds = "step-education") |>
+#'   # 2. The Education step
+#'   add_step(id = "step-education",
 #'             type = "step",
 #'             action = "combine the school variables into one dimension",
 #'             decision = "average exp sch and avg sch",
 #'             justification = "the most intuitive way",
-#'             feeds = "block-combine") |>
-#'   # 3. The Combine Block
-#'   add_block(id = "block-combine",
+#'             feeds = "step-combine") |>
+#'   # 3. The Combine step
+#'   add_step(id = "step-combine",
 #'             type = "step",
 #'             action = "combine the three dimensions into a single index",
 #'             decision = "use the geometric mean",
@@ -46,23 +46,23 @@
 #' str(schema)
 #'
 #' schema2 <- build_schema("HDI Example") |>
-#'   # 1. The Education Block
-#'   add_block(id = "block-education",
+#'   # 1. The Education Step
+#'   add_step(id = "step-education",
 #'             type = "step",
 #'             action = "combine the school variables into one dimension",
 #'             decision = "average exp sch and avg sch",
 #'             justification = "the most intuitive way",
-#'             feeds = "block-scaling") |>
-#'   # 2. The Scaling Block
-#'   add_block(id = "block-scaling",
+#'             feeds = "step-scaling") |>
+#'   # 2. The Scaling Step
+#'   add_step(id = "step-scaling",
 #'             type = "constraint",
 #'             action = "variables are in different scales",
 #'             decision = "apply min-max scaling to each variable",
 #'             justification = "to put them on the same scale for combination",
-#'             solves = "block-combine",       # Motivation comes from the end
-#'             feeds = "block-combine") |>
-#'   # 3. The Combine Block
-#'   add_block(id = "block-combine",
+#'             solves = "step-combine",       # Motivation comes from the end
+#'             feeds = "step-combine") |>
+#'   # 3. The Combine Step
+#'   add_step(id = "step-combine",
 #'             type = "step",
 #'             action = "combine the three dimensions into a single index",
 #'             decision = "use the geometric mean",
@@ -140,7 +140,7 @@ build_multiverse <- function(...) {
 ########################################################################
 #' @rdname constructor
 #' @export
-add_block <- function(object, id, action = "", type = "STEP",
+add_step <- function(object, id, action = "", type = "STEP",
                       decision = "", justification = "", inputs = NA, outputs = NA, source_schema = NA,
                       feeds = NULL, uses = NULL, prompts = NULL, solves = NULL, ...) {
   #browser()

@@ -1,25 +1,25 @@
-#' Import a block from a source schema into the current schema
+#' Import a Step from a source schema into the current schema
 #'
 #' @param schema The current schema being built.
-#' @param source_schema The schema to import the block from.
-#' @param id The id of the block to import.
+#' @param source_schema The schema to import the step from.
+#' @param id The id of the step to import.
 #' @param source_schema_name Optional. A string to use as the provenance key,
 #'   matched against `base_scripts` in `gen_composite_code()`. Defaults to
 #'   the deparsed name of `source_schema`.
 #' @param ... Optional field overrides (e.g. `inputs = c(".new_var")`).
-#' @return The updated schema with the imported block appended.
+#' @return The updated schema with the imported step appended.
 #' @export
 #' @rdname import
-import_block <- function(schema, source_schema, id, source_schema_name = NULL, ...) {
+import_step <- function(schema, source_schema, id, source_schema_name = NULL, ...) {
   
   to_import <- source_schema$nodes |>
     dplyr::filter(id == !!id)
   
   if (nrow(to_import) == 0) {
-    stop(sprintf("Could not find block with id '%s' in the source schema.", id))
+    stop(sprintf("Could not find step with id '%s' in the source schema.", id))
   }
   if (nrow(to_import) > 1) {
-    warning(sprintf("Multiple blocks found with id '%s'. Using the first.", id))
+    warning(sprintf("Multiple steps found with id '%s'. Using the first.", id))
     to_import <- to_import |> dplyr::slice(1)
   }
   

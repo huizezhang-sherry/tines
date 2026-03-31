@@ -7,7 +7,7 @@ reference:
    - new_schema
    - draw_tines
    - alternative
-   - import_block
+   - import_step
 - title: "Generate analytical alternatives and corresponding code"
   contents:
    - extract_schema
@@ -23,6 +23,7 @@ reference:
    - write_alternatives
 - title: "Utility"
   contents:
-   - get_block_names
+   - get_step_names
    - example_schema
    - football_grp20
+  

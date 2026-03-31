@@ -50,7 +50,7 @@ library(tines)
 Generate an alternative at block-combine and write the result into a `yaml` file:
 
 ```{r eval = FALSE}
-gen_alternatives(hdi, block = "block-combine", n = 1, 
+gen_alternatives(hdi, id = "block-combine", n = 1, 
                  file_path = here::here("inst/hdi-alt.yaml"))
 ```
 
@@ -95,7 +95,7 @@ library(tines)
 Generate an alternative at block-combine and write the result into a `yaml` file:
 
 ```{r eval = FALSE}
-gen_alternatives(football, block = "block-logistic-model", n = 2, 
+gen_alternatives(football, id = "block-logistic-model", n = 2, 
                  file_path = here::here("inst/football-alt.yaml"))
 ```
 

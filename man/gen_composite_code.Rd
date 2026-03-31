@@ -7,8 +7,8 @@
 gen_composite_code(schema, base_scripts, output_file)
 }
 \arguments{
-\item{schema}{A schema object assembled via `build_schema()`, `import_block()`,
-and `add_block()`.}
+\item{schema}{A schema object assembled via `build_schema()`, `import_step()`,
+and `add_step()`.}
 
 \item{base_scripts}{Named list mapping source schema object names to their 
 base R scripts, e.g. `list(spei_template = here::here("inst/spei.R"))`.}

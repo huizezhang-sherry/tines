@@ -98,17 +98,17 @@ prompt_extract_schema <- function(data_dict, text, print = TRUE, width = 70) {
     "  type: constraint\n",
     "  path: apply min-max scaling to each variable\n",
     "  justification: to put them on the same scale for combination\n",
-    "  id: block-scaling\n",
+    "  id: step-scaling\n",
     "  confidence: high\n",
     "- fork: combine the school variables into one dimension\n",
     "  type: step\n",
     "  path: average exp sch and avg sch\n",
     "  justification: the most intuitive way\n",
-    "  id: block-education\n",
+    "  id: step-education\n",
     "  confidence: low\n",
     "edges:\n",
-    "- from: block-scaling\n",
-    "  to: block-education\n",
+    "- from: step-scaling\n",
+    "  to: step-education\n",
     "  type: sequential\n"
   )
   

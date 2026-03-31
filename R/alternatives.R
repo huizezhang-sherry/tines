@@ -4,7 +4,7 @@
 #' @param action The goal of the step (should match the original).
 #' @param decision The new method/implementation.
 #' @param justification Why this method is valid.
-#' @param block The target block in the schema that these alternatives pertain to.
+#' @param id The target step ID in the schema that these alternatives pertain to.
 #' @param ... One or more alternative branches created by `alternative()`.
 #'
 #' @export
@@ -28,11 +28,11 @@ alternative <- function(id, action, decision, justification) {
 
 #' @export
 #' @rdname alternatives
-new_alternatives <- function(block, ...) {
+new_alternatives <- function(id, ...) {
   alts <- list(...)
 
   obj <- structure(alts, class = c("alternatives", "list"))
-  attr(obj, "block") <- block
+  attr(obj, "id") <- id
 
   return(obj)
 }
@@ -61,7 +61,7 @@ write_alternatives <- function(x, file, ...) {
   yaml_ready_list <- list(
     meta = list(
       type = "alternatives",
-      block = attr(x, "block")
+      step = attr(x, "step")
     ),
     alternatives = unclass(x)
   )
@@ -81,8 +81,8 @@ read_alternatives <- function(file, ...) {
   # 1. Read the raw list structure from disk
   raw_yaml <- yaml::read_yaml(file, ...)
 
-  # 2. Extract the target block
-  target <- raw_yaml$meta$block
+  # 2. Extract the target step (ID)
+  target <- raw_yaml$meta$id
 
   # 3. Convert the raw list items into validated `alternative()` objects
   parsed_alts <- purrr::map(raw_yaml$alternatives, function(a) {
@@ -95,6 +95,6 @@ read_alternatives <- function(file, ...) {
   })
 
 
-  args <- c(list(block = target), parsed_alts)
+  args <- c(list(step = target), parsed_alts)
   do.call(new_alternatives, args)
 }

@@ -8,21 +8,21 @@
 \alias{prompt_alternatives}
 \title{Generate analytical alternatives via LLM}
 \usage{
-gen_alternatives(x, block, n = 3, provider = "gemini", file_path = NULL, ...)
+gen_alternatives(x, step, n = 3, provider = "gemini", file_path = NULL, ...)
 
 \method{gen_alternatives}{character}(x, ...)
 
-\method{gen_alternatives}{schema}(x, block, n = 3, provider = "gemini", file_path = NULL, ...)
+\method{gen_alternatives}{schema}(x, step, n = 3, provider = "gemini", file_path = NULL, ...)
 
-\method{gen_alternatives}{multiverse}(x, block, ...)
+\method{gen_alternatives}{multiverse}(x, step, ...)
 
-prompt_alternatives(schema = NULL, block, n = 3, print = TRUE, width = 70)
+prompt_alternatives(schema = NULL, step, n = 3, print = TRUE, width = 70)
 }
 \arguments{
 \item{x}{A `schema` or `multiverse` object, or a character string specifying
 the file path to a valid `tines` YAML file.}
 
-\item{block}{A character string. The exact `id` of the step/node you want
+\item{step}{A character string. The exact `id` of the step you want
 the LLM to generate alternatives for.}
 
 \item{n}{An integer. The number of distinct alternatives you want the LLM
@@ -50,7 +50,7 @@ result as a character vector.}
 \description{
 `gen_alternatives()` takes an existing `schema` or `multiverse` and asks a
 Large Language Model to suggest methodologically valid, alternative approaches for
-a specific step (block) in your analysis pipeline.
+a specific step in your analysis pipeline.
 
 `prompt_alternatives()` is a helper function that constructs the exact instruction
 set sent to the LLM.
@@ -65,11 +65,11 @@ this to work.
 hdi <- example_schema()
 
 \dontrun{
-gen_alternatives(hdi, block = "block-combine", n = 1,
+gen_alternatives(hdi, step = "step-combine", n = 1,
                 file_path = here::here("inst/hdi-alt.yaml"))
 }
 
 # The prompt generation function can be used directly to see the full prompt sent to the LLM
-prompt_alternatives(schema = hdi, block = "block-combine", print = TRUE)
+prompt_alternatives(schema = hdi, step = "step-combine", print = TRUE)
 
 }

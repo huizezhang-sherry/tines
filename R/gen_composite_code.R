@@ -1,7 +1,7 @@
 #' Generate R code from a composite schema assembled from multiple source schemas
 #'
-#' @param schema A schema object assembled via `build_schema()`, `import_block()`,
-#'   and `add_block()`.
+#' @param schema A schema object assembled via `build_schema()`, `import_step()`,
+#'   and `add_step()`.
 #' @param base_scripts Named list mapping source schema object names to their 
 #'   base R scripts, e.g. `list(spei_template = here::here("inst/spei.R"))`.
 #' @param output_file Path to write the generated R script.
@@ -38,16 +38,16 @@ gen_composite_code <- function(schema, base_scripts, output_file) {
     node <- nodes[i, ]
     id  <- node$id
     
-    # source_schema is set by import_block(); absent for add_block() nodes
+    # source_schema is set by import_step(); absent for add_step() nodes
     source_nm <- if ("source_schema" %in% names(node)) node$source_schema else NA
     
     if (!is.null(source_nm) && !is.na(source_nm)) {
-      # -- Imported block: extract chunk from base script ----------------------
+      # -- Imported step: extract chunk from base script ----------------------
       script_path <- base_scripts[[source_nm]]
       
       if (is.null(script_path)) {
         cli::cli_abort(c(
-          "Block {.val {id}} was imported from {.val {source_nm}}",
+          "Step {.val {id}} was imported from {.val {source_nm}}",
           "x" = "No matching entry found in {.arg base_scripts}."
         ))
       }
@@ -63,7 +63,7 @@ gen_composite_code <- function(schema, base_scripts, output_file) {
         Filter(nchar, c(preambles, prior_chunks)),
         collapse = "\n\n"
       )
-      code_chunks[[i]] <- llm_generate_block(node, style_context)
+      code_chunks[[i]] <- llm_generate_step(node, style_context)
     }
   }
   
@@ -113,8 +113,8 @@ extract_preamble <- function(script_path) {
   paste(lines[seq_len(first_id - 1)], collapse = "\n")
 }
 
-# LLM code generation for new blocks ------------------------------------------
-llm_generate_block <- function(node, style_context) {
+# LLM code generation for new steps ------------------------------------------
+llm_generate_step <- function(node, style_context) {
   prompt <- glue::glue(
     "You are writing a step in an R analysis script.
     

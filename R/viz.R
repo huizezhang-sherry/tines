@@ -73,7 +73,7 @@ tines2dotspec <- function(x, ...) {
   # TODO: currently only doing sequential edges
   edge_strings <- with(dplyr::filter(x$edges, type == "sequential"), {
     style <- "solid"
-    color <- "block"
+    color <- "black"
 
     paste0('  "', from, '" -> "', to, '" [style=', style, ', color=', color, ']')
   })

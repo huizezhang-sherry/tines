@@ -5,7 +5,7 @@
 \alias{build_schema}
 \alias{new_multiverse}
 \alias{build_multiverse}
-\alias{add_block}
+\alias{add_step}
 \alias{add_dependency}
 \alias{as_schema}
 \alias{as_schema.default}
@@ -29,7 +29,7 @@ new_multiverse(schemas = list())
 
 build_multiverse(...)
 
-add_block(
+add_step(
   object,
   id,
   action = "",
@@ -85,9 +85,9 @@ as_multiverse(x, ...)
 
 \item{object}{A `schema` object.}
 
-\item{id, type, action, decision, justification, inputs, outputs, source_schema}{character strings to write a block - NOT SURE ABOUT THE DESIGN YET}
+\item{id, type, action, decision, justification, inputs, outputs, source_schema}{character strings to write a step - NOT SURE ABOUT THE DESIGN YET}
 
-\item{feeds, uses, solves, prompts}{Character vectors to describe the relationship between blocks - NOT SURE ABOUT THE DESIGN YET}
+\item{feeds, uses, solves, prompts}{Character vectors to describe the relationship between steps - NOT SURE ABOUT THE DESIGN YET}
 
 \item{x}{An object to be coerced into a `schema` or `multiverse`.}
 }
@@ -101,23 +101,23 @@ garden of forking paths (`multiverse`).
 }
 \examples{
 schema <- build_schema("HDI Example") |>
-  # 1. The Scaling Block
-  add_block(id = "block-scaling",
+  # 1. The Scaling step
+  add_step(id = "step-scaling",
             type = "constraint",
             action = "variables are in different scales",
             decision = "apply min-max scaling to each variable",
             justification = "to put them on the same scale for combination",
-            solves = "block-combine",       # Motivation comes from the end
-            feeds = "block-education") |>
-  # 2. The Education Block
-  add_block(id = "block-education",
+            solves = "step-combine",       # Motivation comes from the end
+            feeds = "step-education") |>
+  # 2. The Education step
+  add_step(id = "step-education",
             type = "step",
             action = "combine the school variables into one dimension",
             decision = "average exp sch and avg sch",
             justification = "the most intuitive way",
-            feeds = "block-combine") |>
-  # 3. The Combine Block
-  add_block(id = "block-combine",
+            feeds = "step-combine") |>
+  # 3. The Combine step
+  add_step(id = "step-combine",
             type = "step",
             action = "combine the three dimensions into a single index",
             decision = "use the geometric mean",
@@ -126,23 +126,23 @@ schema <- build_schema("HDI Example") |>
 str(schema)
 
 schema2 <- build_schema("HDI Example") |>
-  # 1. The Education Block
-  add_block(id = "block-education",
+  # 1. The Education Step
+  add_step(id = "step-education",
             type = "step",
             action = "combine the school variables into one dimension",
             decision = "average exp sch and avg sch",
             justification = "the most intuitive way",
-            feeds = "block-scaling") |>
-  # 2. The Scaling Block
-  add_block(id = "block-scaling",
+            feeds = "step-scaling") |>
+  # 2. The Scaling Step
+  add_step(id = "step-scaling",
             type = "constraint",
             action = "variables are in different scales",
             decision = "apply min-max scaling to each variable",
             justification = "to put them on the same scale for combination",
-            solves = "block-combine",       # Motivation comes from the end
-            feeds = "block-combine") |>
-  # 3. The Combine Block
-  add_block(id = "block-combine",
+            solves = "step-combine",       # Motivation comes from the end
+            feeds = "step-combine") |>
+  # 3. The Combine Step
+  add_step(id = "step-combine",
             type = "step",
             action = "combine the three dimensions into a single index",
             decision = "use the geometric mean",
