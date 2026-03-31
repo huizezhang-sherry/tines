@@ -49,7 +49,7 @@ extract_schema <- function(text, data_dict, output_file = "draft_schema.yml", mo
   full_prompt <- prompt_extract_schema(data_dict, text)
   
   cli::cli_alert_info("Extracting schema and mapping data flow simultaneously...")
-  chat <- ellmer::chat_google_gemini(model = model)
+  chat <- ellmer::chat_google_gemini(model = model, echo = "none")
   yaml_out <- chat$chat(full_prompt)
   
   clean_yaml <- gsub("^```yaml\n|^```\n|```$", "", trimws(yaml_out))

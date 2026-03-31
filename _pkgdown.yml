@@ -10,9 +10,9 @@ reference:
    - import_block
 - title: "Generate analytical alternatives and corresponding code"
   contents:
+   - extract_schema
    - gen_alternatives
    - expand_tines
-   - extract_schema
    - gen_code
    - validate_script
 - title: "Create new tines from existing tines"
@@ -27,4 +27,4 @@ reference:
   contents:
    - get_block_names
    - example_schema
-   - football_grp20 
+   - football_grp20

@@ -18,4 +18,31 @@ test_that("multiplication works", {
   # gen_code(obj, data = "inst/football.csv")
   # validate_script(here::here("scripts/pipeline.R"), data = "inst/football.csv")
   
-}) 
+})
+
+test_that("extract_schema generates valid YAML schema", {
+  
+  vcr::local_cassette("extract_schema", match_requests_on = c("method", "uri", "body_json"))
+  
+  text <- "We calculated age by subtracting birth year from 2012. Skin tone was rated on a 1-5 scale."
+  data_dict <- c("birthday", "rater1", "rater2", "age", "skin_tone")
+
+  output_file <- withr::local_tempfile(fileext = ".yml")  
+  
+  result <- extract_schema(text = text, data_dict = data_dict, output_file = output_file)
+  
+  expect_snapshot(cat(readLines(output_file), sep = "\n"))
+  
+  yaml_parsed <- yaml::read_yaml(output_file)
+  expect_snapshot(yaml_parsed)
+})
+
+test_that("prompt_extract_schema formats correctly", {
+  data_dict <- c("var1", "var2", "var3")
+  text <- "Some methodology text."
+  
+  result <- prompt_extract_schema(data_dict, text)
+  expect_snapshot(cat(result))
+})
+
+
