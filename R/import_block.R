@@ -57,7 +57,7 @@ generate_edges <- function(schema) {
   var_sources <- list()
   
   for (i in seq_len(nrow(schema$nodes))) {
-    current_tag     <- schema$nodes$tag[i]
+    current_tag     <- schema$nodes$id[i]
     current_inputs  <- unlist(schema$nodes$inputs[[i]])
     
     if (length(current_inputs) > 0) {
