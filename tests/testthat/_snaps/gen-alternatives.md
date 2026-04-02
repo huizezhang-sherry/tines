@@ -1,21 +1,21 @@
 # prompt_alternatives wording remains stable (snapshot)
 
     Code
-      prompt_alternatives(block = "clean-missing-data", print = FALSE)
+      prompt_alternatives(step = "clean-missing-data", print = FALSE)
     Output
-      [1] "You are an expert Data Analyst and Methodologist. You are reviewing an analysis schema to identify \"Forking Paths\" -- alternative analytical choices that are equally valid but distinct from the current approach.\n\n=== DEFINITIONS ===\n\nThe schema provided to you consists of blocks with:\n\n- **ACTION**: The goal of the block (What needs to be done).\n\n- **DECISION**: The specific implementation chosen (How it is done).\n\n- **JUSTIFICATION**: The reasoning behind that decision.\n\n- **ID**: The unique identifier for the block (kebab-case).\n\n=== TASK ===\n\nFocus specifically on the block tagged: \"clean-missing-data\".\nYour goal is to generate 3 distinct, valid alternatives for this block.\n\nFor each alternative:\n1. **Keep the same ACTION** (the goal remains constant).\n\n2. **Change the DECISION** to a different but methodologically sound approach.\n\n3. **Provide a new JUSTIFICATION** explaining why this alternative is valid.\n\n4. **Create a new ID** that reflects the new decision (must be kebab-case).\n\n=== OUTPUT FORMAT ===\n\nPlease output the result in **strictly valid YAML format**.\n\n**Crucial Formatting Rules:**\n\n1. Include a `meta` section at the top with `type: alternative` and the `block`.\n\n2. Output strictly valid YAML. All text values (decision, justification) must be enclosed in double quotes (\"). Do not use block styles (| or >). Do not wrap lines or insert \\n characters within the quotes; keep the text as a single continuous string.\n\n3. Do not include markdown code fences (like ```yaml) or conversational text. Just the raw YAML.\n\n=== REQUIRED YAML STRUCTURE EXAMPLE ===\n\nmeta:\n  type: tines_alternative\n  block: clean-missing-data\nalternatives:\n  - id: block-new-method-name\n    action: Repeat the original action\n    decision: \"Description of the new decision...\"\n    justification: \"This is the reasoning for why this alternative is valid.\"\n  - id: block-another-method\n    ...\n"
+      [1] "You are an expert Data Analyst and Methodologist. You are reviewing an analysis schema to identify \"Forking Paths\" -- alternative analytical choices that are equally valid but distinct from the current approach.\n\n=== DEFINITIONS ===\n\nThe schema provided to you consists of steps with:\n\n- **ACTION**: The goal of the step (What needs to be done).\n\n- **DECISION**: The specific implementation chosen (How it is done).\n\n- **JUSTIFICATION**: The reasoning behind that decision.\n\n- **ID**: The unique identifier for the step (kebab-case).\n\n=== TASK ===\n\nFocus specifically on the step tagged: \"clean-missing-data\".\nYour goal is to generate 3 distinct, valid alternatives for this step.\n\nFor each alternative:\n1. **Keep the same ACTION** (the goal remains constant).\n\n2. **Change the DECISION** to a different but methodologically sound approach.\n\n3. **Provide a new JUSTIFICATION** explaining why this alternative is valid.\n\n4. **Create a new ID** that reflects the new decision (must be kebab-case).\n\n=== OUTPUT FORMAT ===\n\nPlease output the result in **strictly valid YAML format**.\n\n**Crucial Formatting Rules:**\n\n1. Include a `meta` section at the top with `type: alternative` and the `step`.\n\n2. Output strictly valid YAML. All text values (decision, justification) must be enclosed in double quotes (\"). Do not use block styles (| or >). Do not wrap lines or insert \\n characters within the quotes; keep the text as a single continuous string.\n\n3. Do not include markdown code fences (like ```yaml) or conversational text. Just the raw YAML.\n\n=== REQUIRED YAML STRUCTURE EXAMPLE ===\n\nmeta:\n  type: tines_alternative\n  step: clean-missing-data\nalternatives:\n  - id: step-new-method-name\n    action: Repeat the original action\n    decision: \"Description of the new decision...\"\n    justification: \"This is the reasoning for why this alternative is valid.\"\n  - id: step-another-method\n    ...\n"
 
 ---
 
     Code
-      prompt_alternatives(block = "my-target-block", n = 2, print = FALSE)
+      prompt_alternatives(step = "my-target-block", n = 2, print = FALSE)
     Output
-      [1] "You are an expert Data Analyst and Methodologist. You are reviewing an analysis schema to identify \"Forking Paths\" -- alternative analytical choices that are equally valid but distinct from the current approach.\n\n=== DEFINITIONS ===\n\nThe schema provided to you consists of blocks with:\n\n- **ACTION**: The goal of the block (What needs to be done).\n\n- **DECISION**: The specific implementation chosen (How it is done).\n\n- **JUSTIFICATION**: The reasoning behind that decision.\n\n- **ID**: The unique identifier for the block (kebab-case).\n\n=== TASK ===\n\nFocus specifically on the block tagged: \"my-target-block\".\nYour goal is to generate 2 distinct, valid alternatives for this block.\n\nFor each alternative:\n1. **Keep the same ACTION** (the goal remains constant).\n\n2. **Change the DECISION** to a different but methodologically sound approach.\n\n3. **Provide a new JUSTIFICATION** explaining why this alternative is valid.\n\n4. **Create a new ID** that reflects the new decision (must be kebab-case).\n\n=== OUTPUT FORMAT ===\n\nPlease output the result in **strictly valid YAML format**.\n\n**Crucial Formatting Rules:**\n\n1. Include a `meta` section at the top with `type: alternative` and the `block`.\n\n2. Output strictly valid YAML. All text values (decision, justification) must be enclosed in double quotes (\"). Do not use block styles (| or >). Do not wrap lines or insert \\n characters within the quotes; keep the text as a single continuous string.\n\n3. Do not include markdown code fences (like ```yaml) or conversational text. Just the raw YAML.\n\n=== REQUIRED YAML STRUCTURE EXAMPLE ===\n\nmeta:\n  type: tines_alternative\n  block: my-target-block\nalternatives:\n  - id: block-new-method-name\n    action: Repeat the original action\n    decision: \"Description of the new decision...\"\n    justification: \"This is the reasoning for why this alternative is valid.\"\n  - id: block-another-method\n    ...\n"
+      [1] "You are an expert Data Analyst and Methodologist. You are reviewing an analysis schema to identify \"Forking Paths\" -- alternative analytical choices that are equally valid but distinct from the current approach.\n\n=== DEFINITIONS ===\n\nThe schema provided to you consists of steps with:\n\n- **ACTION**: The goal of the step (What needs to be done).\n\n- **DECISION**: The specific implementation chosen (How it is done).\n\n- **JUSTIFICATION**: The reasoning behind that decision.\n\n- **ID**: The unique identifier for the step (kebab-case).\n\n=== TASK ===\n\nFocus specifically on the step tagged: \"my-target-block\".\nYour goal is to generate 2 distinct, valid alternatives for this step.\n\nFor each alternative:\n1. **Keep the same ACTION** (the goal remains constant).\n\n2. **Change the DECISION** to a different but methodologically sound approach.\n\n3. **Provide a new JUSTIFICATION** explaining why this alternative is valid.\n\n4. **Create a new ID** that reflects the new decision (must be kebab-case).\n\n=== OUTPUT FORMAT ===\n\nPlease output the result in **strictly valid YAML format**.\n\n**Crucial Formatting Rules:**\n\n1. Include a `meta` section at the top with `type: alternative` and the `step`.\n\n2. Output strictly valid YAML. All text values (decision, justification) must be enclosed in double quotes (\"). Do not use block styles (| or >). Do not wrap lines or insert \\n characters within the quotes; keep the text as a single continuous string.\n\n3. Do not include markdown code fences (like ```yaml) or conversational text. Just the raw YAML.\n\n=== REQUIRED YAML STRUCTURE EXAMPLE ===\n\nmeta:\n  type: tines_alternative\n  step: my-target-block\nalternatives:\n  - id: step-new-method-name\n    action: Repeat the original action\n    decision: \"Description of the new decision...\"\n    justification: \"This is the reasoning for why this alternative is valid.\"\n  - id: step-another-method\n    ...\n"
 
 ---
 
     Code
-      prompt_alternatives(block = "my-target-block", print = TRUE)
+      prompt_alternatives(step = "my-target-block", print = TRUE)
     Output
       You are an expert Data Analyst and Methodologist. You are reviewing
       an analysis schema to identify "Forking Paths" -- alternative
@@ -24,20 +24,20 @@
       
       === DEFINITIONS ===
       
-      The schema provided to you consists of blocks with:
+      The schema provided to you consists of steps with:
       
-      - **ACTION**: The goal of the block (What needs to be done).
+      - **ACTION**: The goal of the step (What needs to be done).
       
       - **DECISION**: The specific implementation chosen (How it is done).
       
       - **JUSTIFICATION**: The reasoning behind that decision.
       
-      - **ID**: The unique identifier for the block (kebab-case).
+      - **ID**: The unique identifier for the step (kebab-case).
       
       === TASK ===
       
-      Focus specifically on the block tagged: "my-target-block". Your goal
-      is to generate 3 distinct, valid alternatives for this block.
+      Focus specifically on the step tagged: "my-target-block". Your goal
+      is to generate 3 distinct, valid alternatives for this step.
       
       For each alternative: 1. **Keep the same ACTION** (the goal remains
       constant).
@@ -58,7 +58,7 @@
       **Crucial Formatting Rules:**
       
       1. Include a `meta` section at the top with `type: alternative` and
-      the `block`.
+      the `step`.
       
       2. Output strictly valid YAML. All text values (decision,
       justification) must be enclosed in double quotes ("). Do not use
@@ -70,285 +70,46 @@
       
       === REQUIRED YAML STRUCTURE EXAMPLE ===
       
-      meta: type: tines_alternative block: my-target-block alternatives: -
-      id: block-new-method-name action: Repeat the original action
-      decision: "Description of the new decision..."  justification: "This
-      is the reasoning for why this alternative is valid."  - id:
-      block-another-method ...
+      meta: type: tines_alternative step: my-target-block alternatives: -
+      id: step-new-method-name action: Repeat the original action decision:
+      "Description of the new decision..."  justification: "This is the
+      reasoning for why this alternative is valid."  - id:
+      step-another-method ...
 
 # expand_tines
 
     Code
       expand_tines(base_schema, alts)
     Output
-      $original
-      $nodes
-      # A tibble: 3 x 8
-        id            action type  decision justification inputs outputs source_schema
-        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
-      1 block-averag~ defin~ cons~ average~ incorporate ~ <lgl>  <lgl>   NA           
-      2 block-victor~ contr~ step  victory~ ratios are r~ <lgl>  <lgl>   NA           
-      3 block-logist~ estim~ step  fit a l~ to answer th~ <lgl>  <lgl>   NA           
-      
-      $edges
-      # A tibble: 3 x 3
-        from                           to                   type      
-        <chr>                          <chr>                <chr>     
-      1 block-average-rater            block-logistic-model sequential
-      2 block-logistic-model           block-average-rater  motivated 
-      3 block-victory-tie-defeat-ratio block-logistic-model sequential
-      
-      attr(,"class")
-      [1] "schema"
-      
-      $`block-mixed-effects-logistic-model`
-      $nodes
-      # A tibble: 3 x 8
-        id            action type  decision justification inputs outputs source_schema
-        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
-      1 block-averag~ defin~ cons~ average~ incorporate ~ <lgl>  <lgl>   NA           
-      2 block-victor~ contr~ step  victory~ ratios are r~ <lgl>  <lgl>   NA           
-      3 block-mixed-~ estim~ step  fit a g~ mixed-effect~ <lgl>  <lgl>   NA           
-      
-      $edges
-      # A tibble: 3 x 3
-        from                               to                                 type    
-        <chr>                              <chr>                              <chr>   
-      1 block-average-rater                block-mixed-effects-logistic-model sequent~
-      2 block-mixed-effects-logistic-model block-average-rater                motivat~
-      3 block-victory-tie-defeat-ratio     block-mixed-effects-logistic-model sequent~
-      
-      attr(,"class")
-      [1] "schema"
-      
-      $`block-probit-regression-model`
-      $nodes
-      # A tibble: 3 x 8
-        id            action type  decision justification inputs outputs source_schema
-        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
-      1 block-averag~ defin~ cons~ average~ incorporate ~ <lgl>  <lgl>   NA           
-      2 block-victor~ contr~ step  victory~ ratios are r~ <lgl>  <lgl>   NA           
-      3 block-probit~ estim~ step  fit a p~ probit model~ <lgl>  <lgl>   NA           
-      
-      $edges
-      # A tibble: 3 x 3
-        from                           to                            type      
-        <chr>                          <chr>                         <chr>     
-      1 block-average-rater            block-probit-regression-model sequential
-      2 block-probit-regression-model  block-average-rater           motivated 
-      3 block-victory-tie-defeat-ratio block-probit-regression-model sequential
-      
-      attr(,"class")
-      [1] "schema"
-      
-      $`block-bayesian-logistic-model`
-      $nodes
-      # A tibble: 3 x 8
-        id            action type  decision justification inputs outputs source_schema
-        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
-      1 block-averag~ defin~ cons~ average~ incorporate ~ <lgl>  <lgl>   NA           
-      2 block-victor~ contr~ step  victory~ ratios are r~ <lgl>  <lgl>   NA           
-      3 block-bayesi~ estim~ step  fit a B~ the Bayesian~ <lgl>  <lgl>   NA           
-      
-      $edges
-      # A tibble: 3 x 3
-        from                           to                            type      
-        <chr>                          <chr>                         <chr>     
-      1 block-average-rater            block-bayesian-logistic-model sequential
-      2 block-bayesian-logistic-model  block-average-rater           motivated 
-      3 block-victory-tie-defeat-ratio block-bayesian-logistic-model sequential
-      
-      attr(,"class")
-      [1] "schema"
-      
-      attr(,"class")
-      [1] "multiverse" "list"      
+      A multiverse with 4 schemas:
+        original: (3 steps)
+        step-mixed-effects-logistic-model: (3 steps)
+        step-probit-regression-model: (3 steps)
+        step-bayesian-logistic-model: (3 steps)
 
 ---
 
     Code
       expand_tines(base_schema, tmp_file)
     Output
-      $original
-      $nodes
-      # A tibble: 3 x 8
-        id            action type  decision justification inputs outputs source_schema
-        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
-      1 block-averag~ defin~ cons~ average~ incorporate ~ <lgl>  <lgl>   NA           
-      2 block-victor~ contr~ step  victory~ ratios are r~ <lgl>  <lgl>   NA           
-      3 block-logist~ estim~ step  fit a l~ to answer th~ <lgl>  <lgl>   NA           
-      
-      $edges
-      # A tibble: 3 x 3
-        from                           to                   type      
-        <chr>                          <chr>                <chr>     
-      1 block-average-rater            block-logistic-model sequential
-      2 block-logistic-model           block-average-rater  motivated 
-      3 block-victory-tie-defeat-ratio block-logistic-model sequential
-      
-      attr(,"class")
-      [1] "schema"
-      
-      $`block-mixed-effects-logistic-model`
-      $nodes
-      # A tibble: 3 x 8
-        id            action type  decision justification inputs outputs source_schema
-        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
-      1 block-averag~ defin~ cons~ average~ incorporate ~ <lgl>  <lgl>   NA           
-      2 block-victor~ contr~ step  victory~ ratios are r~ <lgl>  <lgl>   NA           
-      3 block-mixed-~ estim~ step  fit a g~ mixed-effect~ <lgl>  <lgl>   NA           
-      
-      $edges
-      # A tibble: 3 x 3
-        from                               to                                 type    
-        <chr>                              <chr>                              <chr>   
-      1 block-average-rater                block-mixed-effects-logistic-model sequent~
-      2 block-mixed-effects-logistic-model block-average-rater                motivat~
-      3 block-victory-tie-defeat-ratio     block-mixed-effects-logistic-model sequent~
-      
-      attr(,"class")
-      [1] "schema"
-      
-      $`block-probit-regression-model`
-      $nodes
-      # A tibble: 3 x 8
-        id            action type  decision justification inputs outputs source_schema
-        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
-      1 block-averag~ defin~ cons~ average~ incorporate ~ <lgl>  <lgl>   NA           
-      2 block-victor~ contr~ step  victory~ ratios are r~ <lgl>  <lgl>   NA           
-      3 block-probit~ estim~ step  fit a p~ probit model~ <lgl>  <lgl>   NA           
-      
-      $edges
-      # A tibble: 3 x 3
-        from                           to                            type      
-        <chr>                          <chr>                         <chr>     
-      1 block-average-rater            block-probit-regression-model sequential
-      2 block-probit-regression-model  block-average-rater           motivated 
-      3 block-victory-tie-defeat-ratio block-probit-regression-model sequential
-      
-      attr(,"class")
-      [1] "schema"
-      
-      $`block-bayesian-logistic-model`
-      $nodes
-      # A tibble: 3 x 8
-        id            action type  decision justification inputs outputs source_schema
-        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
-      1 block-averag~ defin~ cons~ average~ incorporate ~ <lgl>  <lgl>   NA           
-      2 block-victor~ contr~ step  victory~ ratios are r~ <lgl>  <lgl>   NA           
-      3 block-bayesi~ estim~ step  fit a B~ the Bayesian~ <lgl>  <lgl>   NA           
-      
-      $edges
-      # A tibble: 3 x 3
-        from                           to                            type      
-        <chr>                          <chr>                         <chr>     
-      1 block-average-rater            block-bayesian-logistic-model sequential
-      2 block-bayesian-logistic-model  block-average-rater           motivated 
-      3 block-victory-tie-defeat-ratio block-bayesian-logistic-model sequential
-      
-      attr(,"class")
-      [1] "schema"
-      
-      attr(,"class")
-      [1] "multiverse" "list"      
+      A multiverse with 4 schemas:
+        original: (3 steps)
+        step-mixed-effects-logistic-model: (3 steps)
+        step-probit-regression-model: (3 steps)
+        step-bayesian-logistic-model: (3 steps)
 
 ---
 
-    Target block "block-logistic-model" not found in the base schema.
+    Target step "step-logistic-model" not found in the base schema.
 
 ---
 
     Code
       expand_tines(multiverse, alts)
     Output
-      $original
-      $nodes
-      # A tibble: 3 x 8
-        id            action type  decision justification inputs outputs source_schema
-        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
-      1 block-scaling varia~ cons~ apply m~ to put them ~ <lgl>  <lgl>   NA           
-      2 block-educat~ combi~ step  average~ the most int~ <lgl>  <lgl>   NA           
-      3 block-combine combi~ step  use the~ the geometri~ <lgl>  <lgl>   NA           
-      
-      $edges
-      # A tibble: 3 x 3
-        from            to              type      
-        <chr>           <chr>           <chr>     
-      1 block-scaling   block-education sequential
-      2 block-combine   block-scaling   motivated 
-      3 block-education block-combine   sequential
-      
-      attr(,"class")
-      [1] "schema"
-      attr(,"name")
-      [1] "HDI Example"
-      
-      $reversed
-      $nodes
-      # A tibble: 3 x 8
-        id            action type  decision justification inputs outputs source_schema
-        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
-      1 block-educat~ combi~ step  average~ the most int~ <lgl>  <lgl>   NA           
-      2 block-scaling varia~ cons~ apply m~ to put them ~ <lgl>  <lgl>   NA           
-      3 block-combine combi~ step  use the~ the geometri~ <lgl>  <lgl>   NA           
-      
-      $edges
-      # A tibble: 3 x 3
-        from            to            type      
-        <chr>           <chr>         <chr>     
-      1 block-education block-scaling sequential
-      2 block-scaling   block-combine sequential
-      3 block-combine   block-scaling motivated 
-      
-      attr(,"class")
-      [1] "schema"
-      attr(,"name")
-      [1] "HDI Example"
-      
-      $`block-arithmetic-mean`
-      $nodes
-      # A tibble: 3 x 8
-        id            action type  decision justification inputs outputs source_schema
-        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
-      1 block-scaling varia~ cons~ apply m~ to put them ~ <lgl>  <lgl>   NA           
-      2 block-educat~ combi~ step  average~ the most int~ <lgl>  <lgl>   NA           
-      3 block-arithm~ combi~ step  use a a~ the old meth~ <lgl>  <lgl>   NA           
-      
-      $edges
-      # A tibble: 3 x 3
-        from                  to                    type      
-        <chr>                 <chr>                 <chr>     
-      1 block-scaling         block-education       sequential
-      2 block-arithmetic-mean block-scaling         motivated 
-      3 block-education       block-arithmetic-mean sequential
-      
-      attr(,"class")
-      [1] "schema"
-      attr(,"name")
-      [1] "HDI Example"
-      
-      $`block-arithmetic-mean`
-      $nodes
-      # A tibble: 3 x 8
-        id            action type  decision justification inputs outputs source_schema
-        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
-      1 block-educat~ combi~ step  average~ the most int~ <lgl>  <lgl>   NA           
-      2 block-scaling varia~ cons~ apply m~ to put them ~ <lgl>  <lgl>   NA           
-      3 block-arithm~ combi~ step  use a a~ the old meth~ <lgl>  <lgl>   NA           
-      
-      $edges
-      # A tibble: 3 x 3
-        from                  to                    type      
-        <chr>                 <chr>                 <chr>     
-      1 block-education       block-scaling         sequential
-      2 block-scaling         block-arithmetic-mean sequential
-      3 block-arithmetic-mean block-scaling         motivated 
-      
-      attr(,"class")
-      [1] "schema"
-      attr(,"name")
-      [1] "HDI Example"
-      
-      attr(,"class")
-      [1] "multiverse" "list"      
+      A multiverse with 4 schemas:
+        original: (3 steps)
+        reversed: (3 steps)
+        original.step-arithmetic-mean: (3 steps)
+        reversed.step-arithmetic-mean: (3 steps)
 

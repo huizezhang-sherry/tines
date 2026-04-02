@@ -28,18 +28,36 @@ write_tines <- function(x, path = NULL, ...){
 
   if (is.null(path)){
     prefix <- if (inherits(x, "schema")) "schema" else "multiverse"
-    path <- paste0(prefix, ".yaml")
+    path <- paste0(prefix, ".yml")
   }
 
   if (inherits(x, "multiverse")) {
     header <- list(meta = list(type = "multiverse", date = as.character(Sys.Date())))
+    output <- c(header, list(schemas = x))
   }
 
   if (inherits(x, "schema")) {
-    header <- list(meta = list(type = "schema", date = as.character(Sys.Date())))
+    header <- list(meta = list(
+      type = "schema", 
+      date = as.character(Sys.Date()),
+      name = attr(x, "name", exact = TRUE)
+    ))
+    # Convert schema to list format for YAML
+    nodes_list <- purrr::pmap(as.data.frame(x), function(...) {
+      node <- list(...)
+      # Ensure inputs and outputs are proper lists
+      if (!is.null(node$inputs)) {
+        node$inputs <- if (is.na(node$inputs[[1]])) list() else node$inputs[[1]]
+      }
+      if (!is.null(node$outputs)) {
+        node$outputs <- if (is.na(node$outputs[[1]])) list() else node$outputs[[1]]
+      }
+      node
+    })
+    
+    schema_list <- list(nodes = nodes_list)
+    output <- c(header, schema_list)
   }
-
-  output <- c(header, x)
 
   yaml::write_yaml(
     output,
@@ -72,8 +90,8 @@ read_tines <- function(path, ...){
       row
     })
     new_schema(
-      nodes = dplyr::bind_rows(nodes),
-      edges = purrr::map_dfr(raw$edges, tibble::as_tibble)
+      name = raw$meta$name,
+      nodes = dplyr::bind_rows(nodes)
     )
   }
 
@@ -90,5 +108,4 @@ read_tines <- function(path, ...){
   }
 
   return(res)
-
 }

@@ -1,13 +1,13 @@
 meta:
-  type: tines_alternative
-  block: block-scaling
+  type: alternatives
+  step: step-scaling
 alternatives:
-  - id: "block-YOUR-NEW-NAME-HERE"
+  - id: "YOUR-NEW-NAME-HERE"
     action: "variables are in different scales"
     decision: ""
-    justification: >
- - id: "block-YOUR-NEW-NAME-HERE"
+    justification: ""
+  - id: "YOUR-NEW-NAME-HERE"
     action: "variables are in different scales"
     decision: ""
-    justification: >
+    justification: ""
 

@@ -1,6 +1,6 @@
 #' Generate R code from a schema or multiverse
 #'
-#' @param x A schema object, multiverse object, or file path to a schema YAML.
+#' @param x A schema object, multiverse object, or file path to a schema YML.
 #' @param base_code Optional. The file path to an existing R script to use as 
 #'   a style reference or template.
 #' @param data Optional. Either a file path to a data file (e.g., CSV) or a

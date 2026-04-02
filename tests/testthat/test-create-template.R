@@ -28,7 +28,7 @@ test_that("draft_alternatives generates correct alternatives YAML", {
 
   tmp <- withr::local_tempfile(fileext = ".yaml")
   draft_alternatives(
-    x = example_schema(), block = "block-scaling", file_path = tmp
+    x = example_schema(), id = "step-scaling", file_path = tmp
   )
   expect_snapshot_file(tmp, "alternatives_template.yaml")
 })

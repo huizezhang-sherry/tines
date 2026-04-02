@@ -1,0 +1,68 @@
+meta:
+  type: schema
+nodes:
+- id: create_age
+  fork: how to operationalize player age
+  path: Calculate age by subtracting the birth year from 2013. The birth year is derived from the last four characters of the 'birthday' variable.
+  rationale: This is a direct method to calculate the age of the player in the reference year of the study.
+  inputs: [birthday]
+  outputs: [age]
+  confidence: HIGH
+  clarification_question: null
+- id: create_skin_tone_rating
+  fork: how to create a single skin tone measure from multiple raters
+  path: Average the ratings of skin tone from the two raters ('rater1' and 'rater2').
+  rationale: Averaging is a standard approach to create a composite score from multiple ratings, reducing individual rater bias.
+  inputs: [rater1, rater2]
+  outputs: [skin_tone_rating]
+  confidence: HIGH
+  clarification_question: null
+- id: process_player_positions
+  fork: how to handle missing and overly specific player position data
+  path: For players with missing 'position' data, find their position using Wikipedia. Then, recode the original and new position data into four broad categories (goalkeeper, defender, midfielder, forward/winger).
+  rationale: This procedure was used because Wikipedia did not provide specific enough information for certain players and it increased the number of observations with known positions.
+  inputs: [position]
+  outputs: [position_recoded]
+  confidence: HIGH
+  clarification_question: null
+- id: center_predictors
+  fork: how to scale continuous predictors for the regression model
+  path: Grand-mean center the specified predictors and covariates.
+  rationale: This procedure improves the interpretability of the intercept and the interaction terms.
+  inputs: [skin_tone_rating, height, weight, games, victories, defeats, goals, age]
+  outputs: [skin_tone_rating_c, height_c, weight_c, games_c, victories_c, defeats_c, goals_c, age_c]
+  confidence: HIGH
+  clarification_question: null
+- id: standardize_bias_scores
+  fork: how to scale the racial bias measures
+  path: Standardize the scores for implicit and explicit racial bias.
+  rationale: While not explicitly stated, standardization is a common practice to put variables on a common scale, which is especially important for interpreting interaction terms and comparing effect sizes.
+  inputs: [implicit_racial_bias, explicit_racial_bias]
+  outputs: [implicit_racial_bias_z, explicit_racial_bias_z]
+  confidence: LOW
+  clarification_question: The text mentions standardizing 'implicit racial bias' and 'explicit racial bias'. Please provide the exact column names from the dataset that correspond to these two measures.
+- id: exclude_missing_skin_tone
+  fork: how to handle observations with missing data on the primary predictor
+  path: Exclude players with missing data on skin tone ('rater1' and 'rater2').
+  rationale: Skin tone is the main predictor in the current study, making complete data on it essential for the analysis.
+  inputs: [rater1, rater2]
+  outputs: [df_analysis_ready]
+  confidence: HIGH
+  clarification_question: null
+- id: select_model_framework
+  fork: what statistical modeling approach is appropriate for the data structure and outcome variable
+  path: Use a four-level multilevel negative-binomial model.
+  rationale: A multilevel model accounts for the interdependence within players, clubs, and leagues. A negative-binomial model is appropriate because the dependent variable ('redCards') is a count variable.
+  inputs: [redCards, player_id, club_id, league_id, player_referee_dyad_id]
+  outputs: [model_definition]
+  confidence: LOW
+  clarification_question: The model specifies a four-level structure (player-referee dyads, players, clubs, leagues). Please provide the exact column names from your dataset that serve as unique identifiers for each of these four levels.
+- id: specify_model_predictors
+  fork: which variables should be included as predictors in the final model
+  path: Enter skin-tone rating, implicit racial bias, explicit racial bias, the interaction between skin-tone and each bias measure, number of games, victories, defeats, height, weight, age, number of goals, and dummy-coded positions as predictors of red cards.
+  rationale: These variables were included as controls for factors that could influence the likelihood of receiving a red card, such as game exposure, game outcomes, player size, position, and age-related impulsivity.
+  inputs: [redCards, skin_tone_rating_c, implicit_racial_bias_z, explicit_racial_bias_z, games_c, victories_c, defeats_c, height_c, weight_c, age_c, goals_c, position_recoded]
+  outputs: [final_model]
+  confidence: MEDIUM
+  clarification_question: Confidence is medium because this step depends on the successful identification of the bias variables in the 'standardize_bias_scores' step.
+

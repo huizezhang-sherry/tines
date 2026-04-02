@@ -6,7 +6,6 @@
 \alias{new_multiverse}
 \alias{build_multiverse}
 \alias{add_step}
-\alias{add_dependency}
 \alias{as_schema}
 \alias{as_schema.default}
 \alias{as_schema.schema}
@@ -19,9 +18,11 @@
 \alias{as_multiverse.list}
 \alias{c.schema}
 \alias{c.multiverse}
+\alias{as.data.frame.schema}
+\alias{print.schema}
 \title{Construct `schema` and `multiverse` objects}
 \usage{
-new_schema(name = NULL, nodes = tibble(), edges = tibble())
+new_schema(name = NULL, nodes = tibble::tibble())
 
 build_schema(name = NULL)
 
@@ -33,20 +34,13 @@ add_step(
   object,
   id,
   action = "",
-  type = "STEP",
   decision = "",
   justification = "",
   inputs = NA,
   outputs = NA,
   source_schema = NA,
-  feeds = NULL,
-  uses = NULL,
-  prompts = NULL,
-  solves = NULL,
   ...
 )
-
-add_dependency(object, ...)
 
 as_schema(x, ...)
 
@@ -71,13 +65,15 @@ as_multiverse(x, ...)
 \method{c}{schema}(...)
 
 \method{c}{multiverse}(...)
+
+\method{as.data.frame}{schema}(x, row.names = NULL, optional = FALSE, ...)
+
+\method{print}{schema}(x, width = NULL, ...)
 }
 \arguments{
 \item{name}{An optional name for the schema.}
 
-\item{nodes}{A data frame (typically a `tibble`) defining the nodes of the schema.}
-
-\item{edges}{A data frame (typically a `tibble`) defining the edges of the schema.}
+\item{nodes}{A data frame (typically a `tibble`) defining the steps of the schema.}
 
 \item{schemas}{A single list containing objects of class `schema`. Defaults to an empty list.}
 
@@ -85,11 +81,15 @@ as_multiverse(x, ...)
 
 \item{object}{A `schema` object.}
 
-\item{id, type, action, decision, justification, inputs, outputs, source_schema}{character strings to write a step - NOT SURE ABOUT THE DESIGN YET}
-
-\item{feeds, uses, solves, prompts}{Character vectors to describe the relationship between steps - NOT SURE ABOUT THE DESIGN YET}
+\item{id, action, decision, justification, inputs, outputs, source_schema}{character strings to write a step}
 
 \item{x}{An object to be coerced into a `schema` or `multiverse`.}
+
+\item{row.names}{NULL or a character vector giving the row names for the data frame.}
+
+\item{optional}{logical. If TRUE, setting row names and converting column names is optional.}
+
+\item{width}{Width for printing output.}
 }
 \value{
 * `build_schema()` and `new_schema()` return an object of class `schema`.
@@ -103,51 +103,39 @@ garden of forking paths (`multiverse`).
 schema <- build_schema("HDI Example") |>
   # 1. The Scaling step
   add_step(id = "step-scaling",
-            type = "constraint",
             action = "variables are in different scales",
             decision = "apply min-max scaling to each variable",
-            justification = "to put them on the same scale for combination",
-            solves = "step-combine",       # Motivation comes from the end
-            feeds = "step-education") |>
+            justification = "to put them on the same scale for combination") |>
   # 2. The Education step
   add_step(id = "step-education",
-            type = "step",
             action = "combine the school variables into one dimension",
             decision = "average exp sch and avg sch",
-            justification = "the most intuitive way",
-            feeds = "step-combine") |>
+            justification = "the most intuitive way") |>
   # 3. The Combine step
   add_step(id = "step-combine",
-            type = "step",
             action = "combine the three dimensions into a single index",
             decision = "use the geometric mean",
             justification = "the geometric mean is more appropriate than arithmetic mean")
 
-str(schema)
+schema
 
 schema2 <- build_schema("HDI Example") |>
   # 1. The Education Step
   add_step(id = "step-education",
-            type = "step",
             action = "combine the school variables into one dimension",
             decision = "average exp sch and avg sch",
-            justification = "the most intuitive way",
-            feeds = "step-scaling") |>
+            justification = "the most intuitive way") |>
   # 2. The Scaling Step
   add_step(id = "step-scaling",
-            type = "constraint",
             action = "variables are in different scales",
             decision = "apply min-max scaling to each variable",
-            justification = "to put them on the same scale for combination",
-            solves = "step-combine",       # Motivation comes from the end
-            feeds = "step-combine") |>
+            justification = "to put them on the same scale for combination") |>
   # 3. The Combine Step
   add_step(id = "step-combine",
-            type = "step",
             action = "combine the three dimensions into a single index",
             decision = "use the geometric mean",
             justification = "the geometric mean is more appropriate than arithmetic mean")
 
 my_multiverse <- build_multiverse(original = schema, reversed = schema2)
-str(my_multiverse)
+my_multiverse
 }

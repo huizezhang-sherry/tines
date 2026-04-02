@@ -34,7 +34,6 @@
 #' # The prompt generation function can be used directly to see the full prompt sent to the LLM
 #' prompt_extract_schema(data_dict = paste0(data_dict, collapse = ", "), text = text, print = TRUE)
 #' 
-
 extract_schema <- function(text, data_dict, output_file = "draft_schema.yml", model = "gemini-2.5-pro") {
 
   # Format data_dict into a data dictionary string
@@ -53,7 +52,7 @@ extract_schema <- function(text, data_dict, output_file = "draft_schema.yml", mo
     cli::cli_abort("{.arg data_dict} must be a character vector or a data frame.")
   }
 
-  full_prompt <- prompt_extract_schema(data_dict, text)
+  full_prompt <- prompt_extract_schema(data_dict, text, print = FALSE)
   
   cli::cli_alert_info("Extracting schema and mapping data flow simultaneously...")
   chat <- ellmer::chat_google_gemini(model = model, echo = "none")
@@ -95,21 +94,15 @@ prompt_extract_schema <- function(data_dict, text, print = TRUE, width = 70) {
     "  type: schema\n",
     "nodes:\n",
     "- fork: variables are in different scales\n",
-    "  type: constraint\n",
     "  path: apply min-max scaling to each variable\n",
     "  justification: to put them on the same scale for combination\n",
     "  id: step-scaling\n",
     "  confidence: high\n",
     "- fork: combine the school variables into one dimension\n",
-    "  type: step\n",
     "  path: average exp sch and avg sch\n",
     "  justification: the most intuitive way\n",
     "  id: step-education\n",
-    "  confidence: low\n",
-    "edges:\n",
-    "- from: step-scaling\n",
-    "  to: step-education\n",
-    "  type: sequential\n"
+    "  confidence: low\n"
   )
   
 

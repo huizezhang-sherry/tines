@@ -59,33 +59,29 @@ tines2dotspec <- function(x, ...) {
 
   # TODO: not sure how to deal with ... yet
 
-
   if (!inherits(x, c("schema", "multiverse"))) {
     cli::cli_abort("Object must be a {.cls schema}")
   }
 
   # 1. Prepare Node Definitions: use the id as the ID and the action/id as the label
-  node_strings <- with(x$nodes, {
-    paste0('  "', id, '" [label="', id, '\n(', action, ')", shape=box, style=filled, fillcolor=white]')
-  })
+  node_strings <- paste0('  "', x$id, '" [label="', x$id, '\n(', x$action, ')", shape=box, style=filled, fillcolor=white]')
 
   # 2. Prepare Edge Definitions with Semantic Styling
-  # TODO: currently only doing sequential edges
-  edge_strings <- with(dplyr::filter(x$edges, type == "sequential"), {
-    style <- "solid"
-    color <- "black"
-
-    paste0('  "', from, '" -> "', to, '" [style=', style, ', color=', color, ']')
-  })
+  # TODO: currently only doing sequential edges - for now create simple sequential flow
+  if (nrow(x) > 1) {
+    edge_strings <- paste0('  "', x$id[-nrow(x)], '" -> "', x$id[-1], '" [style=solid, color=black]')
+  } else {
+    edge_strings <- character(0)
+  }
 
   # 3. Assemble the DOT Code
   dot_code <- paste0(
     "digraph schema {\n",
     "  graph [rankdir=TD, fontname=Arial]\n",
-    "  node [fontname=Arial, fontsize=10]\n",
+    "  node [fontname=Arial, fontsizLe=10]\n",
     "  edge [fontname=Arial, fontsize=8]\n",
     paste(node_strings, collapse = "\n"), "\n",
-    paste(edge_strings, collapse = "\n"), "\n",
+    if (length(edge_strings) > 0) paste(edge_strings, collapse = "\n") else "", "\n",
     "}"
   )
 

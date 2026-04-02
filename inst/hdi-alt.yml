@@ -1,0 +1,12 @@
+meta:
+  type: alternative
+  step: step-combine
+alternatives:
+  - id: step-combine-weighted-mean
+    action: "combine the three dimensions into a single index"
+    decision: "use a weighted arithmetic mean with weights determined by expert input or factor analysis
+loadings"
+    justification: "A weighted arithmetic mean allows for incorporating domain knowledge or statistical 
+evidence about the relative importance of each dimension, providing a theoretically informed and 
+flexible way to create the index. This approach acknowledges that not all dimensions may contribute 
+equally to the overall construct."

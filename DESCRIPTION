@@ -31,8 +31,9 @@ Imports:
     dplyr,
     ellmer,
     glue,
+    pillar,
     purrr,
     tibble,
     yaml
 Depends: 
-    R (>= 3.5)
+    R (>= 4.1.0)

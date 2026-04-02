@@ -23,9 +23,7 @@ draft_tines <- function(type = c("schema", "multiverse"), file_path = NULL, over
   type <- match.arg(type)
 
   if (is.null(file_path)) {
-    file_path <- paste0(file_path, paste0(type, "_template.yaml"))
-  } else {
-    file_path <- file_path
+    file_path <- paste0(type, "_template.yml")
   }
 
   if (file.exists(file_path) & !overwrite) {
@@ -39,16 +37,24 @@ draft_tines <- function(type = c("schema", "multiverse"), file_path = NULL, over
     template_data <- list(
       meta = list(
         type = "schema",
-        date = as.character(Sys.Date())
+        date = as.character(Sys.Date()),
+        name = "My Analysis Schema"
       ),
       nodes = list(
-        list(id = "step1", action = "describe your first step here",
-             decision = "describe your decision here", justification = "explain your reasoning here"),
-        list(id = "step2", action = "describe your next step here",
-             decision = "describe your decision here", justification = "explain your reasoning here")
-      ),
-      edges = list(
-        list(from = "step1", to = "step2")
+        list(id = "step1", 
+             action = "describe your first step here",
+             decision = "describe your decision here", 
+             justification = "explain your reasoning here",
+             inputs = list(),
+             outputs = list(),
+             source_schema = ""),
+        list(id = "step2", 
+             action = "describe your next step here",
+             decision = "describe your decision here", 
+             justification = "explain your reasoning here",
+             inputs = list(),
+             outputs = list(),
+             source_schema = "")
       )
     )
   } else {
@@ -58,72 +64,86 @@ draft_tines <- function(type = c("schema", "multiverse"), file_path = NULL, over
         date = as.character(Sys.Date())
       ),
       schemas = list(
-        "schema 1" = list(
-          nodes = list(list(id = "step1", action = "path A branch",
-                            decision = "describe your decision here",
-                            justification = "explain your reasoning here"),
-                       list(id = "step2", action = "path A branch",
-                            decision = "describe your decision here",
-                            justification = "explain your reasoning here")),
-          edges = list(from = "step1", to = "step2")
+        list(
+          meta = list(
+            type = "schema",
+            date = as.character(Sys.Date()),
+            name = "Path A"
+          ),
+          nodes = list(
+            list(id = "step1", action = "path A approach",
+                 decision = "describe your decision here",
+                 justification = "explain your reasoning here",
+                 inputs = list(), outputs = list(), source_schema = ""),
+            list(id = "step2", action = "path A next step",
+                 decision = "describe your decision here",
+                 justification = "explain your reasoning here",
+                 inputs = list(), outputs = list(), source_schema = "")
+          )
         ),
-        "schema 1" = list(
-          nodes = list(list(id = "step1", action = "path B branch",
-                            decision = "describe your decision here",
-                            justification = "explain your reasoning here"),
-                       list(id = "step2", action = "path B branch",
-                            decision = "describe your decision here",
-                            justification = "explain your reasoning here")),
-          edges = list(from = "step1", to = "step2")
+        list(
+          meta = list(
+            type = "schema",
+            date = as.character(Sys.Date()),
+            name = "Path B"
+          ),
+          nodes = list(
+            list(id = "step1", action = "path B approach",
+                 decision = "describe your decision here",
+                 justification = "explain your reasoning here",
+                 inputs = list(), outputs = list(), source_schema = ""),
+            list(id = "step2", action = "path B next step",
+                 decision = "describe your decision here",
+                 justification = "explain your reasoning here",
+                 inputs = list(), outputs = list(), source_schema = "")
+          )
         )
       )
     )
   }
-  # 4. Write the file out using the same engine as write_tines
+
   yaml::write_yaml(
     template_data,
     file = file_path,
     column.major = FALSE
   )
 
-  # 5. Let the user know it worked!
   cli::cli_alert_success("Drafted {.val {type}} template at {.file {file_path}}")
-  cli::cli_alert_info("Open this file to start defining your nodes and edges!")
+  cli::cli_alert_info("Open this file to start defining your steps!")
 
   invisible(file_path)
-
 }
 
 #' @export
 #' @rdname template
 draft_alternatives <- function(x, id, file_path = NULL) {
 
-  if (!id %in% x$nodes$id) {
+  if (!id %in% x$id) {
     cli::cli_abort("Step {.val {id}} not found in the {class(x)} object")
   }
 
   # Get the current action
-  idx <- which(x$nodes$id == id)
-  current_action <- x$nodes$action[idx]
+  idx <- which(x$id == id)
+  current_action <- x$action[idx]
 
   template <- cli::format_inline(
     "meta:
-  type: tines_alternative
+  type: alternatives
   step: {id}
 alternatives:
   - id: \"YOUR-NEW-NAME-HERE\"
     action: \"{current_action}\"
     decision: \"\"
-    justification: >
- - id: \"YOUR-NEW-NAME-HERE\"
+    justification: \"\"
+  - id: \"YOUR-NEW-NAME-HERE\"
     action: \"{current_action}\"
     decision: \"\"
-    justification: >
+    justification: \"\"
 "
   )
 
   if (is.null(file_path)) {
-    file_path <- paste0("alt_", id, ".yaml")
+    file_path <- paste0("alt_", id, ".yml")
   }
 
   writeLines(cli::ansi_strip(template), file_path)

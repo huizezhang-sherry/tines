@@ -31,8 +31,8 @@ base_schema <- example_football()
 alts <- example_alternatives(case = "football")
 expand_tines(base_schema, alts)
 
-# read the alternatives from a YAML file
-tmp_file <- tempfile(fileext = ".yaml")
+# read the alternatives from a YML file
+tmp_file <- tempfile(fileext = ".yml")
 write_alternatives(alts, tmp_file)
 expand_tines(base_schema, tmp_file)
 

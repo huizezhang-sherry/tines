@@ -3,15 +3,16 @@
 #' Construct individual analytical paths (`schema`) and bundle them into a
 #' garden of forking paths (`multiverse`).
 #'
-#' @param nodes A data frame (typically a `tibble`) defining the nodes of the schema.
-#' @param edges A data frame (typically a `tibble`) defining the edges of the schema.
+#' @param nodes A data frame (typically a `tibble`) defining the steps of the schema.
 #' @param name An optional name for the schema.
 #' @param ... One or more `schema` objects to be included in the multiverse.
 #' @param schemas A single list containing objects of class `schema`. Defaults to an empty list.
 #' @param object A `schema` object.
-#' @param id,type,action,decision,justification,inputs,outputs,source_schema character strings to write a step - NOT SURE ABOUT THE DESIGN YET
-#' @param feeds,uses,solves,prompts Character vectors to describe the relationship between steps - NOT SURE ABOUT THE DESIGN YET
+#' @param id,action,decision,justification,inputs,outputs,source_schema character strings to write a step
 #' @param x An object to be coerced into a `schema` or `multiverse`.
+#' @param row.names NULL or a character vector giving the row names for the data frame.
+#' @param optional logical. If TRUE, setting row names and converting column names is optional.
+#' @param width Width for printing output.
 #' @return
 #' * `build_schema()` and `new_schema()` return an object of class `schema`.
 #' * `build_multiverse()` and `new_multiverse()` return an object of class `c("multiverse", "list")`.
@@ -23,72 +24,58 @@
 #' schema <- build_schema("HDI Example") |>
 #'   # 1. The Scaling step
 #'   add_step(id = "step-scaling",
-#'             type = "constraint",
 #'             action = "variables are in different scales",
 #'             decision = "apply min-max scaling to each variable",
-#'             justification = "to put them on the same scale for combination",
-#'             solves = "step-combine",       # Motivation comes from the end
-#'             feeds = "step-education") |>
+#'             justification = "to put them on the same scale for combination") |>
 #'   # 2. The Education step
 #'   add_step(id = "step-education",
-#'             type = "step",
 #'             action = "combine the school variables into one dimension",
 #'             decision = "average exp sch and avg sch",
-#'             justification = "the most intuitive way",
-#'             feeds = "step-combine") |>
+#'             justification = "the most intuitive way") |>
 #'   # 3. The Combine step
 #'   add_step(id = "step-combine",
-#'             type = "step",
 #'             action = "combine the three dimensions into a single index",
 #'             decision = "use the geometric mean",
 #'             justification = "the geometric mean is more appropriate than arithmetic mean")
 #'
-#' str(schema)
+#' schema
 #'
 #' schema2 <- build_schema("HDI Example") |>
 #'   # 1. The Education Step
 #'   add_step(id = "step-education",
-#'             type = "step",
 #'             action = "combine the school variables into one dimension",
 #'             decision = "average exp sch and avg sch",
-#'             justification = "the most intuitive way",
-#'             feeds = "step-scaling") |>
+#'             justification = "the most intuitive way") |>
 #'   # 2. The Scaling Step
 #'   add_step(id = "step-scaling",
-#'             type = "constraint",
 #'             action = "variables are in different scales",
 #'             decision = "apply min-max scaling to each variable",
-#'             justification = "to put them on the same scale for combination",
-#'             solves = "step-combine",       # Motivation comes from the end
-#'             feeds = "step-combine") |>
+#'             justification = "to put them on the same scale for combination") |>
 #'   # 3. The Combine Step
 #'   add_step(id = "step-combine",
-#'             type = "step",
 #'             action = "combine the three dimensions into a single index",
 #'             decision = "use the geometric mean",
 #'             justification = "the geometric mean is more appropriate than arithmetic mean")
 #'
 #' my_multiverse <- build_multiverse(original = schema, reversed = schema2)
-#' str(my_multiverse)
-new_schema <- function(name = NULL, nodes = tibble(), edges = tibble()) {
-  stopifnot(is.data.frame(nodes))
-  stopifnot(is.data.frame(edges))
+#' my_multiverse
 
-  res <- structure(list(nodes = nodes, edges = edges), class = "schema")
+new_schema <- function(name = NULL, nodes = tibble::tibble()) {
+  stopifnot(is.data.frame(nodes))
+  res <- nodes
+  class(res) <- c("schema", "tbl_df", "tbl", "data.frame")
   attr(res, "name") <- name
-  return(res)
+  res
 }
 
 #' @rdname constructor
 #' @export
 build_schema <- function(name = NULL) {
-  nodes <- tibble(
-    id = character(), action = character(), type = character(),
-    decision = character(), justification = character()
+  nodes <- tibble::tibble(
+    id = character(), action = character(), decision = character(), justification = character(),
+    inputs = list(), outputs = list(), source_schema = character()
   )
-  edges <- tibble(from = character(), to = character(), type = character())
-
-  new_schema(name, nodes, edges)
+  new_schema(name = name, nodes = nodes)
 }
 
 
@@ -126,10 +113,9 @@ build_multiverse <- function(...) {
   # 2. Auto-naming: If the user didn't name them, try to find ids
   if (is.null(names(schemas))) {
     names(schemas) <- vapply(schemas, function(s) {
-      # Grab the id of the last node as a default name
-      # Ensuring we handle empty nodes gracefully
-      id <- s$nodes$id[nrow(s$nodes)]
-      if (length(id) == 0 || is.na(id)) "unnamed_path" else id
+      # Use the id of the last row as a default name
+      id <- if (nrow(s) > 0) s$id[nrow(s)] else NA_character_
+      if (is.na(id) || length(id) == 0) "unnamed_path" else id
     }, FUN.VALUE = character(1))
   }
 
@@ -140,58 +126,22 @@ build_multiverse <- function(...) {
 ########################################################################
 #' @rdname constructor
 #' @export
-add_step <- function(object, id, action = "", type = "STEP",
-                      decision = "", justification = "", inputs = NA, outputs = NA, source_schema = NA,
-                      feeds = NULL, uses = NULL, prompts = NULL, solves = NULL, ...) {
-  #browser()
+add_step <- function(object, id, action = "", decision = "", 
+                     justification = "", inputs = NA, outputs = NA, 
+                     source_schema = NA, ...) {
 
   if (!inherits(object, "schema")) cli::cli_abort("object must be of class {.cls schema}")
-  if (id %in% object$nodes$id) cli::cli_abort("Id {.val {id}} already exists!")
-
+  if (id %in% object$id) cli::cli_abort("Id {.val {id}} already exists!")
 
   new_node <- tibble::tibble(
-    id = id, action = action, type = type,
-    decision = decision, justification = justification,
+    id = id, action = action, decision = decision, justification = justification,
     inputs = list(inputs), outputs = list(outputs), source_schema = source_schema
   )
-  object$nodes <- rbind(object$nodes, new_node)
-
-  if (!is.null(feeds))   object <- add_dependency(object, feeds(from = id, to = feeds))
-  if (!is.null(uses))    object <- add_dependency(object, uses(to = id, from = uses))
-  if (!is.null(prompts)) object <- add_dependency(object, prompts(from = id, to = prompts))
-  if (!is.null(solves))  object <- add_dependency(object, solves(to = id, from = solves))
-
-  return(object)
+  object <- rbind(object, new_node)
+  class(object) <- c("schema", "tbl_df", "tbl", "data.frame")
+  attr(object, "name") <- attr(object, "name", exact = TRUE)
+  object
 }
-
-feeds   <- function(from, to) list(from = from, to = to, type = "sequential")
-uses    <- function(to, from) list(from = from, to = to, type = "sequential")
-prompts <- function(from, to) list(from = from, to = to, type = "motivated")
-solves  <- function(to, from) list(from = from, to = to, type = "motivated")
-
-#' @rdname constructor
-#' @export
-add_dependency <- function(object, ...) {
-  if (!inherits(object, "schema")) cli::cli_abort("object must be of class {.cls schema}")
-
-  edges_input <- list(...)
-
-  new_edges <- purrr::map_df(edges_input, function(ed) {
-    expand.grid(from = ed$from, to = ed$to, type = ed$type,
-                stringsAsFactors = FALSE) |> tibble::as_tibble()
-  })
-
-  # Validation: Check if all mentioned ids actually exist in the nodes table
-  all_ids <- object$nodes$id
-  involved_ids <- unique(c(new_edges$from, new_edges$to))
-  missing_ids <- setdiff(involved_ids, all_ids)
-
-  object$edges <- rbind(object$edges, new_edges) |> unique()
-
-  return(object)
-}
-
-
 
 #' @export
 #' @rdname constructor
@@ -214,43 +164,24 @@ as_schema.schema <- function(x, ...) {
 #' @rdname constructor
 #' @export
 as_schema.list <- function(x, ...) {
-  # 1. Validate that the raw list has the required top-level components
-  req_names <- c("meta", "nodes", "edges")
-  missing_names <- setdiff(req_names, names(x))
-
-  if (length(missing_names) > 0) {
-    cli::cli_abort(
-      "Cannot coerce list to {.cls schema}. Missing required elements: {.val {missing_names}}."
-    )
+  # Accept a list that is a data frame (for legacy support)
+  if (is.data.frame(x)) {
+    class(x) <- "schema"
+    return(x)
   }
-
-  # 2. Ensure the metadata explicitly id it as a schema
-  if (is.null(x$meta$type) || x$meta$type != "schema") {
-    x$meta$type <- "schema"
-  }
-
-  # 3. Construct and return the strict object
-  structure(
-    list(
-      meta = x$meta,
-      nodes = x$nodes,
-      edges = x$edges
-    ),
-    class = "schema"
-  )
+  cli::cli_abort("Cannot coerce list to {.cls schema}. Only a data frame is allowed for schema.")
 }
 
 #' @rdname constructor
 #' @export
 as_schema.character <- function(x, ...) {
-  # If the user passes a character string, assume it is a file path
   if (length(x) == 1 && file.exists(x)) {
-    raw_list <- yaml::read_yaml(x)
-
-    # Pass the parsed YAML list back through the generic to structure it
-    return(as_schema(raw_list))
+    raw_df <- yaml::read_yaml(x)
+    # Try to coerce to tibble/data.frame if possible
+    df <- tibble::as_tibble(raw_df)
+    class(df) <- "schema"
+    return(df)
   }
-
   cli::cli_abort("Character string must be a valid file path to a YAML schema.")
 }
 
@@ -314,4 +245,62 @@ c.schema <- function(...) {
 #' @export
 c.multiverse <- function(...) {
   as_multiverse(list(...))
+}
+
+#' @importFrom pillar tbl_sum
+#' @export
+tbl_sum.schema <- function(x) {
+  name <- attr(x, "name", exact = TRUE)
+  if (!is.null(name)) {
+    c("A schema" = name)
+  } else {
+    c("A schema" = paste(nrow(x), "x", ncol(x)))
+  }
+}
+
+#' @export
+#' @rdname constructor
+as.data.frame.schema <- function(x, row.names = NULL, optional = FALSE, ...) {
+  class(x) <- "data.frame"
+  x
+}
+
+#' @export
+#' @rdname constructor
+print.schema <- function(x, width = NULL, ...){
+  writeLines(format(x, width = width, ...))
+}
+
+#' @export
+print.multiverse <- function(x, ...) {
+  n_schemas <- length(x)
+  
+  if (n_schemas == 0) {
+    cat("An empty multiverse\n")
+    return(invisible(x))
+  }
+  
+  cat(sprintf("A multiverse with %d schema%s:\n", 
+              n_schemas, if (n_schemas > 1) "s" else ""))
+  
+  schema_names <- names(x)
+  if (is.null(schema_names)) {
+    schema_names <- paste0("[[", seq_along(x), "]]")
+  }
+  
+  for (i in seq_along(x)) {
+    schema <- x[[i]]
+    name <- attr(schema, "name", exact = TRUE)
+    n_steps <- nrow(schema)
+    
+    cat(sprintf("  %s: ", schema_names[i]))
+    
+    if (!is.null(name)) {
+      cat(sprintf('"%s" ', name))
+    }
+    
+    cat(sprintf("(%d step%s)\n", n_steps, if (n_steps != 1) "s" else ""))
+  }
+  
+  invisible(x)
 }

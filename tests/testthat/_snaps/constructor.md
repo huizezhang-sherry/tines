@@ -3,78 +3,21 @@
     Code
       schema
     Output
-      $nodes
-      # A tibble: 3 x 8
-        id            action type  decision justification inputs outputs source_schema
-        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
-      1 block-scaling varia~ cons~ apply m~ to put them ~ <lgl>  <lgl>   NA           
-      2 block-educat~ combi~ step  average~ the most int~ <lgl>  <lgl>   NA           
-      3 block-combine combi~ step  use the~ the geometri~ <lgl>  <lgl>   NA           
-      
-      $edges
-      # A tibble: 3 x 3
-        from            to              type      
-        <chr>           <chr>           <chr>     
-      1 block-scaling   block-education sequential
-      2 block-combine   block-scaling   motivated 
-      3 block-education block-combine   sequential
-      
-      attr(,"class")
-      [1] "schema"
-      attr(,"name")
-      [1] "HDI Example"
+      # A schema: 3 x 7
+        id             action      decision justification inputs outputs source_schema
+        <chr>          <chr>       <chr>    <chr>         <list> <list>  <lgl>        
+      1 step-scaling   variables ~ apply m~ to put them ~ <lgl>  <lgl>   NA           
+      2 step-education combine th~ average~ the most int~ <lgl>  <lgl>   NA           
+      3 step-combine   combine th~ use the~ the geometri~ <lgl>  <lgl>   NA           
 
 ---
 
     Code
       my_multiverse
     Output
-      $original
-      $nodes
-      # A tibble: 3 x 8
-        id            action type  decision justification inputs outputs source_schema
-        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
-      1 block-scaling varia~ cons~ apply m~ to put them ~ <lgl>  <lgl>   NA           
-      2 block-educat~ combi~ step  average~ the most int~ <lgl>  <lgl>   NA           
-      3 block-combine combi~ step  use the~ the geometri~ <lgl>  <lgl>   NA           
-      
-      $edges
-      # A tibble: 3 x 3
-        from            to              type      
-        <chr>           <chr>           <chr>     
-      1 block-scaling   block-education sequential
-      2 block-combine   block-scaling   motivated 
-      3 block-education block-combine   sequential
-      
-      attr(,"class")
-      [1] "schema"
-      attr(,"name")
-      [1] "HDI Example"
-      
-      $reversed
-      $nodes
-      # A tibble: 3 x 8
-        id            action type  decision justification inputs outputs source_schema
-        <chr>         <chr>  <chr> <chr>    <chr>         <list> <list>  <lgl>        
-      1 block-educat~ combi~ step  average~ the most int~ <lgl>  <lgl>   NA           
-      2 block-scaling varia~ cons~ apply m~ to put them ~ <lgl>  <lgl>   NA           
-      3 block-combine combi~ step  use the~ the geometri~ <lgl>  <lgl>   NA           
-      
-      $edges
-      # A tibble: 3 x 3
-        from            to            type      
-        <chr>           <chr>         <chr>     
-      1 block-education block-scaling sequential
-      2 block-scaling   block-combine sequential
-      3 block-combine   block-scaling motivated 
-      
-      attr(,"class")
-      [1] "schema"
-      attr(,"name")
-      [1] "HDI Example"
-      
-      attr(,"class")
-      [1] "multiverse" "list"      
+      A multiverse with 2 schemas:
+        original: (3 steps)
+        reversed: (3 steps)
 
 # validation errors remain stable
 

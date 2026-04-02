@@ -15,7 +15,7 @@
 #' this to work.
 #'
 #' @param x A `schema` or `multiverse` object, or a character string specifying
-#'   the file path to a valid `tines` YAML file.
+#'   the file path to a valid `tines` YML file.
 #' @param step A character string. The exact `id` of the step you want
 #'   the LLM to generate alternatives for.
 #' @param n An integer. The number of distinct alternatives you want the LLM
@@ -23,7 +23,7 @@
 #' @param provider A character string specifying the LLM provider. Currently
 #'   defaults to `"gemini"`. (`gemini-3-flash-preview` via `ellmer`).
 #' @param file_path A character string specifying where to save the generated
-#'   YAML output. If `NULL` (the default), `capture.output()` will return the
+#'   YML output. If `NULL` (the default), `capture.output()` will return the
 #'   result as a character vector.
 #' @param print If `TRUE`, prints the prompt to console instead of returning it.
 #' @param width If `print = TRUE`, the width to wrap the printed prompt (default 70).
@@ -41,7 +41,7 @@
 #' 
 #' \dontrun{
 #' gen_alternatives(hdi, step = "step-combine", n = 1,
-#'                 file_path = here::here("inst/hdi-alt.yaml"))
+#'                 file_path = here::here("inst/hdi-alt.yml"))
 #' }
 #' 
 #' # The prompt generation function can be used directly to see the full prompt sent to the LLM
@@ -71,13 +71,17 @@ gen_alternatives.schema <- function(x, step, n = 3,
     cli::cli_abort("You must provide a {.arg file_path} to save the generated alternatives.")
   }
 
-  full_prompt <- prompt_alternatives(schema = x, step = step, n = n)
+  # Check if step exists in the schema
+  if (!step %in% x$id) {
+    cli::cli_abort("Target step {.val {step}} not found in the schema.")
+  }
+
+  full_prompt <- prompt_alternatives(schema = x, step = step, n = n, print = FALSE)
 
   chat <- ellmer::chat_google_gemini(model = "gemini-2.5-flash")
   utils::capture.output(chat$chat(full_prompt), file = file_path)
   invisible()
 }
-
 
 #' @export
 #' @rdname gen_alternatives
@@ -86,7 +90,7 @@ gen_alternatives.multiverse <- function(x, step, ...){
 
   # find the first schema in the multiverse that contains the target step
   for (schema in x) {
-    ids <- purrr::map_chr(schema$nodes, "id")
+    ids <- schema$id  # Updated: use schema$id instead of schema$nodes$id
     if (step %in% ids) {
       valid_schema <- schema
       break
@@ -100,7 +104,6 @@ gen_alternatives.multiverse <- function(x, step, ...){
   }
 
   gen_alternatives(valid_schema, step, ...)
-
 }
 
 
@@ -126,14 +129,14 @@ prompt_alternatives <- function(schema = NULL, step, n = 3, print = TRUE, width 
     "3. **Provide a new JUSTIFICATION** explaining why this alternative is valid.\n\n",
     "4. **Create a new ID** that reflects the new decision (must be kebab-case).\n\n",
     "=== OUTPUT FORMAT ===\n\n",
-    "Please output the result in **strictly valid YAML format**.\n\n",
+    "Please output the result in **strictly valid YML format**.\n\n",
     "**Crucial Formatting Rules:**\n\n",
     "1. Include a `meta` section at the top with `type: alternative` and the `step`.\n\n",
-    "2. Output strictly valid YAML. All text values (decision, justification) must be enclosed in double quotes (\"). ",
+    "2. Output strictly valid YML. All text values (decision, justification) must be enclosed in double quotes (\"). ",
     "Do not use block styles (| or >). Do not wrap lines or insert \\n characters within the quotes; ",
     "keep the text as a single continuous string.\n\n",
-    "3. Do not include markdown code fences (like ```yaml) or conversational text. Just the raw YAML.\n\n",
-    "=== REQUIRED YAML STRUCTURE EXAMPLE ===\n\n",
+    "3. Do not include markdown code fences (like ```yml) or conversational text. Just the raw YML.\n\n",
+    "=== REQUIRED YML STRUCTURE EXAMPLE ===\n\n",
     "meta:\n",
     "  type: tines_alternative\n",
     "  step: ", step, "\n",
@@ -177,8 +180,8 @@ prompt_alternatives <- function(schema = NULL, step, n = 3, print = TRUE, width 
 #' alts <- example_alternatives(case = "football")
 #' expand_tines(base_schema, alts)
 #'
-#' # read the alternatives from a YAML file
-#' tmp_file <- tempfile(fileext = ".yaml")
+#' # read the alternatives from a YML file
+#' tmp_file <- tempfile(fileext = ".yml")
 #' write_alternatives(alts, tmp_file)
 #' expand_tines(base_schema, tmp_file)
 #'
@@ -203,34 +206,32 @@ expand_tines.schema <- function(x, alternatives, include_original = TRUE, ...) {
 
   target <- attr(alts_data, "step")
 
-
-  ids <- x$nodes$id
+  ids <- x$id
   if (!target %in% ids) {
     cli::cli_abort("Target step {.val {target}} not found in the base schema.")
   }
   idx <- which(ids == target)
 
-
-  new_schemas <- lapply(alts_data, function(alt) {
+  # Iterate over rows of the alternatives data frame using purrr::pmap
+  new_schemas <- purrr::pmap(alts_data, function(id, action, decision, justification) {
     branch <- x
-
-    branch$nodes$id[[idx]] <- alt$id
-    branch$nodes$decision[[idx]] <- alt$decision
-    branch$nodes$justification[[idx]] <- alt$justification
-
-    # Rewire the edges!
-    branch$edges$from[branch$edges$from == target] <- alt$id
-    branch$edges$to[branch$edges$to == target] <- alt$id
+    
+    # Update the specific row directly since schema is a data frame
+    branch$id[[idx]] <- id
+    branch$decision[[idx]] <- decision
+    branch$justification[[idx]] <- justification
+    
+    # Preserve the schema class and attributes
+    class(branch) <- c("schema", "tbl_df", "tbl", "data.frame")
+    attr(branch, "name") <- attr(x, "name", exact = TRUE)
+    
     return(branch)
   })
-  names(new_schemas) <- vapply(alts_data, function(a) a$id, character(1))
-
+  names(new_schemas) <- alts_data$id
 
   if (include_original) new_schemas <- c(list(original = x), new_schemas)
 
   new_multiverse(new_schemas)
-
-
 }
 
 #' @rdname expand
@@ -245,22 +246,20 @@ expand_tines.multiverse <- function(x, alternatives, ...) {
   target <- attr(alts_data, "step")
 
   expanded_list <- lapply(x, function(single_schema) {
-
-    ids <- single_schema$nodes$id
+    # Use single_schema$id instead of single_schema$nodes$id
+    ids <- single_schema$id
 
     if (target %in% ids) {
       # It has the step! Expand it, and extract the resulting list of schemas
       expanded_mini_multi <- expand_tines(single_schema, alternatives, include_original = FALSE)
-      return(expanded_mini_multi)
+      return(unclass(expanded_mini_multi)) # Return the list of schemas
     } else {
       # It DOES NOT have the step! Return it untouched, wrapped in a list
-      # so it can be cleanly flattened with the others later.
       return(list(single_schema))
     }
-
-
   })
-  all_schemas <- c(x, expanded_list)
-  all_schemas
-
+  
+  # Flatten the expanded list properly
+  all_schemas <- c(unclass(x), unlist(expanded_list, recursive = FALSE))
+  new_multiverse(all_schemas)
 }

@@ -4,7 +4,7 @@
 #' @param action The goal of the step (should match the original).
 #' @param decision The new method/implementation.
 #' @param justification Why this method is valid.
-#' @param id The target step ID in the schema that these alternatives pertain to.
+#' @param step The target step ID in the schema that these alternatives pertain to.
 #' @param ... One or more alternative branches created by `alternative()`.
 #'
 #' @export
@@ -28,17 +28,27 @@ alternative <- function(id, action, decision, justification) {
 
 #' @export
 #' @rdname alternatives
-new_alternatives <- function(id, ...) {
+new_alternatives <- function(step, ...) {
   alts <- list(...)
-
-  obj <- structure(alts, class = c("alternatives", "list"))
-  attr(obj, "id") <- id
-
-  return(obj)
+  
+  # Convert to data frame structure (no step column needed)
+  df <- purrr::map_dfr(alts, function(alt) {
+    tibble::tibble(
+      id = alt$id,
+      action = alt$action, 
+      decision = alt$decision,
+      justification = alt$justification
+    )
+  })
+  
+  class(df) <- c("alternatives", "tbl_df", "tbl", "data.frame")
+  attr(df, "step") <- step
+  
+  return(df)
 }
 
 
-#' Read and write  an alternatives object from/to a YAML file
+#' Read and write  an alternatives object from/to a YML file
 #'
 #' @param x A `alternatives` object.
 #' @param file A character string specifying the file path.
@@ -49,7 +59,7 @@ new_alternatives <- function(id, ...) {
 #' @examples
 #' \dontrun{
 #' alts <- example_alternatives()
-#' temp_path <- withr::local_tempfile(fileext = ".yaml")
+#' temp_path <- withr::local_tempfile(fileext = ".yml")
 #' write_alternatives(alts, temp_path)
 #' alts_read <- read_alternatives(temp_path)
 #'
@@ -57,13 +67,18 @@ new_alternatives <- function(id, ...) {
 #' }
 #'
 write_alternatives <- function(x, file, ...) {
-
+  
+  # Convert data frame rows to list format for YML
+  alternatives_list <- purrr::pmap(x[c("id", "action", "decision", "justification")], function(...) {
+    list(...)
+  })
+  
   yaml_ready_list <- list(
     meta = list(
       type = "alternatives",
       step = attr(x, "step")
     ),
-    alternatives = unclass(x)
+    alternatives = alternatives_list
   )
 
   yaml::write_yaml(yaml_ready_list, file, ...)
@@ -81,20 +96,37 @@ read_alternatives <- function(file, ...) {
   # 1. Read the raw list structure from disk
   raw_yaml <- yaml::read_yaml(file, ...)
 
-  # 2. Extract the target step (ID)
-  target <- raw_yaml$meta$id
+  # 2. Extract the target step
+  target <- raw_yaml$meta$step
 
-  # 3. Convert the raw list items into validated `alternative()` objects
-  parsed_alts <- purrr::map(raw_yaml$alternatives, function(a) {
-    alternative(
+  # 3. Convert to data frame structure
+  df <- purrr::map_dfr(raw_yaml$alternatives, function(a) {
+    tibble::tibble(
       id = a$id,
       action = a$action,
       decision = a$decision,
       justification = a$justification
     )
   })
+  
+  class(df) <- c("alternatives", "tbl_df", "tbl", "data.frame")
+  attr(df, "step") <- target
+  
+  return(df)
+}
 
+#' @export
+tbl_sum.alternatives <- function(x) {
+  step <- attr(x, "step", exact = TRUE)
+  if (!is.null(step)) {
+    c("Alternatives" = step)
+  } else {
+    c("Alternatives" = paste(nrow(x), "x", ncol(x)))
+  }
+}
 
-  args <- c(list(step = target), parsed_alts)
-  do.call(new_alternatives, args)
+#' @export
+as.data.frame.alternatives <- function(x, row.names = NULL, optional = FALSE, ...) {
+  class(x) <- "data.frame"
+  x
 }

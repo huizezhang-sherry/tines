@@ -1,44 +1,26 @@
 meta:
   type: schema
   date: YYYY-MM-DD
+  name: ~
 nodes:
-- id: block-scaling
+- id: step-scaling
   action: variables are in different scales
-  type: constraint
   decision: apply min-max scaling to each variable
   justification: to put them on the same scale for combination
-  inputs:
-  - ~
-  outputs:
-  - ~
+  inputs: []
+  outputs: []
   source_schema: .na
-- id: block-education
+- id: step-education
   action: combine the school variables into one dimension
-  type: step
   decision: average exp sch and avg sch
   justification: the most intuitive way
-  inputs:
-  - ~
-  outputs:
-  - ~
+  inputs: []
+  outputs: []
   source_schema: .na
-- id: block-combine
+- id: step-combine
   action: combine the three dimensions into a single index
-  type: step
   decision: use the geometric mean
   justification: the geometric mean is more appropriate than arithmetic mean
-  inputs:
-  - ~
-  outputs:
-  - ~
+  inputs: []
+  outputs: []
   source_schema: .na
-edges:
-- from: block-scaling
-  to: block-education
-  type: sequential
-- from: block-combine
-  to: block-scaling
-  type: motivated
-- from: block-education
-  to: block-combine
-  type: sequential
