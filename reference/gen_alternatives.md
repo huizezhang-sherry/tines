@@ -131,22 +131,22 @@ prompt_alternatives(schema = hdi, step = "step-combine", print = TRUE)
 #> 
 #> === OUTPUT FORMAT ===
 #> 
-#> Please output the result in **strictly valid YAML format**.
+#> Please output the result in **strictly valid YML format**.
 #> 
 #> **Crucial Formatting Rules:**
 #> 
 #> 1. Include a `meta` section at the top with `type: alternative` and
 #> the `step`.
 #> 
-#> 2. Output strictly valid YAML. All text values (decision,
+#> 2. Output strictly valid YML. All text values (decision,
 #> justification) must be enclosed in double quotes ("). Do not use
 #> block styles (| or >). Do not wrap lines or insert \n characters
 #> within the quotes; keep the text as a single continuous string.
 #> 
-#> 3. Do not include markdown code fences (like ```yaml) or
-#> conversational text. Just the raw YAML.
+#> 3. Do not include markdown code fences (like ```yml) or
+#> conversational text. Just the raw YML.
 #> 
-#> === REQUIRED YAML STRUCTURE EXAMPLE ===
+#> === REQUIRED YML STRUCTURE EXAMPLE ===
 #> 
 #> meta: type: tines_alternative step: step-combine alternatives: - id:
 #> step-new-method-name action: Repeat the original action decision:
@@ -156,15 +156,13 @@ prompt_alternatives(schema = hdi, step = "step-combine", print = TRUE)
 #> 
 #> === CURRENT SCHEMA ===
 #> 
-#> nodes: id: - step-scaling - step-education - step-combine action: -
+#> id: - step-scaling - step-education - step-combine action: -
 #> variables are in different scales - combine the school variables into
 #> one dimension - combine the three dimensions into a single index
-#> type: - constraint - step - step decision: - apply min-max scaling to
-#> each variable - average exp sch and avg sch - use the geometric mean
-#> justification: - to put them on the same scale for combination - the
-#> most intuitive way - the geometric mean is more appropriate than
-#> arithmetic mean inputs: - .na - .na - .na outputs: - .na - .na - .na
-#> source_schema: - .na - .na - .na edges: from: - step-scaling -
-#> step-combine - step-education to: - step-education - step-scaling -
-#> step-combine type: - sequential - motivated - sequential
+#> decision: - apply min-max scaling to each variable - average exp sch
+#> and avg sch - use the geometric mean justification: - to put them on
+#> the same scale for combination - the most intuitive way - the
+#> geometric mean is more appropriate than arithmetic mean inputs: - .na
+#> - .na - .na outputs: - .na - .na - .na source_schema: - .na - .na -
+#> .na
 ```

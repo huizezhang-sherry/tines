@@ -6,7 +6,7 @@ a garden of forking paths (\`multiverse\`).
 ## Usage
 
 ``` r
-new_schema(name = NULL, nodes = tibble(), edges = tibble())
+new_schema(name = NULL, nodes = tibble::tibble())
 
 build_schema(name = NULL)
 
@@ -18,20 +18,13 @@ add_step(
   object,
   id,
   action = "",
-  type = "STEP",
   decision = "",
   justification = "",
   inputs = NA,
   outputs = NA,
   source_schema = NA,
-  feeds = NULL,
-  uses = NULL,
-  prompts = NULL,
-  solves = NULL,
   ...
 )
-
-add_dependency(object, ...)
 
 as_schema(x, ...)
 
@@ -66,6 +59,12 @@ c(...)
 
 # S3 method for class 'multiverse'
 c(...)
+
+# S3 method for class 'schema'
+as.data.frame(x, row.names = NULL, optional = FALSE, ...)
+
+# S3 method for class 'schema'
+print(x, width = NULL, ...)
 ```
 
 ## Arguments
@@ -76,12 +75,7 @@ c(...)
 
 - nodes:
 
-  A data frame (typically a \`tibble\`) defining the nodes of the
-  schema.
-
-- edges:
-
-  A data frame (typically a \`tibble\`) defining the edges of the
+  A data frame (typically a \`tibble\`) defining the steps of the
   schema.
 
 - schemas:
@@ -97,19 +91,26 @@ c(...)
 
   A \`schema\` object.
 
-- id, type, action, decision, justification, inputs, outputs,
-  source_schema:
+- id, action, decision, justification, inputs, outputs, source_schema:
 
-  character strings to write a step - NOT SURE ABOUT THE DESIGN YET
-
-- feeds, uses, solves, prompts:
-
-  Character vectors to describe the relationship between steps - NOT
-  SURE ABOUT THE DESIGN YET
+  character strings to write a step
 
 - x:
 
   An object to be coerced into a \`schema\` or \`multiverse\`.
+
+- row.names:
+
+  NULL or a character vector giving the row names for the data frame.
+
+- optional:
+
+  logical. If TRUE, setting row names and converting column names is
+  optional.
+
+- width:
+
+  Width for printing output.
 
 ## Value
 
@@ -123,140 +124,48 @@ object of class \`c("multiverse", "list")\`.
 schema <- build_schema("HDI Example") |>
   # 1. The Scaling step
   add_step(id = "step-scaling",
-            type = "constraint",
             action = "variables are in different scales",
             decision = "apply min-max scaling to each variable",
-            justification = "to put them on the same scale for combination",
-            solves = "step-combine",       # Motivation comes from the end
-            feeds = "step-education") |>
+            justification = "to put them on the same scale for combination") |>
   # 2. The Education step
   add_step(id = "step-education",
-            type = "step",
             action = "combine the school variables into one dimension",
             decision = "average exp sch and avg sch",
-            justification = "the most intuitive way",
-            feeds = "step-combine") |>
+            justification = "the most intuitive way") |>
   # 3. The Combine step
   add_step(id = "step-combine",
-            type = "step",
             action = "combine the three dimensions into a single index",
             decision = "use the geometric mean",
             justification = "the geometric mean is more appropriate than arithmetic mean")
 
-str(schema)
-#> List of 2
-#>  $ nodes: tibble [3 × 8] (S3: tbl_df/tbl/data.frame)
-#>   ..$ id           : chr [1:3] "step-scaling" "step-education" "step-combine"
-#>   ..$ action       : chr [1:3] "variables are in different scales" "combine the school variables into one dimension" "combine the three dimensions into a single index"
-#>   ..$ type         : chr [1:3] "constraint" "step" "step"
-#>   ..$ decision     : chr [1:3] "apply min-max scaling to each variable" "average exp sch and avg sch" "use the geometric mean"
-#>   ..$ justification: chr [1:3] "to put them on the same scale for combination" "the most intuitive way" "the geometric mean is more appropriate than arithmetic mean"
-#>   ..$ inputs       :List of 3
-#>   .. ..$ : logi NA
-#>   .. ..$ : logi NA
-#>   .. ..$ : logi NA
-#>   ..$ outputs      :List of 3
-#>   .. ..$ : logi NA
-#>   .. ..$ : logi NA
-#>   .. ..$ : logi NA
-#>   ..$ source_schema: logi [1:3] NA NA NA
-#>  $ edges: tibble [3 × 3] (S3: tbl_df/tbl/data.frame)
-#>   ..$ from: chr [1:3] "step-scaling" "step-combine" "step-education"
-#>   ..$ to  : chr [1:3] "step-education" "step-scaling" "step-combine"
-#>   ..$ type: chr [1:3] "sequential" "motivated" "sequential"
-#>   ..- attr(*, "out.attrs")=List of 2
-#>   .. ..$ dim     : Named int [1:3] 1 1 1
-#>   .. .. ..- attr(*, "names")= chr [1:3] "from" "to" "type"
-#>   .. ..$ dimnames:List of 3
-#>   .. .. ..$ from: chr "from=step-scaling"
-#>   .. .. ..$ to  : chr "to=step-education"
-#>   .. .. ..$ type: chr "type=sequential"
-#>  - attr(*, "class")= chr "schema"
-#>  - attr(*, "name")= chr "HDI Example"
+schema
+#> # A schema: 3 x 7
+#>   id             action      decision justification inputs outputs source_schema
+#>   <chr>          <chr>       <chr>    <chr>         <list> <list>  <lgl>        
+#> 1 step-scaling   variables … apply m… to put them … <lgl>  <lgl>   NA           
+#> 2 step-education combine th… average… the most int… <lgl>  <lgl>   NA           
+#> 3 step-combine   combine th… use the… the geometri… <lgl>  <lgl>   NA           
 
 schema2 <- build_schema("HDI Example") |>
   # 1. The Education Step
   add_step(id = "step-education",
-            type = "step",
             action = "combine the school variables into one dimension",
             decision = "average exp sch and avg sch",
-            justification = "the most intuitive way",
-            feeds = "step-scaling") |>
+            justification = "the most intuitive way") |>
   # 2. The Scaling Step
   add_step(id = "step-scaling",
-            type = "constraint",
             action = "variables are in different scales",
             decision = "apply min-max scaling to each variable",
-            justification = "to put them on the same scale for combination",
-            solves = "step-combine",       # Motivation comes from the end
-            feeds = "step-combine") |>
+            justification = "to put them on the same scale for combination") |>
   # 3. The Combine Step
   add_step(id = "step-combine",
-            type = "step",
             action = "combine the three dimensions into a single index",
             decision = "use the geometric mean",
             justification = "the geometric mean is more appropriate than arithmetic mean")
 
 my_multiverse <- build_multiverse(original = schema, reversed = schema2)
-str(my_multiverse)
-#> List of 2
-#>  $ original:List of 2
-#>   ..$ nodes: tibble [3 × 8] (S3: tbl_df/tbl/data.frame)
-#>   .. ..$ id           : chr [1:3] "step-scaling" "step-education" "step-combine"
-#>   .. ..$ action       : chr [1:3] "variables are in different scales" "combine the school variables into one dimension" "combine the three dimensions into a single index"
-#>   .. ..$ type         : chr [1:3] "constraint" "step" "step"
-#>   .. ..$ decision     : chr [1:3] "apply min-max scaling to each variable" "average exp sch and avg sch" "use the geometric mean"
-#>   .. ..$ justification: chr [1:3] "to put them on the same scale for combination" "the most intuitive way" "the geometric mean is more appropriate than arithmetic mean"
-#>   .. ..$ inputs       :List of 3
-#>   .. .. ..$ : logi NA
-#>   .. .. ..$ : logi NA
-#>   .. .. ..$ : logi NA
-#>   .. ..$ outputs      :List of 3
-#>   .. .. ..$ : logi NA
-#>   .. .. ..$ : logi NA
-#>   .. .. ..$ : logi NA
-#>   .. ..$ source_schema: logi [1:3] NA NA NA
-#>   ..$ edges: tibble [3 × 3] (S3: tbl_df/tbl/data.frame)
-#>   .. ..$ from: chr [1:3] "step-scaling" "step-combine" "step-education"
-#>   .. ..$ to  : chr [1:3] "step-education" "step-scaling" "step-combine"
-#>   .. ..$ type: chr [1:3] "sequential" "motivated" "sequential"
-#>   .. ..- attr(*, "out.attrs")=List of 2
-#>   .. .. ..$ dim     : Named int [1:3] 1 1 1
-#>   .. .. .. ..- attr(*, "names")= chr [1:3] "from" "to" "type"
-#>   .. .. ..$ dimnames:List of 3
-#>   .. .. .. ..$ from: chr "from=step-scaling"
-#>   .. .. .. ..$ to  : chr "to=step-education"
-#>   .. .. .. ..$ type: chr "type=sequential"
-#>   ..- attr(*, "class")= chr "schema"
-#>   ..- attr(*, "name")= chr "HDI Example"
-#>  $ reversed:List of 2
-#>   ..$ nodes: tibble [3 × 8] (S3: tbl_df/tbl/data.frame)
-#>   .. ..$ id           : chr [1:3] "step-education" "step-scaling" "step-combine"
-#>   .. ..$ action       : chr [1:3] "combine the school variables into one dimension" "variables are in different scales" "combine the three dimensions into a single index"
-#>   .. ..$ type         : chr [1:3] "step" "constraint" "step"
-#>   .. ..$ decision     : chr [1:3] "average exp sch and avg sch" "apply min-max scaling to each variable" "use the geometric mean"
-#>   .. ..$ justification: chr [1:3] "the most intuitive way" "to put them on the same scale for combination" "the geometric mean is more appropriate than arithmetic mean"
-#>   .. ..$ inputs       :List of 3
-#>   .. .. ..$ : logi NA
-#>   .. .. ..$ : logi NA
-#>   .. .. ..$ : logi NA
-#>   .. ..$ outputs      :List of 3
-#>   .. .. ..$ : logi NA
-#>   .. .. ..$ : logi NA
-#>   .. .. ..$ : logi NA
-#>   .. ..$ source_schema: logi [1:3] NA NA NA
-#>   ..$ edges: tibble [3 × 3] (S3: tbl_df/tbl/data.frame)
-#>   .. ..$ from: chr [1:3] "step-education" "step-scaling" "step-combine"
-#>   .. ..$ to  : chr [1:3] "step-scaling" "step-combine" "step-scaling"
-#>   .. ..$ type: chr [1:3] "sequential" "sequential" "motivated"
-#>   .. ..- attr(*, "out.attrs")=List of 2
-#>   .. .. ..$ dim     : Named int [1:3] 1 1 1
-#>   .. .. .. ..- attr(*, "names")= chr [1:3] "from" "to" "type"
-#>   .. .. ..$ dimnames:List of 3
-#>   .. .. .. ..$ from: chr "from=step-education"
-#>   .. .. .. ..$ to  : chr "to=step-scaling"
-#>   .. .. .. ..$ type: chr "type=sequential"
-#>   ..- attr(*, "class")= chr "schema"
-#>   ..- attr(*, "name")= chr "HDI Example"
-#>  - attr(*, "class")= chr [1:2] "multiverse" "list"
+my_multiverse
+#> A multiverse with 2 schemas:
+#>   original: (3 steps)
+#>   reversed: (3 steps)
 ```

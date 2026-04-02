@@ -5,10 +5,11 @@
 - [`new_schema()`](constructor.md) [`build_schema()`](constructor.md)
   [`new_multiverse()`](constructor.md)
   [`build_multiverse()`](constructor.md) [`add_step()`](constructor.md)
-  [`add_dependency()`](constructor.md) [`as_schema()`](constructor.md)
-  [`as_multiverse()`](constructor.md)
+  [`as_schema()`](constructor.md) [`as_multiverse()`](constructor.md)
   [`c(`*`<schema>`*`)`](constructor.md)
-  [`c(`*`<multiverse>`*`)`](constructor.md) : Construct \`schema\` and
+  [`c(`*`<multiverse>`*`)`](constructor.md)
+  [`as.data.frame(`*`<schema>`*`)`](constructor.md)
+  [`print(`*`<schema>`*`)`](constructor.md) : Construct \`schema\` and
   \`multiverse\` objects
 - [`plot(`*`<schema>`*`)`](print.md)
   [`plot(`*`<multiverse>`*`)`](print.md) [`draw_tines()`](print.md)

@@ -41,7 +41,7 @@ garden of forking paths (`multiverse`).</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">new_schema</span><span class="op">(</span>name <span class="op">=</span> <span class="cn">NULL</span>, nodes <span class="op">=</span> <span class="fu">tibble</span><span class="op">(</span><span class="op">)</span>, edges <span class="op">=</span> <span class="fu">tibble</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">new_schema</span><span class="op">(</span>name <span class="op">=</span> <span class="cn">NULL</span>, nodes <span class="op">=</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">build_schema</span><span class="op">(</span>name <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
@@ -53,20 +53,13 @@ garden of forking paths (`multiverse`).</p>
 <span>  <span class="va">object</span>,</span>
 <span>  <span class="va">id</span>,</span>
 <span>  action <span class="op">=</span> <span class="st">""</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"STEP"</span>,</span>
 <span>  decision <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  justification <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  inputs <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  outputs <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  source_schema <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  feeds <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  uses <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  prompts <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  solves <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">add_dependency</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">as_schema</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
@@ -100,7 +93,13 @@ garden of forking paths (`multiverse`).</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'multiverse'</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'schema'</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">x</span>, row.names <span class="op">=</span> <span class="cn">NULL</span>, optional <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'schema'</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, width <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -112,11 +111,7 @@ garden of forking paths (`multiverse`).</p>
 
 
 <dt id="arg-nodes">nodes<a class="anchor" aria-label="anchor" href="#arg-nodes"></a></dt>
-<dd><p>A data frame (typically a `tibble`) defining the nodes of the schema.</p></dd>
-
-
-<dt id="arg-edges">edges<a class="anchor" aria-label="anchor" href="#arg-edges"></a></dt>
-<dd><p>A data frame (typically a `tibble`) defining the edges of the schema.</p></dd>
+<dd><p>A data frame (typically a `tibble`) defining the steps of the schema.</p></dd>
 
 
 <dt id="arg-schemas">schemas<a class="anchor" aria-label="anchor" href="#arg-schemas"></a></dt>
@@ -131,16 +126,24 @@ garden of forking paths (`multiverse`).</p>
 <dd><p>A `schema` object.</p></dd>
 
 
-<dt id="arg-id-type-action-decision-justification-inputs-outputs-source-schema">id, type, action, decision, justification, inputs, outputs, source_schema<a class="anchor" aria-label="anchor" href="#arg-id-type-action-decision-justification-inputs-outputs-source-schema"></a></dt>
-<dd><p>character strings to write a step - NOT SURE ABOUT THE DESIGN YET</p></dd>
-
-
-<dt id="arg-feeds-uses-solves-prompts">feeds, uses, solves, prompts<a class="anchor" aria-label="anchor" href="#arg-feeds-uses-solves-prompts"></a></dt>
-<dd><p>Character vectors to describe the relationship between steps - NOT SURE ABOUT THE DESIGN YET</p></dd>
+<dt id="arg-id-action-decision-justification-inputs-outputs-source-schema">id, action, decision, justification, inputs, outputs, source_schema<a class="anchor" aria-label="anchor" href="#arg-id-action-decision-justification-inputs-outputs-source-schema"></a></dt>
+<dd><p>character strings to write a step</p></dd>
 
 
 <dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
 <dd><p>An object to be coerced into a `schema` or `multiverse`.</p></dd>
+
+
+<dt id="arg-row-names">row.names<a class="anchor" aria-label="anchor" href="#arg-row-names"></a></dt>
+<dd><p>NULL or a character vector giving the row names for the data frame.</p></dd>
+
+
+<dt id="arg-optional">optional<a class="anchor" aria-label="anchor" href="#arg-optional"></a></dt>
+<dd><p>logical. If TRUE, setting row names and converting column names is optional.</p></dd>
+
+
+<dt id="arg-width">width<a class="anchor" aria-label="anchor" href="#arg-width"></a></dt>
+<dd><p>Width for printing output.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -154,142 +157,50 @@ garden of forking paths (`multiverse`).</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">schema</span> <span class="op">&lt;-</span> <span class="fu">build_schema</span><span class="op">(</span><span class="st">"HDI Example"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="co"># 1. The Scaling step</span></span></span>
 <span class="r-in"><span>  <span class="fu">add_step</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"step-scaling"</span>,</span></span>
-<span class="r-in"><span>            type <span class="op">=</span> <span class="st">"constraint"</span>,</span></span>
 <span class="r-in"><span>            action <span class="op">=</span> <span class="st">"variables are in different scales"</span>,</span></span>
 <span class="r-in"><span>            decision <span class="op">=</span> <span class="st">"apply min-max scaling to each variable"</span>,</span></span>
-<span class="r-in"><span>            justification <span class="op">=</span> <span class="st">"to put them on the same scale for combination"</span>,</span></span>
-<span class="r-in"><span>            solves <span class="op">=</span> <span class="st">"step-combine"</span>,       <span class="co"># Motivation comes from the end</span></span></span>
-<span class="r-in"><span>            feeds <span class="op">=</span> <span class="st">"step-education"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>            justification <span class="op">=</span> <span class="st">"to put them on the same scale for combination"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="co"># 2. The Education step</span></span></span>
 <span class="r-in"><span>  <span class="fu">add_step</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"step-education"</span>,</span></span>
-<span class="r-in"><span>            type <span class="op">=</span> <span class="st">"step"</span>,</span></span>
 <span class="r-in"><span>            action <span class="op">=</span> <span class="st">"combine the school variables into one dimension"</span>,</span></span>
 <span class="r-in"><span>            decision <span class="op">=</span> <span class="st">"average exp sch and avg sch"</span>,</span></span>
-<span class="r-in"><span>            justification <span class="op">=</span> <span class="st">"the most intuitive way"</span>,</span></span>
-<span class="r-in"><span>            feeds <span class="op">=</span> <span class="st">"step-combine"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>            justification <span class="op">=</span> <span class="st">"the most intuitive way"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="co"># 3. The Combine step</span></span></span>
 <span class="r-in"><span>  <span class="fu">add_step</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"step-combine"</span>,</span></span>
-<span class="r-in"><span>            type <span class="op">=</span> <span class="st">"step"</span>,</span></span>
 <span class="r-in"><span>            action <span class="op">=</span> <span class="st">"combine the three dimensions into a single index"</span>,</span></span>
 <span class="r-in"><span>            decision <span class="op">=</span> <span class="st">"use the geometric mean"</span>,</span></span>
 <span class="r-in"><span>            justification <span class="op">=</span> <span class="st">"the geometric mean is more appropriate than arithmetic mean"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">schema</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> List of 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ nodes: tibble [3 × 8] (S3: tbl_df/tbl/data.frame)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ id           : chr [1:3] "step-scaling" "step-education" "step-combine"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ action       : chr [1:3] "variables are in different scales" "combine the school variables into one dimension" "combine the three dimensions into a single index"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ type         : chr [1:3] "constraint" "step" "step"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ decision     : chr [1:3] "apply min-max scaling to each variable" "average exp sch and avg sch" "use the geometric mean"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ justification: chr [1:3] "to put them on the same scale for combination" "the most intuitive way" "the geometric mean is more appropriate than arithmetic mean"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ inputs       :List of 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ : logi NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ : logi NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ : logi NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ outputs      :List of 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ : logi NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ : logi NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ : logi NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ source_schema: logi [1:3] NA NA NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ edges: tibble [3 × 3] (S3: tbl_df/tbl/data.frame)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ from: chr [1:3] "step-scaling" "step-combine" "step-education"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ to  : chr [1:3] "step-education" "step-scaling" "step-combine"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ type: chr [1:3] "sequential" "motivated" "sequential"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "out.attrs")=List of 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ dim     : Named int [1:3] 1 1 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "names")= chr [1:3] "from" "to" "type"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ dimnames:List of 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ from: chr "from=step-scaling"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ to  : chr "to=step-education"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ type: chr "type=sequential"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "class")= chr "schema"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "name")= chr "HDI Example"</span>
+<span class="r-in"><span><span class="va">schema</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A schema: 3 x 7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   id             action      decision justification inputs outputs source_schema</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> step-scaling   variables … apply m… to put them … <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> step-education combine th… average… the most int… <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> step-combine   combine th… use the… the geometri… <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">schema2</span> <span class="op">&lt;-</span> <span class="fu">build_schema</span><span class="op">(</span><span class="st">"HDI Example"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="co"># 1. The Education Step</span></span></span>
 <span class="r-in"><span>  <span class="fu">add_step</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"step-education"</span>,</span></span>
-<span class="r-in"><span>            type <span class="op">=</span> <span class="st">"step"</span>,</span></span>
 <span class="r-in"><span>            action <span class="op">=</span> <span class="st">"combine the school variables into one dimension"</span>,</span></span>
 <span class="r-in"><span>            decision <span class="op">=</span> <span class="st">"average exp sch and avg sch"</span>,</span></span>
-<span class="r-in"><span>            justification <span class="op">=</span> <span class="st">"the most intuitive way"</span>,</span></span>
-<span class="r-in"><span>            feeds <span class="op">=</span> <span class="st">"step-scaling"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>            justification <span class="op">=</span> <span class="st">"the most intuitive way"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="co"># 2. The Scaling Step</span></span></span>
 <span class="r-in"><span>  <span class="fu">add_step</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"step-scaling"</span>,</span></span>
-<span class="r-in"><span>            type <span class="op">=</span> <span class="st">"constraint"</span>,</span></span>
 <span class="r-in"><span>            action <span class="op">=</span> <span class="st">"variables are in different scales"</span>,</span></span>
 <span class="r-in"><span>            decision <span class="op">=</span> <span class="st">"apply min-max scaling to each variable"</span>,</span></span>
-<span class="r-in"><span>            justification <span class="op">=</span> <span class="st">"to put them on the same scale for combination"</span>,</span></span>
-<span class="r-in"><span>            solves <span class="op">=</span> <span class="st">"step-combine"</span>,       <span class="co"># Motivation comes from the end</span></span></span>
-<span class="r-in"><span>            feeds <span class="op">=</span> <span class="st">"step-combine"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>            justification <span class="op">=</span> <span class="st">"to put them on the same scale for combination"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="co"># 3. The Combine Step</span></span></span>
 <span class="r-in"><span>  <span class="fu">add_step</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"step-combine"</span>,</span></span>
-<span class="r-in"><span>            type <span class="op">=</span> <span class="st">"step"</span>,</span></span>
 <span class="r-in"><span>            action <span class="op">=</span> <span class="st">"combine the three dimensions into a single index"</span>,</span></span>
 <span class="r-in"><span>            decision <span class="op">=</span> <span class="st">"use the geometric mean"</span>,</span></span>
 <span class="r-in"><span>            justification <span class="op">=</span> <span class="st">"the geometric mean is more appropriate than arithmetic mean"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">my_multiverse</span> <span class="op">&lt;-</span> <span class="fu">build_multiverse</span><span class="op">(</span>original <span class="op">=</span> <span class="va">schema</span>, reversed <span class="op">=</span> <span class="va">schema2</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">my_multiverse</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> List of 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ original:List of 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ nodes: tibble [3 × 8] (S3: tbl_df/tbl/data.frame)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ id           : chr [1:3] "step-scaling" "step-education" "step-combine"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ action       : chr [1:3] "variables are in different scales" "combine the school variables into one dimension" "combine the three dimensions into a single index"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ type         : chr [1:3] "constraint" "step" "step"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ decision     : chr [1:3] "apply min-max scaling to each variable" "average exp sch and avg sch" "use the geometric mean"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ justification: chr [1:3] "to put them on the same scale for combination" "the most intuitive way" "the geometric mean is more appropriate than arithmetic mean"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ inputs       :List of 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ : logi NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ : logi NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ : logi NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ outputs      :List of 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ : logi NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ : logi NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ : logi NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ source_schema: logi [1:3] NA NA NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ edges: tibble [3 × 3] (S3: tbl_df/tbl/data.frame)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ from: chr [1:3] "step-scaling" "step-combine" "step-education"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ to  : chr [1:3] "step-education" "step-scaling" "step-combine"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ type: chr [1:3] "sequential" "motivated" "sequential"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "out.attrs")=List of 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ dim     : Named int [1:3] 1 1 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..- attr(*, "names")= chr [1:3] "from" "to" "type"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ dimnames:List of 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..$ from: chr "from=step-scaling"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..$ to  : chr "to=step-education"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..$ type: chr "type=sequential"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "class")= chr "schema"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "name")= chr "HDI Example"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ reversed:List of 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ nodes: tibble [3 × 8] (S3: tbl_df/tbl/data.frame)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ id           : chr [1:3] "step-education" "step-scaling" "step-combine"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ action       : chr [1:3] "combine the school variables into one dimension" "variables are in different scales" "combine the three dimensions into a single index"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ type         : chr [1:3] "step" "constraint" "step"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ decision     : chr [1:3] "average exp sch and avg sch" "apply min-max scaling to each variable" "use the geometric mean"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ justification: chr [1:3] "the most intuitive way" "to put them on the same scale for combination" "the geometric mean is more appropriate than arithmetic mean"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ inputs       :List of 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ : logi NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ : logi NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ : logi NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ outputs      :List of 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ : logi NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ : logi NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ : logi NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ source_schema: logi [1:3] NA NA NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ edges: tibble [3 × 3] (S3: tbl_df/tbl/data.frame)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ from: chr [1:3] "step-education" "step-scaling" "step-combine"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ to  : chr [1:3] "step-scaling" "step-combine" "step-scaling"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ type: chr [1:3] "sequential" "sequential" "motivated"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "out.attrs")=List of 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ dim     : Named int [1:3] 1 1 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..- attr(*, "names")= chr [1:3] "from" "to" "type"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ dimnames:List of 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..$ from: chr "from=step-education"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..$ to  : chr "to=step-scaling"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..$ type: chr "type=sequential"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "class")= chr "schema"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "name")= chr "HDI Example"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "class")= chr [1:2] "multiverse" "list"</span>
+<span class="r-in"><span><span class="va">my_multiverse</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> A multiverse with 2 schemas:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   original: (3 steps)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   reversed: (3 steps)</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

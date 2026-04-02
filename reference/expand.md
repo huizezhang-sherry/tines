@@ -40,18 +40,30 @@ expand_tines(x, alternatives, ...)
 base_schema <- example_football()
 alts <- example_alternatives(case = "football")
 expand_tines(base_schema, alts)
-#> Error in if (!target %in% ids) {    cli::cli_abort("Target step {.val {target}} not found in the base schema.")}: argument is of length zero
+#> A multiverse with 4 schemas:
+#>   original: (3 steps)
+#>   step-mixed-effects-logistic-model: (3 steps)
+#>   step-probit-regression-model: (3 steps)
+#>   step-bayesian-logistic-model: (3 steps)
 
-# read the alternatives from a YAML file
-tmp_file <- tempfile(fileext = ".yaml")
+# read the alternatives from a YML file
+tmp_file <- tempfile(fileext = ".yml")
 write_alternatives(alts, tmp_file)
-#> ✔ Successfully wrote alternatives to /tmp/RtmpYQenHb/file1bca714a8b98.yaml
+#> ✔ Successfully wrote alternatives to /tmp/RtmpjNGB03/file1bd062a74c4e.yml
 expand_tines(base_schema, tmp_file)
-#> Error in yaml.load(string, error.label = error.label, ...): (/tmp/RtmpYQenHb/file1bca714a8b98.yaml) Duplicate map key: ''
+#> A multiverse with 4 schemas:
+#>   original: (3 steps)
+#>   step-mixed-effects-logistic-model: (3 steps)
+#>   step-probit-regression-model: (3 steps)
+#>   step-bayesian-logistic-model: (3 steps)
 
 # expand on the multiverse
 multiverse <- example_multiverse()
 alts <- example_alternatives(case = "hdi")
 expand_tines(multiverse, alts)
-#> Error in if (target %in% ids) {    expanded_mini_multi <- expand_tines(single_schema, alternatives,         include_original = FALSE)    return(expanded_mini_multi)} else {    return(list(single_schema))}: argument is of length zero
+#> A multiverse with 4 schemas:
+#>   original: (3 steps)
+#>   reversed: (3 steps)
+#>   original.step-arithmetic-mean: (3 steps)
+#>   reversed.step-arithmetic-mean: (3 steps)
 ```

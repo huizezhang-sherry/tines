@@ -75,20 +75,32 @@
 <span class="r-in"><span><span class="va">base_schema</span> <span class="op">&lt;-</span> <span class="fu"><a href="example_tines.html">example_football</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">alts</span> <span class="op">&lt;-</span> <span class="fu"><a href="example_tines.html">example_alternatives</a></span><span class="op">(</span>case <span class="op">=</span> <span class="st">"football"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">expand_tines</span><span class="op">(</span><span class="va">base_schema</span>, <span class="va">alts</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in if (!target %in% ids) {    cli::cli_abort("Target step {.val {target}} not found in the base schema.")}:</span> argument is of length zero</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> A multiverse with 4 schemas:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   original: (3 steps)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   step-mixed-effects-logistic-model: (3 steps)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   step-probit-regression-model: (3 steps)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   step-bayesian-logistic-model: (3 steps)</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># read the alternatives from a YAML file</span></span></span>
-<span class="r-in"><span><span class="va">tmp_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yaml"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># read the alternatives from a YML file</span></span></span>
+<span class="r-in"><span><span class="va">tmp_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yml"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="read-write-alternatives.html">write_alternatives</a></span><span class="op">(</span><span class="va">alts</span>, <span class="va">tmp_file</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Successfully wrote alternatives to <span style="color: #0000BB;">/tmp/RtmpYQenHb/file1bca714a8b98.yaml</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Successfully wrote alternatives to <span style="color: #0000BB;">/tmp/RtmpjNGB03/file1bd062a74c4e.yml</span></span>
 <span class="r-in"><span><span class="fu">expand_tines</span><span class="op">(</span><span class="va">base_schema</span>, <span class="va">tmp_file</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in yaml.load(string, error.label = error.label, ...):</span> (/tmp/RtmpYQenHb/file1bca714a8b98.yaml) Duplicate map key: ''</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> A multiverse with 4 schemas:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   original: (3 steps)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   step-mixed-effects-logistic-model: (3 steps)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   step-probit-regression-model: (3 steps)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   step-bayesian-logistic-model: (3 steps)</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># expand on the multiverse</span></span></span>
 <span class="r-in"><span><span class="va">multiverse</span> <span class="op">&lt;-</span> <span class="fu"><a href="example_tines.html">example_multiverse</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">alts</span> <span class="op">&lt;-</span> <span class="fu"><a href="example_tines.html">example_alternatives</a></span><span class="op">(</span>case <span class="op">=</span> <span class="st">"hdi"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">expand_tines</span><span class="op">(</span><span class="va">multiverse</span>, <span class="va">alts</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in if (target %in% ids) {    expanded_mini_multi &lt;- expand_tines(single_schema, alternatives,         include_original = FALSE)    return(expanded_mini_multi)} else {    return(list(single_schema))}:</span> argument is of length zero</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> A multiverse with 4 schemas:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   original: (3 steps)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   reversed: (3 steps)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   original.step-arithmetic-mean: (3 steps)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   reversed.step-arithmetic-mean: (3 steps)</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

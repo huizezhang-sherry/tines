@@ -40,7 +40,7 @@
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">alternative</span><span class="op">(</span><span class="va">id</span>, <span class="va">action</span>, <span class="va">decision</span>, <span class="va">justification</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">new_alternatives</span><span class="op">(</span><span class="va">id</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">new_alternatives</span><span class="op">(</span><span class="va">step</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -48,7 +48,7 @@
 
 
 <dl><dt id="arg-id">id<a class="anchor" aria-label="anchor" href="#arg-id"></a></dt>
-<dd><p>The target step ID in the schema that these alternatives pertain to.</p></dd>
+<dd><p>Unique identifier for this alternative (kebab-case).</p></dd>
 
 
 <dt id="arg-action">action<a class="anchor" aria-label="anchor" href="#arg-action"></a></dt>
@@ -63,6 +63,10 @@
 <dd><p>Why this method is valid.</p></dd>
 
 
+<dt id="arg-step">step<a class="anchor" aria-label="anchor" href="#arg-step"></a></dt>
+<dd><p>The target step ID in the schema that these alternatives pertain to.</p></dd>
+
+
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>One or more alternative branches created by `alternative()`.</p></dd>
 
@@ -71,52 +75,12 @@
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="example_tines.html">example_alternatives</a></span><span class="op">(</span>case <span class="op">=</span> <span class="st">"football"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $step</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "step-logistic-model"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]$id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "step-probit-regression-model"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]$action</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "estimate the effect size of skin tone on red card"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]$decision</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "fit a probit regression model using the average skin tone rating and specified covariates"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]$justification</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "probit models provide a methodologically valid alternative to logistic regression by assuming a normally distributed latent variable, serving as a sensitivity check for the choice of link function"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]$id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "step-bayesian-logistic-model"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]$action</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "estimate the effect size of skin tone on red card"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]$decision</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "fit a Bayesian logistic regression model with the average skin tone rating as a predictor and weakly informative priors"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]$justification</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "the Bayesian approach provides a complete posterior distribution of the effect size rather than a point estimate, allowing for a more nuanced probabilistic interpretation of the skin tone effect and its uncertainty"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "alternatives" "list"        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"id")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"id")$id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "step-mixed-effects-logistic-model"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"id")$action</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "estimate the effect size of skin tone on red card"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"id")$decision</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "fit a generalized linear mixed-effects model (GLMM) with random intercepts for players and referees to account for hierarchical data structure"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"id")$justification</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "mixed-effects models are appropriate for clustered data as they control for non-independence of observations within players and referees, leading to more reliable standard errors and effect estimates"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Alternatives: step-logistic-model</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   id                                action                decision justification</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> step-mixed-effects-logistic-model estimate the effect … fit a g… mixed-effect…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> step-probit-regression-model      estimate the effect … fit a p… probit model…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> step-bayesian-logistic-model      estimate the effect … fit a B… the Bayesian…</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

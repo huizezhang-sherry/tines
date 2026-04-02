@@ -170,22 +170,22 @@ this to work.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> === OUTPUT FORMAT ===</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Please output the result in **strictly valid YAML format**.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Please output the result in **strictly valid YML format**.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> **Crucial Formatting Rules:**</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1. Include a `meta` section at the top with `type: alternative` and</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> the `step`.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2. Output strictly valid YAML. All text values (decision,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2. Output strictly valid YML. All text values (decision,</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> justification) must be enclosed in double quotes ("). Do not use</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> block styles (| or &gt;). Do not wrap lines or insert \n characters</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> within the quotes; keep the text as a single continuous string.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3. Do not include markdown code fences (like ```yaml) or</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> conversational text. Just the raw YAML.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3. Do not include markdown code fences (like ```yml) or</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> conversational text. Just the raw YML.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> === REQUIRED YAML STRUCTURE EXAMPLE ===</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> === REQUIRED YML STRUCTURE EXAMPLE ===</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> meta: type: tines_alternative step: step-combine alternatives: - id:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> step-new-method-name action: Repeat the original action decision:</span>
@@ -195,17 +195,15 @@ this to work.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> === CURRENT SCHEMA ===</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> nodes: id: - step-scaling - step-education - step-combine action: -</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> id: - step-scaling - step-education - step-combine action: -</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> variables are in different scales - combine the school variables into</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> one dimension - combine the three dimensions into a single index</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> type: - constraint - step - step decision: - apply min-max scaling to</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> each variable - average exp sch and avg sch - use the geometric mean</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> justification: - to put them on the same scale for combination - the</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> most intuitive way - the geometric mean is more appropriate than</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> arithmetic mean inputs: - .na - .na - .na outputs: - .na - .na - .na</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> source_schema: - .na - .na - .na edges: from: - step-scaling -</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> step-combine - step-education to: - step-education - step-scaling -</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> step-combine type: - sequential - motivated - sequential</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> decision: - apply min-max scaling to each variable - average exp sch</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> and avg sch - use the geometric mean justification: - to put them on</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> the same scale for combination - the most intuitive way - the</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> geometric mean is more appropriate than arithmetic mean inputs: - .na</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - .na - .na outputs: - .na - .na - .na source_schema: - .na - .na -</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> .na</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

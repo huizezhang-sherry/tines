@@ -116,12 +116,11 @@ prompt_extract_schema(data_dict = paste0(data_dict, collapse = ", "), text = tex
 #> === REQUIRED YAML STRUCTURE EXAMPLE ===
 #> 
 #> meta: type: schema nodes: - fork: variables are in different scales
-#> type: constraint path: apply min-max scaling to each variable
-#> justification: to put them on the same scale for combination id:
-#> step-scaling confidence: high - fork: combine the school variables
-#> into one dimension type: step path: average exp sch and avg sch
-#> justification: the most intuitive way id: step-education confidence:
-#> low edges: - from: step-scaling to: step-education type: sequential
+#> path: apply min-max scaling to each variable justification: to put
+#> them on the same scale for combination id: step-scaling confidence:
+#> high - fork: combine the school variables into one dimension path:
+#> average exp sch and avg sch justification: the most intuitive way id:
+#> step-education confidence: low
 #> 
 #> === DATASET SUMMARY ===
 #> 
