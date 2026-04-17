@@ -44,7 +44,8 @@ validate_script <- function(file, data = NULL, max_runs = 5,
   extracted_data <- NULL
   
   sys_prompt <- build_sys_prompt(data)
-  chat <- ellmer::chat_google_gemini(model = model)
+  #chat <- ellmer::chat_google_gemini(model = model)
+  chat <- ellmer::chat_anthropic(model = "claude-opus-4-5")
 
   if (engine == "callr") {
     sandbox <- setup_sandbox(file, data)

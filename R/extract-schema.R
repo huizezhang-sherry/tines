@@ -34,7 +34,7 @@
 #' # The prompt generation function can be used directly to see the full prompt sent to the LLM
 #' prompt_extract_schema(data_dict = paste0(data_dict, collapse = ", "), text = text, print = TRUE)
 #' 
-extract_schema <- function(text, data_dict, output_file = "draft_schema.yml", model = "gemini-2.5-pro") {
+extract_schema <- function(text, data_dict, output_file = "draft_schema.yml", model = "claude-opus-4-5") {
 
   # Format data_dict into a data dictionary string
   data_summary <- if (is.data.frame(data_dict)) {
@@ -55,7 +55,8 @@ extract_schema <- function(text, data_dict, output_file = "draft_schema.yml", mo
   full_prompt <- prompt_extract_schema(data_dict, text, print = FALSE)
   
   cli::cli_alert_info("Extracting schema and mapping data flow simultaneously...")
-  chat <- ellmer::chat_google_gemini(model = model, echo = "none")
+  #chat <- ellmer::chat_google_gemini(model = model, echo = "none")
+  chat <- ellmer::chat_anthropic(model = "claude-opus-4-5", echo = "none")
   yaml_out <- chat$chat(full_prompt)
   
   clean_yaml <- gsub("^```yaml\n|^```\n|```$", "", trimws(yaml_out))

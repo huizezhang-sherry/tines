@@ -126,7 +126,8 @@ gen_code_single <- function(base_schema, base_code = NULL,
     print = FALSE
   )
 
-  chat <- ellmer::chat_google_gemini(model = "gemini-2.5-flash")
+  #chat <- ellmer::chat_google_gemini(model = "gemini-2.5-flash")
+  chat <- ellmer::chat_anthropic(model = "claude-opus-4-5")
   utils::capture.output(chat$chat(full_prompt), file = file_path)
 
   invisible()
