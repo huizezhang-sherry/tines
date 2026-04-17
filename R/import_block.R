@@ -56,9 +56,9 @@ generate_edges <- function(schema) {
                       stringsAsFactors = FALSE)
   var_sources <- list()
   
-  for (i in seq_len(nrow(schema$nodes))) {
-    current_id     <- schema$nodes$id[i]
-    current_inputs  <- unlist(schema$nodes$inputs[[i]])
+  for (i in seq_len(nrow(schema))) {
+    current_id     <- schema$id[i]
+    current_inputs  <- unlist(schema$inputs[[i]])
     
     if (length(current_inputs) > 0) {
       for (inp in current_inputs) {
@@ -71,13 +71,12 @@ generate_edges <- function(schema) {
       }
     }
     
-    current_outputs <- unlist(schema$nodes$outputs[[i]])
+    current_outputs <- unlist(schema$outputs[[i]])
     if (length(current_outputs) > 0) {
       for (outp in current_outputs) var_sources[[outp]] <- current_id
     }
   }
   
   if (nrow(edges) > 0) edges <- dplyr::distinct(edges)
-  schema$edges <- edges
-  schema
+  edges
 }

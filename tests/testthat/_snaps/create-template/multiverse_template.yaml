@@ -2,29 +2,41 @@ meta:
   type: multiverse
   date: YYYY-MM-DD
 schemas:
-  schema 1:
-    nodes:
-    - id: step1
-      action: path A branch
-      decision: describe your decision here
-      justification: explain your reasoning here
-    - id: step2
-      action: path A branch
-      decision: describe your decision here
-      justification: explain your reasoning here
-    edges:
-      from: step1
-      to: step2
-  schema 1:
-    nodes:
-    - id: step1
-      action: path B branch
-      decision: describe your decision here
-      justification: explain your reasoning here
-    - id: step2
-      action: path B branch
-      decision: describe your decision here
-      justification: explain your reasoning here
-    edges:
-      from: step1
-      to: step2
+- meta:
+    type: schema
+    date: YYYY-MM-DD
+    name: Path A
+  nodes:
+  - id: step1
+    action: path A approach
+    decision: describe your decision here
+    justification: explain your reasoning here
+    inputs: []
+    outputs: []
+    source_schema: ''
+  - id: step2
+    action: path A next step
+    decision: describe your decision here
+    justification: explain your reasoning here
+    inputs: []
+    outputs: []
+    source_schema: ''
+- meta:
+    type: schema
+    date: YYYY-MM-DD
+    name: Path B
+  nodes:
+  - id: step1
+    action: path B approach
+    decision: describe your decision here
+    justification: explain your reasoning here
+    inputs: []
+    outputs: []
+    source_schema: ''
+  - id: step2
+    action: path B next step
+    decision: describe your decision here
+    justification: explain your reasoning here
+    inputs: []
+    outputs: []
+    source_schema: ''

@@ -1,15 +1,19 @@
 meta:
   type: schema
   date: YYYY-MM-DD
+  name: My Analysis Schema
 nodes:
 - id: step1
   action: describe your first step here
   decision: describe your decision here
   justification: explain your reasoning here
+  inputs: []
+  outputs: []
+  source_schema: ''
 - id: step2
   action: describe your next step here
   decision: describe your decision here
   justification: explain your reasoning here
-edges:
-- from: step1
-  to: step2
+  inputs: []
+  outputs: []
+  source_schema: ''

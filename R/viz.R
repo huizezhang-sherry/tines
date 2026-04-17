@@ -64,12 +64,15 @@ tines2dotspec <- function(x, ...) {
   }
 
   # 1. Prepare Node Definitions: use the id as the ID and the action/id as the label
-  node_strings <- paste0('  "', x$id, '" [label="', x$id, '\n(', x$action, ')", shape=box, style=filled, fillcolor=white]')
+  path <- gsub("\\'", "", x$path)
+  path <- gsub('\\"', "", path)
+  node_strings <- paste0('  "', x$id, '" [label="', x$id, '\n(', path, ')", shape=box, style=filled, fillcolor=white]')
 
   # 2. Prepare Edge Definitions with Semantic Styling
   # TODO: currently only doing sequential edges - for now create simple sequential flow
   if (nrow(x) > 1) {
-    edge_strings <- paste0('  "', x$id[-nrow(x)], '" -> "', x$id[-1], '" [style=solid, color=black]')
+    edge_df <- generate_edges(x)
+    edge_strings <- paste0('  "', edge_df$from, '" -> "', edge_df$to, '" [style=solid, color=black]')
   } else {
     edge_strings <- character(0)
   }
@@ -90,12 +93,13 @@ tines2dotspec <- function(x, ...) {
 
 #' @export
 #' @rdname print
-inspect_dot <- function(dot,
+inspect_dot <- function(schema,
                        indent = 2,
                        keep_attr_blocks_one_line = TRUE,
                        trim_trailing_ws = TRUE) {
   # 1) Unescape literal "\n" sequences if present
   #    (common when DOT is printed as a single R string)
+  dot <- tines2dotspec(schema)
   dot <- gsub("\\\\n", "\n", dot)
 
   # 2) Normalize line endings
