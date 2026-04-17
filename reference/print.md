@@ -69,19 +69,16 @@ and prints to the console.
 schema <- example_schema()
 # plot() and draw_tines() are interchangeable
 draw_tines(schema)
-
-{"x":{"diagram":"digraph schema {\n  graph [rankdir=TD, fontname=Arial]\n  node [fontname=Arial, fontsizLe=10]\n  edge [fontname=Arial, fontsize=8]\n  \"step-scaling\" [label=\"step-scaling\n(variables are in different scales)\", shape=box, style=filled, fillcolor=white]\n  \"step-education\" [label=\"step-education\n(combine the school variables into one dimension)\", shape=box, style=filled, fillcolor=white]\n  \"step-combine\" [label=\"step-combine\n(combine the three dimensions into a single index)\", shape=box, style=filled, fillcolor=white]\n  \"step-scaling\" -> \"step-education\" [style=solid, color=black]\n  \"step-education\" -> \"step-combine\" [style=solid, color=black]\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}plot(schema)
-
-{"x":{"diagram":"digraph schema {\n  graph [rankdir=TD, fontname=Arial]\n  node [fontname=Arial, fontsizLe=10]\n  edge [fontname=Arial, fontsize=8]\n  \"step-scaling\" [label=\"step-scaling\n(variables are in different scales)\", shape=box, style=filled, fillcolor=white]\n  \"step-education\" [label=\"step-education\n(combine the school variables into one dimension)\", shape=box, style=filled, fillcolor=white]\n  \"step-combine\" [label=\"step-combine\n(combine the three dimensions into a single index)\", shape=box, style=filled, fillcolor=white]\n  \"step-scaling\" -> \"step-education\" [style=solid, color=black]\n  \"step-education\" -> \"step-combine\" [style=solid, color=black]\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}inspect_dot(schema)
-#> c("step-scaling", "step-education", "step-combine")
-#> c("variables are in different scales", "combine the school variables into one dimension", "combine the three dimensions into a single index")
-#> c("apply min-max scaling to each variable", "average exp sch and avg sch", "use the geometric mean")
-#> c("to put them on the same scale for combination", "the most intuitive way", "the geometric mean is more appropriate than arithmetic mean")
-#> list(NA, NA, NA)
-#> list(NA, NA, NA)
-#> c(NA, NA, NA) 
+#> Warning: Unknown or uninitialised column: `path`.
+#> Error in var_sources[[outp]] <- current_id: attempt to select less than one element in integerOneIndex
+plot(schema)
+#> Warning: Unknown or uninitialised column: `path`.
+#> Error in var_sources[[outp]] <- current_id: attempt to select less than one element in integerOneIndex
+inspect_dot(schema)
+#> Warning: Unknown or uninitialised column: `path`.
+#> Error in var_sources[[outp]] <- current_id: attempt to select less than one element in integerOneIndex
 multiverse <- example_multiverse()
 draw_tines(multiverse, index = 2)
-
-{"x":{"diagram":"digraph schema {\n  graph [rankdir=TD, fontname=Arial]\n  node [fontname=Arial, fontsizLe=10]\n  edge [fontname=Arial, fontsize=8]\n  \"step-education\" [label=\"step-education\n(combine the school variables into one dimension)\", shape=box, style=filled, fillcolor=white]\n  \"step-scaling\" [label=\"step-scaling\n(variables are in different scales)\", shape=box, style=filled, fillcolor=white]\n  \"step-combine\" [label=\"step-combine\n(combine the three dimensions into a single index)\", shape=box, style=filled, fillcolor=white]\n  \"step-education\" -> \"step-scaling\" [style=solid, color=black]\n  \"step-scaling\" -> \"step-combine\" [style=solid, color=black]\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}
+#> Warning: Unknown or uninitialised column: `path`.
+#> Error in var_sources[[outp]] <- current_id: attempt to select less than one element in integerOneIndex
 ```
