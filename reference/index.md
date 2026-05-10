@@ -45,7 +45,7 @@
   Read and write tines schemas and multiverses to YAML files
 - [`write_alternatives()`](read-write-alternatives.md)
   [`read_alternatives()`](read-write-alternatives.md) : Read and write
-  an alternatives object from/to a YAML file
+  an alternatives object from/to a YML file
 
 ## Utility
 

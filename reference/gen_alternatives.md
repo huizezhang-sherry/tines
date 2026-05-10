@@ -29,7 +29,7 @@ prompt_alternatives(schema = NULL, step, n = 3, print = TRUE, width = 70)
 - x:
 
   A \`schema\` or \`multiverse\` object, or a character string
-  specifying the file path to a valid \`tines\` YAML file.
+  specifying the file path to a valid \`tines\` YML file.
 
 - step:
 
@@ -48,7 +48,7 @@ prompt_alternatives(schema = NULL, step, n = 3, print = TRUE, width = 70)
 
 - file_path:
 
-  A character string specifying where to save the generated YAML output.
+  A character string specifying where to save the generated YML output.
   If \`NULL\` (the default), \`capture.output()\` will return the result
   as a character vector.
 
@@ -90,7 +90,7 @@ hdi <- example_schema()
 
 if (FALSE) { # \dontrun{
 gen_alternatives(hdi, step = "step-combine", n = 1,
-                file_path = here::here("inst/hdi-alt.yaml"))
+                file_path = here::here("inst/hdi-alt.yml"))
 } # }
 
 # The prompt generation function can be used directly to see the full prompt sent to the LLM

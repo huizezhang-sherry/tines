@@ -47,7 +47,7 @@
 <span><span class="fu">draw_tines</span><span class="op">(</span><span class="va">x</span>, index <span class="op">=</span> <span class="fl">1</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">inspect_dot</span><span class="op">(</span></span>
-<span>  <span class="va">dot</span>,</span>
+<span>  <span class="va">schema</span>,</span>
 <span>  indent <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  keep_attr_blocks_one_line <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  trim_trailing_ws <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -70,10 +70,6 @@
 <dd><p>An integer. For a `multiverse`, which path index to draw. Defaults to 1.</p></dd>
 
 
-<dt id="arg-dot">dot<a class="anchor" aria-label="anchor" href="#arg-dot"></a></dt>
-<dd><p>A character string containing raw Graphviz DOT code.</p></dd>
-
-
 <dt id="arg-indent">indent<a class="anchor" aria-label="anchor" href="#arg-indent"></a></dt>
 <dd><p>Integer. The number of spaces to use for each indentation level in `inspect_dot()`. Defaults to 2.</p></dd>
 
@@ -84,6 +80,10 @@
 
 <dt id="arg-trim-trailing-ws">trim_trailing_ws<a class="anchor" aria-label="anchor" href="#arg-trim-trailing-ws"></a></dt>
 <dd><p>Logical. If `TRUE`, trims trailing whitespace from the final output.</p></dd>
+
+
+<dt id="arg-dot">dot<a class="anchor" aria-label="anchor" href="#arg-dot"></a></dt>
+<dd><p>A character string containing raw Graphviz DOT code.</p></dd>
 
 </dl></div>
     <div class="section level2">

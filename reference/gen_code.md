@@ -57,7 +57,7 @@ prompt_gen_code(
 
 - x:
 
-  A schema object, multiverse object, or file path to a schema YAML.
+  A schema object, multiverse object, or file path to a schema YML.
 
 - base_code:
 

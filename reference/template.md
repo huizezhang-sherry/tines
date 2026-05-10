@@ -36,9 +36,8 @@ draft_alternatives(x, id, file_path = NULL)
 
 - x:
 
-  A \`schema\` or \`multiverse\` object. Required for
-  \`draft_alternatives()\` to generate a template based on an existing
-  step.
+  A \`schema\` or \`multiverse\` object, or a character string
+  specifying the file path to a valid schema YAML file.
 
 - id:
 
@@ -49,8 +48,13 @@ draft_alternatives(x, id, file_path = NULL)
 ``` r
 # Create a new schema template
 if (FALSE) { # \dontrun{
-draft_tines(type = "schema", file_path = "schema_template.yaml")
-draft_alternatives(x = my_schema, id = "data-cleaning", file_path = "alternative_template.yaml")
+draft_tines(type = "schema", file_path = "schema_template.yml")
+
+# Draft alternatives from a schema object
+draft_alternatives(x = my_schema, id = "data-cleaning", file_path = "alternative_template.yml")
+
+# Draft alternatives from a schema file
+draft_alternatives(x = "path/to/schema.yml", id = "data-cleaning")
 } # }
 
 ```

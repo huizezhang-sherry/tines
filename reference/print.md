@@ -17,7 +17,7 @@ plot(x, index = 1, ...)
 draw_tines(x, index = 1, ...)
 
 inspect_dot(
-  dot,
+  schema,
   indent = 2,
   keep_attr_blocks_one_line = TRUE,
   trim_trailing_ws = TRUE
@@ -39,10 +39,6 @@ inspect_dot(
   An integer. For a \`multiverse\`, which path index to draw. Defaults
   to 1.
 
-- dot:
-
-  A character string containing raw Graphviz DOT code.
-
 - indent:
 
   Integer. The number of spaces to use for each indentation level in
@@ -56,6 +52,10 @@ inspect_dot(
 - trim_trailing_ws:
 
   Logical. If \`TRUE\`, trims trailing whitespace from the final output.
+
+- dot:
+
+  A character string containing raw Graphviz DOT code.
 
 ## Value
 

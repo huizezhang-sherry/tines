@@ -14,7 +14,7 @@ extract_schema(
   text,
   data_dict,
   output_file = "draft_schema.yml",
-  model = "gemini-2.5-pro"
+  model = "claude-opus-4-5"
 )
 
 prompt_extract_schema(data_dict, text, print = TRUE, width = 70)

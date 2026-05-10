@@ -22,6 +22,7 @@ remotes::install_github("huizezhang-sherry/tines")
 Start from a schema
 
 ``` r
+
 library(tines)
 (hdi <- example_schema())
 #> # A schema: 3 x 7
@@ -36,11 +37,13 @@ Generate an alternative at block-combine and write the result into a
 `yaml` file:
 
 ``` r
+
 gen_alternatives(hdi, step = "step-combine", n = 1, 
                  file_path = here::here("inst/hdi-alt.yml"))
 ```
 
 ``` r
+
 #(res <- expand_tines(hdi, alternatives = here::here("inst/hdi-alt.yml")))
 ```
 
@@ -48,6 +51,7 @@ Take the original schema, original code, and the alternatives and
 generate a new R script that implements the alternative:
 
 ``` r
+
 gen_code(hdi, 
          base_code = here::here("inst/hdi.R"), 
          alternative = here::here("inst/hdi-alt.yml"),
@@ -58,6 +62,7 @@ gen_code(hdi,
 Run the generated code and compare the results:
 
 ``` r
+
 res_arith <- source(here::here("inst/alt_01_block_combine_arithmetic.R"))
 #> Warning: package 'tibble' was built under R version 4.5.2
 #> Warning: package 'tidyr' was built under R version 4.5.2
@@ -93,6 +98,7 @@ Currently restricted by a rate limit.
 Start from a schema
 
 ``` r
+
 library(tines)
 (football <- example_football())
 #> # A schema: 3 x 7
@@ -107,6 +113,7 @@ Generate an alternative at block-combine and write the result into a
 `yaml` file:
 
 ``` r
+
 gen_alternatives(football, id = "block-logistic-model", n = 2, 
                  file_path = here::here("inst/football-alt.yaml"))
 ```
@@ -115,6 +122,7 @@ Take the original schema, original code, and the alternatives and
 generate a new R script that implements the alternative:
 
 ``` r
+
 gen_code(football, 
          base_code = here::here("inst/football.R"), 
          alternative = here::here("inst/football-alt.yaml"),
@@ -125,6 +133,7 @@ gen_code(football,
 Run the generated code and compare the results:
 
 ``` r
+
 schema <- example_rdi()
 code <- gen_composite_code(
   schema       = schema,
@@ -185,7 +194,7 @@ validate_script(here::here("inst/rdi.R"), verbose = TRUE)
   Read and write tines schemas and multiverses to YAML files
 - [`write_alternatives()`](read-write-alternatives.md)
   [`read_alternatives()`](read-write-alternatives.md) : Read and write
-  an alternatives object from/to a YAML file
+  an alternatives object from/to a YML file
 
 ## Utility
 
