@@ -53,7 +53,7 @@ prompt_gen_code(
 )
 }
 \arguments{
-\item{x}{A schema object, multiverse object, or file path to a schema YAML.}
+\item{x}{A schema object, multiverse object, or file path to a schema YML.}
 
 \item{base_code}{Optional. File path to an R script to use as style reference.}
 

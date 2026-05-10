@@ -3,7 +3,7 @@
 \name{write_alternatives}
 \alias{write_alternatives}
 \alias{read_alternatives}
-\title{Read and write  an alternatives object from/to a YAML file}
+\title{Read and write  an alternatives object from/to a YML file}
 \usage{
 write_alternatives(x, file, ...)
 
@@ -17,12 +17,12 @@ read_alternatives(file, ...)
 \item{...}{Additional arguments passed to `yaml::read_yaml()`.}
 }
 \description{
-Read and write  an alternatives object from/to a YAML file
+Read and write  an alternatives object from/to a YML file
 }
 \examples{
 \dontrun{
 alts <- example_alternatives()
-temp_path <- withr::local_tempfile(fileext = ".yaml")
+temp_path <- withr::local_tempfile(fileext = ".yml")
 write_alternatives(alts, temp_path)
 alts_read <- read_alternatives(temp_path)
 

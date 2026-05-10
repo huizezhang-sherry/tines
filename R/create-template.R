@@ -5,7 +5,7 @@
 #'
 #' @param type The type of template to create. Options are "schema" for a new analysis schema template, and "multiverse" for a multiverse analysis template.
 #' @param file_path The file path where the template should be saved. If NULL, the template will be saved in the current working directory with a default name based on the type.
-#' @param x A `schema` or `multiverse` object. Required for `draft_alternatives()` to generate a template based on an existing step.
+#' @param x A `schema` or `multiverse` object, or a character string specifying the file path to a valid schema YAML file.
 #' @param id A character string specifying the `id` of the step in the schema
 #' @param overwrite Logical. If TRUE, will overwrite an existing file at the specified file_path. Defaults to FALSE.
 #' @return NULL
@@ -14,8 +14,13 @@
 #' @examples
 #' # Create a new schema template
 #' \dontrun{
-#' draft_tines(type = "schema", file_path = "schema_template.yaml")
-#' draft_alternatives(x = my_schema, id = "data-cleaning", file_path = "alternative_template.yaml")
+#' draft_tines(type = "schema", file_path = "schema_template.yml")
+#' 
+#' # Draft alternatives from a schema object
+#' draft_alternatives(x = my_schema, id = "data-cleaning", file_path = "alternative_template.yml")
+#' 
+#' # Draft alternatives from a schema file
+#' draft_alternatives(x = "path/to/schema.yml", id = "data-cleaning")
 #' }
 #'
 #'
@@ -117,35 +122,39 @@ draft_tines <- function(type = c("schema", "multiverse"), file_path = NULL, over
 #' @export
 #' @rdname template
 draft_alternatives <- function(x, id, file_path = NULL) {
+  
+  if (is.character(x) && length(x) == 1) {
+    if (!file.exists(x)) cli::cli_abort("File {.file {x}} does not exist.")
+    x <- read_tines(x)
+  }
 
   if (!id %in% x$id) {
     cli::cli_abort("Step {.val {id}} not found in the {class(x)} object")
   }
 
-  # Get the current action
-  idx <- which(x$id == id)
-  current_action <- x$action[idx]
+  current_action <- x$fork[which(x$id == id)]
+  fork <- x$fork[which(x$id == id)]
 
   template <- cli::format_inline(
     "meta:
   type: alternatives
   step: {id}
+  fork: {fork}
 alternatives:
-  - id: \"YOUR-NEW-NAME-HERE\"
-    action: \"{current_action}\"
-    decision: \"\"
-    justification: \"\"
-  - id: \"YOUR-NEW-NAME-HERE\"
-    action: \"{current_action}\"
-    decision: \"\"
-    justification: \"\"
+  - id: \"NEW-ALTERNATIVE#1\"
+    path: \"\"
+    rationale: \"\"
+    input: []
+    output: []
+  - id: \"NEW-ALTERNATIVE#2\"
+    path: \"\"
+    rationale: \"\"
+    input: []
+    output: []
 "
   )
 
-  if (is.null(file_path)) {
-    file_path <- paste0("alt_", id, ".yml")
-  }
-
+  if (is.null(file_path)) file_path <- paste0("alt_", id, ".yml")
   writeLines(cli::ansi_strip(template), file_path)
   cli::cli_alert_success("Created template at {.file {file_path}}")
 }

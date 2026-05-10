@@ -14,7 +14,7 @@
 draw_tines(x, index = 1, ...)
 
 inspect_dot(
-  dot,
+  schema,
   indent = 2,
   keep_attr_blocks_one_line = TRUE,
   trim_trailing_ws = TRUE
@@ -27,13 +27,13 @@ inspect_dot(
 
 \item{index}{An integer. For a `multiverse`, which path index to draw. Defaults to 1.}
 
-\item{dot}{A character string containing raw Graphviz DOT code.}
-
 \item{indent}{Integer. The number of spaces to use for each indentation level in `inspect_dot()`. Defaults to 2.}
 
 \item{keep_attr_blocks_one_line}{Logical. If `TRUE`, attempts to keep square bracket `[]` attribute blocks on a single line.}
 
 \item{trim_trailing_ws}{Logical. If `TRUE`, trims trailing whitespace from the final output.}
+
+\item{dot}{A character string containing raw Graphviz DOT code.}
 }
 \value{
 `draw_tines()` and `plot()` return an `htmlwidget` object produced by `DiagrammeR::grViz()`. `inspect_dot()` invisibly returns `NULL` and prints to the console.

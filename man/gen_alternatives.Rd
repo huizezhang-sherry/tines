@@ -20,7 +20,7 @@ prompt_alternatives(schema = NULL, step, n = 3, print = TRUE, width = 70)
 }
 \arguments{
 \item{x}{A `schema` or `multiverse` object, or a character string specifying
-the file path to a valid `tines` YAML file.}
+the file path to a valid `tines` YML file.}
 
 \item{step}{A character string. The exact `id` of the step you want
 the LLM to generate alternatives for.}
@@ -32,7 +32,7 @@ to generate. Defaults to `3`.}
 defaults to `"gemini"`. (`gemini-3-flash-preview` via `ellmer`).}
 
 \item{file_path}{A character string specifying where to save the generated
-YAML output. If `NULL` (the default), `capture.output()` will return the
+YML output. If `NULL` (the default), `capture.output()` will return the
 result as a character vector.}
 
 \item{...}{Additional arguments passed to methods or to `ellmer::chat_google_gemini()`.}
@@ -66,7 +66,7 @@ hdi <- example_schema()
 
 \dontrun{
 gen_alternatives(hdi, step = "step-combine", n = 1,
-                file_path = here::here("inst/hdi-alt.yaml"))
+                file_path = here::here("inst/hdi-alt.yml"))
 }
 
 # The prompt generation function can be used directly to see the full prompt sent to the LLM

@@ -1,13 +1,16 @@
 meta:
   type: alternatives
   step: step-scaling
+  fork: 
 alternatives:
-  - id: "YOUR-NEW-NAME-HERE"
-    action: "variables are in different scales"
-    decision: ""
-    justification: ""
-  - id: "YOUR-NEW-NAME-HERE"
-    action: "variables are in different scales"
-    decision: ""
-    justification: ""
+  - id: "NEW-ALTERNATIVE#1"
+    path: ""
+    rationale: ""
+    input: []
+    output: []
+  - id: "NEW-ALTERNATIVE#2"
+    path: ""
+    rationale: ""
+    input: []
+    output: []
 

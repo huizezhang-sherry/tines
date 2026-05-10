@@ -20,7 +20,7 @@ draft_alternatives(x, id, file_path = NULL)
 
 \item{overwrite}{Logical. If TRUE, will overwrite an existing file at the specified file_path. Defaults to FALSE.}
 
-\item{x}{A `schema` or `multiverse` object. Required for `draft_alternatives()` to generate a template based on an existing step.}
+\item{x}{A `schema` or `multiverse` object, or a character string specifying the file path to a valid schema YAML file.}
 
 \item{id}{A character string specifying the `id` of the step in the schema}
 }
@@ -31,8 +31,13 @@ begin building your garden of forking paths.
 \examples{
 # Create a new schema template
 \dontrun{
-draft_tines(type = "schema", file_path = "schema_template.yaml")
-draft_alternatives(x = my_schema, id = "data-cleaning", file_path = "alternative_template.yaml")
+draft_tines(type = "schema", file_path = "schema_template.yml")
+
+# Draft alternatives from a schema object
+draft_alternatives(x = my_schema, id = "data-cleaning", file_path = "alternative_template.yml")
+
+# Draft alternatives from a schema file
+draft_alternatives(x = "path/to/schema.yml", id = "data-cleaning")
 }
 
 
