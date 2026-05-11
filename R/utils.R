@@ -190,8 +190,7 @@ example_spei <- function(){
             decision = "transform to standard normal z-scores",
             justification = "standardizes the index",
             inputs = c(".proxy_fit"),
-            outputs = c(".proxy_index")) |> 
-    generate_edges()
+            outputs = c(".proxy_index"))
 }
 
 #' @rdname example_tines
@@ -220,8 +219,7 @@ example_spi <- function(){
             decision = "transform the cumulative probabilities to standard normal z-scores",
             justification = "allows comparison of SPI values across different climates",
             inputs = c(".proxy_fit"),
-            outputs = c(".proxy_index")) |> 
-    generate_edges()
+            outputs = c(".proxy_index"))
 }
 
 #' @rdname example_tines

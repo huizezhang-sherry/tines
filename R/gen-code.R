@@ -62,6 +62,9 @@ gen_code.schema <- function(x, base_code = NULL, data = NULL,
   
   cli::cli_alert_info("Generating script from schema")
   
+  # Ensure schema has inputs/outputs for code generation
+  x <- ensure_mapped(x, data = data, operation = "Code generation")
+  
   gen_code_single(
     base_schema = x,
     base_code = base_code,

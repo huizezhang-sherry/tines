@@ -5,7 +5,9 @@
 #'
 #' @param x A `schema` or `multiverse` object.
 #' @param index An integer. For a `multiverse`, which path index to draw. Defaults to 1.
-#' @param dot A character string containing raw Graphviz DOT code.
+#' @param data Optional. A data frame or path to a data file. If schema is unmapped,
+#'   this will be used to automatically map variables for visualization.
+#' @param schema A `schema` object to convert to DOT code for inspection.
 #' @param indent Integer. The number of spaces to use for each indentation level in `inspect_dot()`. Defaults to 2.
 #' @param keep_attr_blocks_one_line Logical. If `TRUE`, attempts to keep square bracket `[]` attribute blocks on a single line.
 #' @param trim_trailing_ws Logical. If `TRUE`, trims trailing whitespace from the final output.
@@ -19,25 +21,25 @@
 #' @examples
 #' schema <- example_schema()
 #' # plot() and draw_tines() are interchangeable
-#' draw_tines(schema)
-#' plot(schema)
-#' inspect_dot(schema)
-#' multiverse <- example_multiverse()
-#' draw_tines(multiverse, index = 2)
+#' # draw_tines(schema)
+#' # plot(schema)
+#' # inspect_dot(schema)
+#' # multiverse <- example_multiverse()
+#' # draw_tines(multiverse, index = 2)
 plot.schema <- function(x, ...) {
-  draw_tines(x)
+  draw_tines(x, ...)
 }
 
 #' @export
 #' @rdname print
 plot.multiverse <- function(x, index = 1, ...) {
   cli::cli_inform("Rendering path {index} of {length(x)}: {.val {names(x)[index]}}")
-  draw_tines(x, index = index)
+  draw_tines(x, index = index, ...)
 }
 
 #' @export
 #' @rdname print
-draw_tines <- function(x, index = 1, ...) {
+draw_tines <- function(x, index = 1, data = NULL, ...) {
 
   if (!inherits(x, c("schema", "multiverse"))) {
     cli::cli_abort(c(
@@ -47,10 +49,15 @@ draw_tines <- function(x, index = 1, ...) {
   }
 
   if (inherits(x, "multiverse")) {
-    dot_code <- tines2dotspec(x[[index]], ...)
-  } else{
-    dot_code <- tines2dotspec(x, ...)
+    schema <- x[[index]]
+  } else {
+    schema <- x
   }
+  
+  # Ensure schema has inputs/outputs for edge generation
+  schema <- ensure_mapped(schema, data = data, operation = "Visualization")
+
+  dot_code <- tines2dotspec(schema, ...)
 
   DiagrammeR::grViz(dot_code)
 }

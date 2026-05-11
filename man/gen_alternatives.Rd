@@ -8,15 +8,38 @@
 \alias{prompt_alternatives}
 \title{Generate analytical alternatives via LLM}
 \usage{
-gen_alternatives(x, step, n = 3, provider = "gemini", file_path = NULL, ...)
+gen_alternatives(
+  x,
+  step,
+  n = 3,
+  data = NULL,
+  provider = "gemini",
+  file_path = NULL,
+  ...
+)
 
 \method{gen_alternatives}{character}(x, ...)
 
-\method{gen_alternatives}{schema}(x, step, n = 3, provider = "gemini", file_path = NULL, ...)
+\method{gen_alternatives}{schema}(
+  x,
+  step,
+  n = 3,
+  data = NULL,
+  provider = "gemini",
+  file_path = NULL,
+  ...
+)
 
 \method{gen_alternatives}{multiverse}(x, step, ...)
 
-prompt_alternatives(schema = NULL, step, n = 3, print = TRUE, width = 70)
+prompt_alternatives(
+  schema = NULL,
+  step,
+  n = 3,
+  data_dict = NULL,
+  print = TRUE,
+  width = 70
+)
 }
 \arguments{
 \item{x}{A `schema` or `multiverse` object, or a character string specifying
@@ -28,8 +51,11 @@ the LLM to generate alternatives for.}
 \item{n}{An integer. The number of distinct alternatives you want the LLM
 to generate. Defaults to `3`.}
 
+\item{data}{Optional. A data frame or path to a data file. If provided,
+the LLM can suggest alternatives that use different variables from the dataset.}
+
 \item{provider}{A character string specifying the LLM provider. Currently
-defaults to `"gemini"`. (`gemini-3-flash-preview` via `ellmer`).}
+defaults to `"gemini"`. (`gemini-2.5-flash` via `ellmer`).}
 
 \item{file_path}{A character string specifying where to save the generated
 YML output. If `NULL` (the default), `capture.output()` will return the
@@ -38,6 +64,8 @@ result as a character vector.}
 \item{...}{Additional arguments passed to methods or to `ellmer::chat_google_gemini()`.}
 
 \item{schema}{A schema object to include in the prompt.}
+
+\item{data_dict}{Optional data dictionary for context (data frame with columns or character vector)}
 
 \item{print}{If `TRUE`, prints the prompt to console instead of returning it.}
 

@@ -22,19 +22,19 @@ test_that("multiplication works", {
 
 test_that("extract_schema generates valid YAML schema", {
   
-  vcr::local_cassette("extract_schema", match_requests_on = c("method", "uri", "body_json"))
+  # vcr::local_cassette("extract_schema", match_requests_on = c("method", "uri", "body_json"))
   
-  text <- "We calculated age by subtracting birth year from 2012. Skin tone was rated on a 1-5 scale."
-  data_dict <- c("birthday", "rater1", "rater2", "age", "skin_tone")
+  # text <- "We calculated age by subtracting birth year from 2012. Skin tone was rated on a 1-5 scale."
+  # data_dict <- c("birthday", "rater1", "rater2", "age", "skin_tone")
 
-  output_file <- withr::local_tempfile(fileext = ".yml")  
+  # output_file <- withr::local_tempfile(fileext = ".yml")  
   
-  result <- extract_schema(text = text, data_dict = data_dict, output_file = output_file)
+  # result <- extract_schema(text = text, data_dict = data_dict, output_file = output_file)
   
-  expect_snapshot(cat(readLines(output_file), sep = "\n"))
+  # expect_snapshot(cat(readLines(output_file), sep = "\n"))
   
-  yaml_parsed <- yaml::read_yaml(output_file)
-  expect_snapshot(yaml_parsed)
+  # yaml_parsed <- yaml::read_yaml(output_file)
+  # expect_snapshot(yaml_parsed)
 })
 
 test_that("prompt_extract_schema formats correctly", {

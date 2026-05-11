@@ -28,11 +28,13 @@ Imports:
     callr,
     cli,
     DiagrammeR,
+    digest,
     dplyr,
     ellmer,
     glue,
     pillar,
     purrr,
+    readr,
     tibble,
     yaml
 Depends: 

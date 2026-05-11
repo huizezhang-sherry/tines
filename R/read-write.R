@@ -2,6 +2,7 @@
 #'
 #' @param x An object of class `schema` or `multiverse`.
 #' @param path A single string specifying the output file path. Optional.
+#' @param data Optional data frame or path to data file for validation (for `read_tines()` only).
 #' @param ... Arguments passed on to `yaml::write_yaml()` or `yaml::read_yaml()`.
 #'
 #' @returns
@@ -15,6 +16,9 @@
 #' temp_path <- withr::local_tempfile(fileext = ".yaml")
 #' write_tines(schema, temp_path)
 #' schema_read <- read_tines(temp_path)
+#' 
+#' # Read and validate against data
+#' schema_read <- read_tines(temp_path, data = my_data)
 #' }
 #'
 write_tines <- function(x, path = NULL, ...){
@@ -72,7 +76,7 @@ write_tines <- function(x, path = NULL, ...){
 
 #' @export
 #' @rdname read-write
-read_tines <- function(path, ...){
+read_tines <- function(path, data = NULL, ...){
   raw <- yaml::read_yaml(path, ...)
   type <- raw$meta$type
 
@@ -97,9 +101,20 @@ read_tines <- function(path, ...){
 
   if (type == "schema") {
     res <- rebuild_schema(raw)
+    
+    # Attach and validate data if provided
+    if (!is.null(data)) {
+      res <- update_data(res, data)
+    }
   } else if (type == "multiverse") {
     schemas <- purrr::map(raw$schemas, rebuild_schema)
     res <- do.call(build_multiverse, schemas)
+    
+    # Attach data to all schemas if provided
+    if (!is.null(data)) {
+      res <- purrr::map(res, function(s) update_data(s, data))
+      class(res) <- c("multiverse", "list")
+    }
   } else{
     cli::cli_abort(c(
       "Unrecognized type in YAML file: {.val {type}}.",

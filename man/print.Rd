@@ -11,7 +11,7 @@
 
 \method{plot}{multiverse}(x, index = 1, ...)
 
-draw_tines(x, index = 1, ...)
+draw_tines(x, index = 1, data = NULL, ...)
 
 inspect_dot(
   schema,
@@ -27,13 +27,16 @@ inspect_dot(
 
 \item{index}{An integer. For a `multiverse`, which path index to draw. Defaults to 1.}
 
+\item{data}{Optional. A data frame or path to a data file. If schema is unmapped,
+this will be used to automatically map variables for visualization.}
+
+\item{schema}{A `schema` object to convert to DOT code for inspection.}
+
 \item{indent}{Integer. The number of spaces to use for each indentation level in `inspect_dot()`. Defaults to 2.}
 
 \item{keep_attr_blocks_one_line}{Logical. If `TRUE`, attempts to keep square bracket `[]` attribute blocks on a single line.}
 
 \item{trim_trailing_ws}{Logical. If `TRUE`, trims trailing whitespace from the final output.}
-
-\item{dot}{A character string containing raw Graphviz DOT code.}
 }
 \value{
 `draw_tines()` and `plot()` return an `htmlwidget` object produced by `DiagrammeR::grViz()`. `inspect_dot()` invisibly returns `NULL` and prints to the console.
@@ -44,9 +47,9 @@ Functions to plot the tines object with Graphviz diagrams. `draw_tines()` and th
 \examples{
 schema <- example_schema()
 # plot() and draw_tines() are interchangeable
-draw_tines(schema)
-plot(schema)
-inspect_dot(schema)
-multiverse <- example_multiverse()
-draw_tines(multiverse, index = 2)
+# draw_tines(schema)
+# plot(schema)
+# inspect_dot(schema)
+# multiverse <- example_multiverse()
+# draw_tines(multiverse, index = 2)
 }

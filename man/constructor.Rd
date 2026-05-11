@@ -24,7 +24,7 @@
 \usage{
 new_schema(name = NULL, nodes = tibble::tibble())
 
-build_schema(name = NULL)
+build_schema(name = NULL, data = NULL)
 
 new_multiverse(schemas = list())
 
@@ -36,8 +36,8 @@ add_step(
   action = "",
   decision = "",
   justification = "",
-  inputs = NA,
-  outputs = NA,
+  inputs = NULL,
+  outputs = NULL,
   source_schema = NA,
   ...
 )
@@ -75,7 +75,7 @@ as_multiverse(x, ...)
 
 \item{nodes}{A data frame (typically a `tibble`) defining the steps of the schema.}
 
-\item{schemas}{A single list containing objects of class `schema`. Defaults to an empty list.}
+\item{data}{Optional data frame or path to data file for validation}
 
 \item{...}{One or more `schema` objects to be included in the multiverse.}
 
@@ -90,6 +90,8 @@ as_multiverse(x, ...)
 \item{optional}{logical. If TRUE, setting row names and converting column names is optional.}
 
 \item{width}{Width for printing output.}
+
+\item{schema, schemas}{A single list containing objects of class `schema`. Defaults to an empty list.}
 }
 \value{
 * `build_schema()` and `new_schema()` return an object of class `schema`.

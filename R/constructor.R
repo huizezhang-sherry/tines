@@ -6,7 +6,7 @@
 #' @param nodes A data frame (typically a `tibble`) defining the steps of the schema.
 #' @param name An optional name for the schema.
 #' @param ... One or more `schema` objects to be included in the multiverse.
-#' @param schemas A single list containing objects of class `schema`. Defaults to an empty list.
+#' @param schema,schemas A single list containing objects of class `schema`. Defaults to an empty list.
 #' @param object A `schema` object.
 #' @param id,action,decision,justification,inputs,outputs,source_schema character strings to write a step
 #' @param x An object to be coerced into a `schema` or `multiverse`.
@@ -68,14 +68,40 @@ new_schema <- function(name = NULL, nodes = tibble::tibble()) {
   res
 }
 
+#' @param data Optional data frame or path to data file for validation
 #' @rdname constructor
 #' @export
-build_schema <- function(name = NULL) {
+build_schema <- function(name = NULL, data = NULL) {
   nodes <- tibble::tibble(
     id = character(), action = character(), decision = character(), justification = character(),
     inputs = list(), outputs = list(), source_schema = character()
   )
-  new_schema(name = name, nodes = nodes)
+  schema <- new_schema(name = name, nodes = nodes)
+  
+  # Attach data if provided
+  if (!is.null(data)) {
+    # Load data if path
+    data_obj <- if (is.character(data) && length(data) == 1 && file.exists(data)) {
+      load_data_file(data)
+    } else if (is.data.frame(data)) {
+      data
+    } else {
+      cli::cli_abort("{.arg data} must be a data frame or path to a data file")
+    }
+    
+    data_source <- if (is.character(data)) data else deparse(substitute(data))
+    
+    # Attach data reference
+    attr(schema, "data_ref") <- list(
+      source = data_source,
+      hash = digest::digest(data_obj),
+      dict = prepare_data_dict(data_obj)
+    )
+    
+    cli::cli_alert_success("Data attached: {.val {data_source}}")
+  }
+  
+  schema
 }
 
 
@@ -127,27 +153,37 @@ build_multiverse <- function(...) {
 #' @rdname constructor
 #' @export
 add_step <- function(object, id, action = "", decision = "", 
-                     justification = "", inputs = NA, outputs = NA, 
+                     justification = "", inputs = NULL, outputs = NULL, 
                      source_schema = NA, ...) {
 
   if (!inherits(object, "schema")) cli::cli_abort("object must be of class {.cls schema}")
   if (id %in% object$id) cli::cli_abort("Id {.val {id}} already exists!")
 
+  # Allow inputs/outputs to be NULL (unmapped), character vector, or NA
+  inputs_val <- if (is.null(inputs)) list(NA) else list(inputs)
+  outputs_val <- if (is.null(outputs)) list(NA) else list(outputs)
+
   new_node <- tibble::tibble(
     id = id, action = action, decision = decision, justification = justification,
-    inputs = list(inputs), outputs = list(outputs), source_schema = source_schema
+    inputs = inputs_val, outputs = outputs_val, source_schema = source_schema
   )
   object <- rbind(object, new_node)
   class(object) <- c("schema", "tbl_df", "tbl", "data.frame")
   attr(object, "name") <- attr(object, "name", exact = TRUE)
+  
+  # Validate if data is attached
+  if (has_data_ref(object)) {
+    data_dict <- attr(object, "data_ref")$dict
+    step_idx <- nrow(object)
+    validate_step_variables(object, step_idx, data_dict)
+  }
+  
   object
 }
 
 #' @export
 #' @rdname constructor
-as_schema <- function(x, ...) {
-  UseMethod("as_schema")
-}
+as_schema <- function(x, ...) UseMethod("as_schema")
 
 #' @export
 #' @rdname constructor
@@ -157,9 +193,7 @@ as_schema.default <- function(x, ...) {
 
 #' @rdname constructor
 #' @export
-as_schema.schema <- function(x, ...) {
-  x
-}
+as_schema.schema <- function(x, ...) x
 
 #' @rdname constructor
 #' @export

@@ -20,8 +20,10 @@
 #'   the LLM to generate alternatives for.
 #' @param n An integer. The number of distinct alternatives you want the LLM
 #'   to generate. Defaults to `3`.
+#' @param data Optional. A data frame or path to a data file. If provided,
+#'   the LLM can suggest alternatives that use different variables from the dataset.
 #' @param provider A character string specifying the LLM provider. Currently
-#'   defaults to `"gemini"`. (`gemini-3-flash-preview` via `ellmer`).
+#'   defaults to `"gemini"`. (`gemini-2.5-flash` via `ellmer`).
 #' @param file_path A character string specifying where to save the generated
 #'   YML output. If `NULL` (the default), `capture.output()` will return the
 #'   result as a character vector.
@@ -47,7 +49,7 @@
 #' # The prompt generation function can be used directly to see the full prompt sent to the LLM
 #' prompt_alternatives(schema = hdi, step = "step-combine", print = TRUE)
 #' 
-gen_alternatives <- function(x, step, n = 3,
+gen_alternatives <- function(x, step, n = 3, data = NULL,
                              provider = "gemini", file_path = NULL, ...){
   UseMethod("gen_alternatives")
 }
@@ -65,7 +67,7 @@ gen_alternatives.character <- function(x, ...){
 
 #' @export
 #' @rdname gen_alternatives
-gen_alternatives.schema <- function(x, step, n = 3,
+gen_alternatives.schema <- function(x, step, n = 3, data = NULL,
                              provider = "gemini", file_path = NULL, ...){
   if (is.null(file_path)) {
     cli::cli_abort("You must provide a {.arg file_path} to save the generated alternatives.")
@@ -76,7 +78,29 @@ gen_alternatives.schema <- function(x, step, n = 3,
     cli::cli_abort("Target step {.val {step}} not found in the schema.")
   }
 
-  full_prompt <- prompt_alternatives(schema = x, step = step, n = n, print = FALSE)
+  # Prepare data context if available
+  data_dict <- if (!is.null(data)) {
+    if (is.data.frame(data)) {
+      prepare_data_dict(data)
+    } else if (is.character(data) && file.exists(data)) {
+      prepare_data_dict(load_data_file(data))
+    } else {
+      NULL
+    }
+  } else if (has_data_ref(x)) {
+    # Use attached data if available
+    attr(x, "data_ref")$dict
+  } else {
+    NULL
+  }
+
+  full_prompt <- prompt_alternatives(
+    schema = x, 
+    step = step, 
+    n = n, 
+    data_dict = data_dict,
+    print = FALSE
+  )
 
   chat <- ellmer::chat_google_gemini(model = "gemini-2.5-flash")
   utils::capture.output(chat$chat(full_prompt), file = file_path)
@@ -110,7 +134,30 @@ gen_alternatives.multiverse <- function(x, step, ...){
 #' @export
 #' @rdname gen_alternatives
 #' @param schema A schema object to include in the prompt.
-prompt_alternatives <- function(schema = NULL, step, n = 3, print = TRUE, width = 70){
+#' @param data_dict Optional data dictionary for context (data frame with columns or character vector)
+prompt_alternatives <- function(schema = NULL, step, n = 3, data_dict = NULL, 
+                                print = TRUE, width = 70){
+  
+  # Build data context section if available
+  data_section <- if (!is.null(data_dict)) {
+    col_info <- if (is.data.frame(data_dict) && "type" %in% names(data_dict)) {
+      paste0(data_dict$name, " (", data_dict$type, ")", collapse = ", ")
+    } else if (is.data.frame(data_dict)) {
+      paste0(data_dict$name, collapse = ", ")
+    } else {
+      paste0(data_dict, collapse = ", ")
+    }
+    
+    paste0(
+      "\n\n=== DATASET CONTEXT ===\n\n",
+      "Available columns: ", col_info, "\n\n",
+      "When suggesting alternatives, you may propose different input variables from this dataset ",
+      "if methodologically appropriate. Update the inputs/outputs fields accordingly.\n"
+    )
+  } else {
+    ""
+  }
+  
   system_prompt <- paste0(
     "You are an expert Data Analyst and Methodologist. You are reviewing an analysis schema to identify ",
     "\"Forking Paths\" -- alternative analytical choices that are equally valid but distinct from the current approach.\n\n",
@@ -120,6 +167,9 @@ prompt_alternatives <- function(schema = NULL, step, n = 3, print = TRUE, width 
     "- **DECISION**: The specific implementation chosen (How it is done).\n\n",
     "- **JUSTIFICATION**: The reasoning behind that decision.\n\n",
     "- **ID**: The unique identifier for the step (kebab-case).\n\n",
+    if (!is.null(data_dict)) {
+      "- **INPUTS**: Variables from the dataset needed for this step.\n\n- **OUTPUTS**: New variables created by this step.\n\n"
+    },
     "=== TASK ===\n\n",
     "Focus specifically on the step tagged: \"", step, "\".\n",
     "Your goal is to generate ", n, " distinct, valid alternatives for this step.\n\n",
@@ -128,6 +178,10 @@ prompt_alternatives <- function(schema = NULL, step, n = 3, print = TRUE, width 
     "2. **Change the DECISION** to a different but methodologically sound approach.\n\n",
     "3. **Provide a new JUSTIFICATION** explaining why this alternative is valid.\n\n",
     "4. **Create a new ID** that reflects the new decision (must be kebab-case).\n\n",
+    if (!is.null(data_dict)) {
+      "5. **Update INPUTS/OUTPUTS** if the alternative uses different variables or creates different outputs.\n\n"
+    },
+    data_section,
     "=== OUTPUT FORMAT ===\n\n",
     "Please output the result in **strictly valid YML format**.\n\n",
     "**Crucial Formatting Rules:**\n\n",
@@ -135,7 +189,12 @@ prompt_alternatives <- function(schema = NULL, step, n = 3, print = TRUE, width 
     "2. Output strictly valid YML. All text values (decision, justification) must be enclosed in double quotes (\"). ",
     "Do not use block styles (| or >). Do not wrap lines or insert \\n characters within the quotes; ",
     "keep the text as a single continuous string.\n\n",
-    "3. Do not include markdown code fences (like ```yml) or conversational text. Just the raw YML.\n\n",
+    if (!is.null(data_dict)) {
+      "3. Include inputs and outputs as arrays: inputs: [var1, var2]\n\n4. "
+    } else {
+      "3. "
+    },
+    "Do not include markdown code fences (like ```yml) or conversational text. Just the raw YML.\n\n",
     "=== REQUIRED YML STRUCTURE EXAMPLE ===\n\n",
     "meta:\n",
     "  type: tines_alternative\n",
@@ -145,6 +204,9 @@ prompt_alternatives <- function(schema = NULL, step, n = 3, print = TRUE, width 
     "    action: Repeat the original action\n",
     "    decision: \"Description of the new decision...\"\n",
     "    justification: \"This is the reasoning for why this alternative is valid.\"\n",
+    if (!is.null(data_dict)) {
+      "    inputs: [var1, var2]\n    outputs: [new_var]\n"
+    },
     "  - id: step-another-method\n",
     "    ...\n"
   )

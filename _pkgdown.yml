@@ -8,6 +8,7 @@ reference:
    - draw_tines
    - alternative
    - import_step
+   - gen_io
 - title: "Generate analytical alternatives and corresponding code"
   contents:
    - extract_schema
@@ -26,4 +27,3 @@ reference:
    - get_step_names
    - example_schema
    - football_grp20
-  
