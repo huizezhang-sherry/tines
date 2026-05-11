@@ -57,7 +57,7 @@ nodes:
 
 - id: fit_glmm
   fork: which modeling framework to use for the analysis
-  path: estimate generalized linear mixed models using glmer function from lme4 package
+  path: estimate generalized linear mixed models 
   rationale: appropriate for binary outcome with cross-classified random effects structure
   inputs: [df_disaggregated, red_card_binary, avgrate01, ranef_spec, distribution_spec, covariate_spec]
   outputs: [glmm_model]

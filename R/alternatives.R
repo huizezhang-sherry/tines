@@ -98,14 +98,14 @@ read_alternatives <- function(file, ...) {
 
   # 2. Extract the target step
   target <- raw_yaml$meta$step
+  fork <- raw_yaml$meta$fork
 
   # 3. Convert to data frame structure
   df <- purrr::map_dfr(raw_yaml$alternatives, function(a) {
     tibble::tibble(
       id = a$id,
-      action = a$action,
-      decision = a$decision,
-      justification = a$justification
+      path = a$path,
+      rationale = a$rationale
     )
   })
   

@@ -10,3 +10,5 @@ docs/
 
 /.quarto/
 inst/football.csv
+inst/football-grp5/mod_comp_res.rds
+data/football.csv

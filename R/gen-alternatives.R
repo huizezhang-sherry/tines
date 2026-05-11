@@ -57,11 +57,8 @@ gen_alternatives <- function(x, step, n = 3, data = NULL,
 #' @export
 #' @rdname gen_alternatives
 gen_alternatives.character <- function(x, ...){
-  if (!file.exists(x)) {
-    cli::cli_abort("File not found: {.val {x}}")
-  }
+  if (!file.exists(x)) cli::cli_abort("File not found: {.val {x}}")
   schema_data <- read_tines(x)
-
   gen_alternatives(schema_data, ...)
 }
 
@@ -69,6 +66,7 @@ gen_alternatives.character <- function(x, ...){
 #' @rdname gen_alternatives
 gen_alternatives.schema <- function(x, step, n = 3, data = NULL,
                              provider = "gemini", file_path = NULL, ...){
+  browser()
   if (is.null(file_path)) {
     cli::cli_abort("You must provide a {.arg file_path} to save the generated alternatives.")
   }
@@ -102,7 +100,8 @@ gen_alternatives.schema <- function(x, step, n = 3, data = NULL,
     print = FALSE
   )
 
-  chat <- ellmer::chat_google_gemini(model = "gemini-2.5-flash")
+  #chat <- ellmer::chat_google_gemini(model = "gemini-2.5-flash")
+  chat <- ellmer::chat_anthropic(model = "claude-opus-4-5")
   utils::capture.output(chat$chat(full_prompt), file = file_path)
   invisible()
 }
@@ -110,11 +109,12 @@ gen_alternatives.schema <- function(x, step, n = 3, data = NULL,
 #' @export
 #' @rdname gen_alternatives
 gen_alternatives.multiverse <- function(x, step, ...){
+  browser()
   valid_schema <- NULL
 
   # find the first schema in the multiverse that contains the target step
   for (schema in x) {
-    ids <- schema$id  # Updated: use schema$id instead of schema$nodes$id
+    ids <- schema$id  
     if (step %in% ids) {
       valid_schema <- schema
       break
@@ -275,13 +275,13 @@ expand_tines.schema <- function(x, alternatives, include_original = TRUE, ...) {
   idx <- which(ids == target)
 
   # Iterate over rows of the alternatives data frame using purrr::pmap
-  new_schemas <- purrr::pmap(alts_data, function(id, action, decision, justification) {
+  new_schemas <- purrr::pmap(alts_data, function(id, fork, path, rationale) {
     branch <- x
     
     # Update the specific row directly since schema is a data frame
     branch$id[[idx]] <- id
-    branch$decision[[idx]] <- decision
-    branch$justification[[idx]] <- justification
+    branch$path[[idx]] <- path
+    branch$rationale[[idx]] <- rationale
     
     # Preserve the schema class and attributes
     class(branch) <- c("schema", "tbl_df", "tbl", "data.frame")

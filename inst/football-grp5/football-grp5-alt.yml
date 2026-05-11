@@ -1,0 +1,20 @@
+meta:
+  type: alternatives
+  step: specify_random_effects_structure
+  fork: how to account for the non-nested cross-classified data structure
+alternatives:
+  - id: "gm1"
+    path: "a random effect of player and referee"
+    rationale: ""
+    input: []
+    output: []
+  - id: "gm2"
+    path: "a random effect of player and referee, and a random effect of skin-tone across referees"
+    rationale: ""
+    input: []
+    output: []
+  - id: "gm3"
+    path: "a random effect of player, referee, and referees' countries of origin, and a random effect of skin tone across referees' countries of origin"
+    rationale: ""
+    input: []
+    output: []
