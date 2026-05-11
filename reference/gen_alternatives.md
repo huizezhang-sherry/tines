@@ -10,18 +10,41 @@ instruction set sent to the LLM.
 ## Usage
 
 ``` r
-gen_alternatives(x, step, n = 3, provider = "gemini", file_path = NULL, ...)
+gen_alternatives(
+  x,
+  step,
+  n = 3,
+  data = NULL,
+  provider = "gemini",
+  file_path = NULL,
+  ...
+)
 
 # S3 method for class 'character'
 gen_alternatives(x, ...)
 
 # S3 method for class 'schema'
-gen_alternatives(x, step, n = 3, provider = "gemini", file_path = NULL, ...)
+gen_alternatives(
+  x,
+  step,
+  n = 3,
+  data = NULL,
+  provider = "gemini",
+  file_path = NULL,
+  ...
+)
 
 # S3 method for class 'multiverse'
 gen_alternatives(x, step, ...)
 
-prompt_alternatives(schema = NULL, step, n = 3, print = TRUE, width = 70)
+prompt_alternatives(
+  schema = NULL,
+  step,
+  n = 3,
+  data_dict = NULL,
+  print = TRUE,
+  width = 70
+)
 ```
 
 ## Arguments
@@ -41,10 +64,16 @@ prompt_alternatives(schema = NULL, step, n = 3, print = TRUE, width = 70)
   An integer. The number of distinct alternatives you want the LLM to
   generate. Defaults to \`3\`.
 
+- data:
+
+  Optional. A data frame or path to a data file. If provided, the LLM
+  can suggest alternatives that use different variables from the
+  dataset.
+
 - provider:
 
   A character string specifying the LLM provider. Currently defaults to
-  \`"gemini"\`. (\`gemini-3-flash-preview\` via \`ellmer\`).
+  \`"gemini"\`. (\`gemini-2.5-flash\` via \`ellmer\`).
 
 - file_path:
 
@@ -60,6 +89,11 @@ prompt_alternatives(schema = NULL, step, n = 3, print = TRUE, width = 70)
 - schema:
 
   A schema object to include in the prompt.
+
+- data_dict:
+
+  Optional data dictionary for context (data frame with columns or
+  character vector)
 
 - print:
 

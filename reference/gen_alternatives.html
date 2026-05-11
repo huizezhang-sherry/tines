@@ -50,18 +50,41 @@ set sent to the LLM.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gen_alternatives</span><span class="op">(</span><span class="va">x</span>, <span class="va">step</span>, n <span class="op">=</span> <span class="fl">3</span>, provider <span class="op">=</span> <span class="st">"gemini"</span>, file_path <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gen_alternatives</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">step</span>,</span>
+<span>  n <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  provider <span class="op">=</span> <span class="st">"gemini"</span>,</span>
+<span>  file_path <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'character'</span></span>
 <span><span class="fu">gen_alternatives</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'schema'</span></span>
-<span><span class="fu">gen_alternatives</span><span class="op">(</span><span class="va">x</span>, <span class="va">step</span>, n <span class="op">=</span> <span class="fl">3</span>, provider <span class="op">=</span> <span class="st">"gemini"</span>, file_path <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu">gen_alternatives</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">step</span>,</span>
+<span>  n <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  provider <span class="op">=</span> <span class="st">"gemini"</span>,</span>
+<span>  file_path <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'multiverse'</span></span>
 <span><span class="fu">gen_alternatives</span><span class="op">(</span><span class="va">x</span>, <span class="va">step</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">prompt_alternatives</span><span class="op">(</span>schema <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">step</span>, n <span class="op">=</span> <span class="fl">3</span>, print <span class="op">=</span> <span class="cn">TRUE</span>, width <span class="op">=</span> <span class="fl">70</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">prompt_alternatives</span><span class="op">(</span></span>
+<span>  schema <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">step</span>,</span>
+<span>  n <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  data_dict <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  print <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  width <span class="op">=</span> <span class="fl">70</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -83,9 +106,14 @@ the LLM to generate alternatives for.</p></dd>
 to generate. Defaults to `3`.</p></dd>
 
 
+<dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
+<dd><p>Optional. A data frame or path to a data file. If provided,
+the LLM can suggest alternatives that use different variables from the dataset.</p></dd>
+
+
 <dt id="arg-provider">provider<a class="anchor" aria-label="anchor" href="#arg-provider"></a></dt>
 <dd><p>A character string specifying the LLM provider. Currently
-defaults to `"gemini"`. (`gemini-3-flash-preview` via `ellmer`).</p></dd>
+defaults to `"gemini"`. (`gemini-2.5-flash` via `ellmer`).</p></dd>
 
 
 <dt id="arg-file-path">file_path<a class="anchor" aria-label="anchor" href="#arg-file-path"></a></dt>
@@ -100,6 +128,10 @@ result as a character vector.</p></dd>
 
 <dt id="arg-schema">schema<a class="anchor" aria-label="anchor" href="#arg-schema"></a></dt>
 <dd><p>A schema object to include in the prompt.</p></dd>
+
+
+<dt id="arg-data-dict">data_dict<a class="anchor" aria-label="anchor" href="#arg-data-dict"></a></dt>
+<dd><p>Optional data dictionary for context (data frame with columns or character vector)</p></dd>
 
 
 <dt id="arg-print">print<a class="anchor" aria-label="anchor" href="#arg-print"></a></dt>

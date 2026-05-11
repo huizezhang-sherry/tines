@@ -44,7 +44,7 @@
 <span><span class="co"># S3 method for class 'multiverse'</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, index <span class="op">=</span> <span class="fl">1</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">draw_tines</span><span class="op">(</span><span class="va">x</span>, index <span class="op">=</span> <span class="fl">1</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu">draw_tines</span><span class="op">(</span><span class="va">x</span>, index <span class="op">=</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">inspect_dot</span><span class="op">(</span></span>
 <span>  <span class="va">schema</span>,</span>
@@ -70,6 +70,15 @@
 <dd><p>An integer. For a `multiverse`, which path index to draw. Defaults to 1.</p></dd>
 
 
+<dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
+<dd><p>Optional. A data frame or path to a data file. If schema is unmapped,
+this will be used to automatically map variables for visualization.</p></dd>
+
+
+<dt id="arg-schema">schema<a class="anchor" aria-label="anchor" href="#arg-schema"></a></dt>
+<dd><p>A `schema` object to convert to DOT code for inspection.</p></dd>
+
+
 <dt id="arg-indent">indent<a class="anchor" aria-label="anchor" href="#arg-indent"></a></dt>
 <dd><p>Integer. The number of spaces to use for each indentation level in `inspect_dot()`. Defaults to 2.</p></dd>
 
@@ -81,10 +90,6 @@
 <dt id="arg-trim-trailing-ws">trim_trailing_ws<a class="anchor" aria-label="anchor" href="#arg-trim-trailing-ws"></a></dt>
 <dd><p>Logical. If `TRUE`, trims trailing whitespace from the final output.</p></dd>
 
-
-<dt id="arg-dot">dot<a class="anchor" aria-label="anchor" href="#arg-dot"></a></dt>
-<dd><p>A character string containing raw Graphviz DOT code.</p></dd>
-
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -95,19 +100,11 @@
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">schema</span> <span class="op">&lt;-</span> <span class="fu"><a href="example_tines.html">example_schema</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># plot() and draw_tines() are interchangeable</span></span></span>
-<span class="r-in"><span><span class="fu">draw_tines</span><span class="op">(</span><span class="va">schema</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `path`.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in var_sources[[outp]] &lt;- current_id:</span> attempt to select less than one element in integerOneIndex</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">schema</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `path`.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in var_sources[[outp]] &lt;- current_id:</span> attempt to select less than one element in integerOneIndex</span>
-<span class="r-in"><span><span class="fu">inspect_dot</span><span class="op">(</span><span class="va">schema</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `path`.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in var_sources[[outp]] &lt;- current_id:</span> attempt to select less than one element in integerOneIndex</span>
-<span class="r-in"><span><span class="va">multiverse</span> <span class="op">&lt;-</span> <span class="fu"><a href="example_tines.html">example_multiverse</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">draw_tines</span><span class="op">(</span><span class="va">multiverse</span>, index <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `path`.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in var_sources[[outp]] &lt;- current_id:</span> attempt to select less than one element in integerOneIndex</span>
+<span class="r-in"><span><span class="co"># draw_tines(schema)</span></span></span>
+<span class="r-in"><span><span class="co"># plot(schema)</span></span></span>
+<span class="r-in"><span><span class="co"># inspect_dot(schema)</span></span></span>
+<span class="r-in"><span><span class="co"># multiverse &lt;- example_multiverse()</span></span></span>
+<span class="r-in"><span><span class="co"># draw_tines(multiverse, index = 2)</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

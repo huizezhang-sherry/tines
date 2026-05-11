@@ -19,6 +19,9 @@
   objects
 - [`import_step()`](import.md) [`generate_edges()`](import.md) : Import
   a Step from a source schema into the current schema
+- [`gen_io()`](update-io.md) [`update_data()`](update-io.md)
+  [`update_io()`](update-io.md) : Data mapping and validation for
+  schemas
 
 ## Generate analytical alternatives and corresponding code
 

@@ -8,7 +8,7 @@ a garden of forking paths (\`multiverse\`).
 ``` r
 new_schema(name = NULL, nodes = tibble::tibble())
 
-build_schema(name = NULL)
+build_schema(name = NULL, data = NULL)
 
 new_multiverse(schemas = list())
 
@@ -20,8 +20,8 @@ add_step(
   action = "",
   decision = "",
   justification = "",
-  inputs = NA,
-  outputs = NA,
+  inputs = NULL,
+  outputs = NULL,
   source_schema = NA,
   ...
 )
@@ -78,10 +78,9 @@ print(x, width = NULL, ...)
   A data frame (typically a \`tibble\`) defining the steps of the
   schema.
 
-- schemas:
+- data:
 
-  A single list containing objects of class \`schema\`. Defaults to an
-  empty list.
+  Optional data frame or path to data file for validation
 
 - ...:
 
@@ -111,6 +110,11 @@ print(x, width = NULL, ...)
 - width:
 
   Width for printing output.
+
+- schema, schemas:
+
+  A single list containing objects of class \`schema\`. Defaults to an
+  empty list.
 
 ## Value
 
