@@ -41,30 +41,24 @@ expand_tines(x, alternatives, ...)
 base_schema <- example_football()
 alts <- example_alternatives(case = "football")
 expand_tines(base_schema, alts)
-#> A multiverse with 4 schemas:
-#>   original: (3 steps)
-#>   step-mixed-effects-logistic-model: (3 steps)
-#>   step-probit-regression-model: (3 steps)
-#>   step-bayesian-logistic-model: (3 steps)
+#> Error in purrr::pmap(alts_data, function(id, fork, path, rationale) {    branch <- x    branch$id[[idx]] <- id    branch$path[[idx]] <- path    branch$rationale[[idx]] <- rationale    class(branch) <- c("schema", "tbl_df", "tbl", "data.frame")    attr(branch, "name") <- attr(x, "name", exact = TRUE)    return(branch)}): ℹ In index: 1.
+#> Caused by error in `.f()`:
+#> ! unused arguments (action = .l[[2]][[i]], decision = .l[[3]][[i]], justification = .l[[4]][[i]])
 
 # read the alternatives from a YML file
 tmp_file <- tempfile(fileext = ".yml")
 write_alternatives(alts, tmp_file)
-#> ✔ Successfully wrote alternatives to /tmp/RtmpoWoVIX/file19cb132fbd5f.yml
+#> ✔ Successfully wrote alternatives to /tmp/Rtmpar6iPQ/file19ab5bc8f605.yml
 expand_tines(base_schema, tmp_file)
-#> A multiverse with 4 schemas:
-#>   original: (3 steps)
-#>   step-mixed-effects-logistic-model: (3 steps)
-#>   step-probit-regression-model: (3 steps)
-#>   step-bayesian-logistic-model: (3 steps)
+#> Error in purrr::pmap(alts_data, function(id, fork, path, rationale) {    branch <- x    branch$id[[idx]] <- id    branch$path[[idx]] <- path    branch$rationale[[idx]] <- rationale    class(branch) <- c("schema", "tbl_df", "tbl", "data.frame")    attr(branch, "name") <- attr(x, "name", exact = TRUE)    return(branch)}): ℹ In index: 1.
+#> Caused by error in `.f()`:
+#> ! argument "path" is missing, with no default
 
 # expand on the multiverse
 multiverse <- example_multiverse()
 alts <- example_alternatives(case = "hdi")
 expand_tines(multiverse, alts)
-#> A multiverse with 4 schemas:
-#>   original: (3 steps)
-#>   reversed: (3 steps)
-#>   original.step-arithmetic-mean: (3 steps)
-#>   reversed.step-arithmetic-mean: (3 steps)
+#> Error in purrr::pmap(alts_data, function(id, fork, path, rationale) {    branch <- x    branch$id[[idx]] <- id    branch$path[[idx]] <- path    branch$rationale[[idx]] <- rationale    class(branch) <- c("schema", "tbl_df", "tbl", "data.frame")    attr(branch, "name") <- attr(x, "name", exact = TRUE)    return(branch)}): ℹ In index: 1.
+#> Caused by error in `.f()`:
+#> ! unused arguments (action = .l[[2]][[i]], decision = .l[[3]][[i]], justification = .l[[4]][[i]])
 ```
