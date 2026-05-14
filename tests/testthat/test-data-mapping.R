@@ -15,15 +15,15 @@ data_2024 <- data.frame(
 schema <- build_schema(data = data_2023) |>
   add_step(
     id = "step-filter",
-    action = "remove missing values",
-    decision = "exclude rows with NA",
+    fork = "remove missing values",
+    path = "exclude rows with NA",
     inputs = c("age", "income"),
     outputs = "df_clean"
   ) |>
   add_step(
     id = "step-transform",
-    action = "log transform income",
-    decision = "use natural log",
+    fork = "log transform income",
+    path = "use natural log",
     inputs = "df_clean",
     outputs = "df_transformed"
   )

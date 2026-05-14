@@ -4,11 +4,11 @@
       schema_read
     Output
       # A schema: 3 x 7
-        id             action      decision justification source_schema inputs outputs
-        <chr>          <chr>       <chr>    <chr>         <chr>         <list> <list> 
-      1 step-scaling   variables ~ apply m~ to put them ~ <NA>          <chr>  <chr>  
-      2 step-education combine th~ average~ the most int~ <NA>          <chr>  <chr>  
-      3 step-combine   combine th~ use the~ the geometri~ <NA>          <chr>  <chr>  
+        id             fork               path  rationale source_schema inputs outputs
+        <chr>          <chr>              <chr> <chr>     <chr>         <list> <list> 
+      1 step-scaling   variables are in ~ appl~ to put t~ <NA>          <chr>  <chr>  
+      2 step-education combine the schoo~ aver~ the most~ <NA>          <chr>  <chr>  
+      3 step-combine   combine the three~ use ~ the geom~ <NA>          <chr>  <chr>  
 
 ---
 

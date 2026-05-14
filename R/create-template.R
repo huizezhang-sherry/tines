@@ -47,16 +47,16 @@ draft_tines <- function(type = c("schema", "multiverse"), file_path = NULL, over
       ),
       nodes = list(
         list(id = "step1", 
-             action = "describe your first step here",
-             decision = "describe your decision here", 
-             justification = "explain your reasoning here",
+             fork = "describe your first step here",
+             path = "describe your decision here", 
+             rationale = "explain your reasoning here",
              inputs = list(),
              outputs = list(),
              source_schema = ""),
         list(id = "step2", 
-             action = "describe your next step here",
-             decision = "describe your decision here", 
-             justification = "explain your reasoning here",
+             fork = "describe your next step here",
+             path = "describe your decision here", 
+             rationale = "explain your reasoning here",
              inputs = list(),
              outputs = list(),
              source_schema = "")
@@ -76,13 +76,13 @@ draft_tines <- function(type = c("schema", "multiverse"), file_path = NULL, over
             name = "Path A"
           ),
           nodes = list(
-            list(id = "step1", action = "path A approach",
-                 decision = "describe your decision here",
-                 justification = "explain your reasoning here",
+            list(id = "step1", fork = "path A approach",
+                 path = "describe your decision here",
+                 rationale = "explain your reasoning here",
                  inputs = list(), outputs = list(), source_schema = ""),
-            list(id = "step2", action = "path A next step",
-                 decision = "describe your decision here",
-                 justification = "explain your reasoning here",
+            list(id = "step2", fork = "path A next step",
+                 path = "describe your decision here",
+                 rationale = "explain your reasoning here",
                  inputs = list(), outputs = list(), source_schema = "")
           )
         ),
@@ -93,13 +93,13 @@ draft_tines <- function(type = c("schema", "multiverse"), file_path = NULL, over
             name = "Path B"
           ),
           nodes = list(
-            list(id = "step1", action = "path B approach",
-                 decision = "describe your decision here",
-                 justification = "explain your reasoning here",
+            list(id = "step1", fork = "path B approach",
+                 path = "describe your decision here",
+                 rationale = "explain your reasoning here",
                  inputs = list(), outputs = list(), source_schema = ""),
-            list(id = "step2", action = "path B next step",
-                 decision = "describe your decision here",
-                 justification = "explain your reasoning here",
+            list(id = "step2", fork = "path B next step",
+                 path = "describe your decision here",
+                 rationale = "explain your reasoning here",
                  inputs = list(), outputs = list(), source_schema = "")
           )
         )

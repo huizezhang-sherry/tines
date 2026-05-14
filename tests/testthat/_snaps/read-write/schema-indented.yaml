@@ -4,23 +4,23 @@ meta:
     name: ~
 nodes:
 -   id: step-scaling
-    action: variables are in different scales
-    decision: apply min-max scaling to each variable
-    justification: to put them on the same scale for combination
+    fork: variables are in different scales
+    path: apply min-max scaling to each variable
+    rationale: to put them on the same scale for combination
     inputs: []
     outputs: []
     source_schema: .na
 -   id: step-education
-    action: combine the school variables into one dimension
-    decision: average exp sch and avg sch
-    justification: the most intuitive way
+    fork: combine the school variables into one dimension
+    path: average exp sch and avg sch
+    rationale: the most intuitive way
     inputs: []
     outputs: []
     source_schema: .na
 -   id: step-combine
-    action: combine the three dimensions into a single index
-    decision: use the geometric mean
-    justification: the geometric mean is more appropriate than arithmetic mean
+    fork: combine the three dimensions into a single index
+    path: use the geometric mean
+    rationale: the geometric mean is more appropriate than arithmetic mean
     inputs: []
     outputs: []
     source_schema: .na

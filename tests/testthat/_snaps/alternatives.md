@@ -6,19 +6,19 @@
       $id
       [1] "test-tag"
       
-      $action
-      [1] "test action"
+      $fork
+      [1] "test fork"
       
-      $decision
-      [1] "test decision"
+      $path
+      [1] "test path"
       
-      $justification
-      [1] "test justification"
+      $rationale
+      [1] "test rationale"
       
 
 ---
 
-    All arguments (`id`, `action`, `decision`, `justification`) are required.
+    All arguments (`id`, `fork`, `path`, `rationale`) are required.
 
 ---
 
@@ -26,9 +26,9 @@
       alt_obj
     Output
       # Alternatives: block-target
-        id    action  decision  justification 
-        <chr> <chr>   <chr>     <chr>         
-      1 tag1  action1 decision1 justification1
+        id    fork  path  rationale 
+        <chr> <chr> <chr> <chr>     
+      1 tag1  fork1 path1 rationale1
 
 # read and write with an alternative yaml
 
@@ -36,9 +36,9 @@
       read_alternatives(tmp_file)
     Output
       # Alternatives: step-logistic-model
-        id                                action                decision justification
-        <chr>                             <chr>                 <chr>    <chr>        
-      1 step-mixed-effects-logistic-model estimate the effect ~ fit a g~ mixed-effect~
-      2 step-probit-regression-model      estimate the effect ~ fit a p~ probit model~
-      3 step-bayesian-logistic-model      estimate the effect ~ fit a B~ the Bayesian~
+        id                                path                               rationale
+        <chr>                             <chr>                              <chr>    
+      1 step-mixed-effects-logistic-model fit a generalized linear mixed-ef~ mixed-ef~
+      2 step-probit-regression-model      fit a probit regression model usi~ probit m~
+      3 step-bayesian-logistic-model      fit a Bayesian logistic regressio~ the Baye~
 

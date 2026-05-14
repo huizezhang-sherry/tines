@@ -13,16 +13,16 @@ test_that("alternative() constructs a valid list and catches missing arguments",
   # 1. Snapshot the successful creation
   an_alternative <- alternative(
     id = "test-tag",
-    action = "test action",
-    decision = "test decision",
-    justification = "test justification"
+    fork = "test fork",
+    path = "test path",
+    rationale = "test rationale"
   )
   expect_snapshot(an_alternative)
   expect_snapshot_error({alternative(id = "test-tag")})
 
   alt_obj <-  new_alternatives(
     "block-target",
-    alternative("tag1", "action1", "decision1", "justification1")
+    alternative("tag1", "fork1", "path1", "rationale1")
   )
   expect_snapshot(alt_obj)
 

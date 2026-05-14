@@ -1,9 +1,9 @@
 #' Construct `alternatives` objects
 #'
 #' @param id Unique identifier for this alternative (kebab-case).
-#' @param action The goal of the step (should match the original).
-#' @param decision The new method/implementation.
-#' @param justification Why this method is valid.
+#' @param fork The decision point or goal of the step (should match the original).
+#' @param path The new method/implementation.
+#' @param rationale Why this method is valid.
 #' @param step The target step ID in the schema that these alternatives pertain to.
 #' @param ... One or more alternative branches created by `alternative()`.
 #'
@@ -12,17 +12,17 @@
 #' @examples
 #' example_alternatives(case = "football")
 #'
-alternative <- function(id, action, decision, justification) {
+alternative <- function(id, fork, path, rationale) {
   # Quick validation to ensure no missing pieces
-  if (missing(id) || missing(action) || missing(decision) || missing(justification)) {
-    cli::cli_abort("All arguments (`id`, `action`, `decision`, `justification`) are required.")
+  if (missing(id) || missing(fork) || missing(path) || missing(rationale)) {
+    cli::cli_abort("All arguments (`id`, `fork`, `path`, `rationale`) are required.")
   }
 
   list(
     id = id,
-    action = action,
-    decision = decision,
-    justification = justification
+    fork = fork,
+    path = path,
+    rationale = rationale
   )
 }
 
@@ -35,9 +35,9 @@ new_alternatives <- function(step, ...) {
   df <- purrr::map_dfr(alts, function(alt) {
     tibble::tibble(
       id = alt$id,
-      action = alt$action, 
-      decision = alt$decision,
-      justification = alt$justification
+      fork = alt$fork, 
+      path = alt$path,
+      rationale = alt$rationale
     )
   })
   
@@ -69,7 +69,7 @@ new_alternatives <- function(step, ...) {
 write_alternatives <- function(x, file, ...) {
   
   # Convert data frame rows to list format for YML
-  alternatives_list <- purrr::pmap(x[c("id", "action", "decision", "justification")], function(...) {
+  alternatives_list <- purrr::pmap(x[c("id", "fork", "path", "rationale")], function(...) {
     list(...)
   })
   

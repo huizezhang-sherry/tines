@@ -63,9 +63,9 @@ gen_composite_code <- function(schema, base_scripts, output_file) {
       # Create a node-like object for the LLM function
       node <- list(
         id = schema$id[i],
-        action = schema$action[i],
-        decision = schema$decision[i],
-        justification = schema$justification[i],
+        fork = schema$fork[i],
+        path = schema$path[i],
+        rationale = schema$rationale[i],
         inputs = schema$inputs[[i]],
         outputs = schema$outputs[[i]]
       )

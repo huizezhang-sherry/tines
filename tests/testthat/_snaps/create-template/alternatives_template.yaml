@@ -1,7 +1,7 @@
 meta:
   type: alternatives
   step: step-scaling
-  fork: 
+  fork: variables are in different scales
 alternatives:
   - id: "NEW-ALTERNATIVE#1"
     path: ""
