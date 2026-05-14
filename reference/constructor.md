@@ -143,7 +143,7 @@ schema <- build_schema("HDI Example") |>
             rationale = "the geometric mean is more appropriate than arithmetic mean")
 
 schema
-#> # A schema: 3 x 7
+#> # A schema: HDI Example
 #>   id             fork               path  rationale inputs outputs source_schema
 #>   <chr>          <chr>              <chr> <chr>     <list> <list>  <lgl>        
 #> 1 step-scaling   variables are in … appl… to put t… <lgl>  <lgl>   NA           
@@ -170,6 +170,6 @@ schema2 <- build_schema("HDI Example") |>
 my_multiverse <- build_multiverse(original = schema, reversed = schema2)
 my_multiverse
 #> A multiverse with 2 schemas:
-#>   original: (3 steps)
-#>   reversed: (3 steps)
+#>   original: "HDI Example" (3 steps)
+#>   reversed: "HDI Example" (3 steps)
 ```

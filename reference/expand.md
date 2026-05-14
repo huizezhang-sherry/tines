@@ -50,7 +50,7 @@ expand_tines(base_schema, alts)
 # read the alternatives from a YML file
 tmp_file <- tempfile(fileext = ".yml")
 write_alternatives(alts, tmp_file)
-#> ✔ Successfully wrote alternatives to /tmp/Rtmp897edO/file19d45f030329.yml
+#> ✔ Successfully wrote alternatives to /tmp/RtmpOlpIRo/file19da3ef8bb8d.yml
 expand_tines(base_schema, tmp_file)
 #> A multiverse with 4 schemas:
 #>   original: (3 steps)
@@ -63,8 +63,8 @@ multiverse <- example_multiverse()
 alts <- example_alternatives(case = "hdi")
 expand_tines(multiverse, alts)
 #> A multiverse with 4 schemas:
-#>   original: (3 steps)
-#>   reversed: (3 steps)
-#>   original.step-arithmetic-mean: (3 steps)
-#>   reversed.step-arithmetic-mean: (3 steps)
+#>   original: "HDI Example" (3 steps)
+#>   reversed: "HDI Example" (3 steps)
+#>   original.step-arithmetic-mean: "HDI Example" (3 steps)
+#>   reversed.step-arithmetic-mean: "HDI Example" (3 steps)
 ```
