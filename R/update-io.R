@@ -49,13 +49,13 @@
 #' # specify the dataset when creating the schema through `build_schema()`
 #' schema <- build_schema(data = data_2023) |>
 #'   add_step(
-#'     id = "step-filter", action = "remove missing values", 
-#'     decision = "exclude rows with NA",
+#'     id = "step-filter", fork = "remove missing values", 
+#'     path = "exclude rows with NA",
 #'     inputs = c("age", "income"), outputs = "df_clean"
 #'   ) |>
 #'   add_step(
-#'     id = "step-transform", action = "log transform income", 
-#'     decision = "use natural log",
+#'     id = "step-transform", fork = "log transform income", 
+#'     path = "use natural log",
 #'     inputs = "df_clean", outputs = "df_transformed"
 #'   )
 #'
@@ -84,13 +84,13 @@
 #' schema_llm <- build_schema() |>
 #'   add_step(
 #'     id = "step-filter",
-#'     action = "remove missing values",
-#'     decision = "exclude rows with NA"
+#'     fork = "remove missing values",
+#'     path = "exclude rows with NA"
 #'   ) |>
 #'   add_step(
 #'     id = "step-transform", 
-#'     action = "log transform income",
-#'     decision = "use natural log"
+#'     fork = "log transform income",
+#'     path = "use natural log"
 #'   ) |>
 #'   gen_io(data = data_2023)
 #' }
@@ -98,8 +98,8 @@ gen_io <- function(schema, data, interactive = FALSE,
                    model = "gemini-2.5-flash", force = FALSE) {
   
   # Check if already mapped and data hasn't changed
-  if (!force && has_data_ref(schema)) {
-    existing_hash <- attr(schema, "data_ref")$hash
+  if (!force && has_data(schema)) {
+    existing_hash <- attr(schema, "data")$hash
     new_hash <- if (is.data.frame(data)) {
       digest::digest(data)
     } else {
@@ -150,7 +150,7 @@ gen_io <- function(schema, data, interactive = FALSE,
   
   # Attach data reference
   data_source <- if (is.data.frame(data)) deparse(substitute(data)) else data
-  attr(schema, "data_ref") <- list(
+  attr(schema, "data") <- list(
     source = data_source,
     hash = digest::digest(data_obj),
     dict = data_dict
@@ -206,7 +206,7 @@ update_data <- function(schema, data) {
   
   # Attach data
   data_source <- if (is.character(data)) data else deparse(substitute(data))
-  attr(schema, "data_ref") <- list(
+  attr(schema, "data") <- list(
     source = data_source,
     hash = digest::digest(data_obj),
     dict = prepare_data_dict(data_obj)
@@ -243,9 +243,9 @@ update_io <- function(schema, id, inputs = NULL, outputs = NULL, data = NULL) {
     
     data_dict <- prepare_data_dict(data_obj)
     validate_step_variables(schema, idx, data_dict)
-  } else if (has_data_ref(schema)) {
+  } else if (has_data(schema)) {
     # Validate against attached data
-    data_dict <- attr(schema, "data_ref")$dict
+    data_dict <- attr(schema, "data")$dict
     validate_step_variables(schema, idx, data_dict)
   }
   
@@ -260,14 +260,14 @@ ensure_mapped <- function(schema, data = NULL, operation = "this operation") {
   
   if (mapped) {
     # Check if data has changed
-    if (!is.null(data) && has_data_ref(schema)) {
+    if (!is.null(data) && has_data(schema)) {
       new_hash <- if (is.data.frame(data)) {
         digest::digest(data)
       } else {
         digest::digest(load_data_file(data))
       }
       
-      existing_hash <- attr(schema, "data_ref")$hash
+      existing_hash <- attr(schema, "data")$hash
       
       if (existing_hash != new_hash) {
         cli::cli_alert_warning(c(
@@ -283,8 +283,8 @@ ensure_mapped <- function(schema, data = NULL, operation = "this operation") {
   # Schema is unmapped - need to map
   if (is.null(data)) {
     # Check if data is attached to schema
-    if (has_data_ref(schema)) {
-      data_source <- attr(schema, "data_ref")$source
+    if (has_data(schema)) {
+      data_source <- attr(schema, "data")$source
       cli::cli_alert_info("Using attached data: {.val {data_source}}")
       data <- load_data_file(data_source)
       return(gen_io(schema, data))
@@ -313,8 +313,8 @@ is_mapped <- function(schema) {
 }
 
 #' @keywords internal
-has_data_ref <- function(schema) {
-  !is.null(attr(schema, "data_ref"))
+has_data <- function(schema) {
+  !is.null(attr(schema, "data"))
 }
 
 #' @keywords internal

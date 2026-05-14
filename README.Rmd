@@ -44,7 +44,7 @@ Start from a schema
 
 ```{r}
 library(tines)
-(hdi <- example_schema())
+(hdi <- example_schema()) 
 ```
 
 Generate an alternative at block-combine and write the result into a `yaml` file:

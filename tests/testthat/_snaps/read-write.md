@@ -3,7 +3,7 @@
     Code
       schema_read
     Output
-      # A schema: 3 x 7
+      # A schema: HDI Example
         id             fork               path  rationale source_schema inputs outputs
         <chr>          <chr>              <chr> <chr>     <chr>         <list> <list> 
       1 step-scaling   variables are in ~ appl~ to put t~ <NA>          <chr>  <chr>  

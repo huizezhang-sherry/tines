@@ -3,7 +3,7 @@
     Code
       schema
     Output
-      # A schema: 3 x 7
+      # A schema: HDI Example
         id             fork               path  rationale inputs outputs source_schema
         <chr>          <chr>              <chr> <chr>     <list> <list>  <lgl>        
       1 step-scaling   variables are in ~ appl~ to put t~ <lgl>  <lgl>   NA           
@@ -16,8 +16,8 @@
       my_multiverse
     Output
       A multiverse with 2 schemas:
-        original: (3 steps)
-        reversed: (3 steps)
+        original: "HDI Example" (3 steps)
+        reversed: "HDI Example" (3 steps)
 
 # validation errors remain stable
 

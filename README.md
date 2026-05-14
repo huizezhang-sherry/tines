@@ -29,13 +29,13 @@ Start from a schema
 
 ``` r
 library(tines)
-(hdi <- example_schema())
-#> # A schema: 3 x 7
-#>   id             action      decision justification inputs outputs source_schema
-#>   <chr>          <chr>       <chr>    <chr>         <list> <list>  <lgl>        
-#> 1 step-scaling   variables … apply m… to put them … <lgl>  <lgl>   NA           
-#> 2 step-education combine th… average… the most int… <lgl>  <lgl>   NA           
-#> 3 step-combine   combine th… use the… the geometri… <lgl>  <lgl>   NA
+(hdi <- example_schema()) 
+#> # A schema: HDI Example
+#>   id             fork               path  rationale inputs outputs source_schema
+#>   <chr>          <chr>              <chr> <chr>     <list> <list>  <lgl>        
+#> 1 step-scaling   variables are in … appl… to put t… <lgl>  <lgl>   NA           
+#> 2 step-education combine the schoo… aver… the most… <lgl>  <lgl>   NA           
+#> 3 step-combine   combine the three… use … the geom… <lgl>  <lgl>   NA
 ```
 
 Generate an alternative at block-combine and write the result into a
@@ -70,13 +70,13 @@ res_arith <- source(here::here("inst/alt_01_block_combine_arithmetic.R"))
 #> Warning: package 'purrr' was built under R version 4.5.2
 #> Warning: package 'dplyr' was built under R version 4.5.2
 #> Warning: package 'lubridate' was built under R version 4.5.2
-#> ── Attaching core tidyverse packages ─────────────────────────────────────────────────────────────────────────── tidyverse 2.0.0 ──
+#> ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
 #> ✔ dplyr     1.2.0     ✔ readr     2.1.5
 #> ✔ forcats   1.0.0     ✔ stringr   1.6.0
 #> ✔ ggplot2   4.0.0     ✔ tibble    3.3.1
 #> ✔ lubridate 1.9.5     ✔ tidyr     1.3.2
 #> ✔ purrr     1.2.1     
-#> ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+#> ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 #> ✖ dplyr::filter() masks stats::filter()
 #> ✖ dplyr::lag()    masks stats::lag()
 #> ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
@@ -102,11 +102,11 @@ Start from a schema
 library(tines)
 (football <- example_football())
 #> # A schema: 3 x 7
-#>   id                  action decision justification inputs outputs source_schema
-#>   <chr>               <chr>  <chr>    <chr>         <list> <list>  <lgl>        
-#> 1 step-average-rater  defin… average… incorporate … <lgl>  <lgl>   NA           
-#> 2 step-victory-tie-d… contr… victory… ratios are r… <lgl>  <lgl>   NA           
-#> 3 step-logistic-model estim… fit a l… to answer th… <lgl>  <lgl>   NA
+#>   id                          fork  path  rationale inputs outputs source_schema
+#>   <chr>                       <chr> <chr> <chr>     <list> <list>  <lgl>        
+#> 1 step-average-rater          defi… aver… incorpor… <lgl>  <lgl>   NA           
+#> 2 step-victory-tie-defeat-ra… cont… vict… ratios a… <lgl>  <lgl>   NA           
+#> 3 step-logistic-model         esti… fit … to answe… <lgl>  <lgl>   NA
 ```
 
 Generate an alternative at block-combine and write the result into a

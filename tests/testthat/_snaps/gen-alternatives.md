@@ -108,8 +108,8 @@
       expand_tines(multiverse, alts)
     Output
       A multiverse with 4 schemas:
-        original: (3 steps)
-        reversed: (3 steps)
-        original.step-arithmetic-mean: (3 steps)
-        reversed.step-arithmetic-mean: (3 steps)
+        original: "HDI Example" (3 steps)
+        reversed: "HDI Example" (3 steps)
+        original.step-arithmetic-mean: "HDI Example" (3 steps)
+        reversed.step-arithmetic-mean: "HDI Example" (3 steps)
 

@@ -1,7 +1,7 @@
 meta:
   type: schema
   date: YYYY-MM-DD
-  name: ~
+  name: HDI Example
 nodes:
 - id: step-scaling
   fork: variables are in different scales

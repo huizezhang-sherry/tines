@@ -92,7 +92,7 @@ build_schema <- function(name = NULL, data = NULL) {
     data_source <- if (is.character(data)) data else deparse(substitute(data))
     
     # Attach data reference
-    attr(schema, "data_ref") <- list(
+    attr(schema, "data") <- list(
       source = data_source,
       hash = digest::digest(data_obj),
       dict = prepare_data_dict(data_obj)
@@ -167,13 +167,23 @@ add_step <- function(object, id, fork = "", path = "",
     id = id, fork = fork, path = path, rationale = rationale,
     inputs = inputs_val, outputs = outputs_val, source_schema = source_schema
   )
+  
+  # Preserve attributes before rbind
+  schema_name <- attr(object, "name", exact = TRUE)
+  schema_data <- attr(object, "data", exact = TRUE)
+  
   object <- rbind(object, new_node)
   class(object) <- c("schema", "tbl_df", "tbl", "data.frame")
-  attr(object, "name") <- attr(object, "name", exact = TRUE)
+  
+  # Restore attributes
+  attr(object, "name") <- schema_name
+  if (!is.null(schema_data)) {
+    attr(object, "data") <- schema_data
+  }
   
   # Validate if data is attached
-  if (has_data_ref(object)) {
-    data_dict <- attr(object, "data_ref")$dict
+  if (has_data(object)) {
+    data_dict <- attr(object, "data")$dict
     step_idx <- nrow(object)
     validate_step_variables(object, step_idx, data_dict)
   }

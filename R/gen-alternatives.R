@@ -85,9 +85,9 @@ gen_alternatives.schema <- function(x, step, n = 3, data = NULL,
     } else {
       NULL
     }
-  } else if (has_data_ref(x)) {
+  } else if (has_data(x)) {
     # Use attached data if available
-    attr(x, "data_ref")$dict
+    attr(x, "data")$dict
   } else {
     NULL
   }
