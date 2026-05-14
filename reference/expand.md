@@ -48,7 +48,7 @@ expand_tines(base_schema, alts)
 # read the alternatives from a YML file
 tmp_file <- tempfile(fileext = ".yml")
 write_alternatives(alts, tmp_file)
-#> ✔ Successfully wrote alternatives to /tmp/Rtmpar6iPQ/file19ab5bc8f605.yml
+#> ✔ Successfully wrote alternatives to /tmp/RtmpSp62Hp/file19657f26c79a.yml
 expand_tines(base_schema, tmp_file)
 #> Error in purrr::pmap(alts_data, function(id, fork, path, rationale) {    branch <- x    branch$id[[idx]] <- id    branch$path[[idx]] <- path    branch$rationale[[idx]] <- rationale    class(branch) <- c("schema", "tbl_df", "tbl", "data.frame")    attr(branch, "name") <- attr(x, "name", exact = TRUE)    return(branch)}): ℹ In index: 1.
 #> Caused by error in `.f()`:

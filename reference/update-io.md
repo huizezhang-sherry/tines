@@ -1,10 +1,23 @@
 # Data mapping and validation for schemas
 
 These functions manage the relationship between a schema and its
-dataset: - \`gen_io()\`: Uses LLM to automatically infer inputs/outputs
-from dataset columns - \`update_io()\`: Manually update inputs/outputs
-for a specific step - \`update_data()\`: Switch to a new dataset and
-re-validate the schema
+dataset. Here are the four main scenarios they cover:
+
+\* Specify the dataset when creating the schema through
+\[build_schema()\] and the inputs/outputs for each step as you add them
+with \[add_step()\].
+
+\* Modify the inputs/outputs for a specific step later with
+\[update_io()\]. The function will validate the updated mapping against
+the attached dataset (if any).
+
+\* Provide a new dataset to an existing schema with \[update_data()\].
+The function will validate the entire schema (inputs/outputs) against
+the new dataset.
+
+\* Combine the update of data and inputs/outputs in one step with
+\[update_io()\] by providing the new dataset using the \`data\`
+argument.
 
 ## Usage
 
@@ -19,7 +32,7 @@ gen_io(
 
 update_data(schema, data)
 
-update_io(schema, step_id, inputs = NULL, outputs = NULL)
+update_io(schema, id, inputs = NULL, outputs = NULL, data = NULL)
 ```
 
 ## Arguments
@@ -30,7 +43,10 @@ update_io(schema, step_id, inputs = NULL, outputs = NULL)
 
 - data:
 
-  A data frame or path to a data file
+  A data frame or path to a data file. For \`gen_io()\` and
+  \`update_data()\`, this is required. For \`update_io()\`, this is
+  optional - if provided, validates the updated inputs/outputs against
+  this dataset (without attaching it).
 
 - interactive:
 
@@ -44,7 +60,7 @@ update_io(schema, step_id, inputs = NULL, outputs = NULL)
 
   Logical. If TRUE, remaps even if already mapped
 
-- step_id:
+- id:
 
   Character string identifying which step to update (for
   \`update_io()\`)
@@ -77,42 +93,40 @@ data_2024 <- data.frame(
   city = c("NYC", "LA", "Chicago", "Boston", "LA")
 )
 
-# Build schema with data attached (validates as steps are added)
+# Scenario 1: 
+# specify the dataset when creating the schema through `build_schema()`
 schema <- build_schema(data = data_2023) |>
   add_step(
-    id = "step-filter",
-    action = "remove missing values",
+    id = "step-filter", action = "remove missing values", 
     decision = "exclude rows with NA",
-    inputs = c("age", "income"),
-    outputs = "df_clean"
+    inputs = c("age", "income"), outputs = "df_clean"
   ) |>
   add_step(
-    id = "step-transform",
-    action = "log transform income",
+    id = "step-transform", action = "log transform income", 
     decision = "use natural log",
-    inputs = "df_clean",
-    outputs = "df_transformed"
+    inputs = "df_clean", outputs = "df_transformed"
   )
 #> ✔ Data attached: "data_2023"
 
-# Switch to new dataset - validation will fail because 'income' doesn't exist
+# Scenario 2: 
+# modify the inputs/outputs with `update_io()`
+schema_mod <- update_io(schema, "step-filter", inputs = c("age"))
+
+# Scenario 3: 
+# provide a new dataset to an existing schema with `update_data()`
+# The function will trigger validation and return an error when 
+# the mapping is broken (e.g., "income" not found in new dataset)
 if (FALSE) { # \dontrun{
 schema <- update_data(schema, data_2024)
-# Error: Validation failed - data NOT attached
-# Missing variables:
-#   Step 'step-filter': income
-# Available in new dataset: age, salary, city
 } # }
 
-# Fix the inputs to use 'salary' instead of 'income'
-schema2 <- update_io(schema, "step-filter",
+# Scenario 4: 
+# combine the update of data and inputs/outputs in one step with `update_io()` 
+# by providing the new dataset using the `data` argument.
+schema_2024 <- update_io(schema, "step-filter",
                     inputs = c("age", "salary", "city"),
-                    outputs = "df_clean")
-
-# Now update_data() will succeed
-schema_2024 <- update_data(schema2, data_2024)
-#> ✔ Validation passed
-#> ✔ Data attached: "data_2024"
+                    outputs = "df_clean",
+                    data = data_2024)
 
 # LLM approach: auto-infer from dataset (leave untouched)
 if (FALSE) { # \dontrun{
