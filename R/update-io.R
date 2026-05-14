@@ -1,14 +1,26 @@
 #' Data mapping and validation for schemas
 #'
 #' @description
-#' These functions manage the relationship between a schema and its dataset:
-#' - `gen_io()`: Uses LLM to automatically infer inputs/outputs from dataset columns
-#' - `update_io()`: Manually update inputs/outputs for a specific step
-#' - `update_data()`: Switch to a new dataset and re-validate the schema
+#' These functions manage the relationship between a schema and its dataset. Here are the four main 
+#' scenarios they cover:
+#' 
+#' * Specify the dataset when creating the schema through [build_schema()] and 
+#'   the inputs/outputs for each step as you add them with [add_step()].
+#' 
+#' * Modify the inputs/outputs for a specific step later with [update_io()]. The function  
+#'   will validate the updated mapping against the attached dataset (if any).
+#' 
+#' * Provide a new dataset to an existing schema with [update_data()]. The function
+#'   will validate the entire schema (inputs/outputs) against the new dataset.
+#' 
+#' * Combine the update of data and inputs/outputs in one step with [update_io()] 
+#'   by providing the new dataset using the `data` argument.
 #'
 #' @param schema A `schema` object
-#' @param data A data frame or path to a data file
-#' @param step_id Character string identifying which step to update (for `update_io()`)
+#' @param data A data frame or path to a data file. For `gen_io()` and `update_data()`, 
+#'   this is required. For `update_io()`, this is optional - if provided, validates 
+#'   the updated inputs/outputs against this dataset (without attaching it).
+#' @param id Character string identifying which step to update (for `update_io()`)
 #' @param inputs Character vector of input variable names
 #' @param outputs Character vector of output variable names
 #' @param interactive Logical. If TRUE, prompts user for ambiguous mappings
@@ -33,39 +45,39 @@
 #'   city = c("NYC", "LA", "Chicago", "Boston", "LA")
 #' )
 #'
-#' # Build schema with data attached (validates as steps are added)
+#' # Scenario 1: 
+#' # specify the dataset when creating the schema through `build_schema()`
 #' schema <- build_schema(data = data_2023) |>
 #'   add_step(
-#'     id = "step-filter",
-#'     action = "remove missing values",
+#'     id = "step-filter", action = "remove missing values", 
 #'     decision = "exclude rows with NA",
-#'     inputs = c("age", "income"),
-#'     outputs = "df_clean"
+#'     inputs = c("age", "income"), outputs = "df_clean"
 #'   ) |>
 #'   add_step(
-#'     id = "step-transform",
-#'     action = "log transform income",
+#'     id = "step-transform", action = "log transform income", 
 #'     decision = "use natural log",
-#'     inputs = "df_clean",
-#'     outputs = "df_transformed"
+#'     inputs = "df_clean", outputs = "df_transformed"
 #'   )
 #'
-#' # Switch to new dataset - validation will fail because 'income' doesn't exist
+#' # Scenario 2: 
+#' # modify the inputs/outputs with `update_io()`
+#' schema_mod <- update_io(schema, "step-filter", inputs = c("age"))
+#' 
+#' # Scenario 3: 
+#' # provide a new dataset to an existing schema with `update_data()`
+#' # The function will trigger validation and return an error when 
+#' # the mapping is broken (e.g., "income" not found in new dataset)
 #' \dontrun{
 #' schema <- update_data(schema, data_2024)
-#' # Error: Validation failed - data NOT attached
-#' # Missing variables:
-#' #   Step 'step-filter': income
-#' # Available in new dataset: age, salary, city
 #' }
 #' 
-#' # Fix the inputs to use 'salary' instead of 'income'
-#' schema2 <- update_io(schema, "step-filter",
+#' # Scenario 4: 
+#' # combine the update of data and inputs/outputs in one step with `update_io()` 
+#' # by providing the new dataset using the `data` argument.
+#' schema_2024 <- update_io(schema, "step-filter",
 #'                     inputs = c("age", "salary", "city"),
-#'                     outputs = "df_clean")
-#' 
-#' # Now update_data() will succeed
-#' schema_2024 <- update_data(schema2, data_2024)
+#'                     outputs = "df_clean",
+#'                     data = data_2024)
 #' 
 #' # LLM approach: auto-infer from dataset (leave untouched)
 #' \dontrun{
@@ -185,9 +197,8 @@ update_data <- function(schema, data) {
                    if (ncol(data_obj) > 10) "..." else ""),
       " " = "",
       "i" = "Fix options:",
-      " " = "  1. Auto-fix with LLM:  gen_io(schema, data, force = TRUE)",
-      " " = "  2. Manual fix:         update_io(schema, step_id, inputs = ..., outputs = ...)",
-      " " = "  3. Override:           update_data(schema, data, validate = 'skip')"
+      " " = "  1. Manual fix:         update_io(schema, id, inputs = ..., outputs = ..., data = ...)",
+      " " = "  2. Auto-fix with LLM:  gen_io(schema, data, force = TRUE)"
     )
     
     cli::cli_abort(msg)
@@ -201,12 +212,7 @@ update_data <- function(schema, data) {
     dict = prepare_data_dict(data_obj)
   )
   
-  if (validation_result$valid) {
-    cli::cli_alert_success("Validation passed")
-  } else if (validate == "warn") {
-    cli::cli_alert_warning("Data attached with validation issues")
-  }
-  
+  cli::cli_alert_success("Validation passed")
   cli::cli_alert_success("Data attached: {.val {data_source}}")
   
   schema
@@ -214,18 +220,31 @@ update_data <- function(schema, data) {
 
 #' @rdname update-io
 #' @export
-update_io <- function(schema, step_id, inputs = NULL, outputs = NULL) {
-  idx <- which(schema$id == step_id)
+update_io <- function(schema, id, inputs = NULL, outputs = NULL, data = NULL) {
+  idx <- which(schema$id == id)
   
   if (length(idx) == 0) {
-    cli::cli_abort("Step {.val {step_id}} not found in schema")
+    cli::cli_abort("Step {.val {id}} not found in schema")
   }
   
   if (!is.null(inputs)) schema$inputs[[idx]] <- list(inputs)
   if (!is.null(outputs)) schema$outputs[[idx]] <- list(outputs)
   
-  # Validate if data is attached
-  if (has_data_ref(schema)) {
+  # Validate against provided data or attached data
+  if (!is.null(data)) {
+    # Load data if needed
+    data_obj <- if (is.data.frame(data)) {
+      data
+    } else if (is.character(data) && file.exists(data)) {
+      load_data_file(data)
+    } else {
+      cli::cli_abort("{.arg data} must be a data frame or path to a data file")
+    }
+    
+    data_dict <- prepare_data_dict(data_obj)
+    validate_step_variables(schema, idx, data_dict)
+  } else if (has_data_ref(schema)) {
+    # Validate against attached data
     data_dict <- attr(schema, "data_ref")$dict
     validate_step_variables(schema, idx, data_dict)
   }
