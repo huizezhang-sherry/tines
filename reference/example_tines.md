@@ -46,25 +46,25 @@ example_football_grp20()
 # Generate a single example schema
 example_schema()
 #> # A schema: 3 x 7
-#>   id             action      decision justification inputs outputs source_schema
-#>   <chr>          <chr>       <chr>    <chr>         <list> <list>  <lgl>        
-#> 1 step-scaling   variables … apply m… to put them … <lgl>  <lgl>   NA           
-#> 2 step-education combine th… average… the most int… <lgl>  <lgl>   NA           
-#> 3 step-combine   combine th… use the… the geometri… <lgl>  <lgl>   NA           
+#>   id             fork               path  rationale inputs outputs source_schema
+#>   <chr>          <chr>              <chr> <chr>     <list> <list>  <lgl>        
+#> 1 step-scaling   variables are in … appl… to put t… <lgl>  <lgl>   NA           
+#> 2 step-education combine the schoo… aver… the most… <lgl>  <lgl>   NA           
+#> 3 step-combine   combine the three… use … the geom… <lgl>  <lgl>   NA           
 example_multiverse()
 #> A multiverse with 2 schemas:
 #>   original: (3 steps)
 #>   reversed: (3 steps)
 example_football()
 #> # A schema: 3 x 7
-#>   id                  action decision justification inputs outputs source_schema
-#>   <chr>               <chr>  <chr>    <chr>         <list> <list>  <lgl>        
-#> 1 step-average-rater  defin… average… incorporate … <lgl>  <lgl>   NA           
-#> 2 step-victory-tie-d… contr… victory… ratios are r… <lgl>  <lgl>   NA           
-#> 3 step-logistic-model estim… fit a l… to answer th… <lgl>  <lgl>   NA           
+#>   id                          fork  path  rationale inputs outputs source_schema
+#>   <chr>                       <chr> <chr> <chr>     <list> <list>  <lgl>        
+#> 1 step-average-rater          defi… aver… incorpor… <lgl>  <lgl>   NA           
+#> 2 step-victory-tie-defeat-ra… cont… vict… ratios a… <lgl>  <lgl>   NA           
+#> 3 step-logistic-model         esti… fit … to answe… <lgl>  <lgl>   NA           
 example_alternatives(case = "hdi")
 #> # Alternatives: step-combine
-#>   id                   action                             decision justification
-#>   <chr>                <chr>                              <chr>    <chr>        
-#> 1 step-arithmetic-mean combine the three dimensions into… use a a… the old meth…
+#>   id                   fork                                      path  rationale
+#>   <chr>                <chr>                                     <chr> <chr>    
+#> 1 step-arithmetic-mean combine the three dimensions into a sing… use … the old …
 ```

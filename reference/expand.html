@@ -75,26 +75,32 @@
 <span class="r-in"><span><span class="va">base_schema</span> <span class="op">&lt;-</span> <span class="fu"><a href="example_tines.html">example_football</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">alts</span> <span class="op">&lt;-</span> <span class="fu"><a href="example_tines.html">example_alternatives</a></span><span class="op">(</span>case <span class="op">=</span> <span class="st">"football"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">expand_tines</span><span class="op">(</span><span class="va">base_schema</span>, <span class="va">alts</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in purrr::pmap(alts_data, function(id, fork, path, rationale) {    branch &lt;- x    branch$id[[idx]] &lt;- id    branch$path[[idx]] &lt;- path    branch$rationale[[idx]] &lt;- rationale    class(branch) &lt;- c("schema", "tbl_df", "tbl", "data.frame")    attr(branch, "name") &lt;- attr(x, "name", exact = TRUE)    return(branch)}):</span> <span style="color: #00BBBB;">ℹ</span> In index: 1.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `.f()`:</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> unused arguments (action = .l[[2]][[i]], decision = .l[[3]][[i]], justification = .l[[4]][[i]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> A multiverse with 4 schemas:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   original: (3 steps)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   step-mixed-effects-logistic-model: (3 steps)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   step-probit-regression-model: (3 steps)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   step-bayesian-logistic-model: (3 steps)</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># read the alternatives from a YML file</span></span></span>
 <span class="r-in"><span><span class="va">tmp_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yml"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="read-write-alternatives.html">write_alternatives</a></span><span class="op">(</span><span class="va">alts</span>, <span class="va">tmp_file</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Successfully wrote alternatives to <span style="color: #0000BB;">/tmp/RtmpSp62Hp/file19657f26c79a.yml</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Successfully wrote alternatives to <span style="color: #0000BB;">/tmp/Rtmp897edO/file19d45f030329.yml</span></span>
 <span class="r-in"><span><span class="fu">expand_tines</span><span class="op">(</span><span class="va">base_schema</span>, <span class="va">tmp_file</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in purrr::pmap(alts_data, function(id, fork, path, rationale) {    branch &lt;- x    branch$id[[idx]] &lt;- id    branch$path[[idx]] &lt;- path    branch$rationale[[idx]] &lt;- rationale    class(branch) &lt;- c("schema", "tbl_df", "tbl", "data.frame")    attr(branch, "name") &lt;- attr(x, "name", exact = TRUE)    return(branch)}):</span> <span style="color: #00BBBB;">ℹ</span> In index: 1.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `.f()`:</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> argument "path" is missing, with no default</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> A multiverse with 4 schemas:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   original: (3 steps)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   step-mixed-effects-logistic-model: (3 steps)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   step-probit-regression-model: (3 steps)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   step-bayesian-logistic-model: (3 steps)</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># expand on the multiverse</span></span></span>
 <span class="r-in"><span><span class="va">multiverse</span> <span class="op">&lt;-</span> <span class="fu"><a href="example_tines.html">example_multiverse</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">alts</span> <span class="op">&lt;-</span> <span class="fu"><a href="example_tines.html">example_alternatives</a></span><span class="op">(</span>case <span class="op">=</span> <span class="st">"hdi"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">expand_tines</span><span class="op">(</span><span class="va">multiverse</span>, <span class="va">alts</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in purrr::pmap(alts_data, function(id, fork, path, rationale) {    branch &lt;- x    branch$id[[idx]] &lt;- id    branch$path[[idx]] &lt;- path    branch$rationale[[idx]] &lt;- rationale    class(branch) &lt;- c("schema", "tbl_df", "tbl", "data.frame")    attr(branch, "name") &lt;- attr(x, "name", exact = TRUE)    return(branch)}):</span> <span style="color: #00BBBB;">ℹ</span> In index: 1.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `.f()`:</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> unused arguments (action = .l[[2]][[i]], decision = .l[[3]][[i]], justification = .l[[4]][[i]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> A multiverse with 4 schemas:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   original: (3 steps)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   reversed: (3 steps)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   original.step-arithmetic-mean: (3 steps)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   reversed.step-arithmetic-mean: (3 steps)</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

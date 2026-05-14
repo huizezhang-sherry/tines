@@ -17,9 +17,9 @@ build_multiverse(...)
 add_step(
   object,
   id,
-  action = "",
-  decision = "",
-  justification = "",
+  fork = "",
+  path = "",
+  rationale = "",
   inputs = NULL,
   outputs = NULL,
   source_schema = NA,
@@ -90,7 +90,7 @@ print(x, width = NULL, ...)
 
   A \`schema\` object.
 
-- id, action, decision, justification, inputs, outputs, source_schema:
+- id, fork, path, rationale, inputs, outputs, source_schema:
 
   character strings to write a step
 
@@ -128,44 +128,44 @@ object of class \`c("multiverse", "list")\`.
 schema <- build_schema("HDI Example") |>
   # 1. The Scaling step
   add_step(id = "step-scaling",
-            action = "variables are in different scales",
-            decision = "apply min-max scaling to each variable",
-            justification = "to put them on the same scale for combination") |>
+            fork = "variables are in different scales",
+            path = "apply min-max scaling to each variable",
+            rationale = "to put them on the same scale for combination") |>
   # 2. The Education step
   add_step(id = "step-education",
-            action = "combine the school variables into one dimension",
-            decision = "average exp sch and avg sch",
-            justification = "the most intuitive way") |>
+            fork = "combine the school variables into one dimension",
+            path = "average exp sch and avg sch",
+            rationale = "the most intuitive way") |>
   # 3. The Combine step
   add_step(id = "step-combine",
-            action = "combine the three dimensions into a single index",
-            decision = "use the geometric mean",
-            justification = "the geometric mean is more appropriate than arithmetic mean")
+            fork = "combine the three dimensions into a single index",
+            path = "use the geometric mean",
+            rationale = "the geometric mean is more appropriate than arithmetic mean")
 
 schema
 #> # A schema: 3 x 7
-#>   id             action      decision justification inputs outputs source_schema
-#>   <chr>          <chr>       <chr>    <chr>         <list> <list>  <lgl>        
-#> 1 step-scaling   variables … apply m… to put them … <lgl>  <lgl>   NA           
-#> 2 step-education combine th… average… the most int… <lgl>  <lgl>   NA           
-#> 3 step-combine   combine th… use the… the geometri… <lgl>  <lgl>   NA           
+#>   id             fork               path  rationale inputs outputs source_schema
+#>   <chr>          <chr>              <chr> <chr>     <list> <list>  <lgl>        
+#> 1 step-scaling   variables are in … appl… to put t… <lgl>  <lgl>   NA           
+#> 2 step-education combine the schoo… aver… the most… <lgl>  <lgl>   NA           
+#> 3 step-combine   combine the three… use … the geom… <lgl>  <lgl>   NA           
 
 schema2 <- build_schema("HDI Example") |>
   # 1. The Education Step
   add_step(id = "step-education",
-            action = "combine the school variables into one dimension",
-            decision = "average exp sch and avg sch",
-            justification = "the most intuitive way") |>
+            fork = "combine the school variables into one dimension",
+            path = "average exp sch and avg sch",
+            rationale = "the most intuitive way") |>
   # 2. The Scaling Step
   add_step(id = "step-scaling",
-            action = "variables are in different scales",
-            decision = "apply min-max scaling to each variable",
-            justification = "to put them on the same scale for combination") |>
+            fork = "variables are in different scales",
+            path = "apply min-max scaling to each variable",
+            rationale = "to put them on the same scale for combination") |>
   # 3. The Combine Step
   add_step(id = "step-combine",
-            action = "combine the three dimensions into a single index",
-            decision = "use the geometric mean",
-            justification = "the geometric mean is more appropriate than arithmetic mean")
+            fork = "combine the three dimensions into a single index",
+            path = "use the geometric mean",
+            rationale = "the geometric mean is more appropriate than arithmetic mean")
 
 my_multiverse <- build_multiverse(original = schema, reversed = schema2)
 my_multiverse

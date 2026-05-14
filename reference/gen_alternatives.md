@@ -190,13 +190,12 @@ prompt_alternatives(schema = hdi, step = "step-combine", print = TRUE)
 #> 
 #> === CURRENT SCHEMA ===
 #> 
-#> id: - step-scaling - step-education - step-combine action: -
-#> variables are in different scales - combine the school variables into
-#> one dimension - combine the three dimensions into a single index
-#> decision: - apply min-max scaling to each variable - average exp sch
-#> and avg sch - use the geometric mean justification: - to put them on
-#> the same scale for combination - the most intuitive way - the
-#> geometric mean is more appropriate than arithmetic mean inputs: - .na
-#> - .na - .na outputs: - .na - .na - .na source_schema: - .na - .na -
-#> .na
+#> id: - step-scaling - step-education - step-combine fork: - variables
+#> are in different scales - combine the school variables into one
+#> dimension - combine the three dimensions into a single index path: -
+#> apply min-max scaling to each variable - average exp sch and avg sch
+#> - use the geometric mean rationale: - to put them on the same scale
+#> for combination - the most intuitive way - the geometric mean is more
+#> appropriate than arithmetic mean inputs: - .na - .na - .na outputs: -
+#> .na - .na - .na source_schema: - .na - .na - .na
 ```

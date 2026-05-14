@@ -5,7 +5,7 @@ Construct \`alternatives\` objects
 ## Usage
 
 ``` r
-alternative(id, action, decision, justification)
+alternative(id, fork, path, rationale)
 
 new_alternatives(step, ...)
 ```
@@ -16,15 +16,15 @@ new_alternatives(step, ...)
 
   Unique identifier for this alternative (kebab-case).
 
-- action:
+- fork:
 
-  The goal of the step (should match the original).
+  The decision point or goal of the step (should match the original).
 
-- decision:
+- path:
 
   The new method/implementation.
 
-- justification:
+- rationale:
 
   Why this method is valid.
 
@@ -41,9 +41,9 @@ new_alternatives(step, ...)
 ``` r
 example_alternatives(case = "football")
 #> # Alternatives: step-logistic-model
-#>   id                                action                decision justification
-#>   <chr>                             <chr>                 <chr>    <chr>        
-#> 1 step-mixed-effects-logistic-model estimate the effect … fit a g… mixed-effect…
-#> 2 step-probit-regression-model      estimate the effect … fit a p… probit model…
-#> 3 step-bayesian-logistic-model      estimate the effect … fit a B… the Bayesian…
+#>   id                                fork                         path  rationale
+#>   <chr>                             <chr>                        <chr> <chr>    
+#> 1 step-mixed-effects-logistic-model estimate the effect size of… fit … mixed-ef…
+#> 2 step-probit-regression-model      estimate the effect size of… fit … probit m…
+#> 3 step-bayesian-logistic-model      estimate the effect size of… fit … the Baye…
 ```
