@@ -50,7 +50,7 @@ expand_tines(base_schema, alts)
 # read the alternatives from a YML file
 tmp_file <- tempfile(fileext = ".yml")
 write_alternatives(alts, tmp_file)
-#> ✔ Successfully wrote alternatives to /tmp/RtmpOlpIRo/file19da3ef8bb8d.yml
+#> ✔ Successfully wrote alternatives to /tmp/RtmpmzAu6G/file1afb5dc4a354.yml
 expand_tines(base_schema, tmp_file)
 #> A multiverse with 4 schemas:
 #>   original: (3 steps)
