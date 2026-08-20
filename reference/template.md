@@ -51,10 +51,13 @@ if (FALSE) { # \dontrun{
 draft_tines(type = "schema", file_path = "schema_template.yml")
 
 # Draft alternatives from a schema object
-draft_alternatives(x = my_schema, id = "data-cleaning", file_path = "alternative_template.yml")
+draft_alternatives(
+  x = my_schema,
+  id = "data-cleaning",
+  file_path = "alternative_template.yml"
+)
 
 # Draft alternatives from a schema file
 draft_alternatives(x = "path/to/schema.yml", id = "data-cleaning")
 } # }
-
 ```

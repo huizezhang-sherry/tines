@@ -38,13 +38,13 @@ validate_script(
 
 - model:
 
-  The LLM to use, as a string in `"provider/model"` form (e.g.
-  `"anthropic/claude-opus-4-5"`, `"openai/gpt-5"`,
-  `"google_gemini/gemini-2.5-flash"`), passed to
+  The LLM to use, as a string in `'provider/model'` form (e.g.
+  `'anthropic/claude-opus-4-5'`, `'openai/gpt-5'`,
+  `'google_gemini/gemini-2.5-flash'`), passed to
   [`ellmer::chat()`](https://ellmer.tidyverse.org/reference/chat-any.html).
   See [`chat`](https://ellmer.tidyverse.org/reference/chat-any.html) for
   the full list of supported providers. Default is
-  `"anthropic/claude-opus-4-5"`.
+  `'anthropic/claude-opus-4-5'`.
 
 - verbose:
 
@@ -53,11 +53,11 @@ validate_script(
 - as_job:
 
   If `TRUE`, runs the process as a background job. If `FALSE` (default),
-  runs in the current R session. Only used when `engine = "callr"`.
+  runs in the current R session. Only used when `engine = 'callr'`.
 
 - engine:
 
-  One of `"callr"` (default) or `"docker"`. Controls the execution to be
+  One of `'callr'` (default) or `'docker'`. Controls the execution to be
   with `callr` in a temp directory sandbox (in session or as a
   background job), or within a Docker container.
 

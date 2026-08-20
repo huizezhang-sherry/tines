@@ -36,7 +36,7 @@
 - [`gen_code()`](gen_code.md) [`prompt_gen_code()`](gen_code.md) :
   Generate R code from a schema or multiverse
 - [`gen_composite_code()`](gen_composite_code.md) : Generate R code from
-  a composite schema assembled from multiple source schemas
+  a composite schema built from several source schemas
 - [`validate_script()`](validate_script.md) : Auto-Fix an R Script via
   Iterative LLM Debugging
 

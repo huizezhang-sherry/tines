@@ -52,8 +52,8 @@ garden of forking paths (`multiverse`).</p>
 <span><span class="fu">add_step</span><span class="op">(</span></span>
 <span>  <span class="va">object</span>,</span>
 <span>  <span class="va">id</span>,</span>
-<span>  fork <span class="op">=</span> <span class="st">""</span>,</span>
-<span>  path <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  objective <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  decision <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  rationale <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  inputs <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  outputs <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -111,7 +111,8 @@ garden of forking paths (`multiverse`).</p>
 
 
 <dt id="arg-nodes">nodes<a class="anchor" aria-label="anchor" href="#arg-nodes"></a></dt>
-<dd><p>A data frame (typically a `tibble`) defining the steps of the schema.</p></dd>
+<dd><p>A data frame (typically a `tibble`) defining the steps of the
+schema.</p></dd>
 
 
 <dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
@@ -126,8 +127,9 @@ garden of forking paths (`multiverse`).</p>
 <dd><p>A `schema` object.</p></dd>
 
 
-<dt id="arg-id-fork-path-rationale-inputs-outputs-source-schema">id, fork, path, rationale, inputs, outputs, source_schema<a class="anchor" aria-label="anchor" href="#arg-id-fork-path-rationale-inputs-outputs-source-schema"></a></dt>
-<dd><p>character strings to write a step</p></dd>
+<dt id="arg-id-objective-decision-rationale-inputs-outputs-source-schema">id, objective, decision, rationale, inputs, outputs, source_schema<a class="anchor" aria-label="anchor" href="#arg-id-objective-decision-rationale-inputs-outputs-source-schema"></a></dt>
+<dd><p>character
+strings to write a step</p></dd>
 
 
 <dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
@@ -135,11 +137,13 @@ garden of forking paths (`multiverse`).</p>
 
 
 <dt id="arg-row-names">row.names<a class="anchor" aria-label="anchor" href="#arg-row-names"></a></dt>
-<dd><p>NULL or a character vector giving the row names for the data frame.</p></dd>
+<dd><p>NULL or a character vector giving the row names for the
+data frame.</p></dd>
 
 
 <dt id="arg-optional">optional<a class="anchor" aria-label="anchor" href="#arg-optional"></a></dt>
-<dd><p>logical. If TRUE, setting row names and converting column names is optional.</p></dd>
+<dd><p>logical. If TRUE, setting row names and converting column
+names is optional.</p></dd>
 
 
 <dt id="arg-width">width<a class="anchor" aria-label="anchor" href="#arg-width"></a></dt>
@@ -147,58 +151,72 @@ garden of forking paths (`multiverse`).</p>
 
 
 <dt id="arg-schema-schemas">schema, schemas<a class="anchor" aria-label="anchor" href="#arg-schema-schemas"></a></dt>
-<dd><p>A single list containing objects of class `schema`. Defaults to an empty list.</p></dd>
+<dd><p>A single list containing objects of class `schema`.
+Defaults to an empty list.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>* `build_schema()` and `new_schema()` return an object of class `schema`.
-* `build_multiverse()` and `new_multiverse()` return an object of class `c("multiverse", "list")`.</p>
+* `build_multiverse()` and `new_multiverse()` return an object of class
+  `c("multiverse", "list")`.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">schema</span> <span class="op">&lt;-</span> <span class="fu">build_schema</span><span class="op">(</span><span class="st">"HDI Example"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="co"># 1. The Scaling step</span></span></span>
-<span class="r-in"><span>  <span class="fu">add_step</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"step-scaling"</span>,</span></span>
-<span class="r-in"><span>            fork <span class="op">=</span> <span class="st">"variables are in different scales"</span>,</span></span>
-<span class="r-in"><span>            path <span class="op">=</span> <span class="st">"apply min-max scaling to each variable"</span>,</span></span>
-<span class="r-in"><span>            rationale <span class="op">=</span> <span class="st">"to put them on the same scale for combination"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">add_step</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    id <span class="op">=</span> <span class="st">"step-scaling"</span>,</span></span>
+<span class="r-in"><span>    objective <span class="op">=</span> <span class="st">"variables are in different scales"</span>,</span></span>
+<span class="r-in"><span>    decision <span class="op">=</span> <span class="st">"apply min-max scaling to each variable"</span>,</span></span>
+<span class="r-in"><span>    rationale <span class="op">=</span> <span class="st">"to put them on the same scale for combination"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="co"># 2. The Education step</span></span></span>
-<span class="r-in"><span>  <span class="fu">add_step</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"step-education"</span>,</span></span>
-<span class="r-in"><span>            fork <span class="op">=</span> <span class="st">"combine the school variables into one dimension"</span>,</span></span>
-<span class="r-in"><span>            path <span class="op">=</span> <span class="st">"average exp sch and avg sch"</span>,</span></span>
-<span class="r-in"><span>            rationale <span class="op">=</span> <span class="st">"the most intuitive way"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">add_step</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    id <span class="op">=</span> <span class="st">"step-education"</span>,</span></span>
+<span class="r-in"><span>    objective <span class="op">=</span> <span class="st">"combine the school variables into one dimension"</span>,</span></span>
+<span class="r-in"><span>    decision <span class="op">=</span> <span class="st">"average exp sch and avg sch"</span>,</span></span>
+<span class="r-in"><span>    rationale <span class="op">=</span> <span class="st">"the most intuitive way"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="co"># 3. The Combine step</span></span></span>
-<span class="r-in"><span>  <span class="fu">add_step</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"step-combine"</span>,</span></span>
-<span class="r-in"><span>            fork <span class="op">=</span> <span class="st">"combine the three dimensions into a single index"</span>,</span></span>
-<span class="r-in"><span>            path <span class="op">=</span> <span class="st">"use the geometric mean"</span>,</span></span>
-<span class="r-in"><span>            rationale <span class="op">=</span> <span class="st">"the geometric mean is more appropriate than arithmetic mean"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">add_step</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    id <span class="op">=</span> <span class="st">"step-combine"</span>,</span></span>
+<span class="r-in"><span>    objective <span class="op">=</span> <span class="st">"combine the three dimensions into a single index"</span>,</span></span>
+<span class="r-in"><span>    decision <span class="op">=</span> <span class="st">"use the geometric mean"</span>,</span></span>
+<span class="r-in"><span>    rationale <span class="op">=</span> <span class="st">"the geometric mean is more appropriate than arithmetic mean"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">schema</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A schema: HDI Example</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   id             fork               path  rationale inputs outputs source_schema</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> step-scaling   variables are in … appl… to put t… <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> step-education combine the schoo… aver… the most… <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> step-combine   combine the three… use … the geom… <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   id             objective       decision rationale inputs outputs source_schema</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> step-scaling   variables are … apply m… to put t… <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> step-education combine the sc… average… the most… <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> step-combine   combine the th… use the… the geom… <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>   <span style="color: #BB0000;">NA</span>           </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">schema2</span> <span class="op">&lt;-</span> <span class="fu">build_schema</span><span class="op">(</span><span class="st">"HDI Example"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="co"># 1. The Education Step</span></span></span>
-<span class="r-in"><span>  <span class="fu">add_step</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"step-education"</span>,</span></span>
-<span class="r-in"><span>            fork <span class="op">=</span> <span class="st">"combine the school variables into one dimension"</span>,</span></span>
-<span class="r-in"><span>            path <span class="op">=</span> <span class="st">"average exp sch and avg sch"</span>,</span></span>
-<span class="r-in"><span>            rationale <span class="op">=</span> <span class="st">"the most intuitive way"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">add_step</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    id <span class="op">=</span> <span class="st">"step-education"</span>,</span></span>
+<span class="r-in"><span>    objective <span class="op">=</span> <span class="st">"combine the school variables into one dimension"</span>,</span></span>
+<span class="r-in"><span>    decision <span class="op">=</span> <span class="st">"average exp sch and avg sch"</span>,</span></span>
+<span class="r-in"><span>    rationale <span class="op">=</span> <span class="st">"the most intuitive way"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="co"># 2. The Scaling Step</span></span></span>
-<span class="r-in"><span>  <span class="fu">add_step</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"step-scaling"</span>,</span></span>
-<span class="r-in"><span>            fork <span class="op">=</span> <span class="st">"variables are in different scales"</span>,</span></span>
-<span class="r-in"><span>            path <span class="op">=</span> <span class="st">"apply min-max scaling to each variable"</span>,</span></span>
-<span class="r-in"><span>            rationale <span class="op">=</span> <span class="st">"to put them on the same scale for combination"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">add_step</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    id <span class="op">=</span> <span class="st">"step-scaling"</span>,</span></span>
+<span class="r-in"><span>    objective <span class="op">=</span> <span class="st">"variables are in different scales"</span>,</span></span>
+<span class="r-in"><span>    decision <span class="op">=</span> <span class="st">"apply min-max scaling to each variable"</span>,</span></span>
+<span class="r-in"><span>    rationale <span class="op">=</span> <span class="st">"to put them on the same scale for combination"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="co"># 3. The Combine Step</span></span></span>
-<span class="r-in"><span>  <span class="fu">add_step</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"step-combine"</span>,</span></span>
-<span class="r-in"><span>            fork <span class="op">=</span> <span class="st">"combine the three dimensions into a single index"</span>,</span></span>
-<span class="r-in"><span>            path <span class="op">=</span> <span class="st">"use the geometric mean"</span>,</span></span>
-<span class="r-in"><span>            rationale <span class="op">=</span> <span class="st">"the geometric mean is more appropriate than arithmetic mean"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">add_step</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    id <span class="op">=</span> <span class="st">"step-combine"</span>,</span></span>
+<span class="r-in"><span>    objective <span class="op">=</span> <span class="st">"combine the three dimensions into a single index"</span>,</span></span>
+<span class="r-in"><span>    decision <span class="op">=</span> <span class="st">"use the geometric mean"</span>,</span></span>
+<span class="r-in"><span>    rationale <span class="op">=</span> <span class="st">"the geometric mean is more appropriate than arithmetic mean"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">my_multiverse</span> <span class="op">&lt;-</span> <span class="fu">build_multiverse</span><span class="op">(</span>original <span class="op">=</span> <span class="va">schema</span>, reversed <span class="op">=</span> <span class="va">schema2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">my_multiverse</span></span></span>

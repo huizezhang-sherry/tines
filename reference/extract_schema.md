@@ -60,18 +60,25 @@ The file path to the generated YAML file (invisibly).
 
 ``` r
 text <- football_grp20
-data_dict <- c("playerShort", "player", "club", "leagueCountry", "birthday", "height",
-               "weight", "position", "games", "victories", "ties", "defeats",
-               "goals", "yellowCards", "yellowReds", "redCards", "photoID", "rater1",
-               "rater2", "refNum", "refCountry", "Alpha_3", "meanIAT", "nIAT",
-               "seIAT", "meanExp", "nExp", "seExp")
+data_dict <- c(
+  "playerShort", "player", "club", "leagueCountry", "birthday", "height",
+  "weight", "position", "games", "victories", "ties", "defeats",
+  "goals", "yellowCards", "yellowReds", "redCards", "photoID", "rater1",
+  "rater2", "refNum", "refCountry", "Alpha_3", "meanIAT", "nIAT",
+  "seIAT", "meanExp", "nExp", "seExp"
+)
 
 if (FALSE) { # \dontrun{
 extract_schema(text, data_dict, output_file = "draft_schema.yml")
 } # }
 
-# The prompt generation function can be used directly to see the full prompt sent to the LLM
-prompt_extract_schema(data_dict = paste0(data_dict, collapse = ", "), text = text, print = TRUE)
+# The prompt generation function can be used directly to see the full
+# prompt sent to the LLM
+prompt_extract_schema(
+  data_dict = paste0(data_dict, collapse = ", "),
+  text = text,
+  print = TRUE
+)
 #> You are an expert methodologist and data pipeline architect. I will
 #> provide a text describing a multiverse analysis and a summary of the
 #> actual dataset being used.
@@ -88,15 +95,15 @@ prompt_extract_schema(data_dict = paste0(data_dict, collapse = ", "), text = tex
 #> 
 #> - 'id': A unique snake_case identifier.
 #> 
-#> - 'fork': MUST be framed as an open methodological goal that invites
-#> multiple possible approaches. It must NOT describe the final choice.
+#> - 'objective': MUST be framed as an open methodological goal that
+#> invites multiple possible approaches. It must NOT describe the final
+#> choice.
 #> 
-#> - 'path': A 'path' is strictly a POSITIVE methodological decision
-#> that has potential theoretical alternatives, chosen to resolve the
-#> 'fork'.
+#> - 'decision': A 'decision' is strictly a POSITIVE methodological
+#> choice that has potential theoretical alternatives, chosen to resolve
+#> the 'objective'.
 #> 
-#> - 'rationale': WHY that decision (the path) was made, extracted from
-#> the text.
+#> - 'rationale': WHY that decision was made, extracted from the text.
 #> 
 #> 2. DATA MAPPING: Assign 'inputs' (EXACT column names from the dataset
 #> OR outputs from previous nodes) and 'outputs' (invented snake_case
@@ -119,12 +126,12 @@ prompt_extract_schema(data_dict = paste0(data_dict, collapse = ", "), text = tex
 #> 
 #> === REQUIRED YAML STRUCTURE EXAMPLE ===
 #> 
-#> meta: type: schema nodes: - fork: variables are in different scales
-#> path: apply min-max scaling to each variable justification: to put
-#> them on the same scale for combination id: step-scaling confidence:
-#> high - fork: combine the school variables into one dimension path:
-#> average exp sch and avg sch justification: the most intuitive way id:
-#> step-education confidence: low
+#> meta: type: schema nodes: - objective: variables are in different
+#> scales decision: apply min-max scaling to each variable rationale: to
+#> put them on the same scale for combination id: step-scaling
+#> confidence: high - objective: combine the school variables into one
+#> dimension decision: average exp sch and avg sch rationale: the most
+#> intuitive way id: step-education confidence: low
 #> 
 #> === DATASET SUMMARY ===
 #> 

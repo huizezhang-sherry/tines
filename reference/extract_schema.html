@@ -93,7 +93,8 @@ with at least a `name` column and an optional `description` column.</p></dd>
 
 
 <dt id="arg-width">width<a class="anchor" aria-label="anchor" href="#arg-width"></a></dt>
-<dd><p>If `print = TRUE`, the width to wrap the printed prompt (default 70).</p></dd>
+<dd><p>If `print = TRUE`, the width to wrap the printed prompt
+(default 70).</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -104,18 +105,25 @@ with at least a `name` column and an optional `description` column.</p></dd>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">text</span> <span class="op">&lt;-</span> <span class="va">football_grp20</span></span></span>
-<span class="r-in"><span><span class="va">data_dict</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"playerShort"</span>, <span class="st">"player"</span>, <span class="st">"club"</span>, <span class="st">"leagueCountry"</span>, <span class="st">"birthday"</span>, <span class="st">"height"</span>,</span></span>
-<span class="r-in"><span>               <span class="st">"weight"</span>, <span class="st">"position"</span>, <span class="st">"games"</span>, <span class="st">"victories"</span>, <span class="st">"ties"</span>, <span class="st">"defeats"</span>,</span></span>
-<span class="r-in"><span>               <span class="st">"goals"</span>, <span class="st">"yellowCards"</span>, <span class="st">"yellowReds"</span>, <span class="st">"redCards"</span>, <span class="st">"photoID"</span>, <span class="st">"rater1"</span>,</span></span>
-<span class="r-in"><span>               <span class="st">"rater2"</span>, <span class="st">"refNum"</span>, <span class="st">"refCountry"</span>, <span class="st">"Alpha_3"</span>, <span class="st">"meanIAT"</span>, <span class="st">"nIAT"</span>,</span></span>
-<span class="r-in"><span>               <span class="st">"seIAT"</span>, <span class="st">"meanExp"</span>, <span class="st">"nExp"</span>, <span class="st">"seExp"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data_dict</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="st">"playerShort"</span>, <span class="st">"player"</span>, <span class="st">"club"</span>, <span class="st">"leagueCountry"</span>, <span class="st">"birthday"</span>, <span class="st">"height"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"weight"</span>, <span class="st">"position"</span>, <span class="st">"games"</span>, <span class="st">"victories"</span>, <span class="st">"ties"</span>, <span class="st">"defeats"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"goals"</span>, <span class="st">"yellowCards"</span>, <span class="st">"yellowReds"</span>, <span class="st">"redCards"</span>, <span class="st">"photoID"</span>, <span class="st">"rater1"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"rater2"</span>, <span class="st">"refNum"</span>, <span class="st">"refCountry"</span>, <span class="st">"Alpha_3"</span>, <span class="st">"meanIAT"</span>, <span class="st">"nIAT"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"seIAT"</span>, <span class="st">"meanExp"</span>, <span class="st">"nExp"</span>, <span class="st">"seExp"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="fu">extract_schema</span><span class="op">(</span><span class="va">text</span>, <span class="va">data_dict</span>, output_file <span class="op">=</span> <span class="st">"draft_schema.yml"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># The prompt generation function can be used directly to see the full prompt sent to the LLM</span></span></span>
-<span class="r-in"><span><span class="fu">prompt_extract_schema</span><span class="op">(</span>data_dict <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">data_dict</span>, collapse <span class="op">=</span> <span class="st">", "</span><span class="op">)</span>, text <span class="op">=</span> <span class="va">text</span>, print <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># The prompt generation function can be used directly to see the full</span></span></span>
+<span class="r-in"><span><span class="co"># prompt sent to the LLM</span></span></span>
+<span class="r-in"><span><span class="fu">prompt_extract_schema</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data_dict <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">data_dict</span>, collapse <span class="op">=</span> <span class="st">", "</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  text <span class="op">=</span> <span class="va">text</span>,</span></span>
+<span class="r-in"><span>  print <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> You are an expert methodologist and data pipeline architect. I will</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> provide a text describing a multiverse analysis and a summary of the</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> actual dataset being used.</span>
@@ -132,15 +140,15 @@ with at least a `name` column and an optional `description` column.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> - 'id': A unique snake_case identifier.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> - 'fork': MUST be framed as an open methodological goal that invites</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> multiple possible approaches. It must NOT describe the final choice.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - 'objective': MUST be framed as an open methodological goal that</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> invites multiple possible approaches. It must NOT describe the final</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> choice.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> - 'path': A 'path' is strictly a POSITIVE methodological decision</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> that has potential theoretical alternatives, chosen to resolve the</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 'fork'.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - 'decision': A 'decision' is strictly a POSITIVE methodological</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> choice that has potential theoretical alternatives, chosen to resolve</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> the 'objective'.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> - 'rationale': WHY that decision (the path) was made, extracted from</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> the text.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - 'rationale': WHY that decision was made, extracted from the text.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2. DATA MAPPING: Assign 'inputs' (EXACT column names from the dataset</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> OR outputs from previous nodes) and 'outputs' (invented snake_case</span>
@@ -163,12 +171,12 @@ with at least a `name` column and an optional `description` column.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> === REQUIRED YAML STRUCTURE EXAMPLE ===</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> meta: type: schema nodes: - fork: variables are in different scales</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> path: apply min-max scaling to each variable justification: to put</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> them on the same scale for combination id: step-scaling confidence:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> high - fork: combine the school variables into one dimension path:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> average exp sch and avg sch justification: the most intuitive way id:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> step-education confidence: low</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> meta: type: schema nodes: - objective: variables are in different</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> scales decision: apply min-max scaling to each variable rationale: to</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> put them on the same scale for combination id: step-scaling</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> confidence: high - objective: combine the school variables into one</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> dimension decision: average exp sch and avg sch rationale: the most</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> intuitive way id: step-education confidence: low</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> === DATASET SUMMARY ===</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>

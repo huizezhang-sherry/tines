@@ -46,25 +46,25 @@ example_football_grp20()
 # Generate a single example schema
 example_schema()
 #> # A schema: HDI Example
-#>   id             fork               path  rationale inputs outputs source_schema
-#>   <chr>          <chr>              <chr> <chr>     <list> <list>  <lgl>        
-#> 1 step-scaling   variables are in … appl… to put t… <lgl>  <lgl>   NA           
-#> 2 step-education combine the schoo… aver… the most… <lgl>  <lgl>   NA           
-#> 3 step-combine   combine the three… use … the geom… <lgl>  <lgl>   NA           
+#>   id             objective       decision rationale inputs outputs source_schema
+#>   <chr>          <chr>           <chr>    <chr>     <list> <list>  <lgl>        
+#> 1 step-scaling   variables are … apply m… to put t… <lgl>  <lgl>   NA           
+#> 2 step-education combine the sc… average… the most… <lgl>  <lgl>   NA           
+#> 3 step-combine   combine the th… use the… the geom… <lgl>  <lgl>   NA           
 example_multiverse()
 #> A multiverse with 2 schemas:
 #>   original: "HDI Example" (3 steps)
 #>   reversed: "HDI Example" (3 steps)
 example_football()
 #> # A schema: 3 x 7
-#>   id                          fork  path  rationale inputs outputs source_schema
-#>   <chr>                       <chr> <chr> <chr>     <list> <list>  <lgl>        
-#> 1 step-average-rater          defi… aver… incorpor… <lgl>  <lgl>   NA           
-#> 2 step-victory-tie-defeat-ra… cont… vict… ratios a… <lgl>  <lgl>   NA           
-#> 3 step-logistic-model         esti… fit … to answe… <lgl>  <lgl>   NA           
+#>   id                   objective decision rationale inputs outputs source_schema
+#>   <chr>                <chr>     <chr>    <chr>     <list> <list>  <lgl>        
+#> 1 step-average-rater   define t… average… incorpor… <lgl>  <lgl>   NA           
+#> 2 step-victory-tie-de… control … victory… ratios a… <lgl>  <lgl>   NA           
+#> 3 step-logistic-model  estimate… fit a l… to answe… <lgl>  <lgl>   NA           
 example_alternatives(case = "hdi")
 #> # Alternatives: step-combine
-#>   id                   fork                                      path  rationale
-#>   <chr>                <chr>                                     <chr> <chr>    
-#> 1 step-arithmetic-mean combine the three dimensions into a sing… use … the old …
+#>   id                   objective                              decision rationale
+#>   <chr>                <chr>                                  <chr>    <chr>    
+#> 1 step-arithmetic-mean combine the three dimensions into a s… use a a… the old …
 ```

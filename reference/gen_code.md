@@ -115,7 +115,8 @@ schema |>
   gen_code(output = "scripts/")
 } # }
 
-# The prompt generation function can be used directly to see the full prompt sent to the LLM
+# The prompt generation function can be used directly to see the full
+# prompt sent to the LLM
 prompt_gen_code(data = "inst/football.csv")
 #> You are an expert R programmer. Attached is a text document
 #> containing a SCHEMA that defines a data processing pipeline.

@@ -95,11 +95,13 @@
 
 
 <dt id="arg-base-code">base_code<a class="anchor" aria-label="anchor" href="#arg-base-code"></a></dt>
-<dd><p>Optional. File path to an R script to use as style reference.</p></dd>
+<dd><p>Optional. File path to an R script to use as style
+reference.</p></dd>
 
 
 <dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>Optional. Data source specification (file path or "package::dataset").</p></dd>
+<dd><p>Optional. Data source specification (file path or
+"package::dataset").</p></dd>
 
 
 <dt id="arg-output">output<a class="anchor" aria-label="anchor" href="#arg-output"></a></dt>
@@ -124,11 +126,13 @@ providers. Defaults to `"anthropic/claude-opus-4-5"`.</p></dd>
 
 
 <dt id="arg-print">print<a class="anchor" aria-label="anchor" href="#arg-print"></a></dt>
-<dd><p>If `TRUE`, prints the prompt to console instead of returning it.</p></dd>
+<dd><p>If `TRUE`, prints the prompt to console instead of returning
+it.</p></dd>
 
 
 <dt id="arg-width">width<a class="anchor" aria-label="anchor" href="#arg-width"></a></dt>
-<dd><p>If `print = TRUE`, the width to wrap the printed prompt (default 70).</p></dd>
+<dd><p>If `print = TRUE`, the width to wrap the printed prompt
+(default 70).</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -149,7 +153,8 @@ providers. Defaults to `"anthropic/claude-opus-4-5"`.</p></dd>
 <span class="r-in"><span>  <span class="fu">gen_code</span><span class="op">(</span>output <span class="op">=</span> <span class="st">"scripts/"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># The prompt generation function can be used directly to see the full prompt sent to the LLM</span></span></span>
+<span class="r-in"><span><span class="co"># The prompt generation function can be used directly to see the full</span></span></span>
+<span class="r-in"><span><span class="co"># prompt sent to the LLM</span></span></span>
 <span class="r-in"><span><span class="fu">prompt_gen_code</span><span class="op">(</span>data <span class="op">=</span> <span class="st">"inst/football.csv"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> You are an expert R programmer. Attached is a text document</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> containing a SCHEMA that defines a data processing pipeline.</span>

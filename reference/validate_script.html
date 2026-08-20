@@ -74,11 +74,11 @@ the sandbox at <code>data/&lt;basename&gt;</code>.</p></dd>
 
 
 <dt id="arg-model">model<a class="anchor" aria-label="anchor" href="#arg-model"></a></dt>
-<dd><p>The LLM to use, as a string in <code>"provider/model"</code> form
-(e.g. <code>"anthropic/claude-opus-4-5"</code>, <code>"openai/gpt-5"</code>,
-<code>"google_gemini/gemini-2.5-flash"</code>), passed to <code><a href="https://ellmer.tidyverse.org/reference/chat-any.html" class="external-link">ellmer::chat()</a></code>.
+<dd><p>The LLM to use, as a string in <code>'provider/model'</code> form
+(e.g. <code>'anthropic/claude-opus-4-5'</code>, <code>'openai/gpt-5'</code>,
+<code>'google_gemini/gemini-2.5-flash'</code>), passed to <code><a href="https://ellmer.tidyverse.org/reference/chat-any.html" class="external-link">ellmer::chat()</a></code>.
 See <code><a href="https://ellmer.tidyverse.org/reference/chat-any.html" class="external-link">chat</a></code> for the full list of supported providers.
-Default is <code>"anthropic/claude-opus-4-5"</code>.</p></dd>
+Default is <code>'anthropic/claude-opus-4-5'</code>.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
@@ -87,12 +87,14 @@ Default is <code>"anthropic/claude-opus-4-5"</code>.</p></dd>
 
 <dt id="arg-as-job">as_job<a class="anchor" aria-label="anchor" href="#arg-as-job"></a></dt>
 <dd><p>If <code>TRUE</code>, runs the process as a background job. If
-<code>FALSE</code> (default), runs in the current R session. Only used when <code>engine = "callr"</code>.</p></dd>
+<code>FALSE</code> (default), runs in the current R session. Only used when
+<code>engine = 'callr'</code>.</p></dd>
 
 
 <dt id="arg-engine">engine<a class="anchor" aria-label="anchor" href="#arg-engine"></a></dt>
-<dd><p>One of <code>"callr"</code> (default) or <code>"docker"</code>. Controls
-the execution to be with <code>callr</code> in a temp directory sandbox (in session or as a background job),
+<dd><p>One of <code>'callr'</code> (default) or <code>'docker'</code>. Controls
+the execution to be with <code>callr</code> in a temp directory sandbox (in
+session or as a background job),
 or within a Docker container.</p></dd>
 
 

@@ -126,11 +126,14 @@ on the \`model\` chosen) for this to work.
 hdi <- example_schema()
 
 if (FALSE) { # \dontrun{
-gen_alternatives(hdi, step = "step-combine", n = 1,
-                file_path = here::here("inst/hdi-alt.yml"))
+gen_alternatives(hdi,
+  step = "step-combine", n = 1,
+  file_path = here::here("inst/hdi-alt.yml")
+)
 } # }
 
-# The prompt generation function can be used directly to see the full prompt sent to the LLM
+# The prompt generation function can be used directly to see the full
+# prompt sent to the LLM
 prompt_alternatives(schema = hdi, step = "step-combine", print = TRUE)
 #> You are an expert Data Analyst and Methodologist. You are reviewing
 #> an analysis schema to identify "Forking Paths" -- alternative
@@ -141,11 +144,11 @@ prompt_alternatives(schema = hdi, step = "step-combine", print = TRUE)
 #> 
 #> The schema provided to you consists of steps with:
 #> 
-#> - **ACTION**: The goal of the step (What needs to be done).
+#> - **OBJECTIVE**: The goal of the step (What needs to be done).
 #> 
 #> - **DECISION**: The specific implementation chosen (How it is done).
 #> 
-#> - **JUSTIFICATION**: The reasoning behind that decision.
+#> - **RATIONALE**: The reasoning behind that decision.
 #> 
 #> - **ID**: The unique identifier for the step (kebab-case).
 #> 
@@ -154,13 +157,13 @@ prompt_alternatives(schema = hdi, step = "step-combine", print = TRUE)
 #> Focus specifically on the step tagged: "step-combine". Your goal is
 #> to generate 3 distinct, valid alternatives for this step.
 #> 
-#> For each alternative: 1. **Keep the same ACTION** (the goal remains
-#> constant).
+#> For each alternative: 1. **Keep the same OBJECTIVE** (the goal
+#> remains constant).
 #> 
 #> 2. **Change the DECISION** to a different but methodologically sound
 #> approach.
 #> 
-#> 3. **Provide a new JUSTIFICATION** explaining why this alternative is
+#> 3. **Provide a new RATIONALE** explaining why this alternative is
 #> valid.
 #> 
 #> 4. **Create a new ID** that reflects the new decision (must be
@@ -175,10 +178,10 @@ prompt_alternatives(schema = hdi, step = "step-combine", print = TRUE)
 #> 1. Include a `meta` section at the top with `type: alternative` and
 #> the `step`.
 #> 
-#> 2. Output strictly valid YML. All text values (decision,
-#> justification) must be enclosed in double quotes ("). Do not use
-#> block styles (| or >). Do not wrap lines or insert \n characters
-#> within the quotes; keep the text as a single continuous string.
+#> 2. Output strictly valid YML. All text values (decision, rationale)
+#> must be enclosed in double quotes ("). Do not use block styles (| or
+#> >). Do not wrap lines or insert \n characters within the quotes; keep
+#> the text as a single continuous string.
 #> 
 #> 3. Do not include markdown code fences (like ```yml) or
 #> conversational text. Just the raw YML.
@@ -186,19 +189,19 @@ prompt_alternatives(schema = hdi, step = "step-combine", print = TRUE)
 #> === REQUIRED YML STRUCTURE EXAMPLE ===
 #> 
 #> meta: type: tines_alternative step: step-combine alternatives: - id:
-#> step-new-method-name action: Repeat the original action decision:
-#> "Description of the new decision..."  justification: "This is the
-#> reasoning for why this alternative is valid."  - id:
+#> step-new-method-name objective: Repeat the original objective
+#> decision: "Description of the new decision..."  rationale: "This is
+#> the reasoning for why this alternative is valid."  - id:
 #> step-another-method ...
 #> 
 #> === CURRENT SCHEMA ===
 #> 
-#> id: - step-scaling - step-education - step-combine fork: - variables
-#> are in different scales - combine the school variables into one
-#> dimension - combine the three dimensions into a single index path: -
-#> apply min-max scaling to each variable - average exp sch and avg sch
-#> - use the geometric mean rationale: - to put them on the same scale
-#> for combination - the most intuitive way - the geometric mean is more
-#> appropriate than arithmetic mean inputs: - .na - .na - .na outputs: -
-#> .na - .na - .na source_schema: - .na - .na - .na
+#> id: - step-scaling - step-education - step-combine objective: -
+#> variables are in different scales - combine the school variables into
+#> one dimension - combine the three dimensions into a single index
+#> decision: - apply min-max scaling to each variable - average exp sch
+#> and avg sch - use the geometric mean rationale: - to put them on the
+#> same scale for combination - the most intuitive way - the geometric
+#> mean is more appropriate than arithmetic mean inputs: - .na - .na -
+#> .na outputs: - .na - .na - .na source_schema: - .na - .na - .na
 ```
