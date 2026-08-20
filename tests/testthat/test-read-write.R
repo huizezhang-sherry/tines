@@ -1,5 +1,4 @@
 test_that("read and write", {
-
   # Helper function to scrub dynamic dates from files before snapshotting
   scrub_date_for_snapshot <- function(file_path) {
     lines <- readLines(file_path)
@@ -32,5 +31,4 @@ test_that("read and write", {
 
   expect_snapshot_file(temp_path, name = "multiverse.yaml")
   expect_snapshot(multiverse_read)
-
 })

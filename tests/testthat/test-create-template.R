@@ -10,7 +10,6 @@ scrub_date_for_snapshot <- function(file_path) {
 }
 
 test_that("draft_tines generates correct schema YAML", {
-
   # schema
   tmp <- withr::local_tempfile(fileext = ".yaml")
   draft_tines(type = "schema", file_path = tmp)
@@ -25,11 +24,9 @@ test_that("draft_tines generates correct schema YAML", {
 })
 
 test_that("draft_alternatives generates correct alternatives YAML", {
-
   tmp <- withr::local_tempfile(fileext = ".yaml")
   draft_alternatives(
     x = example_schema(), id = "step-scaling", file_path = tmp
   )
   expect_snapshot_file(tmp, "alternatives_template.yaml")
 })
-

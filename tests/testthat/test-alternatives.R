@@ -18,14 +18,15 @@ test_that("alternative() constructs a valid list and catches missing arguments",
     rationale = "test rationale"
   )
   expect_snapshot(an_alternative)
-  expect_snapshot_error({alternative(id = "test-tag")})
+  expect_snapshot_error({
+    alternative(id = "test-tag")
+  })
 
-  alt_obj <-  new_alternatives(
+  alt_obj <- new_alternatives(
     "block-target",
     alternative("tag1", "fork1", "path1", "rationale1")
   )
   expect_snapshot(alt_obj)
-
 })
 
 
@@ -35,5 +36,7 @@ test_that("read and write with an alternative yaml", {
   write_alternatives(example_alternatives(case = "football"), tmp_file)
   tmp_file <- scrub_date_for_snapshot(tmp_file)
   expect_snapshot_file(tmp_file, name = "alternatives.yaml")
-  expect_snapshot({read_alternatives(tmp_file)})
+  expect_snapshot({
+    read_alternatives(tmp_file)
+  })
 })

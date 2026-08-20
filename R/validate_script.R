@@ -8,17 +8,17 @@
 #' @param data Optional path to a CSV data file to make available inside
 #'   the sandbox at \code{data/<basename>}.
 #' @param max_runs Maximum number of LLM fix attempts. Default is \code{5}.
-#' @param model The LLM to use, as a string in \code{"provider/model"} form
-#'   (e.g. \code{"anthropic/claude-opus-4-5"}, \code{"openai/gpt-5"},
-#'   \code{"google_gemini/gemini-2.5-flash"}), passed to \code{ellmer::chat()}.
+#' @param model The LLM to use, as a string in \code{'provider/model'} form
+#'   (e.g. \code{'anthropic/claude-opus-4-5'}, \code{'openai/gpt-5'},
+#'   \code{'google_gemini/gemini-2.5-flash'}), passed to \code{ellmer::chat()}.
 #'   See \code{\link[ellmer]{chat}} for the full list of supported providers.
-#'   Default is \code{"anthropic/claude-opus-4-5"}.
+#'   Default is \code{'anthropic/claude-opus-4-5'}.
 #' @param verbose If \code{TRUE}, saves a copy of the script at each iteration.
 #' @param as_job If \code{TRUE}, runs the process as a background job. If
-#'   \code{FALSE} (default), runs in the current R session. Only used when \code{engine = "callr"}.
-#' @param engine One of \code{"callr"} (default) or \code{"docker"}. Controls
+#'   \code{FALSE} (default), runs in the current R session. Only used when \code{engine = 'callr'}.
+#' @param engine One of \code{'callr'} (default) or \code{'docker'}. Controls
 #'   the execution to be with \code{callr} in a temp directory sandbox (in session or as a background job),
-#'   or within a Docker container. 
+#'   or within a Docker container.
 #' @param scan_code If \code{TRUE} (default), scans the script for potentially
 #'   dangerous file system commands before execution.
 #'
@@ -37,49 +37,54 @@
 #' )
 #' }
 #'
-validate_script <- function(file, data = NULL, max_runs = 5,
-                            model = "anthropic/claude-opus-4-5", verbose = TRUE,
-                            as_job = FALSE, engine = c("callr", "docker"),
-                            scan_code = TRUE) {
+validate_script <- function(
+  file, data = NULL, max_runs = 5, model = "anthropic/claude-opus-4-5",
+  verbose = TRUE, as_job = FALSE, engine = c("callr", "docker"), scan_code = TRUE
+) {
   engine <- match.arg(engine)
 
   attempt <- 1
   success <- FALSE
   extracted_data <- NULL
-  
+
   sys_prompt <- build_sys_prompt(data)
   chat <- ellmer::chat(model)
 
   if (engine == "callr") {
     sandbox <- setup_sandbox(file, data)
-    on.exit({
-      unlink(sandbox$dir, recursive = TRUE)
-      cli::cli_inform("Sandbox destroyed.")
-    }, add = TRUE)
+    on.exit(
+      {
+        unlink(sandbox$dir, recursive = TRUE)
+        cli::cli_inform("Sandbox destroyed.")
+      },
+      add = TRUE
+    )
   }
 
   while (attempt <= max_runs && !success) {
-    cli::cli_inform(c(
-      "i" = "[Attempt {attempt} of {max_runs}] Running script in sandbox..."
-    ))
+    cli::cli_inform(c(i = "[Attempt {attempt} of {max_runs}] Running script in sandbox..."))
 
     if (engine == "docker") {
       # TODO: not tested
       res <- execute_in_docker(sandbox$script, sandbox$dir)
     } else {
-      if (verbose) save_verbose_iteration(sandbox$script, file, attempt)
-      if (scan_code) scan_file_system_commands(sandbox$script)
+      if (verbose) {
+        save_verbose_iteration(sandbox$script, file, attempt)
+      }
+      if (scan_code) {
+        scan_file_system_commands(sandbox$script)
+      }
       res <- execute_in_callr(sandbox$script, sandbox$dir, as_job = as_job)
     }
 
     if (res$ok) {
-      cli::cli_inform(c("v" = "Success! Script ran perfectly."))
+      cli::cli_inform(c(v = "Success! Script ran perfectly."))
       success <- TRUE
       extracted_data <- res$data
     } else {
-      cli::cli_inform(c("x" = "Execution Failed: {res$err_msg}"))
+      cli::cli_inform(c(x = "Execution Failed: {res$err_msg}"))
       if (attempt < max_runs) {
-        cli::cli_inform(c("i" = "Asking LLM to fix it..."))
+        cli::cli_inform(c(i = "Asking LLM to fix it..."))
         ask_llm_for_fix(chat, sys_prompt, sandbox$script, res)
       }
     }
@@ -99,8 +104,7 @@ build_sys_prompt <- function(data) {
   }
 
   paste0(
-    "You are an expert R developer and automated debugging agent. ",
-    data_context,
+    "You are an expert R developer and automated debugging agent. ", data_context,
     "Your purpose is to receive broken R scripts, diagnose the execution error,
     and return the corrected script.
 
@@ -127,8 +131,7 @@ setup_sandbox <- function(file_path, data) {
     if (file.exists(data)) {
       dir.create(file.path(sandbox_dir, "data"), recursive = TRUE, showWarnings = FALSE)
       file.copy(
-        from = data,
-        to = file.path(sandbox_dir, "data", basename(data)),
+        from = data, to = file.path(sandbox_dir, "data", basename(data)),
         overwrite = TRUE
       )
       cli::cli_inform("Transferred file {.file {data}} into the sandbox.")
@@ -146,56 +149,40 @@ setup_sandbox <- function(file_path, data) {
 execute_in_callr <- function(sandbox_script, sandbox_dir, as_job) {
   tryCatch(
     {
-      callr::r(
-        function(f) {
-          temp_env <- new.env()
+      callr::r(function(f) {
+        temp_env <- new.env()
 
-          exprs <- tryCatch(
-            parse(f),
+        exprs <- tryCatch(parse(f), error = function(e) {
+          list(ok = FALSE, data = NULL, err_msg = e$message, bad_line = "Syntax Error (Code could not be parsed)")
+        })
+
+        if (is.list(exprs) && identical(exprs$ok, FALSE)) {
+          return(exprs)
+        }
+
+        for (i in seq_along(exprs)) {
+          step_result <- tryCatch(
+            {
+              eval(exprs[[i]], envir = temp_env)
+              NULL
+            },
             error = function(e) {
-              list(
-                ok = FALSE,
-                data = NULL,
-                err_msg = e$message,
-                bad_line = "Syntax Error (Code could not be parsed)"
-              )
+              list(ok = FALSE, data = NULL, err_msg = e$message, bad_line = paste(deparse(exprs[[i]]),
+                collapse = "\n"
+              ))
             }
           )
-
-          if (is.list(exprs) && identical(exprs$ok, FALSE)) {
-            return(exprs)
+          if (!is.null(step_result)) {
+            return(step_result)
           }
+        }
 
-          for (i in seq_along(exprs)) {
-            step_result <- tryCatch(
-              {
-                eval(exprs[[i]], envir = temp_env)
-                NULL
-              },
-              error = function(e) {
-                list(
-                  ok = FALSE,
-                  data = NULL,
-                  err_msg = e$message,
-                  bad_line = paste(deparse(exprs[[i]]), collapse = "\n")
-                )
-              }
-            )
-            if (!is.null(step_result)) return(step_result)
-          }
-
-          list(ok = TRUE, data = as.list(temp_env), err_msg = NA, bad_line = NA)
-        },
-        args = list(f = sandbox_script),
-        wd = sandbox_dir,
-        show = FALSE
-      )
+        list(ok = TRUE, data = as.list(temp_env), err_msg = NA, bad_line = NA)
+      }, args = list(f = sandbox_script), wd = sandbox_dir, show = FALSE)
     },
     error = function(e) {
       list(
-        ok = FALSE,
-        data = NULL,
-        err_msg = paste("Sandbox Crash:", e$message),
+        ok = FALSE, data = NULL, err_msg = paste("Sandbox Crash:", e$message),
         bad_line = "System Level Crash"
       )
     }
@@ -204,21 +191,12 @@ execute_in_callr <- function(sandbox_script, sandbox_dir, as_job) {
 
 execute_in_docker <- function(sandbox_script, sandbox_dir) {
   args <- c(
-    "run",
-    "--rm",
-    "-v",
-    paste0(sandbox_dir, ":/workspace"),
-    "-w",
-    "/workspace",
-    "rocker/r-base",
-    "Rscript",
-    basename(sandbox_script)
+    "run", "--rm", "-v", paste0(sandbox_dir, ":/workspace"), "-w", "/workspace",
+    "rocker/r-base", "Rscript", basename(sandbox_script)
   )
 
   if (!requireNamespace("processx", quietly = TRUE)) {
-    cli::cli_abort(
-      "Package {.pkg processx} is required for Docker execution. Install it with {.code install.packages('processx')}."
-    )
+    cli::cli_abort("Package {.pkg processx} is required for Docker execution. Install it with {.code install.packages('processx')}.")
   }
 
 
@@ -227,32 +205,16 @@ execute_in_docker <- function(sandbox_script, sandbox_dir) {
   if (res$status == 0) {
     list(ok = TRUE, data = NULL, err_msg = NA, bad_line = NA)
   } else {
-    list(
-      ok = FALSE,
-      data = NULL,
-      err_msg = res$stderr,
-      bad_line = "Failed in Docker Container"
-    )
+    list(ok = FALSE, data = NULL, err_msg = res$stderr, bad_line = "Failed in Docker Container")
   }
 }
 
-ask_llm_for_fix <- function(
-  chat,
-  sys_prompt,
-  sandbox_script,
-  execution_result
-) {
-  current_code <- paste(
-    readLines(sandbox_script, warn = FALSE),
-    collapse = "\n"
-  )
+ask_llm_for_fix <- function(chat, sys_prompt, sandbox_script, execution_result) {
+  current_code <- paste(readLines(sandbox_script, warn = FALSE), collapse = "\n")
 
   prompt <- sprintf(
     "%s\n\n--- BROKEN SCRIPT ---\n\n%s\n\n--- EXECUTION ERROR ---\nFailing Expression:\n\n%s\n\nError Message:\n\n%s\n\nReturn the completely fixed script now, adhering strictly to the output constraints.",
-    sys_prompt,
-    current_code,
-    execution_result$bad_line,
-    execution_result$err_msg
+    sys_prompt, current_code, execution_result$bad_line, execution_result$err_msg
   )
 
   new_code <- chat$chat(prompt, echo = FALSE)
@@ -270,9 +232,7 @@ scan_file_system_commands <- function(script_path) {
   for (line in code) {
     for (threat in threats) {
       if (grepl(threat, line)) {
-        cli::cli_abort(
-          "SECURITY ALERT: Malicious keyword {.code {threat}} detected. Execution aborted."
-        )
+        cli::cli_abort("SECURITY ALERT: Malicious keyword {.code {threat}} detected. Execution aborted.")
       }
     }
   }
@@ -282,8 +242,13 @@ save_verbose_iteration <- function(sandbox_script, original, attempt) {
   dir_name <- dirname(original)
   base_name <- tools::file_path_sans_ext(basename(original))
   ext <- tools::file_ext(original)
-  if (ext == "") {ext <- "R"}
+  if (ext == "") {
+    ext <- "R"
+  }
 
-  iter_file <- file.path(dir_name, sprintf("%s_iter%d.%s", base_name, attempt, ext))
+  iter_file <- file.path(dir_name, sprintf(
+    "%s_iter%d.%s", base_name, attempt,
+    ext
+  ))
   file.copy(sandbox_script, iter_file, overwrite = TRUE)
 }

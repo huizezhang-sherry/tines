@@ -10,11 +10,11 @@
 #' @return The updated schema with the imported step appended.
 #' @export
 #' @rdname import
-import_step <- function(schema, source_schema, id, source_schema_name = NULL, ...) {
-  
+import_step <- function(schema, source_schema, id,
+                        source_schema_name = NULL, ...) {
   to_import <- source_schema$nodes |>
     dplyr::filter(id == !!id)
-  
+
   if (nrow(to_import) == 0) {
     stop(sprintf("Could not find step with id '%s' in the source schema.", id))
   }
@@ -22,10 +22,11 @@ import_step <- function(schema, source_schema, id, source_schema_name = NULL, ..
     warning(sprintf("Multiple steps found with id '%s'. Using the first.", id))
     to_import <- to_import |> dplyr::slice(1)
   }
-  
+
   # Provenance: use explicit name if provided, otherwise deparse the argument
-  to_import$source_schema <- source_schema_name %||% deparse(substitute(source_schema))
-  
+  to_import$source_schema <- source_schema_name %||%
+    deparse(substitute(source_schema))
+
   new_args <- list(...)
   for (arg_name in names(new_args)) {
     if (is.list(to_import[[arg_name]])) {
@@ -34,13 +35,13 @@ import_step <- function(schema, source_schema, id, source_schema_name = NULL, ..
       to_import[[arg_name]] <- new_args[[arg_name]]
     }
   }
-  
+
   if (is.null(schema$nodes) || nrow(schema$nodes) == 0) {
     schema$nodes <- to_import
   } else {
     schema$nodes <- dplyr::bind_rows(schema$nodes, to_import)
   }
-  
+
   schema
 }
 
@@ -52,14 +53,16 @@ import_step <- function(schema, source_schema, id, source_schema_name = NULL, ..
 #' @export
 #' @rdname import
 generate_edges <- function(schema) {
-  edges <- data.frame(from = character(), to = character(),
-                      stringsAsFactors = FALSE)
+  edges <- data.frame(
+    from = character(), to = character(),
+    stringsAsFactors = FALSE
+  )
   var_sources <- list()
-  
+
   for (i in seq_len(nrow(schema))) {
-    current_id     <- schema$id[i]
-    current_inputs  <- unlist(schema$inputs[[i]])
-    
+    current_id <- schema$id[i]
+    current_inputs <- unlist(schema$inputs[[i]])
+
     if (length(current_inputs) > 0) {
       for (inp in current_inputs) {
         if (inp %in% names(var_sources)) {
@@ -70,13 +73,13 @@ generate_edges <- function(schema) {
         }
       }
     }
-    
+
     current_outputs <- unlist(schema$outputs[[i]])
     if (length(current_outputs) > 0) {
       for (outp in current_outputs) var_sources[[outp]] <- current_id
     }
   }
-  
+
   if (nrow(edges) > 0) edges <- dplyr::distinct(edges)
   edges
 }

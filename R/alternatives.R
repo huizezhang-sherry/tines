@@ -1,10 +1,12 @@
 #' Construct `alternatives` objects
 #'
 #' @param id Unique identifier for this alternative (kebab-case).
-#' @param fork The decision point or goal of the step (should match the original).
+#' @param fork The decision point or goal of the step (should match the
+#'   original).
 #' @param path The new method/implementation.
 #' @param rationale Why this method is valid.
-#' @param step The target step ID in the schema that these alternatives pertain to.
+#' @param step The target step ID in the schema that these alternatives
+#'   pertain to.
 #' @param ... One or more alternative branches created by `alternative()`.
 #'
 #' @export
@@ -15,7 +17,9 @@
 alternative <- function(id, fork, path, rationale) {
   # Quick validation to ensure no missing pieces
   if (missing(id) || missing(fork) || missing(path) || missing(rationale)) {
-    cli::cli_abort("All arguments (`id`, `fork`, `path`, `rationale`) are required.")
+    cli::cli_abort(
+      "All arguments (`id`, `fork`, `path`, `rationale`) are required."
+    )
   }
 
   list(
@@ -30,20 +34,20 @@ alternative <- function(id, fork, path, rationale) {
 #' @rdname alternatives
 new_alternatives <- function(step, ...) {
   alts <- list(...)
-  
+
   # Convert to data frame structure (no step column needed)
   df <- purrr::map_dfr(alts, function(alt) {
     tibble::tibble(
       id = alt$id,
-      fork = alt$fork, 
+      fork = alt$fork,
       path = alt$path,
       rationale = alt$rationale
     )
   })
-  
+
   class(df) <- c("alternatives", "tbl_df", "tbl", "data.frame")
   attr(df, "step") <- step
-  
+
   return(df)
 }
 
@@ -67,12 +71,12 @@ new_alternatives <- function(step, ...) {
 #' }
 #'
 write_alternatives <- function(x, file, ...) {
-  
   # Convert data frame rows to list format for YML
-  alternatives_list <- purrr::pmap(x[c("id", "fork", "path", "rationale")], function(...) {
-    list(...)
-  })
-  
+  alternatives_list <- purrr::pmap(
+    x[c("id", "fork", "path", "rationale")],
+    function(...) list(...)
+  )
+
   yaml_ready_list <- list(
     meta = list(
       type = "alternatives",
@@ -108,10 +112,10 @@ read_alternatives <- function(file, ...) {
       rationale = a$rationale
     )
   })
-  
+
   class(df) <- c("alternatives", "tbl_df", "tbl", "data.frame")
   attr(df, "step") <- target
-  
+
   return(df)
 }
 
@@ -126,7 +130,8 @@ tbl_sum.alternatives <- function(x) {
 }
 
 #' @export
-as.data.frame.alternatives <- function(x, row.names = NULL, optional = FALSE, ...) {
+as.data.frame.alternatives <- function(x, row.names = NULL,
+                                       optional = FALSE, ...) {
   class(x) <- "data.frame"
   x
 }

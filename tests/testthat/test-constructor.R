@@ -1,5 +1,4 @@
 test_that("schema and multiverse constructor work", {
-
   schema <- example_schema()
   my_multiverse <- example_multiverse()
   expect_snapshot(schema)

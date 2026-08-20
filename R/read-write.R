@@ -2,11 +2,14 @@
 #'
 #' @param x An object of class `schema` or `multiverse`.
 #' @param path A single string specifying the output file path. Optional.
-#' @param data Optional data frame or path to data file for validation (for `read_tines()` only).
-#' @param ... Arguments passed on to `yaml::write_yaml()` or `yaml::read_yaml()`.
+#' @param data Optional data frame or path to data file for validation (for
+#'   `read_tines()` only).
+#' @param ... Arguments passed on to `yaml::write_yaml()` or
+#'   `yaml::read_yaml()`.
 #'
 #' @returns
-#' `write_tines()` returns `NULL` and `read_tines()` returns an object of class `schema` or `multiverse`.
+#' `write_tines()` returns `NULL` and `read_tines()` returns an object of
+#' class `schema` or `multiverse`.
 #'
 #' @export
 #' @rdname read-write
@@ -16,33 +19,38 @@
 #' temp_path <- withr::local_tempfile(fileext = ".yaml")
 #' write_tines(schema, temp_path)
 #' schema_read <- read_tines(temp_path)
-#' 
+#'
 #' # Read and validate against data
 #' schema_read <- read_tines(temp_path, data = my_data)
 #' }
 #'
-write_tines <- function(x, path = NULL, ...){
-
+write_tines <- function(x, path = NULL, ...) {
   if (!inherits(x, c("schema", "multiverse"))) {
     cli::cli_abort(c(
-      "The object to write must be of class {.cls schema} or {.cls multiverse}.",
+      paste0(
+        "The object to write must be of class {.cls schema} or ",
+        "{.cls multiverse}."
+      ),
       "i" = "Provided object is of class {.cls {class(x)}}."
     ))
   }
 
-  if (is.null(path)){
+  if (is.null(path)) {
     prefix <- if (inherits(x, "schema")) "schema" else "multiverse"
     path <- paste0(prefix, ".yml")
   }
 
   if (inherits(x, "multiverse")) {
-    header <- list(meta = list(type = "multiverse", date = as.character(Sys.Date())))
+    header <- list(meta = list(
+      type = "multiverse",
+      date = as.character(Sys.Date())
+    ))
     output <- c(header, list(schemas = x))
   }
 
   if (inherits(x, "schema")) {
     header <- list(meta = list(
-      type = "schema", 
+      type = "schema",
       date = as.character(Sys.Date()),
       name = attr(x, "name", exact = TRUE)
     ))
@@ -54,11 +62,15 @@ write_tines <- function(x, path = NULL, ...){
         node$inputs <- if (is.na(node$inputs[[1]])) list() else node$inputs[[1]]
       }
       if (!is.null(node$outputs)) {
-        node$outputs <- if (is.na(node$outputs[[1]])) list() else node$outputs[[1]]
+        node$outputs <- if (is.na(node$outputs[[1]])) {
+          list()
+        } else {
+          node$outputs[[1]]
+        }
       }
       node
     })
-    
+
     schema_list <- list(nodes = nodes_list)
     output <- c(header, schema_list)
   }
@@ -71,12 +83,11 @@ write_tines <- function(x, path = NULL, ...){
   )
 
   cli::cli_alert_success("File saved: {.file {path}}")
-
 }
 
 #' @export
 #' @rdname read-write
-read_tines <- function(path, data = NULL, ...){
+read_tines <- function(path, data = NULL, ...) {
   raw <- yaml::read_yaml(path, ...)
   type <- raw$meta$type
 
@@ -89,7 +100,9 @@ read_tines <- function(path, data = NULL, ...){
         if (length(x) == 0) NA_character_ else as.character(x[[1]])
       }))
       for (col in list_cols) {
-        row[[col]] <- list(if (is.null(node[[col]])) character(0) else as.character(node[[col]]))
+        row[[col]] <- list(
+          if (is.null(node[[col]])) character(0) else as.character(node[[col]])
+        )
       }
       row
     })
@@ -101,7 +114,7 @@ read_tines <- function(path, data = NULL, ...){
 
   if (type == "schema") {
     res <- rebuild_schema(raw)
-    
+
     # Attach and validate data if provided
     if (!is.null(data)) {
       res <- update_data(res, data)
@@ -109,13 +122,13 @@ read_tines <- function(path, data = NULL, ...){
   } else if (type == "multiverse") {
     schemas <- purrr::map(raw$schemas, rebuild_schema)
     res <- do.call(build_multiverse, schemas)
-    
+
     # Attach data to all schemas if provided
     if (!is.null(data)) {
       res <- purrr::map(res, function(s) update_data(s, data))
       class(res) <- c("multiverse", "list")
     }
-  } else{
+  } else {
     cli::cli_abort(c(
       "Unrecognized type in YAML file: {.val {type}}.",
       "i" = "Expected 'schema' or 'multiverse'."

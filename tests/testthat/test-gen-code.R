@@ -1,8 +1,16 @@
 test_that("prompt_gen_code wording remains stable (snapshot)", {
-  expect_snapshot({prompt_gen_code(print = FALSE)})
-  expect_snapshot({prompt_gen_code(data = "inst/football.csv", print = FALSE)})
-  expect_snapshot({prompt_gen_code(data = "tines::football", print = FALSE)})
-  expect_snapshot({prompt_gen_code(schema = example_schema(), print = FALSE)})
+  expect_snapshot({
+    prompt_gen_code(print = FALSE)
+  })
+  expect_snapshot({
+    prompt_gen_code(data = "inst/football.csv", print = FALSE)
+  })
+  expect_snapshot({
+    prompt_gen_code(data = "tines::football", print = FALSE)
+  })
+  expect_snapshot({
+    prompt_gen_code(schema = example_schema(), print = FALSE)
+  })
 })
 
 test_that("prompt_gen_code includes base_code content when provided", {
