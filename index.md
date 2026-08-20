@@ -1,4 +1,4 @@
-# tines
+# tines [![](inst/figures/imgfile.svg)](https://huizezhang-sherry.github.io/tines/)
 
 The goal of tines is to help analysts document, explore, and communicate
 the analytical decisions made during a data analysis. Analytical
