@@ -13,7 +13,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-# tines
+# tines <a href='https://huizezhang-sherry.github.io/tines/'><img src='inst/figures/imgfile.svg' align="right" height="138.5" /></a>
+
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/huizezhang-sherry/tines/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/huizezhang-sherry/tines/actions/workflows/R-CMD-check.yaml)

@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# tines
+# tines <a href='https://huizezhang-sherry.github.io/tines/'><img src='inst/figures/imgfile.svg' align="right" height="138.5" /></a>
 
 <!-- badges: start -->
 
