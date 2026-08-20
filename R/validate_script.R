@@ -19,8 +19,8 @@
 #'   \code{engine = 'callr'}.
 #' @param engine One of \code{'callr'} (default) or \code{'docker'}. Controls
 #'   the execution to be with \code{callr} in a temp directory sandbox (in
-#'   session or as a background job),
-#'   or within a Docker container.
+#'   session or as a background job). \code{'docker'} is not yet supported
+#'   and will raise an error; it may be added in a future release.
 #' @param scan_code If \code{TRUE} (default), scans the script for potentially
 #'   dangerous file system commands before execution.
 #'
@@ -72,8 +72,11 @@ validate_script <- function(
     )
 
     if (engine == "docker") {
-      # TODO: not tested
-      res <- execute_in_docker(sandbox$script, sandbox$dir)
+      cli::cli_abort(paste0(
+        "Docker execution is not currently supported. ",
+        "This may be added in a future release; use {.code engine = 'callr'} ",
+        "instead."
+      ))
     } else {
       if (verbose) {
         save_verbose_iteration(sandbox$script, file, attempt)
@@ -212,32 +215,6 @@ execute_in_callr <- function(sandbox_script, sandbox_dir, as_job) {
       )
     }
   )
-}
-
-execute_in_docker <- function(sandbox_script, sandbox_dir) {
-  args <- c(
-    "run", "--rm", "-v", paste0(sandbox_dir, ":/workspace"), "-w", "/workspace",
-    "rocker/r-base", "Rscript", basename(sandbox_script)
-  )
-
-  if (!requireNamespace("processx", quietly = TRUE)) {
-    cli::cli_abort(paste0(
-      "Package {.pkg processx} is required for Docker execution. ",
-      "Install it with {.code install.packages('processx')}."
-    ))
-  }
-
-
-  res <- processx::run("docker", args, error_on_status = FALSE)
-
-  if (res$status == 0) {
-    list(ok = TRUE, data = NULL, err_msg = NA, bad_line = NA)
-  } else {
-    list(
-      ok = FALSE, data = NULL, err_msg = res$stderr,
-      bad_line = "Failed in Docker Container"
-    )
-  }
 }
 
 ask_llm_for_fix <- function(

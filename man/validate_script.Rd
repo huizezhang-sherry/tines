@@ -37,8 +37,8 @@ Default is \code{'anthropic/claude-opus-4-5'}.}
 
 \item{engine}{One of \code{'callr'} (default) or \code{'docker'}. Controls
 the execution to be with \code{callr} in a temp directory sandbox (in
-session or as a background job),
-or within a Docker container.}
+session or as a background job). \code{'docker'} is not yet supported
+and will raise an error; it may be added in a future release.}
 
 \item{scan_code}{If \code{TRUE} (default), scans the script for potentially
 dangerous file system commands before execution.}
