@@ -97,12 +97,17 @@ tines2dotspec <- function(x, ...) {
   # sequential flow
   if (nrow(x) > 1) {
     edge_df <- generate_edges(x)
-    edge_strings <- paste0(
+  } else {
+    edge_df <- data.frame(from = character(), to = character())
+  }
+
+  edge_strings <- if (nrow(edge_df) > 0) {
+    paste0(
       '  "', edge_df$from, '" -> "', edge_df$to,
       '" [style=solid, color=black]'
     )
   } else {
-    edge_strings <- character(0)
+    character(0)
   }
 
   # 3. Assemble the DOT Code
@@ -207,7 +212,6 @@ inspect_dot <- function(schema,
 
   cat(paste(out, collapse = "\n"), "\n")
 }
-
 
 
 globalVariables("type")

@@ -5,6 +5,21 @@ test_that("schema and multiverse constructor work", {
   expect_snapshot(my_multiverse)
 })
 
+test_that("get_step_names works for schema and multiverse", {
+  expect_equal(
+    get_step_names(example_schema()),
+    c("step-scaling", "step-education", "step-combine")
+  )
+
+  mv_names <- get_step_names(example_multiverse())
+  expect_type(mv_names, "list")
+  expect_equal(names(mv_names), c("original", "reversed"))
+})
+
+test_that("get_step_names errors for unsupported types", {
+  expect_error(get_step_names(list()), "Unsupported object type")
+})
+
 test_that("validation errors remain stable", {
   schema1 <- build_schema("Valid")
   invalid_schema <- list(a = 1)

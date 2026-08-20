@@ -260,8 +260,7 @@ example_rdi <- function() {
       rationale = "final step to obtain the standardized RDI index",
       inputs = c(".proxy_y"),
       outputs = c(".proxy_index")
-    ) |>
-    generate_edges()
+    )
 }
 
 #' @rdname example_tines
@@ -280,9 +279,9 @@ example_football_grp20 <- function() {
 #' get_step_names(example_multiverse())
 get_step_names <- function(object) {
   if (inherits(object, "schema")) {
-    step_names <- object$nodes$id
+    step_names <- object$id
   } else if (inherits(object, "multiverse")) {
-    step_names <- lapply(object, function(s) s$nodes$id)
+    step_names <- lapply(object, function(s) s$id)
   } else {
     cli::cli_abort(c(
       "Unsupported object type: {.cls {class(object)}}.",
@@ -291,7 +290,6 @@ get_step_names <- function(object) {
   }
   return(step_names)
 }
-
 
 
 #'

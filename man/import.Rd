@@ -10,8 +10,7 @@ import_step(schema, source_schema, id, source_schema_name = NULL, ...)
 generate_edges(schema)
 }
 \arguments{
-\item{schema}{A schema object with nodes containing `inputs` and `outputs`
-list-columns.}
+\item{schema}{A schema object with `inputs` and `outputs` list-columns.}
 
 \item{source_schema}{The schema to import the step from.}
 
@@ -26,7 +25,7 @@ the deparsed name of `source_schema`.}
 \value{
 The updated schema with the imported step appended.
 
-The schema with `edges` populated.
+A data frame of edges with `from` and `to` columns.
 }
 \description{
 Import a Step from a source schema into the current schema

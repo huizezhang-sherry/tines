@@ -12,7 +12,7 @@
 #' @rdname import
 import_step <- function(schema, source_schema, id,
                         source_schema_name = NULL, ...) {
-  to_import <- source_schema$nodes |>
+  to_import <- source_schema |>
     dplyr::filter(id == !!id)
 
   if (nrow(to_import) == 0) {
@@ -36,10 +36,20 @@ import_step <- function(schema, source_schema, id,
     }
   }
 
-  if (is.null(schema$nodes) || nrow(schema$nodes) == 0) {
-    schema$nodes <- to_import
+  # Preserve attributes before rbind (bind_rows drops the schema class)
+  schema_name <- attr(schema, "name", exact = TRUE)
+  schema_data <- attr(schema, "data", exact = TRUE)
+
+  if (nrow(schema) == 0) {
+    schema <- to_import
   } else {
-    schema$nodes <- dplyr::bind_rows(schema$nodes, to_import)
+    schema <- dplyr::bind_rows(schema, to_import)
+  }
+
+  class(schema) <- c("schema", "tbl_df", "tbl", "data.frame")
+  attr(schema, "name") <- schema_name
+  if (!is.null(schema_data)) {
+    attr(schema, "data") <- schema_data
   }
 
   schema
@@ -47,9 +57,8 @@ import_step <- function(schema, source_schema, id,
 
 #' Generate edges from a schema based on input/output variable matching
 #'
-#' @param schema A schema object with nodes containing `inputs` and `outputs`
-#'   list-columns.
-#' @return The schema with `edges` populated.
+#' @param schema A schema object with `inputs` and `outputs` list-columns.
+#' @return A data frame of edges with `from` and `to` columns.
 #' @export
 #' @rdname import
 generate_edges <- function(schema) {
@@ -62,6 +71,7 @@ generate_edges <- function(schema) {
   for (i in seq_len(nrow(schema))) {
     current_id <- schema$id[i]
     current_inputs <- unlist(schema$inputs[[i]])
+    current_inputs <- current_inputs[!is.na(current_inputs)]
 
     if (length(current_inputs) > 0) {
       for (inp in current_inputs) {
@@ -75,6 +85,7 @@ generate_edges <- function(schema) {
     }
 
     current_outputs <- unlist(schema$outputs[[i]])
+    current_outputs <- current_outputs[!is.na(current_outputs)]
     if (length(current_outputs) > 0) {
       for (outp in current_outputs) var_sources[[outp]] <- current_id
     }
