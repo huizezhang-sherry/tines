@@ -88,7 +88,7 @@ tines2dotspec <- function(x, ...) {
   dot_code <- paste0(
     "digraph schema {\n",
     "  graph [rankdir=TD, fontname=Arial]\n",
-    "  node [fontname=Arial, fontsizLe=10]\n",
+    "  node [fontname=Arial, fontsize=10]\n",
     "  edge [fontname=Arial, fontsize=8]\n",
     paste(node_strings, collapse = "\n"), "\n",
     if (length(edge_strings) > 0) paste(edge_strings, collapse = "\n") else "", "\n",

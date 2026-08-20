@@ -24,3 +24,27 @@
     All elements in a multiverse must be of class <schema>.
     i Arguments at positions 2 are invalid.
 
+# print methods remain stable (snapshot)
+
+    Code
+      print(build_schema())
+    Output
+      # A schema: 0 x 7
+      # i 7 variables: id <chr>, fork <chr>, path <chr>, rationale <chr>,
+      #   inputs <list>, outputs <list>, source_schema <chr>
+
+---
+
+    Code
+      print(new_multiverse(list()))
+    Output
+      An empty multiverse
+
+---
+
+    Code
+      print(build_multiverse(only_branch = example_schema()))
+    Output
+      A multiverse with 1 schema:
+        only_branch: "HDI Example" (3 steps)
+
