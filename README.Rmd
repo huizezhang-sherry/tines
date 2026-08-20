@@ -1,6 +1,5 @@
 ---
 output: github_document
-always_allow_html: true
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -21,7 +20,13 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/huizezhang-sherry/tines/graph/badge.svg)](https://app.codecov.io/gh/huizezhang-sherry/tines)
 <!-- badges: end -->
 
-The goal of tines is to ...
+The goal of tines is to help analysts document, explore, and communicate
+the analytical decisions made during a data analysis. Analytical decisions
+are recorded as a schema of steps, and large language models are used to
+propose alternative choices at each step and to generate and validate the
+corresponding R code. A schema can be expanded into a multiverse of
+analyses, letting you see how your conclusions depend on the analytical
+choices you made.
 
 ## Installation
 
