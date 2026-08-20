@@ -15,9 +15,11 @@
 #'   Default is \code{'anthropic/claude-opus-4-5'}.
 #' @param verbose If \code{TRUE}, saves a copy of the script at each iteration.
 #' @param as_job If \code{TRUE}, runs the process as a background job. If
-#'   \code{FALSE} (default), runs in the current R session. Only used when \code{engine = 'callr'}.
+#'   \code{FALSE} (default), runs in the current R session. Only used when
+#'   \code{engine = 'callr'}.
 #' @param engine One of \code{'callr'} (default) or \code{'docker'}. Controls
-#'   the execution to be with \code{callr} in a temp directory sandbox (in session or as a background job),
+#'   the execution to be with \code{callr} in a temp directory sandbox (in
+#'   session or as a background job),
 #'   or within a Docker container.
 #' @param scan_code If \code{TRUE} (default), scans the script for potentially
 #'   dangerous file system commands before execution.
@@ -39,7 +41,8 @@
 #'
 validate_script <- function(
   file, data = NULL, max_runs = 5, model = "anthropic/claude-opus-4-5",
-  verbose = TRUE, as_job = FALSE, engine = c("callr", "docker"), scan_code = TRUE
+  verbose = TRUE, as_job = FALSE, engine = c("callr", "docker"),
+  scan_code = TRUE
 ) {
   engine <- match.arg(engine)
 
@@ -62,7 +65,11 @@ validate_script <- function(
   }
 
   while (attempt <= max_runs && !success) {
-    cli::cli_inform(c(i = "[Attempt {attempt} of {max_runs}] Running script in sandbox..."))
+    cli::cli_inform(
+      c(i = paste0(
+        "[Attempt {attempt} of {max_runs}] Running script in sandbox..."
+      ))
+    )
 
     if (engine == "docker") {
       # TODO: not tested
@@ -98,27 +105,38 @@ build_sys_prompt <- function(data) {
   data_context <- ""
   if (!is.null(data)) {
     data_context <- sprintf(
-      "The user has provided a data file located at the relative path: `data/%s'. ",
+      paste0(
+        "The user has provided a data file located at the relative path: ",
+        "`data/%s'. "
+      ),
       basename(data)
     )
   }
 
   paste0(
-    "You are an expert R developer and automated debugging agent. ", data_context,
-    "Your purpose is to receive broken R scripts, diagnose the execution error,
-    and return the corrected script.
+    "You are an expert R developer and automated debugging agent. ",
+    data_context,
+    "Your purpose is to receive broken R scripts, diagnose the execution
+    error, and return the corrected script.
 
     CRITICAL INSTRUCTIONS:
-    1. Fix the bug while preserving the original intent and logic of the script.
-    2. If the error is a missing package, add the necessary `library()` call at the top.
-    3. If the error is a missing variable, ensure it is properly initialized before use.
-    4. Do NOT hallucinate new data files or external dependencies unless explicitly provided in the context.
+    1. Fix the bug while preserving the original intent and logic of the
+    script.
+    2. If the error is a missing package, add the necessary `library()`
+    call at the top.
+    3. If the error is a missing variable, ensure it is properly
+    initialized before use.
+    4. Do NOT hallucinate new data files or external dependencies unless
+    explicitly provided in the context.
 
     STRICT OUTPUT CONSTRAINTS:
     - You must output ONLY valid, fully executable R code.
-    - Absolutely NO markdown formatting. Do NOT wrap your response in ```R or ```.
-    - Absolutely NO conversational filler, greetings, explanations, or comments about what you fixed.
-    - The first character of your response must be R code, and the last character must be R code."
+    - Absolutely NO markdown formatting. Do NOT wrap your response in
+    ```R or ```.
+    - Absolutely NO conversational filler, greetings, explanations, or
+    comments about what you fixed.
+    - The first character of your response must be R code, and the last
+    character must be R code."
   )
 }
 
@@ -129,7 +147,10 @@ setup_sandbox <- function(file_path, data) {
 
   if (!is.null(data)) {
     if (file.exists(data)) {
-      dir.create(file.path(sandbox_dir, "data"), recursive = TRUE, showWarnings = FALSE)
+      dir.create(
+        file.path(sandbox_dir, "data"),
+        recursive = TRUE, showWarnings = FALSE
+      )
       file.copy(
         from = data, to = file.path(sandbox_dir, "data", basename(data)),
         overwrite = TRUE
@@ -153,7 +174,10 @@ execute_in_callr <- function(sandbox_script, sandbox_dir, as_job) {
         temp_env <- new.env()
 
         exprs <- tryCatch(parse(f), error = function(e) {
-          list(ok = FALSE, data = NULL, err_msg = e$message, bad_line = "Syntax Error (Code could not be parsed)")
+          list(
+            ok = FALSE, data = NULL, err_msg = e$message,
+            bad_line = "Syntax Error (Code could not be parsed)"
+          )
         })
 
         if (is.list(exprs) && identical(exprs$ok, FALSE)) {
@@ -167,9 +191,10 @@ execute_in_callr <- function(sandbox_script, sandbox_dir, as_job) {
               NULL
             },
             error = function(e) {
-              list(ok = FALSE, data = NULL, err_msg = e$message, bad_line = paste(deparse(exprs[[i]]),
-                collapse = "\n"
-              ))
+              list(
+                ok = FALSE, data = NULL, err_msg = e$message,
+                bad_line = paste(deparse(exprs[[i]]), collapse = "\n")
+              )
             }
           )
           if (!is.null(step_result)) {
@@ -196,7 +221,10 @@ execute_in_docker <- function(sandbox_script, sandbox_dir) {
   )
 
   if (!requireNamespace("processx", quietly = TRUE)) {
-    cli::cli_abort("Package {.pkg processx} is required for Docker execution. Install it with {.code install.packages('processx')}.")
+    cli::cli_abort(paste0(
+      "Package {.pkg processx} is required for Docker execution. ",
+      "Install it with {.code install.packages('processx')}."
+    ))
   }
 
 
@@ -205,16 +233,30 @@ execute_in_docker <- function(sandbox_script, sandbox_dir) {
   if (res$status == 0) {
     list(ok = TRUE, data = NULL, err_msg = NA, bad_line = NA)
   } else {
-    list(ok = FALSE, data = NULL, err_msg = res$stderr, bad_line = "Failed in Docker Container")
+    list(
+      ok = FALSE, data = NULL, err_msg = res$stderr,
+      bad_line = "Failed in Docker Container"
+    )
   }
 }
 
-ask_llm_for_fix <- function(chat, sys_prompt, sandbox_script, execution_result) {
-  current_code <- paste(readLines(sandbox_script, warn = FALSE), collapse = "\n")
+ask_llm_for_fix <- function(
+  chat, sys_prompt, sandbox_script, execution_result
+) {
+  current_code <- paste(
+    readLines(sandbox_script, warn = FALSE),
+    collapse = "\n"
+  )
 
   prompt <- sprintf(
-    "%s\n\n--- BROKEN SCRIPT ---\n\n%s\n\n--- EXECUTION ERROR ---\nFailing Expression:\n\n%s\n\nError Message:\n\n%s\n\nReturn the completely fixed script now, adhering strictly to the output constraints.",
-    sys_prompt, current_code, execution_result$bad_line, execution_result$err_msg
+    paste0(
+      "%s\n\n--- BROKEN SCRIPT ---\n\n%s\n\n--- EXECUTION ERROR ---\n",
+      "Failing Expression:\n\n%s\n\nError Message:\n\n%s\n\nReturn the ",
+      "completely fixed script now, adhering strictly to the output ",
+      "constraints."
+    ),
+    sys_prompt, current_code, execution_result$bad_line,
+    execution_result$err_msg
   )
 
   new_code <- chat$chat(prompt, echo = FALSE)
@@ -227,12 +269,17 @@ ask_llm_for_fix <- function(chat, sys_prompt, sandbox_script, execution_result) 
 
 scan_file_system_commands <- function(script_path) {
   code <- readLines(script_path, warn = FALSE)
-  threats <- c("file.remove", "unlink", "system\\(", "system2\\(", "file.create")
+  threats <- c(
+    "file.remove", "unlink", "system\\(", "system2\\(", "file.create"
+  )
 
   for (line in code) {
     for (threat in threats) {
       if (grepl(threat, line)) {
-        cli::cli_abort("SECURITY ALERT: Malicious keyword {.code {threat}} detected. Execution aborted.")
+        cli::cli_abort(paste0(
+          "SECURITY ALERT: Malicious keyword {.code {threat}} detected. ",
+          "Execution aborted."
+        ))
       }
     }
   }
