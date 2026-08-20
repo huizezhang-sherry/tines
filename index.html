@@ -67,12 +67,12 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/huizezhang-sherry/tines" class="external-link">tines</a></span><span class="op">)</span></span>
 <span><span class="op">(</span><span class="va">hdi</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/example_tines.html">example_schema</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> </span>
-<span><span class="co">#&gt; # A schema: 3 x 7</span></span>
-<span><span class="co">#&gt;   id             fork               path  rationale inputs outputs source_schema</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;          &lt;chr&gt;              &lt;chr&gt; &lt;chr&gt;     &lt;list&gt; &lt;list&gt;  &lt;lgl&gt;        </span></span>
-<span><span class="co">#&gt; 1 step-scaling   variables are in … appl… to put t… &lt;lgl&gt;  &lt;lgl&gt;   NA           </span></span>
-<span><span class="co">#&gt; 2 step-education combine the schoo… aver… the most… &lt;lgl&gt;  &lt;lgl&gt;   NA           </span></span>
-<span><span class="co">#&gt; 3 step-combine   combine the three… use … the geom… &lt;lgl&gt;  &lt;lgl&gt;   NA</span></span></code></pre></div>
+<span><span class="co">#&gt; # A schema: HDI Example</span></span>
+<span><span class="co">#&gt;   id             objective       decision rationale inputs outputs source_schema</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;          &lt;chr&gt;           &lt;chr&gt;    &lt;chr&gt;     &lt;list&gt; &lt;list&gt;  &lt;lgl&gt;        </span></span>
+<span><span class="co">#&gt; 1 step-scaling   variables are … apply m… to put t… &lt;lgl&gt;  &lt;lgl&gt;   NA           </span></span>
+<span><span class="co">#&gt; 2 step-education combine the sc… average… the most… &lt;lgl&gt;  &lt;lgl&gt;   NA           </span></span>
+<span><span class="co">#&gt; 3 step-combine   combine the th… use the… the geom… &lt;lgl&gt;  &lt;lgl&gt;   NA</span></span></code></pre></div>
 <p>Generate an alternative at block-combine and write the result into a <code>yaml</code> file:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/gen_alternatives.html">gen_alternatives</a></span><span class="op">(</span><span class="va">hdi</span>, step <span class="op">=</span> <span class="st">"step-combine"</span>, n <span class="op">=</span> <span class="fl">1</span>, </span>
@@ -94,13 +94,13 @@
 <span><span class="co">#&gt; Warning: package 'purrr' was built under R version 4.5.2</span></span>
 <span><span class="co">#&gt; Warning: package 'dplyr' was built under R version 4.5.2</span></span>
 <span><span class="co">#&gt; Warning: package 'lubridate' was built under R version 4.5.2</span></span>
-<span><span class="co">#&gt; ── Attaching core tidyverse packages ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 2.0.0 ──</span></span>
+<span><span class="co">#&gt; ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──</span></span>
 <span><span class="co">#&gt; ✔ dplyr     1.2.0     ✔ readr     2.1.5</span></span>
 <span><span class="co">#&gt; ✔ forcats   1.0.0     ✔ stringr   1.6.0</span></span>
 <span><span class="co">#&gt; ✔ ggplot2   4.0.0     ✔ tibble    3.3.1</span></span>
 <span><span class="co">#&gt; ✔ lubridate 1.9.5     ✔ tidyr     1.3.2</span></span>
 <span><span class="co">#&gt; ✔ purrr     1.2.1     </span></span>
-<span><span class="co">#&gt; ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──</span></span>
+<span><span class="co">#&gt; ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──</span></span>
 <span><span class="co">#&gt; ✖ dplyr::filter() masks stats::filter()</span></span>
 <span><span class="co">#&gt; ✖ dplyr::lag()    masks stats::lag()</span></span>
 <span><span class="co">#&gt; ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</span></span>
@@ -123,11 +123,11 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/huizezhang-sherry/tines" class="external-link">tines</a></span><span class="op">)</span></span>
 <span><span class="op">(</span><span class="va">football</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/example_tines.html">example_football</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A schema: 3 x 7</span></span>
-<span><span class="co">#&gt;   id                          fork  path  rationale inputs outputs source_schema</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;                       &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;     &lt;list&gt; &lt;list&gt;  &lt;lgl&gt;        </span></span>
-<span><span class="co">#&gt; 1 step-average-rater          defi… aver… incorpor… &lt;lgl&gt;  &lt;lgl&gt;   NA           </span></span>
-<span><span class="co">#&gt; 2 step-victory-tie-defeat-ra… cont… vict… ratios a… &lt;lgl&gt;  &lt;lgl&gt;   NA           </span></span>
-<span><span class="co">#&gt; 3 step-logistic-model         esti… fit … to answe… &lt;lgl&gt;  &lt;lgl&gt;   NA</span></span></code></pre></div>
+<span><span class="co">#&gt;   id                   objective decision rationale inputs outputs source_schema</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;     &lt;list&gt; &lt;list&gt;  &lt;lgl&gt;        </span></span>
+<span><span class="co">#&gt; 1 step-average-rater   define t… average… incorpor… &lt;lgl&gt;  &lt;lgl&gt;   NA           </span></span>
+<span><span class="co">#&gt; 2 step-victory-tie-de… control … victory… ratios a… &lt;lgl&gt;  &lt;lgl&gt;   NA           </span></span>
+<span><span class="co">#&gt; 3 step-logistic-model  estimate… fit a l… to answe… &lt;lgl&gt;  &lt;lgl&gt;   NA</span></span></code></pre></div>
 <p>Generate an alternative at block-combine and write the result into a <code>yaml</code> file:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/gen_alternatives.html">gen_alternatives</a></span><span class="op">(</span><span class="va">football</span>, id <span class="op">=</span> <span class="st">"block-logistic-model"</span>, n <span class="op">=</span> <span class="fl">2</span>, </span>
