@@ -38,7 +38,12 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gen_composite_code</span><span class="op">(</span><span class="va">schema</span>, <span class="va">base_scripts</span>, <span class="va">output_file</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gen_composite_code</span><span class="op">(</span></span>
+<span>  <span class="va">schema</span>,</span>
+<span>  <span class="va">base_scripts</span>,</span>
+<span>  <span class="va">output_file</span>,</span>
+<span>  model <span class="op">=</span> <span class="st">"anthropic/claude-opus-4-5"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -57,6 +62,14 @@ base R scripts, e.g. `list(spei_template = here::here("inst/spei.R"))`.</p></dd>
 
 <dt id="arg-output-file">output_file<a class="anchor" aria-label="anchor" href="#arg-output-file"></a></dt>
 <dd><p>Path to write the generated R script.</p></dd>
+
+
+<dt id="arg-model">model<a class="anchor" aria-label="anchor" href="#arg-model"></a></dt>
+<dd><p>The LLM to use for generating new (non-imported) steps, as a
+string in `"provider/model"` form (e.g. `"anthropic/claude-opus-4-5"`,
+`"openai/gpt-5"`, `"google_gemini/gemini-2.5-flash"`), passed to
+`ellmer::chat()`. See [ellmer::chat()] for the full list of supported
+providers. Defaults to `"anthropic/claude-opus-4-5"`.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -89,7 +102,7 @@ base R scripts, e.g. `list(spei_template = here::here("inst/spei.R"))`.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

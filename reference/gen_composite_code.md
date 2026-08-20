@@ -6,7 +6,12 @@ schemas
 ## Usage
 
 ``` r
-gen_composite_code(schema, base_scripts, output_file)
+gen_composite_code(
+  schema,
+  base_scripts,
+  output_file,
+  model = "anthropic/claude-opus-4-5"
+)
 ```
 
 ## Arguments
@@ -24,6 +29,14 @@ gen_composite_code(schema, base_scripts, output_file)
 - output_file:
 
   Path to write the generated R script.
+
+- model:
+
+  The LLM to use for generating new (non-imported) steps, as a string in
+  \`"provider/model"\` form (e.g. \`"anthropic/claude-opus-4-5"\`,
+  \`"openai/gpt-5"\`, \`"google_gemini/gemini-2.5-flash"\`), passed to
+  \`ellmer::chat()\`. See \[ellmer::chat()\] for the full list of
+  supported providers. Defaults to \`"anthropic/claude-opus-4-5"\`.
 
 ## Value
 

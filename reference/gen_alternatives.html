@@ -55,7 +55,7 @@ set sent to the LLM.</p>
 <span>  <span class="va">step</span>,</span>
 <span>  n <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  provider <span class="op">=</span> <span class="st">"gemini"</span>,</span>
+<span>  model <span class="op">=</span> <span class="st">"anthropic/claude-opus-4-5"</span>,</span>
 <span>  file_path <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
@@ -69,7 +69,7 @@ set sent to the LLM.</p>
 <span>  <span class="va">step</span>,</span>
 <span>  n <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  provider <span class="op">=</span> <span class="st">"gemini"</span>,</span>
+<span>  model <span class="op">=</span> <span class="st">"anthropic/claude-opus-4-5"</span>,</span>
 <span>  file_path <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
@@ -111,9 +111,12 @@ to generate. Defaults to `3`.</p></dd>
 the LLM can suggest alternatives that use different variables from the dataset.</p></dd>
 
 
-<dt id="arg-provider">provider<a class="anchor" aria-label="anchor" href="#arg-provider"></a></dt>
-<dd><p>A character string specifying the LLM provider. Currently
-defaults to `"gemini"`. (`gemini-2.5-flash` via `ellmer`).</p></dd>
+<dt id="arg-model">model<a class="anchor" aria-label="anchor" href="#arg-model"></a></dt>
+<dd><p>The LLM to use for generating alternatives, as a string in
+`"provider/model"` form (e.g. `"anthropic/claude-opus-4-5"`,
+`"openai/gpt-5"`, `"google_gemini/gemini-2.5-flash"`), passed to
+`ellmer::chat()`. See [ellmer::chat()] for the full list of supported
+providers. Defaults to `"anthropic/claude-opus-4-5"`.</p></dd>
 
 
 <dt id="arg-file-path">file_path<a class="anchor" aria-label="anchor" href="#arg-file-path"></a></dt>
@@ -123,7 +126,7 @@ result as a character vector.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Additional arguments passed to methods or to `ellmer::chat_google_gemini()`.</p></dd>
+<dd><p>Additional arguments passed to methods or to `ellmer::chat()`.</p></dd>
 
 
 <dt id="arg-schema">schema<a class="anchor" aria-label="anchor" href="#arg-schema"></a></dt>
@@ -149,10 +152,11 @@ result as a character vector.</p></dd>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>**Important:** This function relies on the `ellmer` package to communicate with
-Google's Gemini API. You must have your API credentials configured correctly in
-your R environment (e.g., via the `GEMINI_API_KEY` environment variable) for
-this to work.</p>
+    <p>**Important:** This function relies on the `ellmer` package to communicate
+with an LLM provider. You must have your API credentials configured
+correctly in your R environment (e.g., via an environment variable such as
+`ANTHROPIC_API_KEY` or `OPENAI_API_KEY`, depending on the `model` chosen)
+for this to work.</p>
     </div>
 
     <div class="section level2">
@@ -247,7 +251,7 @@ this to work.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

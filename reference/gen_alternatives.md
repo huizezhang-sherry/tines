@@ -15,7 +15,7 @@ gen_alternatives(
   step,
   n = 3,
   data = NULL,
-  provider = "gemini",
+  model = "anthropic/claude-opus-4-5",
   file_path = NULL,
   ...
 )
@@ -29,7 +29,7 @@ gen_alternatives(
   step,
   n = 3,
   data = NULL,
-  provider = "gemini",
+  model = "anthropic/claude-opus-4-5",
   file_path = NULL,
   ...
 )
@@ -70,10 +70,13 @@ prompt_alternatives(
   can suggest alternatives that use different variables from the
   dataset.
 
-- provider:
+- model:
 
-  A character string specifying the LLM provider. Currently defaults to
-  \`"gemini"\`. (\`gemini-2.5-flash\` via \`ellmer\`).
+  The LLM to use for generating alternatives, as a string in
+  \`"provider/model"\` form (e.g. \`"anthropic/claude-opus-4-5"\`,
+  \`"openai/gpt-5"\`, \`"google_gemini/gemini-2.5-flash"\`), passed to
+  \`ellmer::chat()\`. See \[ellmer::chat()\] for the full list of
+  supported providers. Defaults to \`"anthropic/claude-opus-4-5"\`.
 
 - file_path:
 
@@ -83,8 +86,7 @@ prompt_alternatives(
 
 - ...:
 
-  Additional arguments passed to methods or to
-  \`ellmer::chat_google_gemini()\`.
+  Additional arguments passed to methods or to \`ellmer::chat()\`.
 
 - schema:
 
@@ -113,9 +115,10 @@ formatted character string containing the LLM prompt.
 ## Details
 
 \*\*Important:\*\* This function relies on the \`ellmer\` package to
-communicate with Google's Gemini API. You must have your API credentials
-configured correctly in your R environment (e.g., via the
-\`GEMINI_API_KEY\` environment variable) for this to work.
+communicate with an LLM provider. You must have your API credentials
+configured correctly in your R environment (e.g., via an environment
+variable such as \`ANTHROPIC_API_KEY\` or \`OPENAI_API_KEY\`, depending
+on the \`model\` chosen) for this to work.
 
 ## Examples
 

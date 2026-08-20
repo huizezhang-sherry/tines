@@ -14,7 +14,7 @@ extract_schema(
   text,
   data_dict,
   output_file = "draft_schema.yml",
-  model = "claude-opus-4-5"
+  model = "anthropic/claude-opus-4-5"
 )
 
 prompt_extract_schema(data_dict, text, print = TRUE, width = 70)
@@ -37,7 +37,11 @@ prompt_extract_schema(data_dict, text, print = TRUE, width = 70)
 
 - model:
 
-  The LLM to use (defaults to Gemini 2.5 Pro).
+  The LLM to use, as a string in \`"provider/model"\` form (e.g.
+  \`"anthropic/claude-opus-4-5"\`, \`"openai/gpt-5"\`,
+  \`"google_gemini/gemini-2.5-flash"\`), passed to \`ellmer::chat()\`.
+  See \[ellmer::chat()\] for the full list of supported providers.
+  Defaults to \`"anthropic/claude-opus-4-5"\`.
 
 - print:
 

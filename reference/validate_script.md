@@ -1,8 +1,10 @@
 # Auto-Fix an R Script via Iterative LLM Debugging
 
 Executes an R script in an isolated sandbox. If execution fails, the
-error is passed to an LLM (currently only Google Gemini) which attempts
-to fix the script. This loop repeats up to `max_runs` times.
+error is passed to an LLM (via
+[`ellmer::chat()`](https://ellmer.tidyverse.org/reference/chat-any.html))
+which attempts to fix the script. This loop repeats up to `max_runs`
+times.
 
 ## Usage
 
@@ -11,7 +13,7 @@ validate_script(
   file,
   data = NULL,
   max_runs = 5,
-  model = "gemini-2.5-pro",
+  model = "anthropic/claude-opus-4-5",
   verbose = TRUE,
   as_job = FALSE,
   engine = c("callr", "docker"),
@@ -36,7 +38,13 @@ validate_script(
 
 - model:
 
-  Gemini model string. Default is `"gemini-2.5-pro"`.
+  The LLM to use, as a string in `"provider/model"` form (e.g.
+  `"anthropic/claude-opus-4-5"`, `"openai/gpt-5"`,
+  `"google_gemini/gemini-2.5-flash"`), passed to
+  [`ellmer::chat()`](https://ellmer.tidyverse.org/reference/chat-any.html).
+  See [`chat`](https://ellmer.tidyverse.org/reference/chat-any.html) for
+  the full list of supported providers. Default is
+  `"anthropic/claude-opus-4-5"`.
 
 - verbose:
 

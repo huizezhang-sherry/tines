@@ -10,7 +10,7 @@ gen_code(
   base_code = NULL,
   data = NULL,
   output = "scripts",
-  provider = "gemini",
+  model = "anthropic/claude-opus-4-5",
   ...
 )
 
@@ -20,7 +20,7 @@ gen_code(
   base_code = NULL,
   data = NULL,
   output = "scripts",
-  provider = "gemini",
+  model = "anthropic/claude-opus-4-5",
   ...
 )
 
@@ -30,7 +30,7 @@ gen_code(
   base_code = NULL,
   data = NULL,
   output = "scripts",
-  provider = "gemini",
+  model = "anthropic/claude-opus-4-5",
   ...
 )
 
@@ -40,7 +40,7 @@ gen_code(
   base_code = NULL,
   data = NULL,
   output = "scripts",
-  provider = "gemini",
+  model = "anthropic/claude-opus-4-5",
   ...
 )
 
@@ -72,9 +72,13 @@ prompt_gen_code(
   For schemas: file path (ending in .R) or directory. For multiverses:
   must be a directory. Defaults to "scripts".
 
-- provider:
+- model:
 
-  The LLM provider to use for code generation. Currently only "gemini".
+  The LLM to use for code generation, as a string in
+  \`"provider/model"\` form (e.g. \`"anthropic/claude-opus-4-5"\`,
+  \`"openai/gpt-5"\`, \`"google_gemini/gemini-2.5-flash"\`), passed to
+  \`ellmer::chat()\`. See \[ellmer::chat()\] for the full list of
+  supported providers. Defaults to \`"anthropic/claude-opus-4-5"\`.
 
 - ...:
 
