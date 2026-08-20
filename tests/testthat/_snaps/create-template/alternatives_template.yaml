@@ -1,15 +1,15 @@
 meta:
   type: alternatives
   step: step-scaling
-  fork: variables are in different scales
+  objective: variables are in different scales
 alternatives:
   - id: "NEW-ALTERNATIVE#1"
-    path: ""
+    decision: ""
     rationale: ""
     input: []
     output: []
   - id: "NEW-ALTERNATIVE#2"
-    path: ""
+    decision: ""
     rationale: ""
     input: []
     output: []

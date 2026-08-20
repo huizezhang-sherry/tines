@@ -8,15 +8,15 @@ schemas:
     name: Path A
   nodes:
   - id: step1
-    fork: path A approach
-    path: describe your decision here
+    objective: path A approach
+    decision: describe your decision here
     rationale: explain your reasoning here
     inputs: []
     outputs: []
     source_schema: ''
   - id: step2
-    fork: path A next step
-    path: describe your decision here
+    objective: path A next step
+    decision: describe your decision here
     rationale: explain your reasoning here
     inputs: []
     outputs: []
@@ -27,15 +27,15 @@ schemas:
     name: Path B
   nodes:
   - id: step1
-    fork: path B approach
-    path: describe your decision here
+    objective: path B approach
+    decision: describe your decision here
     rationale: explain your reasoning here
     inputs: []
     outputs: []
     source_schema: ''
   - id: step2
-    fork: path B next step
-    path: describe your decision here
+    objective: path B next step
+    decision: describe your decision here
     rationale: explain your reasoning here
     inputs: []
     outputs: []

@@ -72,8 +72,8 @@ gen_composite_code <- function(schema, base_scripts, output_file,
       # Create a node-like object for the LLM function
       node <- list(
         id = schema$id[i],
-        fork = schema$fork[i],
-        path = schema$path[i],
+        objective = schema$objective[i],
+        decision = schema$decision[i],
         rationale = schema$rationale[i],
         inputs = schema$inputs[[i]],
         outputs = schema$outputs[[i]]
@@ -142,9 +142,9 @@ llm_generate_step <- function(node, style_context, chat) {
 
     Write R code for the following step. Reference the style above:
     - ID: {node$id}
-    - Action: {node$action}
+    - Objective: {node$objective}
     - Decision: {node$decision}
-    - Justification: {node$justification}
+    - Rationale: {node$rationale}
     - Inputs: {paste(unlist(node$inputs), collapse = ', ')}
     - Outputs: {paste(unlist(node$outputs), collapse = ', ')}
 

@@ -4,11 +4,11 @@
       schema_read
     Output
       # A schema: HDI Example
-        id             fork               path  rationale source_schema inputs outputs
-        <chr>          <chr>              <chr> <chr>     <chr>         <list> <list> 
-      1 step-scaling   variables are in ~ appl~ to put t~ <NA>          <chr>  <chr>  
-      2 step-education combine the schoo~ aver~ the most~ <NA>          <chr>  <chr>  
-      3 step-combine   combine the three~ use ~ the geom~ <NA>          <chr>  <chr>  
+        id             objective       decision rationale source_schema inputs outputs
+        <chr>          <chr>           <chr>    <chr>     <chr>         <list> <list> 
+      1 step-scaling   variables are ~ apply m~ to put t~ <NA>          <chr>  <chr>  
+      2 step-education combine the sc~ average~ the most~ <NA>          <chr>  <chr>  
+      3 step-combine   combine the th~ use the~ the geom~ <NA>          <chr>  <chr>  
 
 ---
 

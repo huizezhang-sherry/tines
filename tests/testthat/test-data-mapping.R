@@ -15,15 +15,15 @@ test_that("update io", {
   schema <- build_schema(data = data_2023) |>
     add_step(
       id = "step-filter",
-      fork = "remove missing values",
-      path = "exclude rows with NA",
+      objective = "remove missing values",
+      decision = "exclude rows with NA",
       inputs = c("age", "income"),
       outputs = "df_clean"
     ) |>
     add_step(
       id = "step-transform",
-      fork = "log transform income",
-      path = "use natural log",
+      objective = "log transform income",
+      decision = "use natural log",
       inputs = "df_clean",
       outputs = "df_transformed"
     )

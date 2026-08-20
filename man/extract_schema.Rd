@@ -30,7 +30,8 @@ with at least a `name` column and an optional `description` column.}
 
 \item{print}{If `TRUE`, prints the prompt to console instead of returning it.}
 
-\item{width}{If `print = TRUE`, the width to wrap the printed prompt (default 70).}
+\item{width}{If `print = TRUE`, the width to wrap the printed prompt
+(default 70).}
 }
 \value{
 The file path to the generated YAML file (invisibly).
@@ -45,17 +46,24 @@ in the analysis pipeline.
 }
 \examples{
 text <- football_grp20
-data_dict <- c("playerShort", "player", "club", "leagueCountry", "birthday", "height",
-               "weight", "position", "games", "victories", "ties", "defeats",
-               "goals", "yellowCards", "yellowReds", "redCards", "photoID", "rater1",
-               "rater2", "refNum", "refCountry", "Alpha_3", "meanIAT", "nIAT",
-               "seIAT", "meanExp", "nExp", "seExp")
+data_dict <- c(
+  "playerShort", "player", "club", "leagueCountry", "birthday", "height",
+  "weight", "position", "games", "victories", "ties", "defeats",
+  "goals", "yellowCards", "yellowReds", "redCards", "photoID", "rater1",
+  "rater2", "refNum", "refCountry", "Alpha_3", "meanIAT", "nIAT",
+  "seIAT", "meanExp", "nExp", "seExp"
+)
 
 \dontrun{
 extract_schema(text, data_dict, output_file = "draft_schema.yml")
 }
 
-# The prompt generation function can be used directly to see the full prompt sent to the LLM
-prompt_extract_schema(data_dict = paste0(data_dict, collapse = ", "), text = text, print = TRUE)
+# The prompt generation function can be used directly to see the full
+# prompt sent to the LLM
+prompt_extract_schema(
+  data_dict = paste0(data_dict, collapse = ", "),
+  text = text,
+  print = TRUE
+)
 
 }

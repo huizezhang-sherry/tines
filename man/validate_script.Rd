@@ -23,19 +23,21 @@ the sandbox at \code{data/<basename>}.}
 
 \item{max_runs}{Maximum number of LLM fix attempts. Default is \code{5}.}
 
-\item{model}{The LLM to use, as a string in \code{"provider/model"} form
-(e.g. \code{"anthropic/claude-opus-4-5"}, \code{"openai/gpt-5"},
-\code{"google_gemini/gemini-2.5-flash"}), passed to \code{ellmer::chat()}.
+\item{model}{The LLM to use, as a string in \code{'provider/model'} form
+(e.g. \code{'anthropic/claude-opus-4-5'}, \code{'openai/gpt-5'},
+\code{'google_gemini/gemini-2.5-flash'}), passed to \code{ellmer::chat()}.
 See \code{\link[ellmer]{chat}} for the full list of supported providers.
-Default is \code{"anthropic/claude-opus-4-5"}.}
+Default is \code{'anthropic/claude-opus-4-5'}.}
 
 \item{verbose}{If \code{TRUE}, saves a copy of the script at each iteration.}
 
 \item{as_job}{If \code{TRUE}, runs the process as a background job. If
-\code{FALSE} (default), runs in the current R session. Only used when \code{engine = "callr"}.}
+\code{FALSE} (default), runs in the current R session. Only used when
+\code{engine = 'callr'}.}
 
-\item{engine}{One of \code{"callr"} (default) or \code{"docker"}. Controls
-the execution to be with \code{callr} in a temp directory sandbox (in session or as a background job),
+\item{engine}{One of \code{'callr'} (default) or \code{'docker'}. Controls
+the execution to be with \code{callr} in a temp directory sandbox (in
+session or as a background job),
 or within a Docker container.}
 
 \item{scan_code}{If \code{TRUE} (default), scans the script for potentially

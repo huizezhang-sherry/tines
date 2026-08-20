@@ -23,26 +23,36 @@ inspect_dot(
 \arguments{
 \item{x}{A `schema` or `multiverse` object.}
 
-\item{...}{Additional arguments passed to methods or to `DiagrammeR::grViz()`.}
+\item{...}{Additional arguments passed to methods or to
+`DiagrammeR::grViz()`.}
 
-\item{index}{An integer. For a `multiverse`, which path index to draw. Defaults to 1.}
+\item{index}{An integer. For a `multiverse`, which path index to draw.
+Defaults to 1.}
 
-\item{data}{Optional. A data frame or path to a data file. If schema is unmapped,
-this will be used to automatically map variables for visualization.}
+\item{data}{Optional. A data frame or path to a data file. If schema is
+unmapped, this will be used to automatically map variables for
+visualization.}
 
 \item{schema}{A `schema` object to convert to DOT code for inspection.}
 
-\item{indent}{Integer. The number of spaces to use for each indentation level in `inspect_dot()`. Defaults to 2.}
+\item{indent}{Integer. The number of spaces to use for each indentation
+level in `inspect_dot()`. Defaults to 2.}
 
-\item{keep_attr_blocks_one_line}{Logical. If `TRUE`, attempts to keep square bracket `[]` attribute blocks on a single line.}
+\item{keep_attr_blocks_one_line}{Logical. If `TRUE`, attempts to keep
+square bracket `[]` attribute blocks on a single line.}
 
-\item{trim_trailing_ws}{Logical. If `TRUE`, trims trailing whitespace from the final output.}
+\item{trim_trailing_ws}{Logical. If `TRUE`, trims trailing whitespace from
+the final output.}
 }
 \value{
-`draw_tines()` and `plot()` return an `htmlwidget` object produced by `DiagrammeR::grViz()`. `inspect_dot()` invisibly returns `NULL` and prints to the console.
+`draw_tines()` and `plot()` return an `htmlwidget` object produced by
+`DiagrammeR::grViz()`. `inspect_dot()` invisibly returns `NULL` and prints
+to the console.
 }
 \description{
-Functions to plot the tines object with Graphviz diagrams. `draw_tines()` and the `plot()` methods render the interactive widget. `inspect_dot()` formats and prints raw DOT strings to the console for debugging.
+Functions to plot the tines object with Graphviz diagrams. `draw_tines()`
+and the `plot()` methods render the interactive widget. `inspect_dot()`
+formats and prints raw DOT strings to the console for debugging.
 }
 \examples{
 schema <- example_schema()

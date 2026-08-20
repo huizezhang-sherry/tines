@@ -1,9 +1,9 @@
 #' Construct `alternatives` objects
 #'
 #' @param id Unique identifier for this alternative (kebab-case).
-#' @param fork The decision point or goal of the step (should match the
+#' @param objective The decision point or goal of the step (should match the
 #'   original).
-#' @param path The new method/implementation.
+#' @param decision The new method/implementation.
 #' @param rationale Why this method is valid.
 #' @param step The target step ID in the schema that these alternatives
 #'   pertain to.
@@ -14,18 +14,18 @@
 #' @examples
 #' example_alternatives(case = "football")
 #'
-alternative <- function(id, fork, path, rationale) {
+alternative <- function(id, objective, decision, rationale) {
   # Quick validation to ensure no missing pieces
-  if (missing(id) || missing(fork) || missing(path) || missing(rationale)) {
+  if (missing(id) || missing(objective) || missing(decision) || missing(rationale)) {
     cli::cli_abort(
-      "All arguments (`id`, `fork`, `path`, `rationale`) are required."
+      "All arguments (`id`, `objective`, `decision`, `rationale`) are required."
     )
   }
 
   list(
     id = id,
-    fork = fork,
-    path = path,
+    objective = objective,
+    decision = decision,
     rationale = rationale
   )
 }
@@ -39,8 +39,8 @@ new_alternatives <- function(step, ...) {
   df <- purrr::map_dfr(alts, function(alt) {
     tibble::tibble(
       id = alt$id,
-      fork = alt$fork,
-      path = alt$path,
+      objective = alt$objective,
+      decision = alt$decision,
       rationale = alt$rationale
     )
   })
@@ -73,7 +73,7 @@ new_alternatives <- function(step, ...) {
 write_alternatives <- function(x, file, ...) {
   # Convert data frame rows to list format for YML
   alternatives_list <- purrr::pmap(
-    x[c("id", "fork", "path", "rationale")],
+    x[c("id", "objective", "decision", "rationale")],
     function(...) list(...)
   )
 
@@ -102,13 +102,13 @@ read_alternatives <- function(file, ...) {
 
   # 2. Extract the target step
   target <- raw_yaml$meta$step
-  fork <- raw_yaml$meta$fork
+  objective <- raw_yaml$meta$objective
 
   # 3. Convert to data frame structure
   df <- purrr::map_dfr(raw_yaml$alternatives, function(a) {
     tibble::tibble(
       id = a$id,
-      path = a$path,
+      decision = a$decision,
       rationale = a$rationale
     )
   })

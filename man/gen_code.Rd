@@ -55,11 +55,13 @@ prompt_gen_code(
 \arguments{
 \item{x}{A schema object, multiverse object, or file path to a schema YML.}
 
-\item{base_code}{Optional. File path to an R script to use as style reference.}
+\item{base_code}{Optional. File path to an R script to use as style
+reference.}
 
-\item{data}{Optional. Data source specification (file path or "package::dataset").}
+\item{data}{Optional. Data source specification (file path or
+"package::dataset").}
 
-\item{output}{For schemas: file path (ending in .R) or directory. 
+\item{output}{For schemas: file path (ending in .R) or directory.
 For multiverses: must be a directory. Defaults to "scripts".}
 
 \item{model}{The LLM to use for code generation, as a string in
@@ -72,9 +74,11 @@ providers. Defaults to `"anthropic/claude-opus-4-5"`.}
 
 \item{schema}{A schema object to include in the prompt.}
 
-\item{print}{If `TRUE`, prints the prompt to console instead of returning it.}
+\item{print}{If `TRUE`, prints the prompt to console instead of returning
+it.}
 
-\item{width}{If `print = TRUE`, the width to wrap the printed prompt (default 70).}
+\item{width}{If `print = TRUE`, the width to wrap the printed prompt
+(default 70).}
 }
 \value{
 Invisibly returns the path(s) to the generated script(s).
@@ -94,6 +98,7 @@ schema |>
   gen_code(output = "scripts/")
 }
 
-# The prompt generation function can be used directly to see the full prompt sent to the LLM
+# The prompt generation function can be used directly to see the full
+# prompt sent to the LLM
 prompt_gen_code(data = "inst/football.csv")
 }

@@ -61,8 +61,8 @@ draft_tines <- function(type = c("schema", "multiverse"), file_path = NULL,
       nodes = list(
         list(
           id = "step1",
-          fork = "describe your first step here",
-          path = "describe your decision here",
+          objective = "describe your first step here",
+          decision = "describe your decision here",
           rationale = "explain your reasoning here",
           inputs = list(),
           outputs = list(),
@@ -70,8 +70,8 @@ draft_tines <- function(type = c("schema", "multiverse"), file_path = NULL,
         ),
         list(
           id = "step2",
-          fork = "describe your next step here",
-          path = "describe your decision here",
+          objective = "describe your next step here",
+          decision = "describe your decision here",
           rationale = "explain your reasoning here",
           inputs = list(),
           outputs = list(),
@@ -94,14 +94,14 @@ draft_tines <- function(type = c("schema", "multiverse"), file_path = NULL,
           ),
           nodes = list(
             list(
-              id = "step1", fork = "path A approach",
-              path = "describe your decision here",
+              id = "step1", objective = "path A approach",
+              decision = "describe your decision here",
               rationale = "explain your reasoning here",
               inputs = list(), outputs = list(), source_schema = ""
             ),
             list(
-              id = "step2", fork = "path A next step",
-              path = "describe your decision here",
+              id = "step2", objective = "path A next step",
+              decision = "describe your decision here",
               rationale = "explain your reasoning here",
               inputs = list(), outputs = list(), source_schema = ""
             )
@@ -115,14 +115,14 @@ draft_tines <- function(type = c("schema", "multiverse"), file_path = NULL,
           ),
           nodes = list(
             list(
-              id = "step1", fork = "path B approach",
-              path = "describe your decision here",
+              id = "step1", objective = "path B approach",
+              decision = "describe your decision here",
               rationale = "explain your reasoning here",
               inputs = list(), outputs = list(), source_schema = ""
             ),
             list(
-              id = "step2", fork = "path B next step",
-              path = "describe your decision here",
+              id = "step2", objective = "path B next step",
+              decision = "describe your decision here",
               rationale = "explain your reasoning here",
               inputs = list(), outputs = list(), source_schema = ""
             )
@@ -158,22 +158,22 @@ draft_alternatives <- function(x, id, file_path = NULL) {
     cli::cli_abort("Step {.val {id}} not found in the {class(x)} object")
   }
 
-  current_action <- x$fork[which(x$id == id)]
-  fork <- x$fork[which(x$id == id)]
+  current_objective <- x$objective[which(x$id == id)]
+  objective <- x$objective[which(x$id == id)]
 
   template <- cli::format_inline(
     "meta:
   type: alternatives
   step: {id}
-  fork: {fork}
+  objective: {objective}
 alternatives:
   - id: \"NEW-ALTERNATIVE#1\"
-    path: \"\"
+    decision: \"\"
     rationale: \"\"
     input: []
     output: []
   - id: \"NEW-ALTERNATIVE#2\"
-    path: \"\"
+    decision: \"\"
     rationale: \"\"
     input: []
     output: []

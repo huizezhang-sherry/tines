@@ -15,11 +15,11 @@
       
          - 'id': A unique snake_case identifier.
       
-         - 'fork': MUST be framed as an open methodological goal that invites multiple possible approaches. It must NOT describe the final choice.
+         - 'objective': MUST be framed as an open methodological goal that invites multiple possible approaches. It must NOT describe the final choice.
       
-         - 'path': A 'path' is strictly a POSITIVE methodological decision that has potential theoretical alternatives, chosen to resolve the 'fork'.
+         - 'decision': A 'decision' is strictly a POSITIVE methodological choice that has potential theoretical alternatives, chosen to resolve the 'objective'.
       
-         - 'rationale': WHY that decision (the path) was made, extracted from the text.
+         - 'rationale': WHY that decision was made, extracted from the text.
       
       2. DATA MAPPING: Assign 'inputs' (EXACT column names from the dataset OR outputs from previous nodes) and 'outputs' (invented snake_case objects like 'df_clean' or 'ranef_spec').
       
@@ -36,14 +36,14 @@
       meta:
         type: schema
       nodes:
-      - fork: variables are in different scales
-        path: apply min-max scaling to each variable
-        justification: to put them on the same scale for combination
+      - objective: variables are in different scales
+        decision: apply min-max scaling to each variable
+        rationale: to put them on the same scale for combination
         id: step-scaling
         confidence: high
-      - fork: combine the school variables into one dimension
-        path: average exp sch and avg sch
-        justification: the most intuitive way
+      - objective: combine the school variables into one dimension
+        decision: average exp sch and avg sch
+        rationale: the most intuitive way
         id: step-education
         confidence: low
       
@@ -65,11 +65,11 @@
       
          - 'id': A unique snake_case identifier.
       
-         - 'fork': MUST be framed as an open methodological goal that invites multiple possible approaches. It must NOT describe the final choice.
+         - 'objective': MUST be framed as an open methodological goal that invites multiple possible approaches. It must NOT describe the final choice.
       
-         - 'path': A 'path' is strictly a POSITIVE methodological decision that has potential theoretical alternatives, chosen to resolve the 'fork'.
+         - 'decision': A 'decision' is strictly a POSITIVE methodological choice that has potential theoretical alternatives, chosen to resolve the 'objective'.
       
-         - 'rationale': WHY that decision (the path) was made, extracted from the text.
+         - 'rationale': WHY that decision was made, extracted from the text.
       
       2. DATA MAPPING: Assign 'inputs' (EXACT column names from the dataset OR outputs from previous nodes) and 'outputs' (invented snake_case objects like 'df_clean' or 'ranef_spec').
       
@@ -86,14 +86,14 @@
       meta:
         type: schema
       nodes:
-      - fork: variables are in different scales
-        path: apply min-max scaling to each variable
-        justification: to put them on the same scale for combination
+      - objective: variables are in different scales
+        decision: apply min-max scaling to each variable
+        rationale: to put them on the same scale for combination
         id: step-scaling
         confidence: high
-      - fork: combine the school variables into one dimension
-        path: average exp sch and avg sch
-        justification: the most intuitive way
+      - objective: combine the school variables into one dimension
+        decision: average exp sch and avg sch
+        rationale: the most intuitive way
         id: step-education
         confidence: low
       
@@ -115,11 +115,11 @@
       
          - 'id': A unique snake_case identifier.
       
-         - 'fork': MUST be framed as an open methodological goal that invites multiple possible approaches. It must NOT describe the final choice.
+         - 'objective': MUST be framed as an open methodological goal that invites multiple possible approaches. It must NOT describe the final choice.
       
-         - 'path': A 'path' is strictly a POSITIVE methodological decision that has potential theoretical alternatives, chosen to resolve the 'fork'.
+         - 'decision': A 'decision' is strictly a POSITIVE methodological choice that has potential theoretical alternatives, chosen to resolve the 'objective'.
       
-         - 'rationale': WHY that decision (the path) was made, extracted from the text.
+         - 'rationale': WHY that decision was made, extracted from the text.
       
       2. DATA MAPPING: Assign 'inputs' (EXACT column names from the dataset OR outputs from previous nodes) and 'outputs' (invented snake_case objects like 'df_clean' or 'ranef_spec').
       
@@ -136,14 +136,14 @@
       meta:
         type: schema
       nodes:
-      - fork: variables are in different scales
-        path: apply min-max scaling to each variable
-        justification: to put them on the same scale for combination
+      - objective: variables are in different scales
+        decision: apply min-max scaling to each variable
+        rationale: to put them on the same scale for combination
         id: step-scaling
         confidence: high
-      - fork: combine the school variables into one dimension
-        path: average exp sch and avg sch
-        justification: the most intuitive way
+      - objective: combine the school variables into one dimension
+        decision: average exp sch and avg sch
+        rationale: the most intuitive way
         id: step-education
         confidence: low
       

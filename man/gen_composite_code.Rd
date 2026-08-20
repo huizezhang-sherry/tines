@@ -2,7 +2,7 @@
 % Please edit documentation in R/gen_composite_code.R
 \name{gen_composite_code}
 \alias{gen_composite_code}
-\title{Generate R code from a composite schema assembled from multiple source schemas}
+\title{Generate R code from a composite schema built from several source schemas}
 \usage{
 gen_composite_code(
   schema,
@@ -12,10 +12,10 @@ gen_composite_code(
 )
 }
 \arguments{
-\item{schema}{A schema object assembled via `build_schema()`, `import_step()`,
-and `add_step()`.}
+\item{schema}{A schema object assembled via `build_schema()`,
+`import_step()`, and `add_step()`.}
 
-\item{base_scripts}{Named list mapping source schema object names to their 
+\item{base_scripts}{Named list mapping source schema object names to their
 base R scripts, e.g. `list(spei_template = here::here("inst/spei.R"))`.}
 
 \item{output_file}{Path to write the generated R script.}
@@ -30,19 +30,19 @@ providers. Defaults to `"anthropic/claude-opus-4-5"`.}
 Invisibly returns the generated code as a character string.
 }
 \description{
-Generate R code from a composite schema assembled from multiple source schemas
+Generate R code from a composite schema built from several source schemas
 }
 \examples{
 \dontrun{
 schema <- example_rdi()
 
 code <- gen_composite_code(
-  schema       = schema,
+  schema = schema,
   base_scripts = list(
     spei_template = here::here("inst/spei.R"),
     spi_template  = here::here("inst/spi.R")
   ),
-  output_file  = here::here("inst/rdi.R")
+  output_file = here::here("inst/rdi.R")
 )
 }
 }

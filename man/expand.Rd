@@ -15,11 +15,13 @@ expand_tines(x, alternatives, ...)
 \arguments{
 \item{x}{A `schema` object.}
 
-\item{alternatives}{an `alternatives` object or the path to an alternative YAML}
+\item{alternatives}{an `alternatives` object or the path to an alternative
+YAML}
 
 \item{...}{Additional arguments.}
 
-\item{include_original}{A logical. If `TRUE`, the original schema will be included as a branch in the resulting multiverse. Defaults to `TRUE`.}
+\item{include_original}{A logical. If `TRUE`, the original schema will be
+included as a branch in the resulting multiverse. Defaults to `TRUE`.}
 }
 \description{
 Expand a schema with an alternative YAML into a multiverse

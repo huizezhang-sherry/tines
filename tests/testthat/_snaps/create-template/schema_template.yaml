@@ -4,15 +4,15 @@ meta:
   name: My Analysis Schema
 nodes:
 - id: step1
-  fork: describe your first step here
-  path: describe your decision here
+  objective: describe your first step here
+  decision: describe your decision here
   rationale: explain your reasoning here
   inputs: []
   outputs: []
   source_schema: ''
 - id: step2
-  fork: describe your next step here
-  path: describe your decision here
+  objective: describe your next step here
+  decision: describe your decision here
   rationale: explain your reasoning here
   inputs: []
   outputs: []

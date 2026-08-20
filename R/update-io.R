@@ -57,13 +57,13 @@
 #' # specify the dataset when creating the schema through `build_schema()`
 #' schema <- build_schema(data = data_2023) |>
 #'   add_step(
-#'     id = "step-filter", fork = "remove missing values",
-#'     path = "exclude rows with NA",
+#'     id = "step-filter", objective = "remove missing values",
+#'     decision = "exclude rows with NA",
 #'     inputs = c("age", "income"), outputs = "df_clean"
 #'   ) |>
 #'   add_step(
-#'     id = "step-transform", fork = "log transform income",
-#'     path = "use natural log",
+#'     id = "step-transform", objective = "log transform income",
+#'     decision = "use natural log",
 #'     inputs = "df_clean", outputs = "df_transformed"
 #'   )
 #'
@@ -93,13 +93,13 @@
 #' schema_llm <- build_schema() |>
 #'   add_step(
 #'     id = "step-filter",
-#'     fork = "remove missing values",
-#'     path = "exclude rows with NA"
+#'     objective = "remove missing values",
+#'     decision = "exclude rows with NA"
 #'   ) |>
 #'   add_step(
 #'     id = "step-transform",
-#'     fork = "log transform income",
-#'     path = "use natural log"
+#'     objective = "log transform income",
+#'     decision = "use natural log"
 #'   ) |>
 #'   gen_io(data = data_2023)
 #' }
@@ -493,7 +493,7 @@ build_mapping_prompt <- function(schema, data_dict) {
     "1. Inputs must be actual column names from the dataset (or outputs from previous steps)\n",
     "2. Outputs are new variables being created, use snake_case naming\n",
     "3. If a step doesn't need inputs (e.g., initial data load), use empty array []\n",
-    "4. Be specific - match variable names to the step's action and decision\n",
+    "4. Be specific - match variable names to the step's objective and decision\n",
     "5. Preserve the chronological order of steps\n\n",
     "=== DATASET COLUMNS ===\n\n",
     col_info, "\n\n",

@@ -4,11 +4,11 @@
       schema
     Output
       # A schema: HDI Example
-        id             fork               path  rationale inputs outputs source_schema
-        <chr>          <chr>              <chr> <chr>     <list> <list>  <lgl>        
-      1 step-scaling   variables are in ~ appl~ to put t~ <lgl>  <lgl>   NA           
-      2 step-education combine the schoo~ aver~ the most~ <lgl>  <lgl>   NA           
-      3 step-combine   combine the three~ use ~ the geom~ <lgl>  <lgl>   NA           
+        id             objective       decision rationale inputs outputs source_schema
+        <chr>          <chr>           <chr>    <chr>     <list> <list>  <lgl>        
+      1 step-scaling   variables are ~ apply m~ to put t~ <lgl>  <lgl>   NA           
+      2 step-education combine the sc~ average~ the most~ <lgl>  <lgl>   NA           
+      3 step-combine   combine the th~ use the~ the geom~ <lgl>  <lgl>   NA           
 
 ---
 
@@ -30,7 +30,7 @@
       print(build_schema())
     Output
       # A schema: 0 x 7
-      # i 7 variables: id <chr>, fork <chr>, path <chr>, rationale <chr>,
+      # i 7 variables: id <chr>, objective <chr>, decision <chr>, rationale <chr>,
       #   inputs <list>, outputs <list>, source_schema <chr>
 
 ---

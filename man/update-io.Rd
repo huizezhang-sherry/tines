@@ -21,9 +21,10 @@ update_io(schema, id, inputs = NULL, outputs = NULL, data = NULL)
 \arguments{
 \item{schema}{A `schema` object}
 
-\item{data}{A data frame or path to a data file. For `gen_io()` and `update_data()`, 
-this is required. For `update_io()`, this is optional - if provided, validates 
-the updated inputs/outputs against this dataset (without attaching it).}
+\item{data}{A data frame or path to a data file. For `gen_io()` and
+`update_data()`, this is required. For `update_io()`, this is optional -
+if provided, validates the updated inputs/outputs against this dataset
+(without attaching it).}
 
 \item{interactive}{Logical. If TRUE, prompts user for ambiguous mappings}
 
@@ -35,7 +36,8 @@ providers. Defaults to `"google_gemini/gemini-2.5-flash"`.}
 
 \item{force}{Logical. If TRUE, remaps even if already mapped}
 
-\item{id}{Character string identifying which step to update (for `update_io()`)}
+\item{id}{Character string identifying which step to update (for
+`update_io()`)}
 
 \item{inputs}{Character vector of input variable names}
 
@@ -45,20 +47,22 @@ providers. Defaults to `"google_gemini/gemini-2.5-flash"`.}
 A `schema` object with updated inputs/outputs and data reference
 }
 \description{
-These functions manage the relationship between a schema and its dataset. Here are the four main 
-scenarios they cover:
+These functions manage the relationship between a schema and its dataset.
+Here are the four main scenarios they cover:
 
-* Specify the dataset when creating the schema through [build_schema()] and 
+* Specify the dataset when creating the schema through [build_schema()] and
   the inputs/outputs for each step as you add them with [add_step()].
 
-* Modify the inputs/outputs for a specific step later with [update_io()]. The function  
-  will validate the updated mapping against the attached dataset (if any).
+* Modify the inputs/outputs for a specific step later with [update_io()].
+  The function will validate the updated mapping against the attached
+  dataset (if any).
 
-* Provide a new dataset to an existing schema with [update_data()]. The function
-  will validate the entire schema (inputs/outputs) against the new dataset.
+* Provide a new dataset to an existing schema with [update_data()]. The
+  function will validate the entire schema (inputs/outputs) against the new
+  dataset.
 
-* Combine the update of data and inputs/outputs in one step with [update_io()] 
-  by providing the new dataset using the `data` argument.
+* Combine the update of data and inputs/outputs in one step with
+  [update_io()] by providing the new dataset using the `data` argument.
 }
 \examples{
 # Create example datasets
@@ -70,56 +74,57 @@ data_2023 <- data.frame(
 
 data_2024 <- data.frame(
   age = c(26, 31, 36, 40, 46),
-  salary = c(52000, 62000, 68000, 72000, 82000),  # Note: 'salary' not 'income'
+  salary = c(52000, 62000, 68000, 72000, 82000), # Note: 'salary' not 'income'
   city = c("NYC", "LA", "Chicago", "Boston", "LA")
 )
 
-# Scenario 1: 
+# Scenario 1:
 # specify the dataset when creating the schema through `build_schema()`
 schema <- build_schema(data = data_2023) |>
   add_step(
-    id = "step-filter", fork = "remove missing values", 
-    path = "exclude rows with NA",
+    id = "step-filter", objective = "remove missing values",
+    decision = "exclude rows with NA",
     inputs = c("age", "income"), outputs = "df_clean"
   ) |>
   add_step(
-    id = "step-transform", fork = "log transform income", 
-    path = "use natural log",
+    id = "step-transform", objective = "log transform income",
+    decision = "use natural log",
     inputs = "df_clean", outputs = "df_transformed"
   )
 
-# Scenario 2: 
+# Scenario 2:
 # modify the inputs/outputs with `update_io()`
 schema_mod <- update_io(schema, "step-filter", inputs = c("age"))
 
-# Scenario 3: 
+# Scenario 3:
 # provide a new dataset to an existing schema with `update_data()`
-# The function will trigger validation and return an error when 
+# The function will trigger validation and return an error when
 # the mapping is broken (e.g., "income" not found in new dataset)
 \dontrun{
 schema <- update_data(schema, data_2024)
 }
 
-# Scenario 4: 
-# combine the update of data and inputs/outputs in one step with `update_io()` 
+# Scenario 4:
+# combine the update of data and inputs/outputs in one step with `update_io()`
 # by providing the new dataset using the `data` argument.
 schema_2024 <- update_io(schema, "step-filter",
-                    inputs = c("age", "salary", "city"),
-                    outputs = "df_clean",
-                    data = data_2024)
+  inputs = c("age", "salary", "city"),
+  outputs = "df_clean",
+  data = data_2024
+)
 
 # LLM approach: auto-infer from dataset (leave untouched)
 \dontrun{
 schema_llm <- build_schema() |>
   add_step(
     id = "step-filter",
-    fork = "remove missing values",
-    path = "exclude rows with NA"
+    objective = "remove missing values",
+    decision = "exclude rows with NA"
   ) |>
   add_step(
-    id = "step-transform", 
-    fork = "log transform income",
-    path = "use natural log"
+    id = "step-transform",
+    objective = "log transform income",
+    decision = "use natural log"
   ) |>
   gen_io(data = data_2023)
 }

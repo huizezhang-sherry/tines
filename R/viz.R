@@ -83,12 +83,12 @@ tines2dotspec <- function(x, ...) {
     cli::cli_abort("Object must be a {.cls schema}")
   }
 
-  # 1. Prepare Node Definitions: use the id as the ID and the action/id as
+  # 1. Prepare Node Definitions: use the id as the ID and the decision/id as
   # the label
-  path <- gsub("\\'", "", x$path)
-  path <- gsub('\\"', "", path)
+  decision <- gsub("\\'", "", x$decision)
+  decision <- gsub('\\"', "", decision)
   node_strings <- paste0(
-    '  "', x$id, '" [label="', x$id, "\n(", path, ')", ',
+    '  "', x$id, '" [label="', x$id, "\n(", decision, ')", ',
     "shape=box, style=filled, fillcolor=white]"
   )
 

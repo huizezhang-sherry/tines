@@ -4,22 +4,22 @@ meta:
     name: HDI Example
 nodes:
 -   id: step-scaling
-    fork: variables are in different scales
-    path: apply min-max scaling to each variable
+    objective: variables are in different scales
+    decision: apply min-max scaling to each variable
     rationale: to put them on the same scale for combination
     inputs: []
     outputs: []
     source_schema: .na
 -   id: step-education
-    fork: combine the school variables into one dimension
-    path: average exp sch and avg sch
+    objective: combine the school variables into one dimension
+    decision: average exp sch and avg sch
     rationale: the most intuitive way
     inputs: []
     outputs: []
     source_schema: .na
 -   id: step-combine
-    fork: combine the three dimensions into a single index
-    path: use the geometric mean
+    objective: combine the three dimensions into a single index
+    decision: use the geometric mean
     rationale: the geometric mean is more appropriate than arithmetic mean
     inputs: []
     outputs: []

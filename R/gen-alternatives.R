@@ -183,9 +183,9 @@ prompt_alternatives <- function(schema = NULL, step, n = 3, data_dict = NULL,
     "valid but distinct from the current approach.\n\n",
     "=== DEFINITIONS ===\n\n",
     "The schema provided to you consists of steps with:\n\n",
-    "- **ACTION**: The goal of the step (What needs to be done).\n\n",
+    "- **OBJECTIVE**: The goal of the step (What needs to be done).\n\n",
     "- **DECISION**: The specific implementation chosen (How it is done).\n\n",
-    "- **JUSTIFICATION**: The reasoning behind that decision.\n\n",
+    "- **RATIONALE**: The reasoning behind that decision.\n\n",
     "- **ID**: The unique identifier for the step (kebab-case).\n\n",
     if (!is.null(data_dict)) {
       paste0(
@@ -198,10 +198,10 @@ prompt_alternatives <- function(schema = NULL, step, n = 3, data_dict = NULL,
     "Your goal is to generate ", n,
     " distinct, valid alternatives for this step.\n\n",
     "For each alternative:\n",
-    "1. **Keep the same ACTION** (the goal remains constant).\n\n",
+    "1. **Keep the same OBJECTIVE** (the goal remains constant).\n\n",
     "2. **Change the DECISION** to a different but methodologically sound ",
     "approach.\n\n",
-    "3. **Provide a new JUSTIFICATION** explaining why this alternative is ",
+    "3. **Provide a new RATIONALE** explaining why this alternative is ",
     "valid.\n\n",
     "4. **Create a new ID** that reflects the new decision (must be ",
     "kebab-case).\n\n",
@@ -217,7 +217,7 @@ prompt_alternatives <- function(schema = NULL, step, n = 3, data_dict = NULL,
     "**Crucial Formatting Rules:**\n\n",
     "1. Include a `meta` section at the top with `type: alternative` and the ",
     "`step`.\n\n",
-    "2. Output strictly valid YML. All text values (decision, justification) ",
+    "2. Output strictly valid YML. All text values (decision, rationale) ",
     "must be enclosed in double quotes (\"). ",
     "Do not use block styles (| or >). Do not wrap lines or insert \\n ",
     "characters within the quotes; ",
@@ -235,9 +235,9 @@ prompt_alternatives <- function(schema = NULL, step, n = 3, data_dict = NULL,
     "  step: ", step, "\n",
     "alternatives:\n",
     "  - id: step-new-method-name\n",
-    "    action: Repeat the original action\n",
+    "    objective: Repeat the original objective\n",
     "    decision: \"Description of the new decision...\"\n",
-    "    justification: \"This is the reasoning for why this alternative is ",
+    "    rationale: \"This is the reasoning for why this alternative is ",
     "valid.\"\n",
     if (!is.null(data_dict)) {
       "    inputs: [var1, var2]\n    outputs: [new_var]\n"
@@ -311,20 +311,23 @@ expand_tines.schema <- function(x, alternatives, include_original = TRUE, ...) {
   idx <- which(ids == target)
 
   # Iterate over rows of the alternatives data frame using purrr::pmap
-  new_schemas <- purrr::pmap(alts_data, function(id, fork, path, rationale) {
-    branch <- x
+  new_schemas <- purrr::pmap(
+    alts_data,
+    function(id, objective, decision, rationale) {
+      branch <- x
 
-    # Update the specific row directly since schema is a data frame
-    branch$id[[idx]] <- id
-    branch$path[[idx]] <- path
-    branch$rationale[[idx]] <- rationale
+      # Update the specific row directly since schema is a data frame
+      branch$id[[idx]] <- id
+      branch$decision[[idx]] <- decision
+      branch$rationale[[idx]] <- rationale
 
-    # Preserve the schema class and attributes
-    class(branch) <- c("schema", "tbl_df", "tbl", "data.frame")
-    attr(branch, "name") <- attr(x, "name", exact = TRUE)
+      # Preserve the schema class and attributes
+      class(branch) <- c("schema", "tbl_df", "tbl", "data.frame")
+      attr(branch, "name") <- attr(x, "name", exact = TRUE)
 
-    return(branch)
-  })
+      return(branch)
+    }
+  )
   names(new_schemas) <- alts_data$id
 
   if (include_original) new_schemas <- c(list(original = x), new_schemas)

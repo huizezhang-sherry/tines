@@ -5,20 +5,22 @@
 \alias{new_alternatives}
 \title{Construct `alternatives` objects}
 \usage{
-alternative(id, fork, path, rationale)
+alternative(id, objective, decision, rationale)
 
 new_alternatives(step, ...)
 }
 \arguments{
 \item{id}{Unique identifier for this alternative (kebab-case).}
 
-\item{fork}{The decision point or goal of the step (should match the original).}
+\item{objective}{The decision point or goal of the step (should match the
+original).}
 
-\item{path}{The new method/implementation.}
+\item{decision}{The new method/implementation.}
 
 \item{rationale}{Why this method is valid.}
 
-\item{step}{The target step ID in the schema that these alternatives pertain to.}
+\item{step}{The target step ID in the schema that these alternatives
+pertain to.}
 
 \item{...}{One or more alternative branches created by `alternative()`.}
 }

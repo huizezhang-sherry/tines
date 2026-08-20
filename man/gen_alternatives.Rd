@@ -52,7 +52,8 @@ the LLM to generate alternatives for.}
 to generate. Defaults to `3`.}
 
 \item{data}{Optional. A data frame or path to a data file. If provided,
-the LLM can suggest alternatives that use different variables from the dataset.}
+the LLM can suggest alternatives that use different variables from the
+dataset.}
 
 \item{model}{The LLM to use for generating alternatives, as a string in
 `"provider/model"` form (e.g. `"anthropic/claude-opus-4-5"`,
@@ -68,23 +69,28 @@ result as a character vector.}
 
 \item{schema}{A schema object to include in the prompt.}
 
-\item{data_dict}{Optional data dictionary for context (data frame with columns or character vector)}
+\item{data_dict}{Optional data dictionary for context (data frame with
+columns or character vector)}
 
-\item{print}{If `TRUE`, prints the prompt to console instead of returning it.}
+\item{print}{If `TRUE`, prints the prompt to console instead of returning
+it.}
 
-\item{width}{If `print = TRUE`, the width to wrap the printed prompt (default 70).}
+\item{width}{If `print = TRUE`, the width to wrap the printed prompt
+(default 70).}
 }
 \value{
-* `gen_alternatives()` invisibly returns `NULL` and writes the output to `file_path`.
-* `prompt_alternatives()` returns a formatted character string containing the LLM prompt.
+* `gen_alternatives()` invisibly returns `NULL` and writes the output to
+  `file_path`.
+* `prompt_alternatives()` returns a formatted character string containing
+  the LLM prompt.
 }
 \description{
 `gen_alternatives()` takes an existing `schema` or `multiverse` and asks a
-Large Language Model to suggest methodologically valid, alternative approaches for
-a specific step in your analysis pipeline.
+Large Language Model to suggest methodologically valid, alternative
+approaches for a specific step in your analysis pipeline.
 
-`prompt_alternatives()` is a helper function that constructs the exact instruction
-set sent to the LLM.
+`prompt_alternatives()` is a helper function that constructs the exact
+instruction set sent to the LLM.
 }
 \details{
 **Important:** This function relies on the `ellmer` package to communicate
@@ -97,11 +103,14 @@ for this to work.
 hdi <- example_schema()
 
 \dontrun{
-gen_alternatives(hdi, step = "step-combine", n = 1,
-                file_path = here::here("inst/hdi-alt.yml"))
+gen_alternatives(hdi,
+  step = "step-combine", n = 1,
+  file_path = here::here("inst/hdi-alt.yml")
+)
 }
 
-# The prompt generation function can be used directly to see the full prompt sent to the LLM
+# The prompt generation function can be used directly to see the full
+# prompt sent to the LLM
 prompt_alternatives(schema = hdi, step = "step-combine", print = TRUE)
 
 }
