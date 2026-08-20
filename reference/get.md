@@ -18,15 +18,12 @@ get_step_names(object)
 
 ``` r
 get_step_names(example_schema())
-#> Warning: Unknown or uninitialised column: `nodes`.
-#> NULL
+#> [1] "step-scaling"   "step-education" "step-combine"  
 get_step_names(example_multiverse())
-#> Warning: Unknown or uninitialised column: `nodes`.
-#> Warning: Unknown or uninitialised column: `nodes`.
 #> $original
-#> NULL
+#> [1] "step-scaling"   "step-education" "step-combine"  
 #> 
 #> $reversed
-#> NULL
+#> [1] "step-education" "step-scaling"   "step-combine"  
 #> 
 ```

@@ -16,8 +16,7 @@ generate_edges(schema)
 
 - schema:
 
-  A schema object with nodes containing \`inputs\` and \`outputs\`
-  list-columns.
+  A schema object with \`inputs\` and \`outputs\` list-columns.
 
 - source_schema:
 
@@ -41,4 +40,4 @@ generate_edges(schema)
 
 The updated schema with the imported step appended.
 
-The schema with \`edges\` populated.
+A data frame of edges with \`from\` and \`to\` columns.
