@@ -28,6 +28,7 @@ corresponding R code. A schema can be expanded into a multiverse of
 analyses, letting you see how your conclusions depend on the analytical
 choices you made.
 
+
 ## Installation
 
 You can install the released version of tines from CRAN with:
