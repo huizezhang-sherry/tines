@@ -9,10 +9,11 @@
 #' set sent to the LLM.
 #'
 #' @details
-#' **Important:** This function relies on the `ellmer` package to communicate with
-#' Google's Gemini API. You must have your API credentials configured correctly in
-#' your R environment (e.g., via the `GEMINI_API_KEY` environment variable) for
-#' this to work.
+#' **Important:** This function relies on the `ellmer` package to communicate
+#' with an LLM provider. You must have your API credentials configured
+#' correctly in your R environment (e.g., via an environment variable such as
+#' `ANTHROPIC_API_KEY` or `OPENAI_API_KEY`, depending on the `model` chosen)
+#' for this to work.
 #'
 #' @param x A `schema` or `multiverse` object, or a character string specifying
 #'   the file path to a valid `tines` YML file.
@@ -22,14 +23,17 @@
 #'   to generate. Defaults to `3`.
 #' @param data Optional. A data frame or path to a data file. If provided,
 #'   the LLM can suggest alternatives that use different variables from the dataset.
-#' @param provider A character string specifying the LLM provider. Currently
-#'   defaults to `"gemini"`. (`gemini-2.5-flash` via `ellmer`).
+#' @param model The LLM to use for generating alternatives, as a string in
+#'   `"provider/model"` form (e.g. `"anthropic/claude-opus-4-5"`,
+#'   `"openai/gpt-5"`, `"google_gemini/gemini-2.5-flash"`), passed to
+#'   `ellmer::chat()`. See [ellmer::chat()] for the full list of supported
+#'   providers. Defaults to `"anthropic/claude-opus-4-5"`.
 #' @param file_path A character string specifying where to save the generated
 #'   YML output. If `NULL` (the default), `capture.output()` will return the
 #'   result as a character vector.
 #' @param print If `TRUE`, prints the prompt to console instead of returning it.
 #' @param width If `print = TRUE`, the width to wrap the printed prompt (default 70).
-#' @param ... Additional arguments passed to methods or to `ellmer::chat_google_gemini()`.
+#' @param ... Additional arguments passed to methods or to `ellmer::chat()`.
 #'
 #' @return
 #' * `gen_alternatives()` invisibly returns `NULL` and writes the output to `file_path`.
@@ -50,7 +54,8 @@
 #' prompt_alternatives(schema = hdi, step = "step-combine", print = TRUE)
 #' 
 gen_alternatives <- function(x, step, n = 3, data = NULL,
-                             provider = "gemini", file_path = NULL, ...){
+                             model = "anthropic/claude-opus-4-5",
+                             file_path = NULL, ...){
   UseMethod("gen_alternatives")
 }
 
@@ -65,8 +70,8 @@ gen_alternatives.character <- function(x, ...){
 #' @export
 #' @rdname gen_alternatives
 gen_alternatives.schema <- function(x, step, n = 3, data = NULL,
-                             provider = "gemini", file_path = NULL, ...){
-  browser()
+                             model = "anthropic/claude-opus-4-5",
+                             file_path = NULL, ...){
   if (is.null(file_path)) {
     cli::cli_abort("You must provide a {.arg file_path} to save the generated alternatives.")
   }
@@ -75,6 +80,10 @@ gen_alternatives.schema <- function(x, step, n = 3, data = NULL,
   if (!step %in% x$id) {
     cli::cli_abort("Target step {.val {step}} not found in the schema.")
   }
+
+  # Create the chat client before doing any prompt-building work, so an
+  # unsupported `model` string fails fast.
+  chat <- ellmer::chat(model)
 
   # Prepare data context if available
   data_dict <- if (!is.null(data)) {
@@ -100,8 +109,6 @@ gen_alternatives.schema <- function(x, step, n = 3, data = NULL,
     print = FALSE
   )
 
-  #chat <- ellmer::chat_google_gemini(model = "gemini-2.5-flash")
-  chat <- ellmer::chat_anthropic(model = "claude-opus-4-5")
   utils::capture.output(chat$chat(full_prompt), file = file_path)
   invisible()
 }
@@ -109,7 +116,6 @@ gen_alternatives.schema <- function(x, step, n = 3, data = NULL,
 #' @export
 #' @rdname gen_alternatives
 gen_alternatives.multiverse <- function(x, step, ...){
-  browser()
   valid_schema <- NULL
 
   # find the first schema in the multiverse that contains the target step

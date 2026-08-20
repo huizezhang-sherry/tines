@@ -1,6 +1,6 @@
 Package: tines
 Type: Package
-Title: Tines: Building the Prongs of Your Own Forking Paths
+Title: Building the Prongs of Your Forking Paths
 Version: 0.1.0
 Authors@R: c(
     person(
@@ -9,8 +9,12 @@ Authors@R: c(
       role = c("aut", "cre")
     )
   )
-Description: More about what it does (maybe more than one line).
-    Continuation lines should be indented.
+Description: Tools for documenting analytical decisions in data analysis.
+    Analytical decisions are documented as a schema of steps, and large
+    language models are used to generate and validate R code. Schemas can be
+    expanded with alternative decisions into a multiverse of analyses,
+    allowing analysts to explore how their conclusions depend on the
+    analytical choices they made.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

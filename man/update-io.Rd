@@ -10,7 +10,7 @@ gen_io(
   schema,
   data,
   interactive = FALSE,
-  model = "gemini-2.5-flash",
+  model = "google_gemini/gemini-2.5-flash",
   force = FALSE
 )
 
@@ -27,7 +27,11 @@ the updated inputs/outputs against this dataset (without attaching it).}
 
 \item{interactive}{Logical. If TRUE, prompts user for ambiguous mappings}
 
-\item{model}{Character string specifying which LLM to use}
+\item{model}{The LLM to use for `gen_io()`, as a string in
+`"provider/model"` form (e.g. `"anthropic/claude-opus-4-5"`,
+`"openai/gpt-5"`, `"google_gemini/gemini-2.5-flash"`), passed to
+`ellmer::chat()`. See [ellmer::chat()] for the full list of supported
+providers. Defaults to `"google_gemini/gemini-2.5-flash"`.}
 
 \item{force}{Logical. If TRUE, remaps even if already mapped}
 

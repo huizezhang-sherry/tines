@@ -13,7 +13,7 @@ gen_alternatives(
   step,
   n = 3,
   data = NULL,
-  provider = "gemini",
+  model = "anthropic/claude-opus-4-5",
   file_path = NULL,
   ...
 )
@@ -25,7 +25,7 @@ gen_alternatives(
   step,
   n = 3,
   data = NULL,
-  provider = "gemini",
+  model = "anthropic/claude-opus-4-5",
   file_path = NULL,
   ...
 )
@@ -54,14 +54,17 @@ to generate. Defaults to `3`.}
 \item{data}{Optional. A data frame or path to a data file. If provided,
 the LLM can suggest alternatives that use different variables from the dataset.}
 
-\item{provider}{A character string specifying the LLM provider. Currently
-defaults to `"gemini"`. (`gemini-2.5-flash` via `ellmer`).}
+\item{model}{The LLM to use for generating alternatives, as a string in
+`"provider/model"` form (e.g. `"anthropic/claude-opus-4-5"`,
+`"openai/gpt-5"`, `"google_gemini/gemini-2.5-flash"`), passed to
+`ellmer::chat()`. See [ellmer::chat()] for the full list of supported
+providers. Defaults to `"anthropic/claude-opus-4-5"`.}
 
 \item{file_path}{A character string specifying where to save the generated
 YML output. If `NULL` (the default), `capture.output()` will return the
 result as a character vector.}
 
-\item{...}{Additional arguments passed to methods or to `ellmer::chat_google_gemini()`.}
+\item{...}{Additional arguments passed to methods or to `ellmer::chat()`.}
 
 \item{schema}{A schema object to include in the prompt.}
 
@@ -84,10 +87,11 @@ a specific step in your analysis pipeline.
 set sent to the LLM.
 }
 \details{
-**Important:** This function relies on the `ellmer` package to communicate with
-Google's Gemini API. You must have your API credentials configured correctly in
-your R environment (e.g., via the `GEMINI_API_KEY` environment variable) for
-this to work.
+**Important:** This function relies on the `ellmer` package to communicate
+with an LLM provider. You must have your API credentials configured
+correctly in your R environment (e.g., via an environment variable such as
+`ANTHROPIC_API_KEY` or `OPENAI_API_KEY`, depending on the `model` chosen)
+for this to work.
 }
 \examples{
 hdi <- example_schema()

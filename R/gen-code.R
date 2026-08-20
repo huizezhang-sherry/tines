@@ -8,7 +8,11 @@
 #'   If `NULL`, the LLM will not receive any data instructions.
 #' @param output For schemas: file path (ending in .R) or directory. 
 #'   For multiverses: must be a directory. Defaults to "scripts".
-#' @param provider The LLM provider to use for code generation. Currently only "gemini".
+#' @param model The LLM to use for code generation, as a string in
+#'   `"provider/model"` form (e.g. `"anthropic/claude-opus-4-5"`,
+#'   `"openai/gpt-5"`, `"google_gemini/gemini-2.5-flash"`), passed to
+#'   `ellmer::chat()`. See [ellmer::chat()] for the full list of supported
+#'   providers. Defaults to `"anthropic/claude-opus-4-5"`.
 #' @param ... Additional arguments passed to methods.
 #'
 #' @return Invisibly returns the path(s) to the generated script(s).
@@ -29,25 +33,28 @@
 #' # The prompt generation function can be used directly to see the full prompt sent to the LLM
 #' prompt_gen_code(data = "inst/football.csv")
 gen_code <- function(x, base_code = NULL, data = NULL, 
-                     output = "scripts", provider = "gemini", ...) {
+                     output = "scripts",
+                     model = "anthropic/claude-opus-4-5", ...) {
  UseMethod("gen_code")
 }
 
 #' @export
 #' @rdname gen_code
 gen_code.character <- function(x, base_code = NULL, data = NULL,
-                               output = "scripts", provider = "gemini", ...) {
+                               output = "scripts",
+                               model = "anthropic/claude-opus-4-5", ...) {
   if (!file.exists(x)) {
     cli::cli_abort("File not found: {.val {x}}")
  }
   gen_code(read_tines(x), base_code = base_code, data = data, 
-           output = output, provider = provider, ...)
+           output = output, model = model, ...)
 }
 
 #' @export
 #' @rdname gen_code
 gen_code.schema <- function(x, base_code = NULL, data = NULL,
-                            output = "scripts", provider = "gemini", ...) {
+                            output = "scripts",
+                            model = "anthropic/claude-opus-4-5", ...) {
   is_file <- grepl("\\.[Rr]$", output)
   
   if (is_file) {
@@ -70,7 +77,7 @@ gen_code.schema <- function(x, base_code = NULL, data = NULL,
     base_code = base_code,
     data = data,
     file_path = file_path,
-    provider = provider
+    model = model
  )
   
   cli::cli_alert_success("Script generated: {.path {file_path}}")
@@ -80,7 +87,8 @@ gen_code.schema <- function(x, base_code = NULL, data = NULL,
 #' @export
 #' @rdname gen_code
 gen_code.multiverse <- function(x, base_code = NULL, data = NULL,
-                                output = "scripts", provider = "gemini", ...) {
+                                output = "scripts",
+                                model = "anthropic/claude-opus-4-5", ...) {
   if (grepl("\\.[Rr]$", output)) {
     cli::cli_abort(c(
       "x" = "{.arg output} must be a directory for multiverse objects.",
@@ -105,7 +113,7 @@ gen_code.multiverse <- function(x, base_code = NULL, data = NULL,
       base_code = base_code,
       data = data,
       file_path = file_path,
-      provider = provider
+      model = model
     )
     
     paths[i] <- file_path
@@ -117,10 +125,15 @@ gen_code.multiverse <- function(x, base_code = NULL, data = NULL,
 
 #' @keywords internal
 gen_code_single <- function(base_schema, base_code = NULL, 
-                            data = NULL, provider = "gemini", file_path = NULL) {
+                            data = NULL,
+                            model = "anthropic/claude-opus-4-5", file_path = NULL) {
   if (is.null(file_path)) {
     cli::cli_abort("You must provide a {.arg file_path} to save the generated code.")
   }
+
+  # Create the chat client before doing any prompt-building work, so an
+  # unsupported `model` string fails fast.
+  chat <- ellmer::chat(model)
 
   full_prompt <- prompt_gen_code(
     schema = base_schema, 
@@ -129,8 +142,6 @@ gen_code_single <- function(base_schema, base_code = NULL,
     print = FALSE
   )
 
-  #chat <- ellmer::chat_google_gemini(model = "gemini-2.5-flash")
-  chat <- ellmer::chat_anthropic(model = "claude-opus-4-5")
   utils::capture.output(chat$chat(full_prompt), file = file_path)
 
   invisible()

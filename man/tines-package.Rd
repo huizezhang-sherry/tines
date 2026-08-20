@@ -4,9 +4,9 @@
 \name{tines-package}
 \alias{tines}
 \alias{tines-package}
-\title{tines: Tines: Building the Prongs of Your Own Forking Paths}
+\title{tines: Building the Prongs of Your Forking Paths}
 \description{
-More about what it does (maybe more than one line). Continuation lines should be indented.
+Tools for documenting analytical decisions in data analysis. Analytical decisions are documented as a schema of steps, and large language models are used to generate and validate R code. Schemas can be expanded with alternative decisions into a multiverse of analyses, allowing analysts to explore how their conclusions depend on the analytical choices they made.
 }
 \seealso{
 Useful links:

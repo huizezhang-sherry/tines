@@ -5,6 +5,11 @@
 #' @param base_scripts Named list mapping source schema object names to their 
 #'   base R scripts, e.g. `list(spei_template = here::here("inst/spei.R"))`.
 #' @param output_file Path to write the generated R script.
+#' @param model The LLM to use for generating new (non-imported) steps, as a
+#'   string in `"provider/model"` form (e.g. `"anthropic/claude-opus-4-5"`,
+#'   `"openai/gpt-5"`, `"google_gemini/gemini-2.5-flash"`), passed to
+#'   `ellmer::chat()`. See [ellmer::chat()] for the full list of supported
+#'   providers. Defaults to `"anthropic/claude-opus-4-5"`.
 #' @return Invisibly returns the generated code as a character string.
 #' @export
 #' @examples
@@ -20,7 +25,12 @@
 #'   output_file  = here::here("inst/rdi.R")
 #' )
 #' }
-gen_composite_code <- function(schema, base_scripts, output_file) {
+gen_composite_code <- function(schema, base_scripts, output_file,
+                               model = "anthropic/claude-opus-4-5") {
+  # Create the chat client up front, before any file work, so an unsupported
+  # `model` string fails fast rather than partway through the loop.
+  chat <- ellmer::chat(model)
+
   code_chunks <- vector("list", nrow(schema))
 
   # Collect preambles from all base scripts once
@@ -69,7 +79,7 @@ gen_composite_code <- function(schema, base_scripts, output_file) {
         inputs = schema$inputs[[i]],
         outputs = schema$outputs[[i]]
       )
-      code_chunks[[i]] <- llm_generate_step(node, style_context)
+      code_chunks[[i]] <- llm_generate_step(node, style_context, chat = chat)
     }
   }
   
@@ -120,7 +130,7 @@ extract_preamble <- function(script_path) {
 }
 
 # LLM code generation for new steps ------------------------------------------
-llm_generate_step <- function(node, style_context) {
+llm_generate_step <- function(node, style_context, chat) {
   prompt <- glue::glue(
     "You are writing a step in an R analysis script.
     
@@ -140,7 +150,6 @@ llm_generate_step <- function(node, style_context) {
     Return only the R code, no explanation, no markdown fences."
   )
   
-  chat <- ellmer::chat_google_gemini(model = "gemini-2.5-flash")
   response <- chat$chat(prompt)
   
   response

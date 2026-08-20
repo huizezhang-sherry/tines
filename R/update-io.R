@@ -24,7 +24,11 @@
 #' @param inputs Character vector of input variable names
 #' @param outputs Character vector of output variable names
 #' @param interactive Logical. If TRUE, prompts user for ambiguous mappings
-#' @param model Character string specifying which LLM to use
+#' @param model The LLM to use for `gen_io()`, as a string in
+#'   `"provider/model"` form (e.g. `"anthropic/claude-opus-4-5"`,
+#'   `"openai/gpt-5"`, `"google_gemini/gemini-2.5-flash"`), passed to
+#'   `ellmer::chat()`. See [ellmer::chat()] for the full list of supported
+#'   providers. Defaults to `"google_gemini/gemini-2.5-flash"`.
 #' @param force Logical. If TRUE, remaps even if already mapped
 #'
 #' @return A `schema` object with updated inputs/outputs and data reference
@@ -95,7 +99,7 @@
 #'   gen_io(data = data_2023)
 #' }
 gen_io <- function(schema, data, interactive = FALSE, 
-                   model = "gemini-2.5-flash", force = FALSE) {
+                   model = "google_gemini/gemini-2.5-flash", force = FALSE) {
   
   # Check if already mapped and data hasn't changed
   if (!force && has_data(schema)) {
@@ -116,6 +120,10 @@ gen_io <- function(schema, data, interactive = FALSE,
     }
   }
   
+  # Create the chat client before doing any data loading work, so an
+  # unsupported `model` string fails fast.
+  chat <- ellmer::chat(model, echo = "none")
+  
   # Load data if needed
   data_obj <- if (is.data.frame(data)) {
     data
@@ -131,7 +139,6 @@ gen_io <- function(schema, data, interactive = FALSE,
   prompt <- build_mapping_prompt(schema, data_dict)
   
   # Call LLM
-  chat <- ellmer::chat_google_gemini(model = model, echo = "none")
   yaml_out <- chat$chat(prompt)
   
   # Parse response

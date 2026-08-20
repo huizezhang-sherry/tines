@@ -1,14 +1,18 @@
 #' Auto-Fix an R Script via Iterative LLM Debugging
 #'
 #' Executes an R script in an isolated sandbox. If execution fails, the error
-#' is passed to an LLM (currently only Google Gemini) which attempts to fix the
+#' is passed to an LLM (via \code{ellmer::chat()}) which attempts to fix the
 #' script. This loop repeats up to \code{max_runs} times.
 #'
 #' @param file Path to the R script to run and debug.
 #' @param data Optional path to a CSV data file to make available inside
 #'   the sandbox at \code{data/<basename>}.
 #' @param max_runs Maximum number of LLM fix attempts. Default is \code{5}.
-#' @param model Gemini model string. Default is \code{"gemini-2.5-pro"}.
+#' @param model The LLM to use, as a string in \code{"provider/model"} form
+#'   (e.g. \code{"anthropic/claude-opus-4-5"}, \code{"openai/gpt-5"},
+#'   \code{"google_gemini/gemini-2.5-flash"}), passed to \code{ellmer::chat()}.
+#'   See \code{\link[ellmer]{chat}} for the full list of supported providers.
+#'   Default is \code{"anthropic/claude-opus-4-5"}.
 #' @param verbose If \code{TRUE}, saves a copy of the script at each iteration.
 #' @param as_job If \code{TRUE}, runs the process as a background job. If
 #'   \code{FALSE} (default), runs in the current R session. Only used when \code{engine = "callr"}.
@@ -34,7 +38,7 @@
 #' }
 #'
 validate_script <- function(file, data = NULL, max_runs = 5,
-                            model = "gemini-2.5-pro", verbose = TRUE,
+                            model = "anthropic/claude-opus-4-5", verbose = TRUE,
                             as_job = FALSE, engine = c("callr", "docker"),
                             scan_code = TRUE) {
   engine <- match.arg(engine)
@@ -44,8 +48,7 @@ validate_script <- function(file, data = NULL, max_runs = 5,
   extracted_data <- NULL
   
   sys_prompt <- build_sys_prompt(data)
-  #chat <- ellmer::chat_google_gemini(model = model)
-  chat <- ellmer::chat_anthropic(model = "claude-opus-4-5")
+  chat <- ellmer::chat(model)
 
   if (engine == "callr") {
     sandbox <- setup_sandbox(file, data)

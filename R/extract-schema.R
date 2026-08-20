@@ -12,7 +12,11 @@
 #' @param data_dict Either a character vector of column names, or a data frame
 #'   with at least a `name` column and an optional `description` column.
 #' @param output_file The file path where the YAML should be saved.
-#' @param model The LLM to use (defaults to Gemini 2.5 Pro).
+#' @param model The LLM to use, as a string in `"provider/model"` form (e.g.
+#'   `"anthropic/claude-opus-4-5"`, `"openai/gpt-5"`,
+#'   `"google_gemini/gemini-2.5-flash"`), passed to `ellmer::chat()`. See
+#'   [ellmer::chat()] for the full list of supported providers. Defaults to
+#'   `"anthropic/claude-opus-4-5"`.
 #' @param print If `TRUE`, prints the prompt to console instead of returning it.
 #' @param width If `print = TRUE`, the width to wrap the printed prompt (default 70).
 #'
@@ -34,7 +38,11 @@
 #' # The prompt generation function can be used directly to see the full prompt sent to the LLM
 #' prompt_extract_schema(data_dict = paste0(data_dict, collapse = ", "), text = text, print = TRUE)
 #' 
-extract_schema <- function(text, data_dict, output_file = "draft_schema.yml", model = "claude-opus-4-5") {
+extract_schema <- function(text, data_dict, output_file = "draft_schema.yml", model = "anthropic/claude-opus-4-5") {
+
+  # Create the chat client before doing any other work, so an unsupported
+  # `model` string fails fast.
+  chat <- ellmer::chat(model, echo = "none")
 
   # Format data_dict into a data dictionary string
   data_summary <- if (is.data.frame(data_dict)) {
@@ -55,8 +63,6 @@ extract_schema <- function(text, data_dict, output_file = "draft_schema.yml", mo
   full_prompt <- prompt_extract_schema(data_dict, text, print = FALSE)
   
   cli::cli_alert_info("Extracting schema and mapping data flow simultaneously...")
-  #chat <- ellmer::chat_google_gemini(model = model, echo = "none")
-  chat <- ellmer::chat_anthropic(model = "claude-opus-4-5", echo = "none")
   yaml_out <- chat$chat(full_prompt)
   
   clean_yaml <- gsub("^```yaml\n|^```\n|```$", "", trimws(yaml_out))

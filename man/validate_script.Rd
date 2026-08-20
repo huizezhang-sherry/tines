@@ -8,7 +8,7 @@ validate_script(
   file,
   data = NULL,
   max_runs = 5,
-  model = "gemini-2.5-pro",
+  model = "anthropic/claude-opus-4-5",
   verbose = TRUE,
   as_job = FALSE,
   engine = c("callr", "docker"),
@@ -23,7 +23,11 @@ the sandbox at \code{data/<basename>}.}
 
 \item{max_runs}{Maximum number of LLM fix attempts. Default is \code{5}.}
 
-\item{model}{Gemini model string. Default is \code{"gemini-2.5-pro"}.}
+\item{model}{The LLM to use, as a string in \code{"provider/model"} form
+(e.g. \code{"anthropic/claude-opus-4-5"}, \code{"openai/gpt-5"},
+\code{"google_gemini/gemini-2.5-flash"}), passed to \code{ellmer::chat()}.
+See \code{\link[ellmer]{chat}} for the full list of supported providers.
+Default is \code{"anthropic/claude-opus-4-5"}.}
 
 \item{verbose}{If \code{TRUE}, saves a copy of the script at each iteration.}
 
@@ -47,7 +51,7 @@ Invisibly returns a list with:
 }
 \description{
 Executes an R script in an isolated sandbox. If execution fails, the error
-is passed to an LLM (currently only Google Gemini) which attempts to fix the
+is passed to an LLM (via \code{ellmer::chat()}) which attempts to fix the
 script. This loop repeats up to \code{max_runs} times.
 }
 \examples{
