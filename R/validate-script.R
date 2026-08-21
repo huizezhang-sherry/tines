@@ -48,7 +48,7 @@ validate_script <- function(
 
   attempt <- 1
   success <- FALSE
-  extracted_data <- NULL # nolint: object_usage_linter.
+  extracted_data <- NULL
 
   sys_prompt <- build_sys_prompt(data)
   chat <- ellmer::chat(model)
