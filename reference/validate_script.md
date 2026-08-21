@@ -6,9 +6,26 @@ error is passed to an LLM (via
 which attempts to fix the script. This loop repeats up to `max_runs`
 times.
 
+Executes an R script in an isolated sandbox. If execution fails, the
+error is passed to an LLM (via
+[`ellmer::chat()`](https://ellmer.tidyverse.org/reference/chat-any.html))
+which attempts to fix the script. This loop repeats up to `max_runs`
+times.
+
 ## Usage
 
 ``` r
+validate_script(
+  file,
+  data = NULL,
+  max_runs = 5,
+  model = "anthropic/claude-opus-4-5",
+  verbose = TRUE,
+  as_job = FALSE,
+  engine = c("callr", "docker"),
+  scan_code = TRUE
+)
+
 validate_script(
   file,
   data = NULL,
@@ -83,9 +100,30 @@ Invisibly returns a list with:
 
   The `ellmer` chat object with full history.
 
+Invisibly returns a list with:
+
+- success:
+
+  Logical. Whether the script ran without error.
+
+- file:
+
+  Path to the (possibly fixed) script.
+
+- chat_history:
+
+  The `ellmer` chat object with full history.
+
 ## Examples
 
 ``` r
+if (FALSE) { # \dontrun{
+validate_script(
+  file = here::here("inst/dplyr-filter-equal.R"),
+  data = here::here("inst/dplyr-filter-equal.csv")
+)
+} # }
+
 if (FALSE) { # \dontrun{
 validate_script(
   file = here::here("inst/dplyr-filter-equal.R"),
