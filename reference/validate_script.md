@@ -59,7 +59,8 @@ validate_script(
 
   One of `'callr'` (default) or `'docker'`. Controls the execution to be
   with `callr` in a temp directory sandbox (in session or as a
-  background job), or within a Docker container.
+  background job). `'docker'` is not yet supported and will raise an
+  error; it may be added in a future release.
 
 - scan_code:
 

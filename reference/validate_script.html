@@ -94,8 +94,8 @@ Default is <code>'anthropic/claude-opus-4-5'</code>.</p></dd>
 <dt id="arg-engine">engine<a class="anchor" aria-label="anchor" href="#arg-engine"></a></dt>
 <dd><p>One of <code>'callr'</code> (default) or <code>'docker'</code>. Controls
 the execution to be with <code>callr</code> in a temp directory sandbox (in
-session or as a background job),
-or within a Docker container.</p></dd>
+session or as a background job). <code>'docker'</code> is not yet supported
+and will raise an error; it may be added in a future release.</p></dd>
 
 
 <dt id="arg-scan-code">scan_code<a class="anchor" aria-label="anchor" href="#arg-scan-code"></a></dt>

@@ -1,4 +1,4 @@
-# tines [![](inst/figures/imgfile.svg)](https://huizezhang-sherry.github.io/tines/)
+# tines [![tines package hex sticker logo featuring a fork-like branching diagram on a clean background, symbolising the multiverse of analytical paths the package helps explore](reference/figures/imgfile.svg)](https://huizezhang-sherry.github.io/tines/)
 
 The goal of tines is to help analysts document, explore, and communicate
 the analytical decisions made during a data analysis. Analytical
