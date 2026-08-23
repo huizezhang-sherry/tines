@@ -17,4 +17,5 @@ Useful links:
 
 ## Author
 
-**Maintainer**: H. Sherry Zhang <huizezhangsh@gmail.com>
+**Maintainer**: H. Sherry Zhang <huizezhangsh@gmail.com> \[copyright
+holder\]

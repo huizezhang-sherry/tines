@@ -2,7 +2,7 @@
 
 ## Authors
 
-- **H. Sherry Zhang**. Author, maintainer.
+- **H. Sherry Zhang**. Author, maintainer, copyright holder.
 
 ## Citation
 
