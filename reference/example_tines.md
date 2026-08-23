@@ -23,6 +23,8 @@ example_spi()
 example_rdi()
 
 example_football_grp20()
+
+example_football_grp5()
 ```
 
 ## Arguments
