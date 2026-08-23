@@ -17,7 +17,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: H. Sherry Zhang \email{huizezhangsh@gmail.com}
+\strong{Maintainer}: H. Sherry Zhang \email{huizezhangsh@gmail.com} [copyright holder]
 
 }
 \keyword{internal}

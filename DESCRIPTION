@@ -6,7 +6,7 @@ Authors@R: c(
     person(
       "H. Sherry", "Zhang",
       email = "huizezhangsh@gmail.com",
-      role = c("aut", "cre")
+      role = c("aut", "cre", "cph")
     )
   )
 Description: Tools for documenting analytical decisions in data analysis.

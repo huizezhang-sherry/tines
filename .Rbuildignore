@@ -3,3 +3,4 @@
 ^\.github$
 inst/football.csv
 ^\.claude$
+^cran-comments\.md$
