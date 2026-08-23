@@ -1,4 +1,4 @@
-#' Football red cards study methodology text (Group 20)
+#' Football red cards study methodology text (Group 5 and 20)
 #'
 #' A character string describing the methodology reported by Team 20
 #' in the many-analysts study of racial bias in football referee
@@ -25,4 +25,9 @@
 #'   results. \emph{Advances in Methods and Practices in
 #'   Psychological Science}, 1(3), 337--356.
 #'   \doi{10.1177/2515245917747646}
+#' @rdname grp
 "football_grp20"
+
+
+#' @rdname grp
+"football_grp5"

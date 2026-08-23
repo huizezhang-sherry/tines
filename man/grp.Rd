@@ -3,7 +3,8 @@
 \docType{data}
 \name{football_grp20}
 \alias{football_grp20}
-\title{Football red cards study methodology text (Group 20)}
+\alias{football_grp5}
+\title{Football red cards study methodology text (Group 5 and 20)}
 \format{
 A character string of length 1, combining three phases of
   the analysis: (1) variable creation and data cleaning, covering
@@ -20,6 +21,8 @@ A character string of length 1, combining three phases of
   controlling for \code{games}, \code{victories}, \code{defeats},
   \code{goals}, \code{height}, \code{weight}, \code{position},
   and \code{age}.
+
+An object of class \code{character} of length 1.
 }
 \source{
 Silberzahn, R., et al. (2018). Many analysts, one dataset:
@@ -30,6 +33,8 @@ Silberzahn, R., et al. (2018). Many analysts, one dataset:
 }
 \usage{
 football_grp20
+
+football_grp5
 }
 \description{
 A character string describing the methodology reported by Team 20

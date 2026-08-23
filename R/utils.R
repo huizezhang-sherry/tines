@@ -269,6 +269,12 @@ example_football_grp20 <- function() {
   read_tines(system.file("football-grp20.yaml", package = "tines"))
 }
 
+#' @rdname example_tines
+#' @export
+example_football_grp5 <- function() {
+  read_tines(system.file("football-grp5/football-grp5.yaml", package = "tines"))
+}
+
 
 #' Functions to access components of a tine object
 #' @param object A `schema` or `multiverse` object.

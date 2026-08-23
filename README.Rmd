@@ -9,7 +9,9 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  out.width = "100%"
+  out.width = "100%",
+  message = FALSE,
+  warning = FALSE
 )
 ```
 
@@ -45,150 +47,147 @@ And the development version from GitHub with:
 remotes::install_github("huizezhang-sherry/tines")
 ````
 
-## Example - generate alternatives and code (HDI)
+## LLM access
 
-Start from a schema
+`extract_schema()`, `gen_alternatives()`, `gen_code()`, and `validate_script()`
+all call out to an LLM via [ellmer](https://ellmer.tidyverse.org/). Set the
+relevant API key as an environment variable before using them, e.g. for
+Claude models:
 
-```{r}
-library(tines)
-(hdi <- example_schema()) 
-```
+````
+usethis::edit_r_environ()
+# add a line: ANTHROPIC_API_KEY=your-key-here
+````
 
-Generate an alternative at block-combine and write the result into a `yaml` file:
+See `?ellmer::chat` for the full list of supported providers and their
+expected environment variables.
 
-```{r eval = FALSE}
-gen_alternatives(hdi, step = "step-combine", n = 1, 
-                 file_path = here::here("inst/hdi-alt.yml"))
-```
+## Example 1 - from a paper to validated code
 
+### `extract_schema()` + `gen_code()` + `validate_script()`
 
-```{r}
-#(res <- expand_tines(hdi, alternatives = here::here("inst/hdi-alt.yml")))
-```
-
-Take the original schema, original code, and the alternatives and generate a new R script that implements the alternative:
-
-```{r eval = FALSE}
-gen_code(hdi, 
-         base_code = here::here("inst/hdi.R"), 
-         alternative = here::here("inst/hdi-alt.yml"),
-         output_dir = here::here("inst/")
-         )
-```
-
-Run the generated code and compare the results:
-
-```{r}
-res_arith <- source(here::here("inst/alt_01_block_combine_arithmetic.R"))
-
-res_arith$value |> 
-  ggplot(aes(x = hdi, y = hdi2)) + 
-  geom_point() + 
-  theme(aspect.ratio = 1)
-```
-
-
-## Example - generate alternatives and code (football)
-
-Currently restricted by a rate limit.
-
-Start from a schema
+`tines` can turn a methodology section from a paper into a schema, generate R
+code that implements it, and validate that the code runs. The package ships
+with the methodology text reported by Team 5 in the "many analysts, one
+dataset" study of racial bias in football referee decisions
+(Silberzahn et al., 2018), along with the football dataset they all analyzed.
 
 ```{r}
 library(tines)
-(football <- example_football())
+football_grp5
 ```
 
-Generate an alternative at block-combine and write the result into a `yaml` file:
+Extracting a schema from that text requires an LLM and a data dictionary:
 
 ```{r eval = FALSE}
-gen_alternatives(football, id = "block-logistic-model", n = 2, 
-                 file_path = here::here("inst/football-alt.yaml"))
+data_dict <- c(
+  "playerShort", "player", "club", "leagueCountry", "birthday", "height",
+  "weight", "position", "games", "victories", "ties", "defeats",
+  "goals", "yellowCards", "yellowReds", "redCards", "photoID", "rater1",
+  "rater2", "refNum", "refCountry", "Alpha_3", "meanIAT", "nIAT",
+  "seIAT", "meanExp", "nExp", "seExp"
+)
+
+extract_schema(football_grp5, data_dict,
+               output_file = here::here("inst/football-grp5.yaml"))
 ```
 
-Take the original schema, original code, and the alternatives and generate a new R script that implements the alternative:
-
-```{r eval = FALSE}
-gen_code(football, 
-         base_code = here::here("inst/football.R"), 
-         alternative = here::here("inst/football-alt.yaml"),
-         output_dir = here::here("inst/")
-         )
+```{r results = "asis", echo = FALSE}
+cat("<details>\n<summary>You can click to expand the YAML file.</summary>\n\n")
+cat("```yaml\n")
+cat(readLines(here::here("inst/football-grp5/football-grp5.yaml")), sep = "\n")
+cat("\n```\n\n</details>\n")
 ```
 
-Run the generated code and compare the results:
-
-
-```{r eval = FALSE}
-schema <- example_rdi()
-code <- gen_composite_code(
-  schema       = schema,
-   base_scripts = list(
-     spei_template = here::here("inst/spei.R"),
-     spi_template  = here::here("inst/spi.R")
-  ),
-  output_file  = here::here("inst/rdi.R")
- )
-
-validate_script(here::here("inst/rdi.R"), verbose = TRUE)
-```
-
-## Example - generate alternatives and code (different random effect specifications)
+The YAML file can be loaded with `read_schema()`. Here the data is also stored in the package as 
+`example_football_grp5()`:
 
 ```{r}
-library(tidyverse)
-library(broom.mixed)
+(schema <- example_football_grp5())
 ```
 
-### Generate a template to specify the alternatives
+Generate an R script that implements the schema against the actual data:
 
 ```{r eval = FALSE}
-football_base <- read_tines(here::here("alternatives/football-grp5.yaml"))
-# draft_alternatives(
-#   x = football_base, 
-#   id = "specify_random_effects_structure", 
-#   output = here::here("alternatives/football-grp5-alt.yml")
-# )
-res <- expand_tines(football_base, here::here("alternatives/football-grp5-alt.yml"))
+gen_code(schema, data = here::here("inst/football.csv"),
+         output = here::here("inst/football-grp5.R"))
 ```
 
-### Generate and validate the code for each alternatives
-```{r eval = FALSE}
-gen_code(res, output = here::here("alternatives/"), data = "data/football.csv")
-
-files <- list.files(here::here("alternatives"), pattern = ".R", full.names = TRUE)[2:4]
-map(files, ~validate_script(.x, data = here::here("data/football.csv")))
+```{r results = "asis", echo = FALSE}
+cat("<details>\n<summary>You can click to expand the generated R script.</summary>\n\n")
+cat("```r\n")
+cat(readLines(here::here("inst/football-grp5/football-grp5.R")), sep = "\n")
+cat("\n```\n\n</details>\n")
 ```
 
-### Run the script for each alternatives and save the results for comparison
+When the script generator didn't produce valid code in the first attempt, 
+`validate_script()` can be used to iteratively fix it until it runs:
+
 ```{r eval = FALSE}
-valid_files <- list.files(here::here("alternatives"), pattern = "iter2.R|football-grp5.R", full.names = TRUE)
-mod_comp_res <- tibble(file = valid_files) |>  
-  rowwise() |> 
-  mutate(
-    model = str_remove(basename(file), "_iter2.R|-grp5.R"),
-    env = list(new.env()),
-    res = list(source(file, local = env))
-  )  
-save(mod_comp_res, file = here::here("alternatives/mod_comp_res.rds"))
+validate_script(here::here("inst/football-grp5.R"), data = here::here("inst/football.csv"))
 ```
 
-### Extract the model summary statistics and random effects for comparison
+
+## Example 2 - exploring alternatives
+
+### `draft_alternatives()`/`gen_alternatives()` + `expand_tines()` + `gen_code()` + `validate_script()`
+
+Given a schema, you may want to explore alternative analytical choices. 
+You can write an alternative YAML file by hands from the template (`draft_alternatives()`) or 
+ask LLM to propose alternatives for a step in the schema (`gen_alternatives()`).  
+
+Here we have a pre-written alternative YAML file for the football example with different random effect specifications:
+
+```{r results = "asis", echo = FALSE}
+cat("<details>\n<summary>You can click to expand the alternative YAML file.</summary>\n\n")
+cat("```yaml\n")
+cat(readLines(here::here("inst/football-grp5/football-grp5-alt.yml")), sep = "\n")
+cat("\n```\n\n</details>\n")
+```
+
+You can load an alternative YAML file with `read_alternatives()`:
+
+```{r}
+(alts <- read_alternatives(
+  system.file("football-grp5/football-grp5-alt.yml", package = "tines")
+))
+```
+
+Combine the alternatives with the original schema into a multiverse:
+
+```{r}
+(multiverse <- expand_tines(schema, alts))
+```
+
+After this, you can enerate code for every branch of the multiverse as we did for the original schema, and validate each generated script:
+
 ```{r eval = FALSE}
-#load(here::here("alternatives/mod_comp_res.rds"))
+gen_code(multiverse, data = here::here("inst/football.csv"),
+         output = here::here("inst/football-grp5-alternatives/"))
 
-map_dfr(mod_comp_res$env, ~glance(.x$glmm_model), .id = "model") |> 
-  left_join(tibble(model = as.character(1:4), model2 = c("original", "gm1", "gm2", "gm3"))) |> 
-  select(-c(model:logLik, df.residual)) |> 
-  pivot_longer(cols = c(AIC, BIC, deviance), names_to = "measure", values_to = "value") |> 
-  pivot_wider(names_from = model2, values_from = value)
+files <- list.files(here::here("inst/football-grp5-alternatives"),
+                     pattern = "\\.R$", full.names = TRUE)
+purrr::map(files, ~validate_script(.x, data = here::here("inst/football.csv")))
+```
 
-map_dfr(mod_comp_res$env, ~tidy(.x$glmm_model, effect = "ran_pars", scales = "vcov"), .id = "model") |> 
-  filter(!str_detect(term, "cov")) |> 
-  left_join(tibble(model = as.character(1:4), model2 = c("original", "gm1", "gm2", "gm3"))) |> 
-  select(-(model:component)) |> 
-  pivot_wider(names_from = model2, values_from = estimate) |> 
-  mutate(group = factor(group, levels = c("playerShort", "refNum", "refCountry"))) |> 
-  arrange(group, term)
 
+```{r results = "asis", echo = FALSE}
+cat("<details>\n<summary>You can click to view the script generated for alternative gm1.</summary>\n\n")
+cat("```yaml\n")
+cat(readLines(here::here("inst/football-grp5/gm1_iter2.R")), sep = "\n")
+cat("\n```\n\n</details>\n")
+```
+
+```{r results = "asis", echo = FALSE}
+cat("<details>\n<summary>You can click to view the script generated for each alternative gm2.</summary>\n\n")
+cat("```yaml\n")
+cat(readLines(here::here("inst/football-grp5/gm2_iter2.R")), sep = "\n")
+cat("\n```\n\n</details>\n")
+```
+
+```{r results = "asis", echo = FALSE}
+cat("<details>\n<summary>You can click to view the script generated for each alternative gm3.</summary>\n\n")
+cat("```yaml\n")
+cat(readLines(here::here("inst/football-grp5/gm3_iter2.R")), sep = "\n")
+cat("\n```\n\n</details>\n")
 ```
