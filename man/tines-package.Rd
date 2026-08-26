@@ -19,5 +19,10 @@ Useful links:
 \author{
 \strong{Maintainer}: H. Sherry Zhang \email{huizezhangsh@gmail.com} [copyright holder]
 
+Authors:
+\itemize{
+  \item H. Sherry Zhang \email{huizezhangsh@gmail.com} [copyright holder]
+}
+
 }
 \keyword{internal}

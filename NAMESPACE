@@ -68,12 +68,18 @@ export(validate_script)
 export(write_alternatives)
 export(write_tines)
 importFrom(cli,cli_abort)
-importFrom(dplyr,bind_rows)
-importFrom(dplyr,distinct)
-importFrom(ellmer,chat)
-importFrom(ellmer,google_upload)
+importFrom(dplyr,
+  bind_rows,
+  distinct
+)
+importFrom(ellmer,
+  chat,
+  google_upload
+)
 importFrom(pillar,tbl_sum)
 importFrom(purrr,map_df)
 importFrom(tibble,tibble)
-importFrom(yaml,read_yaml)
-importFrom(yaml,write_yaml)
+importFrom(yaml,
+  read_yaml,
+  write_yaml
+)

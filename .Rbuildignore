@@ -4,3 +4,4 @@
 inst/football.csv
 ^\.claude$
 ^cran-comments\.md$
+^CRAN-SUBMISSION$
