@@ -19,3 +19,7 @@ Useful links:
 
 **Maintainer**: H. Sherry Zhang <huizezhangsh@gmail.com> \[copyright
 holder\]
+
+Authors:
+
+- H. Sherry Zhang <huizezhangsh@gmail.com> \[copyright holder\]
