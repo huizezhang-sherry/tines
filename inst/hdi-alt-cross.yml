@@ -1,0 +1,17 @@
+meta:
+  type: alternatives
+  branch: multi
+nodes:
+- overrides: step-scaling
+  alternatives:
+  - id: step-scaling-zscore
+    decision: z-score each variable
+    rationale: puts variables on a common, interpretable scale
+- overrides: step-combine
+  alternatives:
+  - id: step-arithmetic-mean
+    decision: use an arithmetic mean
+    rationale: the old method
+  - id: step-weighted-mean
+    decision: use a weighted mean, weighting each dimension by its variance
+    rationale: down-weights noisier dimensions

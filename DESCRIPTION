@@ -21,7 +21,9 @@ LazyData: true
 URL: https://github.com/huizezhang-sherry/tines
 BugReports: https://github.com/huizezhang-sherry/tines/issues
 Suggests: 
+    knitr,
     processx,
+    rmarkdown,
     testthat (>= 3.0.0),
     vcr,
     vdiffr,
@@ -43,3 +45,4 @@ Imports:
 Depends: 
     R (>= 4.1.0)
 Config/roxygen2/version: 8.1.0
+VignetteBuilder: knitr

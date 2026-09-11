@@ -3,17 +3,24 @@
 #' Generates a starter YAML file for a `schema` or `multiverse` to help you
 #' begin building your garden of forking paths.
 #'
-#' @param type The type of template to create. Options are "schema" for a new
-#'   analysis schema template, and "multiverse" for a multiverse analysis
-#'   template.
+#' @param type For `draft_tines()` only: the type of template to create.
+#'   Options are "schema" for a new analysis schema template, and
+#'   "multiverse" for a multiverse analysis template.
 #' @param file_path The file path where the template should be saved. If NULL,
 #'   the template will be saved in the current working directory with a
 #'   default name based on the type.
 #' @param x A `schema` or `multiverse` object, or a character string
 #'   specifying the file path to a valid schema YAML file.
-#' @param id A character string specifying the `id` of the step in the schema
+#' @param id A character string specifying the `id` of the step in the
+#'   schema. For `draft_alternatives()`, a vector naming one or more steps --
+#'   one node is drafted per step.
 #' @param overwrite Logical. If TRUE, will overwrite an existing file at the
 #'   specified file_path. Defaults to FALSE.
+#' @param branch For `draft_alternatives()` only. Required: either `"multi"`
+#'   (drafts 2 placeholder alternatives per node) or `"single"` (drafts
+#'   exactly 1 per node, for a template meant to combine into one coordinated
+#'   branch). There is no default -- see [alternative()] for what the two
+#'   modes mean when expanded.
 #' @return NULL
 #' @export
 #' @rdname template
@@ -26,11 +33,19 @@
 #' draft_alternatives(
 #'   x = my_schema,
 #'   id = "data-cleaning",
-#'   file_path = "alternative_template.yml"
+#'   file_path = "alternative_template.yml",
+#'   branch = "multi"
 #' )
 #'
 #' # Draft alternatives from a schema file
-#' draft_alternatives(x = "path/to/schema.yml", id = "data-cleaning")
+#' draft_alternatives(x = "path/to/schema.yml", id = "data-cleaning", branch = "multi")
+#'
+#' # Draft a single-branch template combining two steps together
+#' draft_alternatives(
+#'   x = my_schema,
+#'   id = c("data-cleaning", "modeling"),
+#'   branch = "single"
+#' )
 #' }
 #'
 draft_tines <- function(type = c("schema", "multiverse"), file_path = NULL,
@@ -148,39 +163,53 @@ draft_tines <- function(type = c("schema", "multiverse"), file_path = NULL,
 
 #' @export
 #' @rdname template
-draft_alternatives <- function(x, id, file_path = NULL) {
+draft_alternatives <- function(x, id, file_path = NULL, branch) {
+  if (missing(branch)) {
+    cli::cli_abort(
+      "{.arg branch} must be specified: either \"single\" or \"multi\"."
+    )
+  }
+  branch <- match.arg(branch, choices = c("multi", "single"))
+
   if (is.character(x) && length(x) == 1) {
     if (!file.exists(x)) cli::cli_abort("File {.file {x}} does not exist.")
     x <- read_tines(x)
   }
 
-  if (!id %in% x$id) {
-    cli::cli_abort("Step {.val {id}} not found in the {class(x)} object")
+  missing_ids <- setdiff(id, x$id)
+  if (length(missing_ids) > 0) {
+    cli::cli_abort("Step {.val {missing_ids}} not found in the {class(x)} object")
   }
 
-  current_objective <- x$objective[which(x$id == id)]
-  objective <- x$objective[which(x$id == id)]
+  node_lines <- function(step_id) {
+    alt_ids <- if (branch == "single") {
+      paste0("new-alternative-", step_id)
+    } else {
+      paste0("new-alternative-", 1:2)
+    }
 
-  template <- cli::format_inline(
-    "meta:
-  type: alternatives
-  step: {id}
-  objective: {objective}
-alternatives:
-  - id: \"NEW-ALTERNATIVE#1\"
-    decision: \"\"
-    rationale: \"\"
-    input: []
-    output: []
-  - id: \"NEW-ALTERNATIVE#2\"
-    decision: \"\"
-    rationale: \"\"
-    input: []
-    output: []
-"
+    alt_lines <- unlist(lapply(alt_ids, function(alt_id) {
+      c(
+        paste0("      - id: \"", alt_id, "\""),
+        "        decision: \"\"",
+        "        rationale: \"\""
+      )
+    }))
+
+    c(paste0("  - overrides: ", step_id), "    alternatives:", alt_lines)
+  }
+
+  lines <- c(
+    "meta:",
+    "  type: alternatives",
+    paste0("  branch: ", branch),
+    "nodes:",
+    unlist(lapply(id, node_lines))
   )
 
-  if (is.null(file_path)) file_path <- paste0("alt_", id, ".yml")
-  writeLines(cli::ansi_strip(template), file_path)
+  if (is.null(file_path)) file_path <- paste0("alt_", paste(id, collapse = "-"), ".yml")
+  writeLines(lines, file_path)
+
   cli::cli_alert_success("Created template at {.file {file_path}}")
+  invisible(file_path)
 }

@@ -1,0 +1,14 @@
+meta:
+  type: alternatives
+  branch: single
+nodes:
+- overrides: step-scaling
+  alternatives:
+  - id: step-scaling-zscore
+    decision: z-score each variable
+    rationale: puts variables on a common, interpretable scale
+- overrides: step-education
+  alternatives:
+  - id: step-education-max
+    decision: use the max of the two school variables
+    rationale: captures the higher-attainment measure

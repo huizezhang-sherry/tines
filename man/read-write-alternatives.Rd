@@ -3,21 +3,21 @@
 \name{write_alternatives}
 \alias{write_alternatives}
 \alias{read_alternatives}
-\title{Read and write  an alternatives object from/to a YML file}
+\title{Read and write an alternatives object from/to a YML file}
 \usage{
 write_alternatives(x, file, ...)
 
 read_alternatives(file, ...)
 }
 \arguments{
-\item{x}{A `alternatives` object.}
+\item{x}{An `alternatives` object.}
 
 \item{file}{A character string specifying the file path.}
 
 \item{...}{Additional arguments passed to `yaml::read_yaml()`.}
 }
 \description{
-Read and write  an alternatives object from/to a YML file
+Read and write an alternatives object from/to a YML file
 }
 \examples{
 \dontrun{

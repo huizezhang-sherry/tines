@@ -6,9 +6,6 @@
       $id
       [1] "test-tag"
       
-      $objective
-      [1] "test objective"
-      
       $decision
       [1] "test decision"
       
@@ -18,27 +15,34 @@
 
 ---
 
-    All arguments (`id`, `objective`, `decision`, `rationale`) are required.
+    All arguments (`id`, `decision`, `rationale`) are required.
 
----
+# node() bundles alternatives under one step and catches missing arguments
+
+    `overrides` and at least one `alternative()` are required.
+
+# branch = 'multi' expands one node into independent branches
 
     Code
-      alt_obj
+      alts
     Output
-      # Alternatives: block-target
-        id    objective  decision  rationale 
-        <chr> <chr>      <chr>     <chr>     
-      1 tag1  objective1 decision1 rationale1
+      # Alternatives: step-combine (multi)
+        overrides    alternatives    
+        <chr>        <list>          
+      1 step-combine <tibble [3 x 3]>
+
+# branch = 'single' requires exactly one alternative per node
+
+    `branch = "single"` requires exactly one alternative per node.
+    i Step "step-scaling" has 2 alternative(s) instead of 1.
 
 # read and write with an alternative yaml
 
     Code
       read_alternatives(tmp_file)
     Output
-      # Alternatives: step-logistic-model
-        id                                decision                           rationale
-        <chr>                             <chr>                              <chr>    
-      1 step-mixed-effects-logistic-model fit a generalized linear mixed-ef~ mixed-ef~
-      2 step-probit-regression-model      fit a probit regression model usi~ probit m~
-      3 step-bayesian-logistic-model      fit a Bayesian logistic regressio~ the Baye~
+      # Alternatives: step-logistic-model (multi)
+        overrides           alternatives    
+        <chr>               <list>          
+      1 step-logistic-model <tibble [3 x 3]>
 

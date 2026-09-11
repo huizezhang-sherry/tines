@@ -1,16 +1,17 @@
 meta:
   type: schema
-  date: '2026-03-04'
+  date: '2026-09-10'
+  name: HDI Example
 nodes:
-- tag: block-scaling
-  action: variables are in different scales
+- id: step-scaling
+  objective: variables are in different scales
   decision: apply min-max scaling to each variable
-  justification: to put them on the same scale for combination
-- tag: block-education
-  action: combine the school variables into one dimension
+  rationale: to put them on the same scale for combination
+- id: step-education
+  objective: combine the school variables into one dimension
   decision: average exp sch and avg sch
-  justification: the most intuitive way
-- tag: block-combine
-  action: combine the three dimensions into a single index
+  rationale: the most intuitive way
+- id: step-combine
+  objective: combine the three dimensions into a single index
   decision: use the geometric mean
-  justification: the geometric mean is more appropriate than arithmetic mean
+  rationale: the geometric mean is more appropriate than arithmetic mean

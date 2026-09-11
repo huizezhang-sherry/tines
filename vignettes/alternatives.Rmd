@@ -1,0 +1,342 @@
+---
+title: "Structuring Alternative Files"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Structuring Alternative Files}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(tines)
+```
+
+An **alternatives file** describes one or more different ways to carry out
+one or more steps in a `schema`. Passing one to `expand_tines()` turns a
+single schema into a `multiverse`. This vignette covers
+
+  * the anatomy of an alternatives YAML file,
+  * how to create one by hand, in R, or with an LLM, and
+  * how `expand_tines()` combines a schema and an alternatives file into a multiverse.
+
+# The big picture
+
+An alternatives file is a list of **nodes**. Each node names
+a step (`overrides`) and a set of candidate `alternatives` for it, each with
+its own `id`, `decision`, and `rationale` -- the skeleton always looks like
+this:
+
+```
+meta:
+  type: alternatives
+  branch: single | multi
+nodes:
+  - overrides: <step id>
+    alternatives:
+      - id: <alternative id>
+        decision: <...>
+        rationale: <...>
+      - id: <alternative id>
+        ...
+  - overrides: <step id>
+    alternatives:
+      ...
+  ...
+```
+
+`meta.branch` tells `expand_tines()` how to turn the nodes into branches:
+
+* **`single`**: every node must have exactly one alternative; they're all
+  combined into a single branch that changes every listed step.
+* **`multi`**: each node's alternatives are independent choices layered on
+  top of original choice. Their cross-product is taken to produce a branch 
+  for every combination of alternatives. For a node with `n` alternatives, 
+  that's `n + 1` branches (the original plus one per alternative). For `K` 
+  nodes with `n_i` alternatives each, that's `prod(n_i + 1)` branches.
+
+# The HDI example
+
+For the rest of this vignette, we'll use the Human Development Index (HDI) as an example. The HDI is a composite index of three dimensions: health, education, and standard of living that comprises of the following steps: 
+
+  * `step-scaling`: Normalize the data to a common scale.
+  * `step-education`: Calculate the education component of the HDI.
+  * `step-combine`: Combine the three components into a single index.
+
+```{r results = "asis", echo = FALSE}
+schema_path <- system.file("hdi.yml", package = "tines")
+cat("```yaml\n")
+cat(readLines(schema_path), sep = "\n")
+cat("\n```\n")
+```
+
+We can read this in and turn it into a `schema` object with `read_tines()`:
+
+```{r}
+schema <- read_tines(schema_path)
+schema
+```
+
+# Case 1: Multiple steps on a single branch
+
+Sometimes you want to create your own version of the analysis that mostly follows the original schema, but changes a few decisions -- for example, switching `step-scaling` to z-scoring and `step-education` to the max of the two school variables. `branch: single` combines those changes into one coordinated branch, rather than exploring each one independently:
+
+```yaml
+meta:
+  type: alternatives
+  branch: single
+nodes:
+  - overrides: step-scaling
+    alternatives:
+      - id: step-scaling-zscore
+        decision: "z-score each variable"
+        rationale: "puts variables on a common, interpretable scale"
+  - overrides: step-education
+    alternatives:
+      - id: step-education-max
+        decision: "use the max of the two school variables"
+        rationale: "captures the higher-attainment measure"
+```
+
+In the above example, the `branch: single` indicates that both steps should be changed together in a single branch, rather than independently.
+
+---
+
+We can create this alternatives file in two ways: 
+  
+  * use `draft_alternatives()` to create a draft template and fill it in by hand, or
+  * create it programmatically in R using the `node()`, `alternative()`, and `new_alternatives()` functions.
+
+**1. Draft a template with `draft_alternatives()` and fill it in by hand:**
+
+```{r}
+draft_path_single <- withr::local_tempfile(fileext = ".yml")
+draft_alternatives(
+  schema,
+  id = c("step-scaling", "step-education"),
+  branch = "single",
+  file_path = draft_path_single
+)
+```
+
+```{r results = "asis", echo = FALSE}
+cat("```yaml\n")
+cat(readLines(draft_path_single), sep = "\n")
+cat("\n```\n")
+```
+
+**2. Build one directly in R with `node()` + `alternative()` +
+`new_alternatives()`:**
+
+```{r}
+alts_combo <- new_alternatives(
+  node(
+    overrides = "step-scaling",
+    alternative(
+      id = "step-scaling-zscore",
+      decision = "z-score each variable",
+      rationale = "puts variables on a common, interpretable scale"
+    )
+  ),
+  node(
+    overrides = "step-education",
+    alternative(
+      id = "step-education-max",
+      decision = "use the max of the two school variables",
+      rationale = "captures the higher-attainment measure"
+    )
+  ),
+  branch = "single"
+)
+alts_combo
+```
+
+...and, if you want a YAML file out of it, write it back out with
+`write_alternatives()`:
+
+```{r}
+tmp_file_single <- withr::local_tempfile(fileext = ".yml")
+write_alternatives(alts_combo, tmp_file_single)
+```
+
+---
+
+You can combine this alternative specification with the original schema to form a set of new schemas, or a **multiverse**, with 2 branches using `expand_tines()`:
+
+```{r}
+mv <- expand_tines(schema, alternatives = alts_combo)
+mv
+mv$`step-scaling-zscore+step-education-max`
+```
+
+Under `branch: single`, every node must have exactly one alternative.
+This is checked as soon as an `alternatives` object is built, read, and printed:
+
+```{r, error = TRUE}
+alts_bad <- alts_combo
+alts_bad$alternatives[[1]] <- rbind(
+  alts_bad$alternatives[[1]],
+  tibble::tibble(
+    id = "step-scaling-minmax", decision = "...", rationale = "..."
+  )
+)
+alts_bad
+```
+
+# Case 2: Checking multiple alternatives of a single step
+
+One may consider testing a set of different alternatives for a single step. For example, one could use an arithmetic mean or a weighted mean that down-weights noisier dimensions. This can be represented in an alternatives file as follows:
+
+```yaml
+meta:
+  type: alternatives
+  branch: multi
+nodes:
+  - overrides: step-combine
+    alternatives:
+      - id: step-arithmetic-mean
+        decision: "use an arithmetic mean"
+        rationale: "the old method"
+      - id: step-weighted-mean
+        decision: "use a weighted mean, weighting each dimension by its variance"
+        rationale: "down-weights noisier dimensions"
+```
+
+We can create this alternatives file in two ways:
+
+* use `draft_alternatives()` to create a draft template and fill it in by hand, or
+* create it programmatically in R using the `node()`, `alternative()`, and `new_alternatives()` functions.
+* ask an LLM to propose alternatives with `gen_alternatives()`.
+
+**1. Draft a template with `draft_alternatives()` and fill it in by hand:**
+
+```{r}
+draft_path <- withr::local_tempfile(fileext = ".yml")
+draft_alternatives(
+  schema, id = "step-combine", branch = "multi", file_path = draft_path
+)
+```
+
+```{r results = "asis", echo = FALSE}
+cat("```yaml\n")
+cat(readLines(draft_path), sep = "\n")
+cat("\n```\n")
+```
+
+`draft_alternatives()` requires a `branch` and `id` argument. The draft template 
+contians two placeholder alternatives for one nodes. Users can edit the file to fill in the decision and rationale for each alternative, and add more alternatives or nodes as needed.
+
+**2. Build one directly in R with `node()` + `alternative()` +
+`new_alternatives()`:**
+
+`new_alternatives()` likewise requires `branch` to be given explicitly:
+
+```{r}
+alts <- new_alternatives(
+  branch = "multi",
+  node(
+    overrides = "step-combine",
+    alternative(
+      id = "step-arithmetic-mean",
+      decision = "use an arithmetic mean",
+      rationale = "the old method"
+    ),
+    alternative(
+      id = "step-weighted-mean",
+      decision = "use a weighted mean, weighting each dimension by its variance",
+      rationale = "down-weights noisier dimensions"
+    )
+  )
+)
+alts
+```
+
+...and, if you want a YAML file out of it, write it back out with
+`write_alternatives()`:
+
+```{r}
+tmp_file <- withr::local_tempfile(fileext = ".yml")
+write_alternatives(alts, tmp_file)
+```
+
+```{r results = "asis", echo = FALSE}
+cat("```yaml\n")
+cat(readLines(tmp_file), sep = "\n")
+cat("\n```\n")
+```
+
+**3. Ask an LLM to propose alternatives with `gen_alternatives()`:**
+
+```{r, eval = FALSE}
+gen_alternatives(
+  schema,
+  step = "step-combine", n = 3,
+  file_path = "step-combine-alt.yml"
+)
+```
+
+`gen_alternatives()` always targets one step, so it produces a `branch:
+multi` file with exactly one node.
+
+--- 
+
+When `branch = multi`, `expand_tines()` produces a branch for every alternative, plus the original. In this case, with 2 alternatives, this results in 3 branches: 
+```{r}
+mv <- expand_tines(schema, alts)
+mv
+mv$`step-weighted-mean`
+```
+
+`expand_tines()` also accepts a path to a YAML file directly:
+
+```{r}
+expand_tines(schema, tmp_file)
+```
+
+# Case 3: Checking multiple alternatives of multiple steps
+
+With `branch: multi` and more than one node, `expand_tines()` crosses every
+node's choices together. 
+
+```{r}
+alts_factorial <- new_alternatives(
+  branch = "multi", 
+  node(
+    overrides = "step-scaling",
+    alternative(
+      id = "step-scaling-zscore",
+      decision = "z-score each variable",
+      rationale = "puts variables on a common, interpretable scale"
+    )
+  ),
+  node(
+    overrides = "step-combine",
+    alternative(
+      id = "step-arithmetic-mean",
+      decision = "use an arithmetic mean",
+      rationale = "the old method"
+    ),
+    alternative(
+      id = "step-weighted-mean",
+      decision = "use a weighted mean, weighting each dimension by its variance",
+      rationale = "down-weights noisier dimensions"
+    )
+  )
+)
+mv <- expand_tines(schema, alts_factorial)
+mv
+length(mv)
+names(mv)
+```
+
+`step-scaling` has 1 alternative and `step-combine` has 2, so this crosses
+into `(1 + 1) x (2 + 1)` = 6 schemas: `original`, `step-scaling-zscore`
+alone, each of `step-combine`'s two alternatives alone, and each of those
+two paired with `step-scaling-zscore`. 
+

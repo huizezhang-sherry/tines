@@ -23,10 +23,47 @@ test_that("draft_tines generates correct schema YAML", {
   expect_snapshot_file(tmp, "multiverse_template.yaml")
 })
 
-test_that("draft_alternatives generates correct alternatives YAML", {
+test_that("draft_alternatives generates correct multi-branch alternatives YAML", {
   tmp <- withr::local_tempfile(fileext = ".yaml")
   draft_alternatives(
-    x = example_schema(), id = "step-scaling", file_path = tmp
+    x = example_schema(), id = "step-scaling", file_path = tmp, branch = "multi"
   )
   expect_snapshot_file(tmp, "alternatives_template.yaml")
+
+  alts <- read_alternatives(tmp)
+  expect_equal(attr(alts, "branch"), "multi")
+  expect_equal(alts$overrides, "step-scaling")
+  expect_equal(nrow(alts$alternatives[[1]]), 2)
+})
+
+test_that("draft_alternatives generates correct single-branch alternatives YAML", {
+  tmp <- withr::local_tempfile(fileext = ".yaml")
+  draft_alternatives(
+    x = example_schema(),
+    id = c("step-scaling", "step-education"),
+    file_path = tmp,
+    branch = "single"
+  )
+  expect_snapshot_file(tmp, "alternatives_template_single.yaml")
+
+  alts <- read_alternatives(tmp)
+  expect_equal(attr(alts, "branch"), "single")
+  expect_equal(alts$overrides, c("step-scaling", "step-education"))
+  expect_true(all(vapply(alts$alternatives, nrow, integer(1)) == 1))
+})
+
+test_that("draft_alternatives errors on an unknown step id", {
+  schema <- example_schema()
+  expect_error(
+    draft_alternatives(schema, id = "does-not-exist", branch = "multi"),
+    "not found"
+  )
+})
+
+test_that("draft_alternatives requires branch to be specified", {
+  schema <- example_schema()
+  expect_error(
+    draft_alternatives(schema, id = "step-scaling"),
+    "branch"
+  )
 })

@@ -1,12 +1,14 @@
 meta:
   type: alternatives
-  branch: multi
+  branch: single
 nodes:
   - overrides: step-scaling
     alternatives:
-      - id: "new-alternative-1"
+      - id: "new-alternative-step-scaling"
         decision: ""
         rationale: ""
-      - id: "new-alternative-2"
+  - overrides: step-education
+    alternatives:
+      - id: "new-alternative-step-education"
         decision: ""
         rationale: ""

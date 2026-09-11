@@ -53,7 +53,7 @@
 #' \dontrun{
 #' gen_alternatives(hdi,
 #'   step = "step-combine", n = 1,
-#'   file_path = here::here("inst/hdi-alt.yml")
+#'   file_path = "step-combine-alt.yml"
 #' )
 #' }
 #'
@@ -168,9 +168,7 @@ prompt_alternatives <- function(schema = NULL, step, n = 3, data_dict = NULL,
       "\n\n=== DATASET CONTEXT ===\n\n",
       "Available columns: ", col_info, "\n\n",
       "When suggesting alternatives, you may propose different input ",
-      "variables from this dataset ",
-      "if methodologically appropriate. Update the inputs/outputs fields ",
-      "accordingly.\n"
+      "variables from this dataset if methodologically appropriate.\n"
     )
   } else {
     ""
@@ -187,12 +185,6 @@ prompt_alternatives <- function(schema = NULL, step, n = 3, data_dict = NULL,
     "- **DECISION**: The specific implementation chosen (How it is done).\n\n",
     "- **RATIONALE**: The reasoning behind that decision.\n\n",
     "- **ID**: The unique identifier for the step (kebab-case).\n\n",
-    if (!is.null(data_dict)) {
-      paste0(
-        "- **INPUTS**: Variables from the dataset needed for this step.\n\n",
-        "- **OUTPUTS**: New variables created by this step.\n\n"
-      )
-    },
     "=== TASK ===\n\n",
     "Focus specifically on the step tagged: \"", step, "\".\n",
     "Your goal is to generate ", n,
@@ -205,45 +197,32 @@ prompt_alternatives <- function(schema = NULL, step, n = 3, data_dict = NULL,
     "valid.\n\n",
     "4. **Create a new ID** that reflects the new decision (must be ",
     "kebab-case).\n\n",
-    if (!is.null(data_dict)) {
-      paste0(
-        "5. **Update INPUTS/OUTPUTS** if the alternative uses different ",
-        "variables or creates different outputs.\n\n"
-      )
-    },
     data_section,
     "=== OUTPUT FORMAT ===\n\n",
     "Please output the result in **strictly valid YML format**.\n\n",
     "**Crucial Formatting Rules:**\n\n",
-    "1. Include a `meta` section at the top with `type: alternative` and the ",
-    "`step`.\n\n",
+    "1. Include a `meta` section at the top with `type: alternatives` and ",
+    "`branch: multi`.\n\n",
     "2. Output strictly valid YML. All text values (decision, rationale) ",
     "must be enclosed in double quotes (\"). ",
     "Do not use block styles (| or >). Do not wrap lines or insert \\n ",
     "characters within the quotes; ",
     "keep the text as a single continuous string.\n\n",
-    if (!is.null(data_dict)) {
-      "3. Include inputs and outputs as arrays: inputs: [var1, var2]\n\n4. "
-    } else {
-      "3. "
-    },
-    "Do not include markdown code fences (like ```yml) or conversational ",
+    "3. Do not include markdown code fences (like ```yml) or conversational ",
     "text. Just the raw YML.\n\n",
     "=== REQUIRED YML STRUCTURE EXAMPLE ===\n\n",
     "meta:\n",
-    "  type: tines_alternative\n",
-    "  step: ", step, "\n",
-    "alternatives:\n",
-    "  - id: step-new-method-name\n",
-    "    objective: Repeat the original objective\n",
-    "    decision: \"Description of the new decision...\"\n",
-    "    rationale: \"This is the reasoning for why this alternative is ",
+    "  type: alternatives\n",
+    "  branch: multi\n",
+    "nodes:\n",
+    "  - overrides: ", step, "\n",
+    "    alternatives:\n",
+    "      - id: step-new-method-name\n",
+    "        decision: \"Description of the new decision...\"\n",
+    "        rationale: \"This is the reasoning for why this alternative is ",
     "valid.\"\n",
-    if (!is.null(data_dict)) {
-      "    inputs: [var1, var2]\n    outputs: [new_var]\n"
-    },
-    "  - id: step-another-method\n",
-    "    ...\n"
+    "      - id: step-another-method\n",
+    "        ...\n"
   )
 
   full_prompt <- if (!is.null(schema)) {
@@ -302,35 +281,86 @@ expand_tines.schema <- function(x, alternatives, include_original = TRUE, ...) {
     alts_data <- alternatives
   }
 
-  target <- attr(alts_data, "step")
-
   ids <- x$id
-  if (!target %in% ids) {
-    cli::cli_abort("Target step {.val {target}} not found in the base schema.")
+  target_steps <- alts_data$overrides
+  missing_targets <- setdiff(target_steps, ids)
+  if (length(missing_targets) > 0) {
+    cli::cli_abort("Target step {.val {missing_targets}} not found in the base schema.")
   }
-  idx <- which(ids == target)
 
-  # Iterate over rows of the alternatives data frame using purrr::pmap
-  new_schemas <- purrr::pmap(
-    alts_data,
-    function(id, objective, decision, rationale) {
-      branch <- x
+  branch_mode <- attr(alts_data, "branch", exact = TRUE)
 
-      # Update the specific row directly since schema is a data frame
-      branch$id[[idx]] <- id
-      branch$decision[[idx]] <- decision
-      branch$rationale[[idx]] <- rationale
+  # Apply a named list of choices (one per target step, NULL meaning "keep
+  # the original decision/rationale for this step") to build one branch.
+  apply_choices <- function(chosen) {
+    branch <- x
+    for (step_id in names(chosen)) {
+      choice <- chosen[[step_id]]
+      if (is.null(choice)) next
+      step_idx <- which(ids == step_id)
 
-      # Preserve the schema class and attributes
-      class(branch) <- c("schema", "tbl_df", "tbl", "data.frame")
-      attr(branch, "name") <- attr(x, "name", exact = TRUE)
-
-      return(branch)
+      # Note: the targeted step's own id is intentionally left unchanged
+      # (not overwritten to the alternative's id) -- a stable id is what
+      # lets the same step be located across the original and every branch.
+      branch$decision[[step_idx]] <- choice$decision
+      branch$rationale[[step_idx]] <- choice$rationale
     }
-  )
-  names(new_schemas) <- alts_data$id
+    class(branch) <- c("schema", "tbl_df", "tbl", "data.frame")
+    attr(branch, "name") <- attr(x, "name", exact = TRUE)
+    branch
+  }
 
-  if (include_original) new_schemas <- c(list(original = x), new_schemas)
+  if (branch_mode == "single") {
+    # Already enforced by new_alternatives()/read_alternatives()/print at
+    # construction/read/inspection time, but re-checked here in case
+    # `alternatives` was built or mutated by hand without going through any
+    # of those.
+    check_single_branch(alts_data)
+
+    # Combine every node's (sole) alternative into a single coordinated
+    # branch.
+    chosen <- purrr::map(alts_data$alternatives, function(alts) as.list(alts[1, ]))
+    names(chosen) <- target_steps
+
+    branch <- apply_choices(chosen)
+    branch_name <- paste(purrr::map_chr(chosen, "id"), collapse = "+")
+
+    new_schemas <- stats::setNames(list(branch), branch_name)
+    if (include_original) new_schemas <- c(list(original = x), new_schemas)
+  } else {
+    # Each node's effective choice set is "keep the original decision" (NULL)
+    # plus its listed alternatives; expand into the full cross product
+    # across nodes. A single node just yields one independent branch per
+    # alternative (identical to the un-crossed behaviour); the
+    # all-original combination is one cell of the grid, named "original".
+    choice_lists <- purrr::map(alts_data$alternatives, function(alts) {
+      c(list(NULL), purrr::pmap(alts, function(id, decision, rationale) {
+        list(id = id, decision = decision, rationale = rationale)
+      }))
+    })
+
+    grid <- expand.grid(lapply(choice_lists, seq_along), KEEP.OUT.ATTRS = FALSE)
+
+    branches <- purrr::pmap(grid, function(...) {
+      idx <- c(...)
+      chosen <- purrr::map2(choice_lists, idx, function(choices, i) choices[[i]])
+      names(chosen) <- target_steps
+
+      applied_ids <- purrr::compact(purrr::map(chosen, "id"))
+      name <- if (length(applied_ids) == 0) {
+        "original"
+      } else {
+        paste(unlist(applied_ids), collapse = "+")
+      }
+
+      list(schema = apply_choices(chosen), name = name)
+    })
+
+    new_schemas <- purrr::map(branches, "schema")
+    names(new_schemas) <- purrr::map_chr(branches, "name")
+
+    if (!include_original) new_schemas <- new_schemas[names(new_schemas) != "original"]
+  }
 
   new_multiverse(new_schemas)
 }
@@ -343,16 +373,15 @@ expand_tines.multiverse <- function(x, alternatives, ...) {
   } else {
     alts_data <- alternatives
   }
-  target <- attr(alts_data, "step")
+  target_steps <- alts_data$overrides
 
   expanded_list <- lapply(x, function(single_schema) {
-    # Use single_schema$id instead of single_schema$nodes$id
     ids <- single_schema$id
 
-    if (target %in% ids) {
-      # It has the step! Expand it, and extract the resulting list of schemas
+    if (all(target_steps %in% ids)) {
+      # It has the step(s)! Expand it, and extract the resulting list of schemas
       expanded_mini_multi <- expand_tines(
-        single_schema, alternatives,
+        single_schema, alts_data,
         include_original = FALSE
       )
       return(unclass(expanded_mini_multi)) # Return the list of schemas

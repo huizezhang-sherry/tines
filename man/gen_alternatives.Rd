@@ -105,7 +105,7 @@ hdi <- example_schema()
 \dontrun{
 gen_alternatives(hdi,
   step = "step-combine", n = 1,
-  file_path = here::here("inst/hdi-alt.yml")
+  file_path = "step-combine-alt.yml"
 )
 }
 

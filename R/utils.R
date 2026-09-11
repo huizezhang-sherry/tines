@@ -101,37 +101,41 @@ example_football <- function() {
 #' @rdname example_tines
 #' @export
 example_alternatives <- function(case = c("football", "hdi")) {
+  case <- match.arg(case)
+
   hdi <- new_alternatives(
-    step = "step-combine",
-    alternative(
-      id = "step-arithmetic-mean",
-      objective = "combine the three dimensions into a single index",
-      decision = "use a arithmetic mean",
-      rationale = "the old method"
-    )
+    node(
+      overrides = "step-combine",
+      alternative(
+        id = "step-arithmetic-mean",
+        decision = "use a arithmetic mean",
+        rationale = "the old method"
+      )
+    ),
+    branch = "multi"
   )
 
 
   football <- new_alternatives(
-    step = "step-logistic-model",
-    alternative(
-      id = "step-mixed-effects-logistic-model",
-      objective = "estimate the effect size of skin tone on red card",
-      decision = "fit a generalized linear mixed-effects model (GLMM) with random intercepts for players and referees to account for hierarchical data structure",
-      rationale = "mixed-effects models are appropriate for clustered data as they control for non-independence of observations within players and referees, leading to more reliable standard errors and effect estimates"
+    node(
+      overrides = "step-logistic-model",
+      alternative(
+        id = "step-mixed-effects-logistic-model",
+        decision = "fit a generalized linear mixed-effects model (GLMM) with random intercepts for players and referees to account for hierarchical data structure",
+        rationale = "mixed-effects models are appropriate for clustered data as they control for non-independence of observations within players and referees, leading to more reliable standard errors and effect estimates"
+      ),
+      alternative(
+        id = "step-probit-regression-model",
+        decision = "fit a probit regression model using the average skin tone rating and specified covariates",
+        rationale = "probit models provide a methodologically valid alternative to logistic regression by assuming a normally distributed latent variable, serving as a sensitivity check for the choice of link function"
+      ),
+      alternative(
+        id = "step-bayesian-logistic-model",
+        decision = "fit a Bayesian logistic regression model with the average skin tone rating as a predictor and weakly informative priors",
+        rationale = "the Bayesian approach provides a complete posterior distribution of the effect size rather than a point estimate, allowing for a more nuanced probabilistic interpretation of the skin tone effect and its uncertainty"
+      )
     ),
-    alternative(
-      id = "step-probit-regression-model",
-      objective = "estimate the effect size of skin tone on red card",
-      decision = "fit a probit regression model using the average skin tone rating and specified covariates",
-      rationale = "probit models provide a methodologically valid alternative to logistic regression by assuming a normally distributed latent variable, serving as a sensitivity check for the choice of link function"
-    ),
-    alternative(
-      id = "step-bayesian-logistic-model",
-      objective = "estimate the effect size of skin tone on red card",
-      decision = "fit a Bayesian logistic regression model with the average skin tone rating as a predictor and weakly informative priors",
-      rationale = "the Bayesian approach provides a complete posterior distribution of the effect size rather than a point estimate, allowing for a more nuanced probabilistic interpretation of the skin tone effect and its uncertainty"
-    )
+    branch = "multi"
   )
 
   if (case == "football") {
