@@ -14,7 +14,7 @@ read_alternatives(file, ...)
 
 - x:
 
-  A \`alternatives\` object.
+  An \`alternatives\` object.
 
 - file:
 

@@ -14,7 +14,7 @@
 - [`plot(`*`<schema>`*`)`](print.md)
   [`plot(`*`<multiverse>`*`)`](print.md) [`draw_tines()`](print.md)
   [`inspect_dot()`](print.md) : Visualize and inspect \`tines\` objects
-- [`alternative()`](alternatives.md)
+- [`alternative()`](alternatives.md) [`node()`](alternatives.md)
   [`new_alternatives()`](alternatives.md) : Construct \`alternatives\`
   objects
 - [`import_step()`](import.md) [`generate_edges()`](import.md) : Import

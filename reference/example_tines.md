@@ -65,8 +65,8 @@ example_football()
 #> 2 step-victory-tie-de… control … victory… ratios a… <lgl>  <lgl>   NA           
 #> 3 step-logistic-model  estimate… fit a l… to answe… <lgl>  <lgl>   NA           
 example_alternatives(case = "hdi")
-#> # Alternatives: step-combine
-#>   id                   objective                              decision rationale
-#>   <chr>                <chr>                                  <chr>    <chr>    
-#> 1 step-arithmetic-mean combine the three dimensions into a s… use a a… the old …
+#> # Alternatives: step-combine (multi)
+#>   overrides    alternatives    
+#>   <chr>        <list>          
+#> 1 step-combine <tibble [1 × 3]>
 ```

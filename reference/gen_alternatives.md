@@ -128,7 +128,7 @@ hdi <- example_schema()
 if (FALSE) { # \dontrun{
 gen_alternatives(hdi,
   step = "step-combine", n = 1,
-  file_path = here::here("inst/hdi-alt.yml")
+  file_path = "step-combine-alt.yml"
 )
 } # }
 
@@ -175,8 +175,8 @@ prompt_alternatives(schema = hdi, step = "step-combine", print = TRUE)
 #> 
 #> **Crucial Formatting Rules:**
 #> 
-#> 1. Include a `meta` section at the top with `type: alternative` and
-#> the `step`.
+#> 1. Include a `meta` section at the top with `type: alternatives` and
+#> `branch: multi`.
 #> 
 #> 2. Output strictly valid YML. All text values (decision, rationale)
 #> must be enclosed in double quotes ("). Do not use block styles (| or
@@ -188,10 +188,10 @@ prompt_alternatives(schema = hdi, step = "step-combine", print = TRUE)
 #> 
 #> === REQUIRED YML STRUCTURE EXAMPLE ===
 #> 
-#> meta: type: tines_alternative step: step-combine alternatives: - id:
-#> step-new-method-name objective: Repeat the original objective
-#> decision: "Description of the new decision..."  rationale: "This is
-#> the reasoning for why this alternative is valid."  - id:
+#> meta: type: alternatives branch: multi nodes: - overrides:
+#> step-combine alternatives: - id: step-new-method-name decision:
+#> "Description of the new decision..."  rationale: "This is the
+#> reasoning for why this alternative is valid."  - id:
 #> step-another-method ...
 #> 
 #> === CURRENT SCHEMA ===
