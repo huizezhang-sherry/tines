@@ -5,22 +5,14 @@
 \alias{draft_alternatives}
 \title{Create templates YAML files}
 \usage{
-draft_tines(
-  type = c("schema", "multiverse"),
-  file_path = NULL,
-  overwrite = FALSE
-)
+draft_tines(file_path = NULL, overwrite = FALSE)
 
 draft_alternatives(x, id, file_path = NULL, branch)
 }
 \arguments{
-\item{type}{For `draft_tines()` only: the type of template to create.
-Options are "schema" for a new analysis schema template, and
-"multiverse" for a multiverse analysis template.}
-
 \item{file_path}{The file path where the template should be saved. If NULL,
 the template will be saved in the current working directory with a
-default name based on the type.}
+default name.}
 
 \item{overwrite}{Logical. If TRUE, will overwrite an existing file at the
 specified file_path. Defaults to FALSE.}
@@ -44,13 +36,17 @@ modes mean when expanded.}
   of writing a template YAML file to disk.
 }
 \description{
-Generates a starter YAML file for a `schema` or `multiverse` to help you
-begin building your garden of forking paths.
+Generates a starter YAML file for a `schema` to help you begin building
+your garden of forking paths. There is no template for a `multiverse`:
+a multiverse is always produced either by combining schema objects with
+[build_multiverse()], or by expanding a schema (or another multiverse)
+with an alternatives file via [expand_tines()] -- never hand-authored
+from a blank template.
 }
 \examples{
 # Create a new schema template
 schema_path <- withr::local_tempfile(fileext = ".yml")
-draft_tines(type = "schema", file_path = schema_path)
+draft_tines(file_path = schema_path)
 
 # Draft alternatives from a schema object
 my_schema <- example_schema()
@@ -61,17 +57,11 @@ draft_alternatives(
   branch = "multi"
 )
 
-# Draft alternatives from a schema file
-schema_file <- withr::local_tempfile(fileext = ".yml")
-write_tines(my_schema, schema_file)
+# `x` also accepts a path to a schema file -- draft a single-branch
+# template combining two steps together
+schema_file <- system.file("hdi.yml", package = "tines")
 draft_alternatives(
-  x = schema_file, id = "step-scaling",
-  file_path = withr::local_tempfile(fileext = ".yml"), branch = "multi"
-)
-
-# Draft a single-branch template combining two steps together
-draft_alternatives(
-  x = my_schema,
+  x = schema_file,
   id = c("step-scaling", "step-education"),
   file_path = withr::local_tempfile(fileext = ".yml"),
   branch = "single"

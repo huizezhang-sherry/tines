@@ -1,14 +1,15 @@
 #' Create templates YAML files
 #'
-#' Generates a starter YAML file for a `schema` or `multiverse` to help you
-#' begin building your garden of forking paths.
+#' Generates a starter YAML file for a `schema` to help you begin building
+#' your garden of forking paths. There is no template for a `multiverse`:
+#' a multiverse is always produced either by combining schema objects with
+#' [build_multiverse()], or by expanding a schema (or another multiverse)
+#' with an alternatives file via [expand_tines()] -- never hand-authored
+#' from a blank template.
 #'
-#' @param type For `draft_tines()` only: the type of template to create.
-#'   Options are "schema" for a new analysis schema template, and
-#'   "multiverse" for a multiverse analysis template.
 #' @param file_path The file path where the template should be saved. If NULL,
 #'   the template will be saved in the current working directory with a
-#'   default name based on the type.
+#'   default name.
 #' @param x A `schema` or `multiverse` object, or a character string
 #'   specifying the file path to a valid schema YAML file.
 #' @param id A character string specifying the `id` of the step in the
@@ -18,8 +19,7 @@
 #'   specified file_path. Defaults to FALSE.
 #' @param branch For `draft_alternatives()` only. Required: either `"multi"`
 #'   (drafts 2 placeholder alternatives per node) or `"single"` (drafts
-#'   exactly 1 per node, for a template meant to combine into one coordinated
-#'   branch). There is no default -- see [alternative()] for what the two
+#'   exactly 1 per node). See the [alternative()] vignette for what the two
 #'   modes mean when expanded.
 #' @return `draft_tines()` and `draft_alternatives()` both invisibly return
 #'   the path they wrote to; each is called primarily for its side effect
@@ -29,7 +29,7 @@
 #' @examples
 #' # Create a new schema template
 #' schema_path <- withr::local_tempfile(fileext = ".yml")
-#' draft_tines(type = "schema", file_path = schema_path)
+#' draft_tines(file_path = schema_path)
 #'
 #' # Draft alternatives from a schema object
 #' my_schema <- example_schema()
@@ -40,28 +40,19 @@
 #'   branch = "multi"
 #' )
 #'
-#' # Draft alternatives from a schema file
-#' schema_file <- withr::local_tempfile(fileext = ".yml")
-#' write_tines(my_schema, schema_file)
+#' # `x` also accepts a path to a schema file -- draft a single-branch
+#' # template combining two steps together
+#' schema_file <- system.file("hdi.yml", package = "tines")
 #' draft_alternatives(
-#'   x = schema_file, id = "step-scaling",
-#'   file_path = withr::local_tempfile(fileext = ".yml"), branch = "multi"
-#' )
-#'
-#' # Draft a single-branch template combining two steps together
-#' draft_alternatives(
-#'   x = my_schema,
+#'   x = schema_file,
 #'   id = c("step-scaling", "step-education"),
 #'   file_path = withr::local_tempfile(fileext = ".yml"),
 #'   branch = "single"
 #' )
 #'
-draft_tines <- function(type = c("schema", "multiverse"), file_path = NULL,
-                        overwrite = FALSE) {
-  type <- match.arg(type)
-
+draft_tines <- function(file_path = NULL, overwrite = FALSE) {
   if (is.null(file_path)) {
-    file_path <- paste0(type, "_template.yml")
+    file_path <- "schema_template.yml"
   }
 
   if (file.exists(file_path) & !overwrite) {
@@ -74,86 +65,23 @@ draft_tines <- function(type = c("schema", "multiverse"), file_path = NULL,
     ))
   }
 
-  if (type == "schema") {
-    template_data <- list(
-      meta = list(
-        type = "schema",
-        date = as.character(Sys.Date()),
-        name = "My Analysis Schema"
+  template_data <- list(
+    meta = list(type = "schema"),
+    nodes = list(
+      list(
+        id = "step1",
+        objective = "describe your first step here",
+        decision = "describe your decision here",
+        rationale = "explain your reasoning here"
       ),
-      nodes = list(
-        list(
-          id = "step1",
-          objective = "describe your first step here",
-          decision = "describe your decision here",
-          rationale = "explain your reasoning here",
-          inputs = list(),
-          outputs = list(),
-          source_schema = ""
-        ),
-        list(
-          id = "step2",
-          objective = "describe your next step here",
-          decision = "describe your decision here",
-          rationale = "explain your reasoning here",
-          inputs = list(),
-          outputs = list(),
-          source_schema = ""
-        )
+      list(
+        id = "step2",
+        objective = "describe your next step here",
+        decision = "describe your decision here",
+        rationale = "explain your reasoning here"
       )
     )
-  } else {
-    template_data <- list(
-      meta = list(
-        type = "multiverse",
-        date = as.character(Sys.Date())
-      ),
-      schemas = list(
-        list(
-          meta = list(
-            type = "schema",
-            date = as.character(Sys.Date()),
-            name = "Path A"
-          ),
-          nodes = list(
-            list(
-              id = "step1", objective = "path A approach",
-              decision = "describe your decision here",
-              rationale = "explain your reasoning here",
-              inputs = list(), outputs = list(), source_schema = ""
-            ),
-            list(
-              id = "step2", objective = "path A next step",
-              decision = "describe your decision here",
-              rationale = "explain your reasoning here",
-              inputs = list(), outputs = list(), source_schema = ""
-            )
-          )
-        ),
-        list(
-          meta = list(
-            type = "schema",
-            date = as.character(Sys.Date()),
-            name = "Path B"
-          ),
-          nodes = list(
-            list(
-              id = "step1", objective = "path B approach",
-              decision = "describe your decision here",
-              rationale = "explain your reasoning here",
-              inputs = list(), outputs = list(), source_schema = ""
-            ),
-            list(
-              id = "step2", objective = "path B next step",
-              decision = "describe your decision here",
-              rationale = "explain your reasoning here",
-              inputs = list(), outputs = list(), source_schema = ""
-            )
-          )
-        )
-      )
-    )
-  }
+  )
 
   yaml::write_yaml(
     template_data,
@@ -162,7 +90,7 @@ draft_tines <- function(type = c("schema", "multiverse"), file_path = NULL,
   )
 
   cli::cli_alert_success(
-    "Drafted {.val {type}} template at {.file {file_path}}"
+    "Drafted {.val schema} template at {.file {file_path}}"
   )
   cli::cli_alert_info("Open this file to start defining your steps!")
 

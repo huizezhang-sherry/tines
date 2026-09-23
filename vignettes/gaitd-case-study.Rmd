@@ -41,8 +41,7 @@ alternative file can encode a reviewer's suggested change.
 Yee et al.'s manuscript and supplementary material already state each
 analytical decision and its rationale -- assembling a schema from it required
 no new analysis, only collecting those decisions into the `tines` schema
-format. We drafted a template with `draft_tines(type = "schema")` and filled
-it in by hand.
+format. We drafted a template with `draft_tines()` and filled it in by hand.
 
 ```{r results = "asis", echo = FALSE}
 schema_path <- system.file("gaitd/schema.yml", package = "tines")

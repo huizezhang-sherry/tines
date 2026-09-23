@@ -10,17 +10,10 @@ scrub_date_for_snapshot <- function(file_path) {
 }
 
 test_that("draft_tines generates correct schema YAML", {
-  # schema
   tmp <- withr::local_tempfile(fileext = ".yaml")
-  draft_tines(type = "schema", file_path = tmp)
+  draft_tines(file_path = tmp)
   tmp <- scrub_date_for_snapshot(tmp)
   expect_snapshot_file(tmp, "schema_template.yaml")
-
-  # multiverse
-  tmp <- withr::local_tempfile(fileext = ".yaml")
-  draft_tines(type = "multiverse", file_path = tmp)
-  tmp <- scrub_date_for_snapshot(tmp)
-  expect_snapshot_file(tmp, "multiverse_template.yaml")
 })
 
 test_that("draft_alternatives generates correct multi-branch alternatives YAML", {

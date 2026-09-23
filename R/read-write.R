@@ -44,7 +44,7 @@ write_tines <- function(x, path = NULL, ...) {
       type = "multiverse",
       date = as.character(Sys.Date())
     ))
-    output <- c(header, list(schemas = x))
+    output <- c(header, list(schemas = purrr::map(x, schema_to_yaml_list)))
   }
 
   if (inherits(x, "schema")) {
@@ -53,17 +53,7 @@ write_tines <- function(x, path = NULL, ...) {
       date = as.character(Sys.Date()),
       name = attr(x, "name", exact = TRUE)
     ))
-    # Convert schema to list format for YAML
-    nodes_list <- purrr::pmap(as.data.frame(x), function(...) {
-      node <- list(...)
-      # Ensure inputs and outputs are proper lists
-      if (!is.null(node$inputs)) node$inputs <- normalize_io_field(node$inputs)
-      if (!is.null(node$outputs)) node$outputs <- normalize_io_field(node$outputs)
-      node
-    })
-
-    schema_list <- list(nodes = nodes_list)
-    output <- c(header, schema_list)
+    output <- c(header, list(nodes = schema_to_yaml_list(x)$nodes))
   }
 
   txt <- yaml::as.yaml(output, column.major = FALSE, ...)
@@ -71,6 +61,26 @@ write_tines <- function(x, path = NULL, ...) {
   writeLines(txt, path)
 
   cli::cli_alert_success("File saved: {.file {path}}")
+}
+
+# Converts a single `schema` object into the list-of-nodes shape expected by
+# both the standalone schema file format and each entry under a multiverse
+# file's `schemas:` field -- shared so a multiverse's schemas serialize
+# identically to a standalone schema (required for read_tines() to be able
+# to rebuild them the same way via rebuild_schema()).
+schema_to_yaml_list <- function(x) {
+  nodes_list <- purrr::pmap(as.data.frame(x), function(...) {
+    node <- list(...)
+    # Ensure inputs and outputs are proper lists
+    if (!is.null(node$inputs)) node$inputs <- normalize_io_field(node$inputs)
+    if (!is.null(node$outputs)) node$outputs <- normalize_io_field(node$outputs)
+    node
+  })
+
+  list(
+    meta = list(type = "schema", name = attr(x, "name", exact = TRUE)),
+    nodes = nodes_list
+  )
 }
 
 # A schema's inputs/outputs list-column shows up in two different shapes

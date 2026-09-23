@@ -16,6 +16,6 @@
       multiverse_read
     Output
       A multiverse with 2 schemas:
-        original: (0 steps)
-        reversed: (0 steps)
+        original: "HDI Example" (3 steps)
+        reversed: "HDI Example" (3 steps)
 
