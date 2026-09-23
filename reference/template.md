@@ -65,7 +65,7 @@ writing a template YAML file to disk.
 # Create a new schema template
 schema_path <- withr::local_tempfile(fileext = ".yml")
 draft_tines(type = "schema", file_path = schema_path)
-#> ✔ Drafted "schema" template at /tmp/RtmpOn96vK/file1af4d80f393.yml
+#> ✔ Drafted "schema" template at /tmp/RtmpvTS8Ky/file1ad017015b67.yml
 #> ℹ Open this file to start defining your steps!
 
 # Draft alternatives from a schema object
@@ -76,17 +76,17 @@ draft_alternatives(
   file_path = withr::local_tempfile(fileext = ".yml"),
   branch = "multi"
 )
-#> ✔ Created template at /tmp/RtmpOn96vK/file1af44e14a5ed.yml
+#> ✔ Created template at /tmp/RtmpvTS8Ky/file1ad04af73164.yml
 
 # Draft alternatives from a schema file
 schema_file <- withr::local_tempfile(fileext = ".yml")
 write_tines(my_schema, schema_file)
-#> ✔ File saved: /tmp/RtmpOn96vK/file1af439bf7363.yml
+#> ✔ File saved: /tmp/RtmpvTS8Ky/file1ad0329a1373.yml
 draft_alternatives(
   x = schema_file, id = "step-scaling",
   file_path = withr::local_tempfile(fileext = ".yml"), branch = "multi"
 )
-#> ✔ Created template at /tmp/RtmpOn96vK/file1af45114e54d.yml
+#> ✔ Created template at /tmp/RtmpvTS8Ky/file1ad03387adf5.yml
 
 # Draft a single-branch template combining two steps together
 draft_alternatives(
@@ -95,5 +95,5 @@ draft_alternatives(
   file_path = withr::local_tempfile(fileext = ".yml"),
   branch = "single"
 )
-#> ✔ Created template at /tmp/RtmpOn96vK/file1af420215eb3.yml
+#> ✔ Created template at /tmp/RtmpvTS8Ky/file1ad02ac7e805.yml
 ```

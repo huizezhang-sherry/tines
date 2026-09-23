@@ -21,6 +21,7 @@ begin building your garden of forking paths."></head><body>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/alternatives.html">Structuring Alternative Files</a></li>
+    <li><a class="dropdown-item" href="../articles/gaitd-case-study.html">Case Study: A Published GAITD Regression Analysis</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -106,7 +107,7 @@ modes mean when expanded.</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create a new schema template</span></span></span>
 <span class="r-in"><span><span class="va">schema_path</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yml"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">draft_tines</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"schema"</span>, file_path <span class="op">=</span> <span class="va">schema_path</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Drafted <span style="color: #0000BB;">"schema"</span> template at <span style="color: #0000BB;">/tmp/RtmpOn96vK/file1af4d80f393.yml</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Drafted <span style="color: #0000BB;">"schema"</span> template at <span style="color: #0000BB;">/tmp/RtmpvTS8Ky/file1ad017015b67.yml</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Open this file to start defining your steps!</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Draft alternatives from a schema object</span></span></span>
@@ -117,17 +118,17 @@ modes mean when expanded.</p></dd>
 <span class="r-in"><span>  file_path <span class="op">=</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yml"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  branch <span class="op">=</span> <span class="st">"multi"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Created template at <span style="color: #0000BB;">/tmp/RtmpOn96vK/file1af44e14a5ed.yml</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Created template at <span style="color: #0000BB;">/tmp/RtmpvTS8Ky/file1ad04af73164.yml</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Draft alternatives from a schema file</span></span></span>
 <span class="r-in"><span><span class="va">schema_file</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yml"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="read-write.html">write_tines</a></span><span class="op">(</span><span class="va">my_schema</span>, <span class="va">schema_file</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> File saved: <span style="color: #0000BB;">/tmp/RtmpOn96vK/file1af439bf7363.yml</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> File saved: <span style="color: #0000BB;">/tmp/RtmpvTS8Ky/file1ad0329a1373.yml</span></span>
 <span class="r-in"><span><span class="fu">draft_alternatives</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  x <span class="op">=</span> <span class="va">schema_file</span>, id <span class="op">=</span> <span class="st">"step-scaling"</span>,</span></span>
 <span class="r-in"><span>  file_path <span class="op">=</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yml"</span><span class="op">)</span>, branch <span class="op">=</span> <span class="st">"multi"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Created template at <span style="color: #0000BB;">/tmp/RtmpOn96vK/file1af45114e54d.yml</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Created template at <span style="color: #0000BB;">/tmp/RtmpvTS8Ky/file1ad03387adf5.yml</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Draft a single-branch template combining two steps together</span></span></span>
 <span class="r-in"><span><span class="fu">draft_alternatives</span><span class="op">(</span></span></span>
@@ -136,7 +137,7 @@ modes mean when expanded.</p></dd>
 <span class="r-in"><span>  file_path <span class="op">=</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yml"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  branch <span class="op">=</span> <span class="st">"single"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Created template at <span style="color: #0000BB;">/tmp/RtmpOn96vK/file1af420215eb3.yml</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Created template at <span style="color: #0000BB;">/tmp/RtmpvTS8Ky/file1ad02ac7e805.yml</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
