@@ -14,6 +14,12 @@ get_step_names(object)
 
   A \`schema\` or \`multiverse\` object.
 
+## Value
+
+If \`object\` is a \`schema\`, a character vector of its steps' ids. If
+\`object\` is a \`multiverse\`, a list of such character vectors, one
+per schema in the multiverse.
+
 ## Examples
 
 ``` r

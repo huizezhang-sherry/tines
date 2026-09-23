@@ -38,13 +38,15 @@ object of class \`schema\` or \`multiverse\`.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
 schema <- example_schema()
 temp_path <- withr::local_tempfile(fileext = ".yaml")
 write_tines(schema, temp_path)
+#> ✔ File saved: /tmp/RtmpOn96vK/file1af450089030.yaml
 schema_read <- read_tines(temp_path)
 
-# Read and validate against data
+# Read and validate against a data frame or file path
+my_data <- data.frame(age = c(25, 30, 35), income = c(50000, 60000, 70000))
 schema_read <- read_tines(temp_path, data = my_data)
-} # }
+#> ✔ Validation passed
+#> ✔ Data attached: "data"
 ```

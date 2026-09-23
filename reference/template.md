@@ -53,29 +53,47 @@ draft_alternatives(x, id, file_path = NULL, branch)
   coordinated branch). There is no default – see \[alternative()\] for
   what the two modes mean when expanded.
 
+## Value
+
+\`draft_tines()\` and \`draft_alternatives()\` both invisibly return the
+path they wrote to; each is called primarily for its side effect of
+writing a template YAML file to disk.
+
 ## Examples
 
 ``` r
 # Create a new schema template
-if (FALSE) { # \dontrun{
-draft_tines(type = "schema", file_path = "schema_template.yml")
+schema_path <- withr::local_tempfile(fileext = ".yml")
+draft_tines(type = "schema", file_path = schema_path)
+#> ✔ Drafted "schema" template at /tmp/RtmpOn96vK/file1af4d80f393.yml
+#> ℹ Open this file to start defining your steps!
 
 # Draft alternatives from a schema object
+my_schema <- example_schema()
 draft_alternatives(
   x = my_schema,
-  id = "data-cleaning",
-  file_path = "alternative_template.yml",
+  id = "step-scaling",
+  file_path = withr::local_tempfile(fileext = ".yml"),
   branch = "multi"
 )
+#> ✔ Created template at /tmp/RtmpOn96vK/file1af44e14a5ed.yml
 
 # Draft alternatives from a schema file
-draft_alternatives(x = "path/to/schema.yml", id = "data-cleaning", branch = "multi")
+schema_file <- withr::local_tempfile(fileext = ".yml")
+write_tines(my_schema, schema_file)
+#> ✔ File saved: /tmp/RtmpOn96vK/file1af439bf7363.yml
+draft_alternatives(
+  x = schema_file, id = "step-scaling",
+  file_path = withr::local_tempfile(fileext = ".yml"), branch = "multi"
+)
+#> ✔ Created template at /tmp/RtmpOn96vK/file1af45114e54d.yml
 
 # Draft a single-branch template combining two steps together
 draft_alternatives(
   x = my_schema,
-  id = c("data-cleaning", "modeling"),
+  id = c("step-scaling", "step-education"),
+  file_path = withr::local_tempfile(fileext = ".yml"),
   branch = "single"
 )
-} # }
+#> ✔ Created template at /tmp/RtmpOn96vK/file1af420215eb3.yml
 ```

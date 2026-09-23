@@ -24,15 +24,23 @@ read_alternatives(file, ...)
 
   Additional arguments passed to \`yaml::read_yaml()\`.
 
+## Value
+
+\`write_alternatives()\` invisibly returns \`file\`, the path it wrote
+to; it is called for its side effect of writing the YAML file.
+
+\`read_alternatives()\` returns an object of class \`"alternatives"\`,
+the same structure produced by \[new_alternatives()\].
+
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
 alts <- example_alternatives()
 temp_path <- withr::local_tempfile(fileext = ".yml")
 write_alternatives(alts, temp_path)
+#> ✔ Successfully wrote alternatives to /tmp/RtmpOn96vK/file1af42fdae27d.yml
 alts_read <- read_alternatives(temp_path)
 
 identical(alts, alts_read)
-} # }
+#> [1] TRUE
 ```

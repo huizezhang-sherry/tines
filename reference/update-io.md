@@ -120,9 +120,18 @@ schema_mod <- update_io(schema, "step-filter", inputs = c("age"))
 # provide a new dataset to an existing schema with `update_data()`
 # The function will trigger validation and return an error when
 # the mapping is broken (e.g., "income" not found in new dataset)
-if (FALSE) { # \dontrun{
-schema <- update_data(schema, data_2024)
-} # }
+schema_broken <- try(update_data(schema, data_2024))
+#> Error in update_data(schema, data_2024) : 
+#>   ✖ Validation failed - data NOT attached
+#>   
+#> ℹ Missing variables:
+#>   Step 'step-filter': income
+#>   
+#> ℹ Available in new dataset: age, salary, city
+#>   
+#> ℹ Fix options:
+#>   1. Manual fix: update_io(schema, id, inputs = ..., outputs = ..., data = ...)
+#>   2. Auto-fix with LLM: gen_io(schema, data, force = TRUE)
 
 # Scenario 4:
 # combine the update of data and inputs/outputs in one step with `update_io()`
@@ -135,6 +144,7 @@ schema_2024 <- update_io(schema, "step-filter",
 
 # LLM approach: auto-infer from dataset (leave untouched)
 if (FALSE) { # \dontrun{
+# Requires an LLM API key (e.g. GOOGLE_API_KEY); not run automatically.
 schema_llm <- build_schema() |>
   add_step(
     id = "step-filter",

@@ -46,6 +46,7 @@ Invisibly returns the generated code as a character string.
 
 ``` r
 if (FALSE) { # \dontrun{
+# Requires an LLM API key (e.g. ANTHROPIC_API_KEY); not run automatically.
 schema <- example_rdi()
 
 code <- gen_composite_code(

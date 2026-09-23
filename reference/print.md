@@ -71,11 +71,38 @@ and prints to the console.
 ## Examples
 
 ``` r
-schema <- example_schema()
+my_data <- data.frame(age = c(25, 30, 35), income = c(50000, 60000, 70000))
+schema <- build_schema(data = my_data) |>
+  add_step(
+    id = "step-filter", objective = "remove missing values",
+    decision = "exclude rows with NA",
+    inputs = c("age", "income"), outputs = "df_clean"
+  )
+#> ✔ Data attached: "my_data"
+
 # plot() and draw_tines() are interchangeable
-# draw_tines(schema)
-# plot(schema)
-# inspect_dot(schema)
-# multiverse <- example_multiverse()
-# draw_tines(multiverse, index = 2)
+draw_tines(schema)
+
+{"x":{"diagram":"digraph schema {\n  graph [rankdir=TD, fontname=Arial]\n  node [fontname=Arial, fontsize=10]\n  edge [fontname=Arial, fontsize=8]\n  \"step-filter\" [label=\"step-filter\n(exclude rows with NA)\", shape=box, style=filled, fillcolor=white]\n\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}plot(schema)
+
+{"x":{"diagram":"digraph schema {\n  graph [rankdir=TD, fontname=Arial]\n  node [fontname=Arial, fontsize=10]\n  edge [fontname=Arial, fontsize=8]\n  \"step-filter\" [label=\"step-filter\n(exclude rows with NA)\", shape=box, style=filled, fillcolor=white]\n\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}inspect_dot(schema)
+#> digraph schema {
+#>   graph [rankdir=TD, fontname=Arial]
+#>   node [fontname=Arial, fontsize=10]
+#>   edge [fontname=Arial, fontsize=8]
+#>   "step-filter" [label="step-filter 
+#>  (exclude rows with NA)", shape=box, style=filled, fillcolor=white]
+#> } 
+
+schema2 <- build_schema(data = my_data) |>
+  add_step(
+    id = "step-filter", objective = "remove missing values",
+    decision = "impute with median",
+    inputs = c("age", "income"), outputs = "df_clean"
+  )
+#> ✔ Data attached: "my_data"
+multiverse <- build_multiverse(schema, schema2)
+draw_tines(multiverse, index = 2)
+
+{"x":{"diagram":"digraph schema {\n  graph [rankdir=TD, fontname=Arial]\n  node [fontname=Arial, fontsize=10]\n  edge [fontname=Arial, fontsize=8]\n  \"step-filter\" [label=\"step-filter\n(impute with median)\", shape=box, style=filled, fillcolor=white]\n\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}
 ```

@@ -3,7 +3,7 @@
 and the `plot()` methods render the interactive widget. `inspect_dot()`
 formats and prints raw DOT strings to the console for debugging."><meta property="og:description" content="Functions to plot the tines object with Graphviz diagrams. `draw_tines()`
 and the `plot()` methods render the interactive widget. `inspect_dot()`
-formats and prints raw DOT strings to the console for debugging."></head><body>
+formats and prints raw DOT strings to the console for debugging."><!-- dependencies from examples --><script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script><script src="libs/viz-1.8.2/viz.js"></script><link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet"><script src="libs/grViz-binding-1.0.12/grViz.js"></script></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -116,14 +116,40 @@ to the console.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">schema</span> <span class="op">&lt;-</span> <span class="fu"><a href="example_tines.html">example_schema</a></span><span class="op">(</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">my_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">30</span>, <span class="fl">35</span><span class="op">)</span>, income <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50000</span>, <span class="fl">60000</span>, <span class="fl">70000</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">schema</span> <span class="op">&lt;-</span> <span class="fu"><a href="constructor.html">build_schema</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">my_data</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="constructor.html">add_step</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    id <span class="op">=</span> <span class="st">"step-filter"</span>, objective <span class="op">=</span> <span class="st">"remove missing values"</span>,</span></span>
+<span class="r-in"><span>    decision <span class="op">=</span> <span class="st">"exclude rows with NA"</span>,</span></span>
+<span class="r-in"><span>    inputs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"age"</span>, <span class="st">"income"</span><span class="op">)</span>, outputs <span class="op">=</span> <span class="st">"df_clean"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Data attached: <span style="color: #0000BB;">"my_data"</span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># plot() and draw_tines() are interchangeable</span></span></span>
-<span class="r-in"><span><span class="co"># draw_tines(schema)</span></span></span>
-<span class="r-in"><span><span class="co"># plot(schema)</span></span></span>
-<span class="r-in"><span><span class="co"># inspect_dot(schema)</span></span></span>
-<span class="r-in"><span><span class="co"># multiverse &lt;- example_multiverse()</span></span></span>
-<span class="r-in"><span><span class="co"># draw_tines(multiverse, index = 2)</span></span></span>
-</code></pre></div>
+<span class="r-in"><span><span class="fu">draw_tines</span><span class="op">(</span><span class="va">schema</span><span class="op">)</span></span></span>
+<div id="htmlwidget-ac96cb3ee4656e2e9ec3" style="width:700px;height:432.632880098888px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ac96cb3ee4656e2e9ec3">{"x":{"diagram":"digraph schema {\n  graph [rankdir=TD, fontname=Arial]\n  node [fontname=Arial, fontsize=10]\n  edge [fontname=Arial, fontsize=8]\n  \"step-filter\" [label=\"step-filter\n(exclude rows with NA)\", shape=box, style=filled, fillcolor=white]\n\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">schema</span><span class="op">)</span></span></span>
+<div id="htmlwidget-e5c8c404fe174e4c81bd" style="width:700px;height:432.632880098888px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e5c8c404fe174e4c81bd">{"x":{"diagram":"digraph schema {\n  graph [rankdir=TD, fontname=Arial]\n  node [fontname=Arial, fontsize=10]\n  edge [fontname=Arial, fontsize=8]\n  \"step-filter\" [label=\"step-filter\n(exclude rows with NA)\", shape=box, style=filled, fillcolor=white]\n\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script><span class="r-in"><span><span class="fu">inspect_dot</span><span class="op">(</span><span class="va">schema</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> digraph schema {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   graph [rankdir=TD, fontname=Arial]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   node [fontname=Arial, fontsize=10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   edge [fontname=Arial, fontsize=8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   "step-filter" [label="step-filter </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  (exclude rows with NA)", shape=box, style=filled, fillcolor=white]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> } </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">schema2</span> <span class="op">&lt;-</span> <span class="fu"><a href="constructor.html">build_schema</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">my_data</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="constructor.html">add_step</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    id <span class="op">=</span> <span class="st">"step-filter"</span>, objective <span class="op">=</span> <span class="st">"remove missing values"</span>,</span></span>
+<span class="r-in"><span>    decision <span class="op">=</span> <span class="st">"impute with median"</span>,</span></span>
+<span class="r-in"><span>    inputs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"age"</span>, <span class="st">"income"</span><span class="op">)</span>, outputs <span class="op">=</span> <span class="st">"df_clean"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Data attached: <span style="color: #0000BB;">"my_data"</span></span>
+<span class="r-in"><span><span class="va">multiverse</span> <span class="op">&lt;-</span> <span class="fu"><a href="constructor.html">build_multiverse</a></span><span class="op">(</span><span class="va">schema</span>, <span class="va">schema2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">draw_tines</span><span class="op">(</span><span class="va">multiverse</span>, index <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<div id="htmlwidget-36aa3d2a04d42bbc2145" style="width:700px;height:432.632880098888px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-36aa3d2a04d42bbc2145">{"x":{"diagram":"digraph schema {\n  graph [rankdir=TD, fontname=Arial]\n  node [fontname=Arial, fontsize=10]\n  edge [fontname=Arial, fontsize=8]\n  \"step-filter\" [label=\"step-filter\n(impute with median)\", shape=box, style=filled, fillcolor=white]\n\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script></code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>

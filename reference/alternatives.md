@@ -54,6 +54,21 @@ new_alternatives(..., branch)
   all nodes' (sole) alternatives into a single coordinated branch –
   useful for expressing one change that spans several steps together.
 
+## Value
+
+\`alternative()\` returns a plain list with elements \`id\`,
+\`decision\`, \`rationale\` – one candidate change for a single step.
+
+\`node()\` returns a plain list with elements \`overrides\` (the step
+id) and \`alternatives\` (a tibble of the candidates passed via \`...\`,
+one row per \`alternative()\`).
+
+\`new_alternatives()\` returns an object of class \`"alternatives"\` (a
+tibble subclass with columns \`overrides\` and \`alternatives\`, the
+latter a list-column of per-node tibbles as built by \`node()\`), with
+the chosen \`branch\` mode stored as an attribute. This is the object
+consumed by \[expand_tines()\] and \[write_alternatives()\].
+
 ## Examples
 
 ``` r

@@ -94,31 +94,49 @@ branch). There is no default – see [alternative()] for what the two
 modes mean when expanded.</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>`draft_tines()` and `draft_alternatives()` both invisibly return
+  the path they wrote to; each is called primarily for its side effect
+  of writing a template YAML file to disk.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create a new schema template</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="fu">draft_tines</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"schema"</span>, file_path <span class="op">=</span> <span class="st">"schema_template.yml"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">schema_path</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yml"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">draft_tines</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"schema"</span>, file_path <span class="op">=</span> <span class="va">schema_path</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Drafted <span style="color: #0000BB;">"schema"</span> template at <span style="color: #0000BB;">/tmp/RtmpOn96vK/file1af4d80f393.yml</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Open this file to start defining your steps!</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Draft alternatives from a schema object</span></span></span>
+<span class="r-in"><span><span class="va">my_schema</span> <span class="op">&lt;-</span> <span class="fu"><a href="example_tines.html">example_schema</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">draft_alternatives</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  x <span class="op">=</span> <span class="va">my_schema</span>,</span></span>
-<span class="r-in"><span>  id <span class="op">=</span> <span class="st">"data-cleaning"</span>,</span></span>
-<span class="r-in"><span>  file_path <span class="op">=</span> <span class="st">"alternative_template.yml"</span>,</span></span>
+<span class="r-in"><span>  id <span class="op">=</span> <span class="st">"step-scaling"</span>,</span></span>
+<span class="r-in"><span>  file_path <span class="op">=</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yml"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  branch <span class="op">=</span> <span class="st">"multi"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Created template at <span style="color: #0000BB;">/tmp/RtmpOn96vK/file1af44e14a5ed.yml</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Draft alternatives from a schema file</span></span></span>
-<span class="r-in"><span><span class="fu">draft_alternatives</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"path/to/schema.yml"</span>, id <span class="op">=</span> <span class="st">"data-cleaning"</span>, branch <span class="op">=</span> <span class="st">"multi"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">schema_file</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yml"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="read-write.html">write_tines</a></span><span class="op">(</span><span class="va">my_schema</span>, <span class="va">schema_file</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> File saved: <span style="color: #0000BB;">/tmp/RtmpOn96vK/file1af439bf7363.yml</span></span>
+<span class="r-in"><span><span class="fu">draft_alternatives</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="va">schema_file</span>, id <span class="op">=</span> <span class="st">"step-scaling"</span>,</span></span>
+<span class="r-in"><span>  file_path <span class="op">=</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yml"</span><span class="op">)</span>, branch <span class="op">=</span> <span class="st">"multi"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Created template at <span style="color: #0000BB;">/tmp/RtmpOn96vK/file1af45114e54d.yml</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Draft a single-branch template combining two steps together</span></span></span>
 <span class="r-in"><span><span class="fu">draft_alternatives</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  x <span class="op">=</span> <span class="va">my_schema</span>,</span></span>
-<span class="r-in"><span>  id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"data-cleaning"</span>, <span class="st">"modeling"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"step-scaling"</span>, <span class="st">"step-education"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  file_path <span class="op">=</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yml"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  branch <span class="op">=</span> <span class="st">"single"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Created template at <span style="color: #0000BB;">/tmp/RtmpOn96vK/file1af420215eb3.yml</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
