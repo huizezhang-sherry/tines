@@ -322,24 +322,21 @@ You can click to expand the alternative YAML file.
 ``` yaml
 meta:
   type: alternatives
-  step: specify_random_effects_structure
-  objective: how to account for the non-nested cross-classified data structure
-alternatives:
-  - id: "gm1"
-    decision: "a random effect of player and referee"
-    rationale: ""
-    input: []
-    output: []
-  - id: "gm2"
-    decision: "a random effect of player and referee, and a random effect of skin-tone across referees"
-    rationale: ""
-    input: []
-    output: []
-  - id: "gm3"
-    decision: "a random effect of player, referee, and referees' countries of origin, and a random effect of skin tone across referees' countries of origin"
-    rationale: ""
-    input: []
-    output: []
+  branch: multi
+nodes:
+- overrides: specify_random_effects_structure
+  alternatives:
+  - id: gm1
+    decision: a random effect of player and referee
+    rationale: ''
+  - id: gm2
+    decision: a random effect of player and referee, and a random effect of skin-tone
+      across referees
+    rationale: ''
+  - id: gm3
+    decision: a random effect of player, referee, and referees' countries of origin,
+      and a random effect of skin tone across referees' countries of origin
+    rationale: ''
 ```
 
 </details>
@@ -350,12 +347,10 @@ You can load an alternative YAML file with `read_alternatives()`:
 (alts <- read_alternatives(
   system.file("football-grp5/football-grp5-alt.yml", package = "tines")
 ))
-#> # Alternatives: specify_random_effects_structure
-#>   id    decision                                                       rationale
-#>   <chr> <chr>                                                          <chr>    
-#> 1 gm1   a random effect of player and referee                          ""       
-#> 2 gm2   a random effect of player and referee, and a random effect of… ""       
-#> 3 gm3   a random effect of player, referee, and referees' countries o… ""
+#> # Alternatives: specify_random_effects_structure (multi)
+#>   overrides                        alternatives    
+#>   <chr>                            <list>          
+#> 1 specify_random_effects_structure <tibble [3 × 3]>
 ```
 
 Combine the alternatives with the original schema into a multiverse:

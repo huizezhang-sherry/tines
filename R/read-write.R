@@ -58,16 +58,8 @@ write_tines <- function(x, path = NULL, ...) {
     nodes_list <- purrr::pmap(as.data.frame(x), function(...) {
       node <- list(...)
       # Ensure inputs and outputs are proper lists
-      if (!is.null(node$inputs)) {
-        node$inputs <- if (is.na(node$inputs[[1]])) list() else node$inputs[[1]]
-      }
-      if (!is.null(node$outputs)) {
-        node$outputs <- if (is.na(node$outputs[[1]])) {
-          list()
-        } else {
-          node$outputs[[1]]
-        }
-      }
+      if (!is.null(node$inputs)) node$inputs <- normalize_io_field(node$inputs)
+      if (!is.null(node$outputs)) node$outputs <- normalize_io_field(node$outputs)
       node
     })
 
@@ -75,14 +67,70 @@ write_tines <- function(x, path = NULL, ...) {
     output <- c(header, schema_list)
   }
 
-  yaml::write_yaml(
-    output,
-    file = path,
-    column.major = FALSE,
-    ...
-  )
+  txt <- yaml::as.yaml(output, column.major = FALSE, ...)
+  txt <- collapse_io_lists(txt)
+  writeLines(txt, path)
 
   cli::cli_alert_success("File saved: {.file {path}}")
+}
+
+# A schema's inputs/outputs list-column shows up in two different shapes
+# depending on how the schema was produced: gen_io()/update_io() store each
+# row as list(vector) (one level of list-wrapping per row, from `<-` on a
+# single element of an existing list-column), while a schema freshly rebuilt
+# by read_tines() yields a plain vector per row (possibly character(0) for
+# an empty `[]`, or a length-1 NA sentinel for "unset"). The old
+# `if (is.na(node$inputs[[1]]))` check assumed the vector always had exactly
+# one element and broke ("the condition has length > 1") on any node with
+# more than one input/output. Normalize both shapes into a plain R list of
+# strings (possibly empty) instead.
+normalize_io_field <- function(field) {
+  if (is.list(field) && length(field) == 1 && !is.list(field[[1]])) {
+    field <- field[[1]]
+  }
+  if (length(field) == 0) return(list())
+  if (length(field) == 1 && is.na(field)) return(list())
+  as.list(field)
+}
+
+# yaml::write_yaml()/as.yaml() always emit sequences in block style:
+#   inputs:
+#   - a
+#   - b
+# but tines schemas are conventionally authored/read with inputs/outputs as
+# single-line flow lists (`inputs: [a, b]`). The R yaml package has no option
+# for flow-style sequences, so collapse them back into that form as a text
+# post-processing pass over the rendered YAML.
+collapse_io_lists <- function(txt) {
+  lines <- strsplit(txt, "\n")[[1]]
+  out <- character(0)
+  i <- 1
+  n <- length(lines)
+  while (i <= n) {
+    line <- lines[i]
+    m <- regmatches(line, regexec("^([ ]*)(inputs|outputs):[ ]*$", line))[[1]]
+    if (length(m) == 3) {
+      indent <- m[2]
+      field <- m[3]
+      item_prefix <- paste0(indent, "- ")
+      items <- character(0)
+      j <- i + 1
+      while (j <= n && startsWith(lines[j], item_prefix)) {
+        val <- sub(paste0("^", item_prefix), "", lines[j])
+        val <- sub("^'(.*)'$", "\\1", val)
+        items <- c(items, val)
+        j <- j + 1
+      }
+      if (length(items) > 0) {
+        out <- c(out, paste0(indent, field, ": [", paste(items, collapse = ", "), "]"))
+        i <- j
+        next
+      }
+    }
+    out <- c(out, line)
+    i <- i + 1
+  }
+  paste(out, collapse = "\n")
 }
 
 #' @export
