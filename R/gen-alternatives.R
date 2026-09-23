@@ -51,6 +51,7 @@
 #' hdi <- example_schema()
 #'
 #' \dontrun{
+#' # Requires an LLM API key (e.g. ANTHROPIC_API_KEY); not run automatically.
 #' gen_alternatives(hdi,
 #'   step = "step-combine", n = 1,
 #'   file_path = "step-combine-alt.yml"
@@ -249,6 +250,11 @@ prompt_alternatives <- function(schema = NULL, step, n = 3, data_dict = NULL,
 #'   included as a branch in the resulting multiverse. Defaults to `TRUE`.
 #' @param ... Additional arguments.
 #'
+#' @return An object of class `"multiverse"`: a named list of `schema`
+#'   objects, one per branch produced from `alternatives` (plus, when
+#'   `include_original = TRUE`, the original schema/multiverse under the
+#'   name `"original"`). Each branch name is the `+`-joined ids of the
+#'   alternatives applied to reach it.
 #' @rdname expand
 #' @export
 #' @examples

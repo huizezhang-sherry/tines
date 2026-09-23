@@ -48,6 +48,18 @@ check_single_branch <- function(x) {
 #'   nodes' (sole) alternatives into a single coordinated branch -- useful
 #'   for expressing one change that spans several steps together.
 #'
+#' @return `alternative()` returns a plain list with elements `id`,
+#'   `decision`, `rationale` -- one candidate change for a single step.
+#'
+#'   `node()` returns a plain list with elements `overrides` (the step id)
+#'   and `alternatives` (a tibble of the candidates passed via `...`, one
+#'   row per `alternative()`).
+#'
+#'   `new_alternatives()` returns an object of class `"alternatives"` (a
+#'   tibble subclass with columns `overrides` and `alternatives`, the
+#'   latter a list-column of per-node tibbles as built by `node()`), with
+#'   the chosen `branch` mode stored as an attribute. This is the object
+#'   consumed by [expand_tines()] and [write_alternatives()].
 #' @export
 #' @rdname alternatives
 #' @examples
@@ -163,17 +175,20 @@ new_alternatives <- function(..., branch) {
 #' @param file A character string specifying the file path.
 #' @param ... Additional arguments passed to `yaml::read_yaml()`.
 #'
+#' @return `write_alternatives()` invisibly returns `file`, the path it
+#'   wrote to; it is called for its side effect of writing the YAML file.
+#'
+#'   `read_alternatives()` returns an object of class `"alternatives"`,
+#'   the same structure produced by [new_alternatives()].
 #' @rdname read-write-alternatives
 #' @export
 #' @examples
-#' \dontrun{
 #' alts <- example_alternatives()
 #' temp_path <- withr::local_tempfile(fileext = ".yml")
 #' write_alternatives(alts, temp_path)
 #' alts_read <- read_alternatives(temp_path)
 #'
 #' identical(alts, alts_read)
-#' }
 #'
 write_alternatives <- function(x, file, ...) {
   nodes_list <- purrr::map2(x$overrides, x$alternatives, function(step_id, alts) {

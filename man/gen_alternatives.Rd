@@ -103,6 +103,7 @@ for this to work.
 hdi <- example_schema()
 
 \dontrun{
+# Requires an LLM API key (e.g. ANTHROPIC_API_KEY); not run automatically.
 gen_alternatives(hdi,
   step = "step-combine", n = 1,
   file_path = "step-combine-alt.yml"

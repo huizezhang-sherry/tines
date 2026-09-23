@@ -14,6 +14,7 @@
 #' @export
 #' @examples
 #' \dontrun{
+#' # Requires an LLM API key (e.g. ANTHROPIC_API_KEY); not run automatically.
 #' schema <- example_rdi()
 #'
 #' code <- gen_composite_code(

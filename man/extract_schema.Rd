@@ -55,6 +55,7 @@ data_dict <- c(
 )
 
 \dontrun{
+# Requires an LLM API key (e.g. ANTHROPIC_API_KEY); not run automatically.
 extract_schema(text, data_dict, output_file = "draft_schema.yml")
 }
 

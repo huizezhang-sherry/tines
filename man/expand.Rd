@@ -23,6 +23,13 @@ YAML}
 \item{include_original}{A logical. If `TRUE`, the original schema will be
 included as a branch in the resulting multiverse. Defaults to `TRUE`.}
 }
+\value{
+An object of class `"multiverse"`: a named list of `schema`
+  objects, one per branch produced from `alternatives` (plus, when
+  `include_original = TRUE`, the original schema/multiverse under the
+  name `"original"`). Each branch name is the `+`-joined ids of the
+  alternatives applied to reach it.
+}
 \description{
 Expand a schema with an alternative YAML into a multiverse
 }

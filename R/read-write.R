@@ -14,15 +14,14 @@
 #' @export
 #' @rdname read-write
 #' @examples
-#' \dontrun{
 #' schema <- example_schema()
 #' temp_path <- withr::local_tempfile(fileext = ".yaml")
 #' write_tines(schema, temp_path)
 #' schema_read <- read_tines(temp_path)
 #'
-#' # Read and validate against data
+#' # Read and validate against a data frame or file path
+#' my_data <- data.frame(age = c(25, 30, 35), income = c(50000, 60000, 70000))
 #' schema_read <- read_tines(temp_path, data = my_data)
-#' }
 #'
 write_tines <- function(x, path = NULL, ...) {
   if (!inherits(x, c("schema", "multiverse"))) {

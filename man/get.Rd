@@ -9,6 +9,11 @@ get_step_names(object)
 \arguments{
 \item{object}{A `schema` or `multiverse` object.}
 }
+\value{
+If `object` is a `schema`, a character vector of its steps' ids.
+  If `object` is a `multiverse`, a list of such character vectors, one
+  per schema in the multiverse.
+}
 \description{
 Functions to access components of a tine object
 }

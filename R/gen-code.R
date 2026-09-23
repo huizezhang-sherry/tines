@@ -20,6 +20,7 @@
 #' @rdname gen_code
 #' @examples
 #' \dontrun{
+#' # Requires an LLM API key (e.g. ANTHROPIC_API_KEY); not run automatically.
 #' # Generate from a single schema
 #' schema <- example_schema()
 #' gen_code(schema, output = "analysis.R")

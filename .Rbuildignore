@@ -1,6 +1,8 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.github$
+^README\.Rmd$
+^LICENSE\.md$
 inst/football.csv
 ^\.claude$
 ^cran-comments\.md$

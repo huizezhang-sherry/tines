@@ -33,6 +33,7 @@
 #' @export
 #' @examples
 #' \dontrun{
+#' # Requires an LLM API key (e.g. ANTHROPIC_API_KEY); not run automatically.
 #' validate_script(
 #'   file = here::here("inst/dplyr-filter-equal.R"),
 #'   data = here::here("inst/dplyr-filter-equal.csv")

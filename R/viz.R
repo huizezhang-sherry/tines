@@ -29,13 +29,27 @@
 #' @export
 #' @rdname print
 #' @examples
-#' schema <- example_schema()
+#' my_data <- data.frame(age = c(25, 30, 35), income = c(50000, 60000, 70000))
+#' schema <- build_schema(data = my_data) |>
+#'   add_step(
+#'     id = "step-filter", objective = "remove missing values",
+#'     decision = "exclude rows with NA",
+#'     inputs = c("age", "income"), outputs = "df_clean"
+#'   )
+#'
 #' # plot() and draw_tines() are interchangeable
-#' # draw_tines(schema)
-#' # plot(schema)
-#' # inspect_dot(schema)
-#' # multiverse <- example_multiverse()
-#' # draw_tines(multiverse, index = 2)
+#' draw_tines(schema)
+#' plot(schema)
+#' inspect_dot(schema)
+#'
+#' schema2 <- build_schema(data = my_data) |>
+#'   add_step(
+#'     id = "step-filter", objective = "remove missing values",
+#'     decision = "impute with median",
+#'     inputs = c("age", "income"), outputs = "df_clean"
+#'   )
+#' multiverse <- build_multiverse(schema, schema2)
+#' draw_tines(multiverse, index = 2)
 plot.schema <- function(x, ...) {
   draw_tines(x, ...)
 }

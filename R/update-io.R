@@ -75,9 +75,7 @@
 #' # provide a new dataset to an existing schema with `update_data()`
 #' # The function will trigger validation and return an error when
 #' # the mapping is broken (e.g., "income" not found in new dataset)
-#' \dontrun{
-#' schema <- update_data(schema, data_2024)
-#' }
+#' schema_broken <- try(update_data(schema, data_2024))
 #'
 #' # Scenario 4:
 #' # combine the update of data and inputs/outputs in one step with `update_io()`
@@ -90,6 +88,7 @@
 #'
 #' # LLM approach: auto-infer from dataset (leave untouched)
 #' \dontrun{
+#' # Requires an LLM API key (e.g. GOOGLE_API_KEY); not run automatically.
 #' schema_llm <- build_schema() |>
 #'   add_step(
 #'     id = "step-filter",
