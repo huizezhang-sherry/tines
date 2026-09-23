@@ -1,0 +1,147 @@
+---
+title: "Case Study: A Published GAITD Regression Analysis"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Case Study: A Published GAITD Regression Analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  message = FALSE
+)
+```
+
+```{=html}
+<style>
+pre, code {
+  white-space: pre-wrap !important;
+  overflow-wrap: break-word !important;
+  word-break: break-word !important;
+}
+</style>
+```
+
+```{r setup}
+library(tines)
+```
+
+This vignette walks through a real, published analysis end to end: Yee,
+Frigau, and Ma (2025, *The Annals of Applied Statistics*) fit a GAITD
+regression to model heaped smoking-initiation-age data. We use their first
+response variable (smoking initiation age, "P1" in their paper) to show how
+a schema can accompany a manuscript as reproducibility material, and how an
+alternative file can encode a reviewer's suggested change.
+
+# The schema
+
+Yee et al.'s manuscript and supplementary material already state each
+analytical decision and its rationale -- assembling a schema from it required
+no new analysis, only collecting those decisions into the `tines` schema
+format. We drafted a template with `draft_tines(type = "schema")` and filled
+it in by hand.
+
+```{r results = "asis", echo = FALSE}
+schema_path <- system.file("gaitd/schema.yml", package = "tines")
+cat("<details>\n<summary>Click to read the filled schema.</summary>\n\n")
+cat("```yaml\n")
+cat(readLines(schema_path), sep = "\n")
+cat("\n```\n\n</details>\n")
+```
+
+Consider the `special_value_mid_risk` step: the decision is to treat ages
+12-14 and 19-21 as one inflated group with extra probability mass, since
+these ages show a moderate, secondary peak in the data alongside the more
+prominent peak at ages 15-18. Recording the rationale alongside the decision
+is what lets a reader agree or disagree with the choice, and explore it, as
+we do later in this vignette.
+
+# Generating and validating the code
+
+We read this into a `schema` object with `read_tines()`:
+
+```{r}
+schema <- read_tines(schema_path)
+```
+
+We then used `gen_code(schema, ...)` to translate this schema into an R script, and
+`validate_script()` to fix any errors in the code generation. 
+
+```{r results = "asis", echo = FALSE}
+script_path <- system.file("gaitd/script.R", package = "tines")
+cat("<details>\n<summary>Click to read the generated R script.</summary>\n\n")
+cat("```r\n")
+cat(readLines(script_path), sep = "\n")
+cat("\n```\n\n</details>\n")
+```
+
+We can confirm the faithfulness of the schema and the generated script by running
+the script and checking that it reproduces the estimation reported in the paper (Table 2 in Yee et al., 2025). The script produces a fitted model object, which we can summarize and display as a table:
+
+```{r echo = FALSE}
+source(script_path)
+coef_table <- summary(fitted_model)@coef3
+coef_df <- data.frame(
+  term = rownames(coef_table),
+  Estimate = coef_table[, "Estimate"],
+  `Std. Error` = coef_table[, "Std. Error"],
+  `z value` = coef_table[, "z value"],
+  `Pr(>|z|)` = format.pval(coef_table[, "Pr(>|z|)"], digits = 3, eps = 0.001),
+  row.names = NULL,
+  check.names = FALSE
+)
+knitr::kable(coef_df, digits = 3)
+```
+
+# Exploring a reviewer's alternative
+
+Yee et al.'s supplementary material also reports an investigation raised by a
+reviewer: instead of pooling ages 12-14 and 19-21 into one inflated group,
+treat 19-21 as a separate "alteration" group instead, since that older
+subgroup shows a qualitatively different, declining pattern of uptake -- and
+correspondingly drop to an intercept-only model, matching how the authors
+computed AIC for this comparison. That is one coordinated change spanning
+three steps, so it belongs in a `branch: single` alternative file. Again, you 
+can draft a template with `draft_alternatives()` and fill it in by hand.
+
+```{r results = "asis", echo = FALSE}
+alt_path <- system.file("gaitd/alt-ap1921.yml", package = "tines")
+cat("<details>\n<summary>Click to view the alternative YAML file.</summary>\n\n")
+cat("```yaml\n")
+cat(readLines(alt_path), sep = "\n")
+cat("\n```\n\n</details>\n")
+```
+
+```{r}
+alts <- read_alternatives(alt_path)
+```
+
+`expand_tines()` combines the schema and the alternative file into a
+two-branch multiverse: the original analysis, and the reviewer's suggested
+refit.
+
+```{r}
+mv <- expand_tines(schema, alts)
+mv
+```
+
+We then used `gen_code()` again on the refit branch to generate an updated
+script (again requiring an LLM, so not re-run here), and `validate_script()`
+confirmed it reproduces the AIC of 19,340.4 that Yee et al. report for this
+comparison. 
+
+A reader who questions a choice does not need to wait for the authors to 
+report that comparison: they can describe their alternative in natural
+language in an alternative file, and let an LLM generate and validate the
+corresponding code, to see directly how the result changes.
+
+# References
+
+Yee, T. W., Frigau, L., & Ma, C. (2025). Heaping and seeping, GAITD
+regression and doubly constrained reduced-rank vector generalized linear
+models in smoking studies. *The Annals of Applied Statistics*, 19(4),
+3045-3070.
+
