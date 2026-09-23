@@ -41,7 +41,7 @@ object of class \`schema\` or \`multiverse\`.
 schema <- example_schema()
 temp_path <- withr::local_tempfile(fileext = ".yaml")
 write_tines(schema, temp_path)
-#> ✔ File saved: /tmp/RtmpvTS8Ky/file1ad04aa01755.yaml
+#> ✔ File saved: /tmp/Rtmp5Ur8Dy/file1b2c60c55d37.yaml
 schema_read <- read_tines(temp_path)
 
 # Read and validate against a data frame or file path

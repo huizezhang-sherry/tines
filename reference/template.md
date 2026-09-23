@@ -1,33 +1,27 @@
 # Create templates YAML files
 
-Generates a starter YAML file for a \`schema\` or \`multiverse\` to help
-you begin building your garden of forking paths.
+Generates a starter YAML file for a \`schema\` to help you begin
+building your garden of forking paths. There is no template for a
+\`multiverse\`: a multiverse is always produced either by combining
+schema objects with \[build_multiverse()\], or by expanding a schema (or
+another multiverse) with an alternatives file via \[expand_tines()\] –
+never hand-authored from a blank template.
 
 ## Usage
 
 ``` r
-draft_tines(
-  type = c("schema", "multiverse"),
-  file_path = NULL,
-  overwrite = FALSE
-)
+draft_tines(file_path = NULL, overwrite = FALSE)
 
 draft_alternatives(x, id, file_path = NULL, branch)
 ```
 
 ## Arguments
 
-- type:
-
-  For \`draft_tines()\` only: the type of template to create. Options
-  are "schema" for a new analysis schema template, and "multiverse" for
-  a multiverse analysis template.
-
 - file_path:
 
   The file path where the template should be saved. If NULL, the
   template will be saved in the current working directory with a default
-  name based on the type.
+  name.
 
 - overwrite:
 
@@ -64,8 +58,8 @@ writing a template YAML file to disk.
 ``` r
 # Create a new schema template
 schema_path <- withr::local_tempfile(fileext = ".yml")
-draft_tines(type = "schema", file_path = schema_path)
-#> ✔ Drafted "schema" template at /tmp/RtmpvTS8Ky/file1ad017015b67.yml
+draft_tines(file_path = schema_path)
+#> ✔ Drafted "schema" template at /tmp/Rtmp5Ur8Dy/file1b2c73897756.yml
 #> ℹ Open this file to start defining your steps!
 
 # Draft alternatives from a schema object
@@ -76,24 +70,16 @@ draft_alternatives(
   file_path = withr::local_tempfile(fileext = ".yml"),
   branch = "multi"
 )
-#> ✔ Created template at /tmp/RtmpvTS8Ky/file1ad04af73164.yml
+#> ✔ Created template at /tmp/Rtmp5Ur8Dy/file1b2c1bfae456.yml
 
-# Draft alternatives from a schema file
-schema_file <- withr::local_tempfile(fileext = ".yml")
-write_tines(my_schema, schema_file)
-#> ✔ File saved: /tmp/RtmpvTS8Ky/file1ad0329a1373.yml
+# `x` also accepts a path to a schema file -- draft a single-branch
+# template combining two steps together
+schema_file <- system.file("hdi.yml", package = "tines")
 draft_alternatives(
-  x = schema_file, id = "step-scaling",
-  file_path = withr::local_tempfile(fileext = ".yml"), branch = "multi"
-)
-#> ✔ Created template at /tmp/RtmpvTS8Ky/file1ad03387adf5.yml
-
-# Draft a single-branch template combining two steps together
-draft_alternatives(
-  x = my_schema,
+  x = schema_file,
   id = c("step-scaling", "step-education"),
   file_path = withr::local_tempfile(fileext = ".yml"),
   branch = "single"
 )
-#> ✔ Created template at /tmp/RtmpvTS8Ky/file1ad02ac7e805.yml
+#> ✔ Created template at /tmp/Rtmp5Ur8Dy/file1b2c6395af18.yml
 ```

@@ -19,7 +19,7 @@ Yee et al.’s manuscript and supplementary material already state each
 analytical decision and its rationale – assembling a schema from it
 required no new analysis, only collecting those decisions into the
 `tines` schema format. We drafted a template with
-`draft_tines(type = "schema")` and filled it in by hand.
+[`draft_tines()`](../reference/template.md) and filled it in by hand.
 
 Click to read the filled schema.
 
