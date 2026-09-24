@@ -59,7 +59,7 @@ consumed by \code{\link[=expand_tines]{expand_tines()}} and \code{\link[=write_a
 Construct alternatives objects
 }
 \examples{
-example_alternatives(case = "football")
+example_football_grp5_alternatives()
 
 # multi-branch: 3 independent alternatives for one step
 new_alternatives(

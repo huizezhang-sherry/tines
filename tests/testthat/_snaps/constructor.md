@@ -17,7 +17,7 @@
     Output
       A multiverse with 2 schemas:
         original: "HDI Example" (3 steps)
-        reversed: "HDI Example" (3 steps)
+        step-arithmetic-mean: "HDI Example" (3 steps)
 
 # validation errors remain stable
 
@@ -43,7 +43,7 @@
 ---
 
     Code
-      print(as_multiverse(list(only_branch = example_schema())))
+      print(as_multiverse(list(only_branch = example_hdi())))
     Output
       A multiverse with 1 schema:
         only_branch: "HDI Example" (3 steps)

@@ -48,7 +48,7 @@ test_that("branch = 'multi' expands one node into independent branches", {
   expect_equal(attr(alts, "branch"), "multi")
   expect_snapshot(alts)
 
-  base_schema <- example_schema()
+  base_schema <- example_hdi()
   mv <- expand_tines(base_schema, alts)
   expect_named(mv, c("original", "a1", "a2", "a3"))
 })
@@ -61,7 +61,7 @@ test_that("branch = 'single' combines all nodes' (sole) alternative into one bra
   )
   expect_equal(attr(alts, "branch"), "single")
 
-  base_schema <- example_schema()
+  base_schema <- example_hdi()
   mv <- expand_tines(base_schema, alts)
   expect_named(mv, c("original", "s1+e1"))
   expect_equal(
@@ -88,7 +88,7 @@ test_that("branch = 'single' requires exactly one alternative per node", {
 })
 
 test_that("branch = 'multi' crosses multiple nodes into the full factorial, including 'keep original'", {
-  base_schema <- example_schema()
+  base_schema <- example_hdi()
 
   # 2 nodes, 1 alternative each -> 2x2 = 4 (original, node-1-only, node-2-only, both)
   alts <- new_alternatives(
@@ -125,7 +125,7 @@ test_that("expand_tines() errors when a node's step is not in the base schema", 
     node(overrides = "does-not-exist", alternative(id = "a1", decision = "d1", rationale = "r1")),
     branch = "multi"
   )
-  expect_error(expand_tines(example_schema(), alts), "not found in the base schema")
+  expect_error(expand_tines(example_hdi(), alts), "not found in the base schema")
 })
 
 test_that("new_alternatives() requires branch to be specified", {
@@ -140,7 +140,7 @@ test_that("new_alternatives() requires branch to be specified", {
 test_that("read and write with an alternative yaml", {
   tmp_file <- tempfile(fileext = ".yaml")
 
-  write_alternatives(example_alternatives(case = "football"), tmp_file)
+  write_alternatives(example_football_grp5_alternatives(), tmp_file)
   tmp_file <- scrub_date_for_snapshot(tmp_file)
   expect_snapshot_file(tmp_file, name = "alternatives.yaml")
   expect_snapshot({

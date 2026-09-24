@@ -39,8 +39,8 @@ Expand a schema with an alternative YAML into a multiverse
 \examples{
 
 # expand on a schema
-base_schema <- example_football()
-alts <- example_alternatives(case = "football")
+base_schema <- example_football_grp5()
+alts <- example_football_grp5_alternatives()
 expand_tines(base_schema, alts)
 
 # read the alternatives from a YML file

@@ -48,7 +48,7 @@
 #' @rdname gen_alternatives
 #'
 #' @examples
-#' hdi <- example_schema()
+#' hdi <- example_hdi()
 #'
 #' \dontrun{
 #' # Requires an LLM API key (e.g. ANTHROPIC_API_KEY); not run automatically.
@@ -260,8 +260,8 @@ prompt_alternatives <- function(schema = NULL, step, n = 3, data_dict = NULL,
 #' @examples
 #'
 #' # expand on a schema
-#' base_schema <- example_football()
-#' alts <- example_alternatives(case = "football")
+#' base_schema <- example_football_grp5()
+#' alts <- example_football_grp5_alternatives()
 #' expand_tines(base_schema, alts)
 #'
 #' # read the alternatives from a YML file

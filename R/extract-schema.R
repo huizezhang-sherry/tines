@@ -25,7 +25,7 @@
 #' @return The file path to the generated YAML file (invisibly).
 #' @export
 #' @examples
-#' text <- football_grp20
+#' text <- football_grp5
 #' data_dict <- c(
 #'   "playerShort", "player", "club", "leagueCountry", "birthday", "height",
 #'   "weight", "position", "games", "victories", "ties", "defeats",

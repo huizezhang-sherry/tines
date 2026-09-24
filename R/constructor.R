@@ -114,8 +114,8 @@ build_schema <- function(name = NULL, data = NULL) {
 #' @export
 #'
 #' @examples
-#' s1 <- example_schema()
-#' s2 <- example_football()
+#' s1 <- example_hdi()
+#' s2 <- example_football_grp5()
 #'
 #' as_multiverse(list(hdi = s1, football = s2))
 #'

@@ -82,10 +82,10 @@
       expand_tines(base_schema, alts)
     Output
       A multiverse with 4 schemas:
-        original: (3 steps)
-        step-mixed-effects-logistic-model: (3 steps)
-        step-probit-regression-model: (3 steps)
-        step-bayesian-logistic-model: (3 steps)
+        original: (7 steps)
+        gm1: (7 steps)
+        gm2: (7 steps)
+        gm3: (7 steps)
 
 ---
 
@@ -93,14 +93,14 @@
       expand_tines(base_schema, tmp_file)
     Output
       A multiverse with 4 schemas:
-        original: (3 steps)
-        step-mixed-effects-logistic-model: (3 steps)
-        step-probit-regression-model: (3 steps)
-        step-bayesian-logistic-model: (3 steps)
+        original: (7 steps)
+        gm1: (7 steps)
+        gm2: (7 steps)
+        gm3: (7 steps)
 
 ---
 
-    Target step "step-logistic-model" not found in the base schema.
+    Target step "specify_random_effects_structure" not found in the base schema.
 
 ---
 

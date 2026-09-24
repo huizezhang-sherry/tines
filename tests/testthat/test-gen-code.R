@@ -9,7 +9,7 @@ test_that("prompt_gen_code wording remains stable (snapshot)", {
     prompt_gen_code(data = "tines::football", print = FALSE)
   })
   expect_snapshot({
-    prompt_gen_code(schema = example_schema(), print = FALSE)
+    prompt_gen_code(schema = example_hdi(), print = FALSE)
   })
 })
 
@@ -53,7 +53,7 @@ test_that("gen_code.schema resolves the output path correctly", {
 })
 
 test_that("gen_code.schema errors when the schema is unmapped and no data is given", {
-  unmapped_schema <- example_football()
+  unmapped_schema <- example_football_grp5()
   expect_error(
     gen_code(unmapped_schema, output = withr::local_tempdir()),
     "requires inputs/outputs but schema is unmapped"

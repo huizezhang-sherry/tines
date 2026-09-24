@@ -42,8 +42,8 @@ Branches follow list conventions -- they may be named or not, exactly as
 the list you pass in leaves them.
 }
 \examples{
-s1 <- example_schema()
-s2 <- example_football()
+s1 <- example_hdi()
+s2 <- example_football_grp5()
 
 as_multiverse(list(hdi = s1, football = s2))
 

@@ -63,7 +63,7 @@ check_single_branch <- function(x) {
 #' @export
 #' @rdname alternatives
 #' @examples
-#' example_alternatives(case = "football")
+#' example_football_grp5_alternatives()
 #'
 #' # multi-branch: 3 independent alternatives for one step
 #' new_alternatives(
@@ -183,7 +183,7 @@ new_alternatives <- function(..., branch) {
 #' @rdname read-write-alternatives
 #' @export
 #' @examples
-#' alts <- example_alternatives()
+#' alts <- example_football_grp5_alternatives()
 #' temp_path <- withr::local_tempfile(fileext = ".yml")
 #' write_alternatives(alts, temp_path)
 #' alts_read <- read_alternatives(temp_path)

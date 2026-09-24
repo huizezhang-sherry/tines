@@ -9,7 +9,7 @@ test_that("read and write", {
   }
 
   # work for singles
-  schema <- example_schema()
+  schema <- example_hdi()
   temp_path <- withr::local_tempfile(fileext = ".yaml")
   write_tines(schema, temp_path)
   scrub_date_for_snapshot(temp_path)
@@ -23,7 +23,7 @@ test_that("read and write", {
   expect_snapshot_file(temp_path, name = "schema-indented.yaml")
 
   # work for multiverse
-  my_multiverse <- example_multiverse()
+  my_multiverse <- example_hdi_multiverse()
   temp_path <- withr::local_tempfile(fileext = ".yaml")
   write_tines(my_multiverse, temp_path)
   temp_path <- scrub_date_for_snapshot(temp_path)

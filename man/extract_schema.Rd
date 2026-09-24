@@ -45,7 +45,7 @@ methodological steps, identifying inputs and outputs for each node
 in the analysis pipeline.
 }
 \examples{
-text <- football_grp20
+text <- football_grp5
 data_dict <- c(
   "playerShort", "player", "club", "leagueCountry", "birthday", "height",
   "weight", "position", "games", "victories", "ties", "defeats",

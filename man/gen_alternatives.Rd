@@ -102,7 +102,7 @@ correctly in your R environment (e.g., via an environment variable such as
 for this to work.
 }
 \examples{
-hdi <- example_schema()
+hdi <- example_hdi()
 
 \dontrun{
 # Requires an LLM API key (e.g. ANTHROPIC_API_KEY); not run automatically.

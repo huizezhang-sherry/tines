@@ -57,5 +57,6 @@ reference:
 
 - title: "Examples and data"
   contents:
-  - example_schema
-  - football_grp20
+  - example_hdi
+  - example_football_grp5
+  - football_grp5

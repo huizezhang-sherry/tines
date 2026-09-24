@@ -27,7 +27,7 @@ the same structure produced by \code{\link[=new_alternatives]{new_alternatives()
 Read and write an alternatives object from/to a YML file
 }
 \examples{
-alts <- example_alternatives()
+alts <- example_football_grp5_alternatives()
 temp_path <- withr::local_tempfile(fileext = ".yml")
 write_alternatives(alts, temp_path)
 alts_read <- read_alternatives(temp_path)

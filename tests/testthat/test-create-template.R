@@ -19,7 +19,7 @@ test_that("draft_tines generates correct schema YAML", {
 test_that("draft_alternatives generates correct multi-branch alternatives YAML", {
   tmp <- withr::local_tempfile(fileext = ".yaml")
   draft_alternatives(
-    x = example_schema(), id = "step-scaling", file_path = tmp, branch = "multi"
+    x = example_hdi(), id = "step-scaling", file_path = tmp, branch = "multi"
   )
   expect_snapshot_file(tmp, "alternatives_template.yaml")
 
@@ -32,7 +32,7 @@ test_that("draft_alternatives generates correct multi-branch alternatives YAML",
 test_that("draft_alternatives generates correct single-branch alternatives YAML", {
   tmp <- withr::local_tempfile(fileext = ".yaml")
   draft_alternatives(
-    x = example_schema(),
+    x = example_hdi(),
     id = c("step-scaling", "step-education"),
     file_path = tmp,
     branch = "single"
@@ -46,7 +46,7 @@ test_that("draft_alternatives generates correct single-branch alternatives YAML"
 })
 
 test_that("draft_alternatives errors on an unknown step id", {
-  schema <- example_schema()
+  schema <- example_hdi()
   expect_error(
     draft_alternatives(schema, id = "does-not-exist", branch = "multi"),
     "not found"
@@ -54,7 +54,7 @@ test_that("draft_alternatives errors on an unknown step id", {
 })
 
 test_that("draft_alternatives requires branch to be specified", {
-  schema <- example_schema()
+  schema <- example_hdi()
   expect_error(
     draft_alternatives(schema, id = "step-scaling"),
     "branch"

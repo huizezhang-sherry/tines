@@ -22,7 +22,7 @@
 #' \dontrun{
 #' # Requires an LLM API key (e.g. ANTHROPIC_API_KEY); not run automatically.
 #' # Generate from a single schema
-#' schema <- example_schema()
+#' schema <- example_hdi()
 #' gen_code(schema, output = "analysis.R")
 #'
 #' # Generate from a multiverse (use expand_tines first)

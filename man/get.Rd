@@ -18,6 +18,6 @@ per schema in the multiverse.
 Functions to access components of a tine object
 }
 \examples{
-get_step_names(example_schema())
-get_step_names(example_multiverse())
+get_step_names(example_hdi())
+get_step_names(example_hdi_multiverse())
 }

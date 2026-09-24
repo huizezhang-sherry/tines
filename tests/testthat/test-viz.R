@@ -1,5 +1,5 @@
 test_that("plot work", {
-  # schema <- example_schema()
+  # schema <- example_hdi()
   # # plot() and draw_tines() are interchangeable
   # vdiffr::expect_doppelganger("plot with draw-tines", draw_tines(schema))
   # vdiffr::expect_doppelganger("plot with plot", plot(schema))
@@ -8,12 +8,12 @@ test_that("plot work", {
   # expect_snapshot(dot_string)
 
 
-  # multiverse <- example_multiverse()
+  # multiverse <- example_hdi_multiverse()
   # vdiffr::expect_doppelganger("plot for multiverse", draw_tines(schema, index = 2))
 })
 
 test_that("tines2dotspec does not error for a schema with no edges", {
-  dot_code <- tines:::tines2dotspec(example_schema())
+  dot_code <- tines:::tines2dotspec(example_hdi())
 
   expect_type(dot_code, "character")
   expect_false(grepl('""', dot_code, fixed = TRUE))

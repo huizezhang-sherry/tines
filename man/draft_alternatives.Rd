@@ -28,7 +28,7 @@ Writes a starter alternatives YAML file, with one node per step named in
 \code{id} and placeholder alternatives inside each, ready to fill in by hand.
 }
 \examples{
-my_schema <- example_schema()
+my_schema <- example_hdi()
 
 draft_alternatives(
   x = my_schema,

@@ -189,19 +189,19 @@ methodology, such as the methods section of a paper:
 ```{r eval = FALSE}
 # Requires an LLM API key (e.g. ANTHROPIC_API_KEY); not run automatically.
 extract_schema(
-  text = football_grp20,
+  text = football_grp5,
   data_dict = c("player", "redCards", "rater1", "rater2"),
   output_file = "draft_schema.yml"
 )
 ```
 
-A schema drafted this way carries extra bookkeeping fields -- `status`,
-`confidence`, and `clarification_question` -- recording how sure the model
-was that it read each decision correctly. Any extra field is preserved as
+A schema drafted this way carries extra bookkeeping fields -- `confidence`
+and `clarification_question` -- recording how sure the model was that it read
+each decision correctly. Any extra field is preserved as
 its own column when the file is read, and written back out unchanged:
 
 ```{r}
-drafted <- example_football_grp20()
+drafted <- example_football_grp5()
 colnames(drafted)
 ```
 

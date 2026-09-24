@@ -14,8 +14,8 @@ test_that("prompt_alternatives wording remains stable (snapshot)", {
 
 test_that("expand_tines", {
   # expand on a schema
-  base_schema <- example_football()
-  alts <- example_alternatives(case = "football")
+  base_schema <- example_football_grp5()
+  alts <- example_football_grp5_alternatives()
   expect_snapshot({
     expand_tines(base_schema, alts)
   })
@@ -28,8 +28,8 @@ test_that("expand_tines", {
   })
 
   # error if there is no matching step
-  base_schema <- example_schema()
-  alts <- example_alternatives(case = "football")
+  base_schema <- example_hdi()
+  alts <- example_football_grp5_alternatives()
   expect_snapshot_error({
     expand_tines(base_schema, alts)
   })
@@ -37,13 +37,13 @@ test_that("expand_tines", {
   # a multiverse is not expandable: one alternatives file with `branch: multi`
   # is the way to vary several steps at once
   expect_snapshot_error({
-    expand_tines(example_multiverse(), example_alternatives(case = "hdi"))
+    expand_tines(example_hdi_multiverse(), example_hdi_alternatives())
   })
 })
 
 test_that("expand_tines preserves each step's id (does not rename it to the alternative's id)", {
-  base_schema <- example_football()
-  alts <- example_alternatives(case = "football")
+  base_schema <- example_football_grp5()
+  alts <- example_football_grp5_alternatives()
   target <- alts$overrides
 
   mv <- expand_tines(base_schema, alts)
@@ -55,7 +55,7 @@ test_that("expand_tines preserves each step's id (does not rename it to the alte
 })
 
 test_that("a target step absent from the base schema is an authoring error", {
-  base_schema <- example_schema()
+  base_schema <- example_hdi()
   alts <- new_alternatives(
     node(overrides = "does-not-exist", alternative(id = "a1", decision = "d", rationale = "r")),
     branch = "multi"
@@ -64,7 +64,7 @@ test_that("a target step absent from the base schema is an authoring error", {
 })
 
 test_that("expand_tines() re-validates branch = 'single' even if the object was built or mutated by hand", {
-  base_schema <- example_schema()
+  base_schema <- example_hdi()
   alts <- new_alternatives(
     node(overrides = "step-scaling", alternative(id = "a1", decision = "d1", rationale = "r1")),
     branch = "single"

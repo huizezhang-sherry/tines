@@ -1,19 +1,19 @@
 test_that("schema and multiverse constructor work", {
-  schema <- example_schema()
-  my_multiverse <- example_multiverse()
+  schema <- example_hdi()
+  my_multiverse <- example_hdi_multiverse()
   expect_snapshot(schema)
   expect_snapshot(my_multiverse)
 })
 
 test_that("get_step_names works for schema and multiverse", {
   expect_equal(
-    get_step_names(example_schema()),
+    get_step_names(example_hdi()),
     c("step-scaling", "step-education", "step-combine")
   )
 
-  mv_names <- get_step_names(example_multiverse())
+  mv_names <- get_step_names(example_hdi_multiverse())
   expect_type(mv_names, "list")
-  expect_equal(names(mv_names), c("original", "reversed"))
+  expect_equal(names(mv_names), c("original", "step-arithmetic-mean"))
 })
 
 test_that("get_step_names errors for unsupported types", {
@@ -58,25 +58,25 @@ test_that("add_step preserves name and data attributes across appends", {
 
 test_that("as_schema coercion methods work as expected", {
   expect_error(as_schema(1), "Cannot coerce")
-  expect_identical(as_schema(example_schema()), example_schema())
+  expect_identical(as_schema(example_hdi()), example_hdi())
 })
 
 test_that("as_multiverse coercion methods work as expected", {
   expect_error(as_multiverse(1), "Cannot coerce")
 
-  mv <- example_multiverse()
+  mv <- example_hdi_multiverse()
   expect_identical(as_multiverse(mv), mv)
 
-  schema <- example_schema()
+  schema <- example_hdi()
   wrapped <- as_multiverse(schema)
   expect_s3_class(wrapped, "multiverse")
   expect_length(wrapped, 1)
 })
 
 test_that("as_multiverse.list flattens nested schemas and multiverses", {
-  schema1 <- example_schema()
-  schema2 <- example_football()
-  mv <- example_multiverse()
+  schema1 <- example_hdi()
+  schema2 <- example_football_grp5()
+  mv <- example_hdi_multiverse()
 
   flat <- as_multiverse(list(schema1, mv, list(schema2)))
 
@@ -87,14 +87,14 @@ test_that("as_multiverse.list flattens nested schemas and multiverses", {
 
 test_that("as_multiverse.list errors on elements it cannot coerce", {
   expect_error(
-    as_multiverse(list(example_schema(), 1)),
+    as_multiverse(list(example_hdi(), 1)),
     "cannot be coerced"
   )
 })
 
 test_that("a multiverse follows list conventions for names", {
-  s1 <- example_schema()
-  s2 <- example_football()
+  s1 <- example_hdi()
+  s2 <- example_football_grp5()
 
   # names supplied are kept
   expect_equal(names(as_multiverse(list(hdi = s1, football = s2))), c("hdi", "football"))
@@ -132,8 +132,8 @@ test_that("gen_code() derives a usable file name for every branch", {
 })
 
 test_that("as_multiverse flattens nested multiverses, keeping their branch names", {
-  inner <- as_multiverse(list(hdi = example_schema()))
-  flat <- as_multiverse(list(inner, football = example_football()))
+  inner <- as_multiverse(list(hdi = example_hdi()))
+  flat <- as_multiverse(list(inner, football = example_football_grp5()))
 
   expect_s3_class(flat, "multiverse")
   expect_equal(names(flat), c("hdi", "football"))
@@ -158,9 +158,9 @@ test_that("as_schema() coerces a data frame of steps", {
 })
 
 test_that("expand_tines() rejects a multiverse with a pointer to the right approach", {
-  mv <- as_multiverse(list(hdi = example_schema()))
+  mv <- as_multiverse(list(hdi = example_hdi()))
   expect_error(
-    expand_tines(mv, example_alternatives(case = "hdi")),
+    expand_tines(mv, example_hdi_alternatives()),
     "not a"
   )
 })
@@ -168,7 +168,7 @@ test_that("expand_tines() rejects a multiverse with a pointer to the right appro
 test_that("print methods remain stable (snapshot)", {
   expect_snapshot(print(build_schema()))
   expect_snapshot(print(new_multiverse(list())))
-  expect_snapshot(print(as_multiverse(list(only_branch = example_schema()))))
+  expect_snapshot(print(as_multiverse(list(only_branch = example_hdi()))))
 })
 
 test_that("tbl_sum.schema reflects the name attribute", {
@@ -197,7 +197,7 @@ test_that("add_step() works on schemas whose columns differ from the canonical s
   # ...but a schema composed through the internal import_step() does carry
   # the column, and add_step() lines up against it instead of widening it
   composed <- tines:::import_step(
-    build_schema(), source_schema = example_schema(),
+    build_schema(), source_schema = example_hdi(),
     source_schema_name = "other_schema", id = "step-scaling"
   )
   expect_equal(composed$source_schema, "other_schema")
@@ -205,7 +205,7 @@ test_that("add_step() works on schemas whose columns differ from the canonical s
   expect_equal(grown_composed$source_schema, c("other_schema", NA))
 
   # Extra fields carried by LLM-drafted schemas survive, NA for the new step
-  drafted <- example_football_grp20()
+  drafted <- example_football_grp5()
   expect_true("confidence" %in% names(drafted))
   grown <- add_step(drafted, id = "step-new", objective = "o", decision = "d")
   expect_equal(nrow(grown), nrow(drafted) + 1)

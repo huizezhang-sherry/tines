@@ -28,7 +28,7 @@ class \code{schema} or \code{multiverse}.
 Read and write tines schemas and multiverses to YAML files
 }
 \examples{
-schema <- example_schema()
+schema <- example_hdi()
 temp_path <- withr::local_tempfile(fileext = ".yaml")
 write_tines(schema, temp_path)
 schema_read <- read_tines(temp_path)

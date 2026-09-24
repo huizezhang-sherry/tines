@@ -88,7 +88,7 @@ draft_tines <- function(file_path = NULL, overwrite = FALSE) {
 #' @export
 #' @rdname draft_alternatives
 #' @examples
-#' my_schema <- example_schema()
+#' my_schema <- example_hdi()
 #'
 #' draft_alternatives(
 #'   x = my_schema,

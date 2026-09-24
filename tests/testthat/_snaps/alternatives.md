@@ -41,8 +41,8 @@
     Code
       read_alternatives(tmp_file)
     Output
-      # Alternatives: step-logistic-model (multi)
-        overrides           alternatives    
-        <chr>               <list>          
-      1 step-logistic-model <tibble [3 x 3]>
+      # Alternatives: specify_random_effects_structure (multi)
+        overrides                        alternatives    
+        <chr>                            <list>          
+      1 specify_random_effects_structure <tibble [3 x 3]>
 

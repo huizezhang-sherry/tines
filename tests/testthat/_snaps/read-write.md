@@ -17,5 +17,5 @@
     Output
       A multiverse with 2 schemas:
         original: "HDI Example" (3 steps)
-        reversed: "HDI Example" (3 steps)
+        step-arithmetic-mean: "HDI Example" (3 steps)
 
