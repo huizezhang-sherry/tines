@@ -76,9 +76,11 @@ is what an alternatives file modifies to produce a multiverse. This
 vignette covers</p>
 <ul>
 <li>the anatomy of a schema YAML file,</li>
-<li>how to create one by hand, in R, or with an LLM,</li>
+<li>the five ways to create one – from a template, in R, from a file,
+from a data frame, or from prose with an LLM,</li>
 <li>how a schema is mapped to a dataset, and</li>
-<li>how the file relates to the <code>schema</code> object in R.</li>
+<li>how pairing one with an alternatives file turns it into a
+multiverse.</li>
 </ul>
 <div class="section level2">
 <h2 id="the-big-picture">The big picture<a class="anchor" aria-label="anchor" href="#the-big-picture"></a>
@@ -113,54 +115,52 @@ done.</li>
 way. This is the field that lets a reader agree or disagree with a
 choice, rather than only observe it.</li>
 </ul>
-</div>
-<div class="section level2">
-<h2 id="the-hdi-example">The HDI example<a class="anchor" aria-label="anchor" href="#the-hdi-example"></a>
-</h2>
-<p>The Human Development Index (HDI) combines three dimensions – health,
-education, and standard of living – into a single index. Written as a
-schema, that analysis is three decisions:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">meta</span><span class="kw">:</span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> schema</span></span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="at">  </span><span class="fu">date</span><span class="kw">:</span><span class="at"> </span><span class="st">'2026-09-10'</span></span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> HDI Example</span></span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="fu">nodes</span><span class="kw">:</span></span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> step-scaling</span></span>
-<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="at">  </span><span class="fu">objective</span><span class="kw">:</span><span class="at"> variables are in different scales</span></span>
-<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="at">  </span><span class="fu">decision</span><span class="kw">:</span><span class="at"> apply min-max scaling to each variable</span></span>
-<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="at">  </span><span class="fu">rationale</span><span class="kw">:</span><span class="at"> to put them on the same scale for combination</span></span>
-<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> step-education</span></span>
-<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="at">  </span><span class="fu">objective</span><span class="kw">:</span><span class="at"> combine the school variables into one dimension</span></span>
-<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="at">  </span><span class="fu">decision</span><span class="kw">:</span><span class="at"> average exp sch and avg sch</span></span>
-<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="at">  </span><span class="fu">rationale</span><span class="kw">:</span><span class="at"> the most intuitive way</span></span>
-<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> step-combine</span></span>
-<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="at">  </span><span class="fu">objective</span><span class="kw">:</span><span class="at"> combine the three dimensions into a single index</span></span>
-<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="at">  </span><span class="fu">decision</span><span class="kw">:</span><span class="at"> use the geometric mean</span></span>
-<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="at">  </span><span class="fu">rationale</span><span class="kw">:</span><span class="at"> the geometric mean is more appropriate than arithmetic mean</span></span></code></pre></div>
-<p><code><a href="../reference/read-write.html">read_tines()</a></code> turns the file into a <code>schema</code>
-object:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">schema</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read-write.html">read_tines</a></span><span class="op">(</span><span class="va">schema_path</span><span class="op">)</span></span>
-<span><span class="va">schema</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A schema: HDI Example</span></span></span>
-<span><span class="co">#&gt;   id             objective                     decision rationale inputs outputs</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> step-scaling   variables are in different s… apply m… to put t… <span style="color: #949494;">&lt;chr&gt;</span>  <span style="color: #949494;">&lt;chr&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> step-education combine the school variables… average… the most… <span style="color: #949494;">&lt;chr&gt;</span>  <span style="color: #949494;">&lt;chr&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> step-combine   combine the three dimensions… use the… the geom… <span style="color: #949494;">&lt;chr&gt;</span>  <span style="color: #949494;">&lt;chr&gt;</span></span></span></code></pre></div>
-<p>A <code>schema</code> is a tibble, so the decisions of an analysis
-can be inspected with the tools you already use for data frames:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">schema</span><span class="op">$</span><span class="va">id</span></span>
-<span><span class="co">#&gt; [1] "step-scaling"   "step-education" "step-combine"</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">schema</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 3</span></span>
-<span><span class="va">schema</span><span class="op">$</span><span class="va">rationale</span><span class="op">[</span><span class="va">schema</span><span class="op">$</span><span class="va">id</span> <span class="op">==</span> <span class="st">"step-combine"</span><span class="op">]</span></span>
-<span><span class="co">#&gt; [1] "the geometric mean is more appropriate than arithmetic mean"</span></span></code></pre></div>
-<p>The YAML file is the format you author, share, and put under version
-control; the object is the format you compute with. Everything
-downstream – <code><a href="../reference/expand.html">expand_tines()</a></code>, <code><a href="../reference/gen_code.html">gen_code()</a></code>,
-<code><a href="../reference/print.html">draw_tines()</a></code> – takes the object.</p>
+<p>You can initialize the template above via <code><a href="../reference/template.html">draft_tines()</a></code>,
+and fill in the steps by hand. Apart from that, there are four ways to
+create a schema:</p>
+<table class="table">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<thead><tr class="header">
+<th>If you are starting from</th>
+<th>Use</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>nothing, and you would rather write YAML</td>
+<td>
+<code><a href="../reference/template.html">draft_tines()</a></code>, fill in the template, then
+<code><a href="../reference/read-write.html">read_tines()</a></code>
+</td>
+</tr>
+<tr class="even">
+<td>nothing, and you would rather work in R</td>
+<td>
+<code><a href="../reference/constructor.html">build_schema()</a></code>, then one <code><a href="../reference/constructor.html">add_step()</a></code> per
+decision</td>
+</tr>
+<tr class="odd">
+<td>a schema file written earlier</td>
+<td><code>read_tines(path)</code></td>
+</tr>
+<tr class="even">
+<td>a table of decisions, say from a spreadsheet</td>
+<td><code>as_schema(df)</code></td>
+</tr>
+<tr class="odd">
+<td>prose, such as a manuscript’s methods section</td>
+<td><code>extract_schema(text, data_dict)</code></td>
+</tr>
+</tbody>
+</table>
+<p>All five converge on the same thing: a <code>schema</code> object,
+which is a tibble of steps. The YAML file is the format you store and
+share; the object is what you work with in R. Most functions that
+consume a schema (<code><a href="../reference/expand.html">expand_tines()</a></code>, <code><a href="../reference/gen_code.html">gen_code()</a></code>,
+<code><a href="../reference/print.html">draw_tines()</a></code>) take either. Below we show examples of
+creating a schema in each of the five ways.</p>
 </div>
 <div class="section level2">
 <h2 id="creating-a-schema">Creating a schema<a class="anchor" aria-label="anchor" href="#creating-a-schema"></a>
@@ -170,29 +170,29 @@ downstream – <code><a href="../reference/expand.html">expand_tines()</a></code
 </h3>
 <p><code><a href="../reference/template.html">draft_tines()</a></code> writes a skeleton with two placeholder
 steps, ready to fill in by hand:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">draft_path</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yml"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/template.html">draft_tines</a></span><span class="op">(</span>file_path <span class="op">=</span> <span class="va">draft_path</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Drafted <span style="color: #0000BB;">"schema"</span> template at <span style="color: #0000BB;">/tmp/RtmpJoWvi8/file1d6d70c8c215.yml</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Drafted <span style="color: #0000BB;">"schema"</span> template at <span style="color: #0000BB;">/tmp/RtmpgBCwW4/file1cca1833408e.yml</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Open this file to start defining your steps!</span></span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">meta</span><span class="kw">:</span></span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> schema</span></span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="fu">nodes</span><span class="kw">:</span></span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> step1</span></span>
-<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="at">  </span><span class="fu">objective</span><span class="kw">:</span><span class="at"> describe your first step here</span></span>
-<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="at">  </span><span class="fu">decision</span><span class="kw">:</span><span class="at"> describe your decision here</span></span>
-<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="at">  </span><span class="fu">rationale</span><span class="kw">:</span><span class="at"> explain your reasoning here</span></span>
-<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> step2</span></span>
-<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="at">  </span><span class="fu">objective</span><span class="kw">:</span><span class="at"> describe your next step here</span></span>
-<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="at">  </span><span class="fu">decision</span><span class="kw">:</span><span class="at"> describe your decision here</span></span>
-<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="at">  </span><span class="fu">rationale</span><span class="kw">:</span><span class="at"> explain your reasoning here</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">meta</span><span class="kw">:</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> schema</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="fu">nodes</span><span class="kw">:</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> step1</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="at">  </span><span class="fu">objective</span><span class="kw">:</span><span class="at"> describe your first step here</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="at">  </span><span class="fu">decision</span><span class="kw">:</span><span class="at"> describe your decision here</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="at">  </span><span class="fu">rationale</span><span class="kw">:</span><span class="at"> explain your reasoning here</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> step2</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="at">  </span><span class="fu">objective</span><span class="kw">:</span><span class="at"> describe your next step here</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="at">  </span><span class="fu">decision</span><span class="kw">:</span><span class="at"> describe your decision here</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="at">  </span><span class="fu">rationale</span><span class="kw">:</span><span class="at"> explain your reasoning here</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="in-r">In R<a class="anchor" aria-label="anchor" href="#in-r"></a>
 </h3>
 <p><code><a href="../reference/constructor.html">build_schema()</a></code> starts an empty schema and
 <code><a href="../reference/constructor.html">add_step()</a></code> appends to it, one step per decision:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hdi</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/constructor.html">build_schema</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"HDI Example"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/constructor.html">add_step</a></span><span class="op">(</span></span>
 <span>    id <span class="op">=</span> <span class="st">"step-scaling"</span>,</span>
@@ -213,27 +213,101 @@ steps, ready to fill in by hand:</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> step-scaling variables are in different sca… apply m… to put t… <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>  </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> step-combine combine the three dimensions i… use the… the geom… <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span></span></span></code></pre></div>
 <p><code><a href="../reference/read-write.html">write_tines()</a></code> writes it back out as YAML:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_path</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yml"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/read-write.html">write_tines</a></span><span class="op">(</span><span class="va">hdi</span>, <span class="va">out_path</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> File saved: <span style="color: #0000BB;">/tmp/RtmpJoWvi8/file1d6d5dd166e9.yml</span></span></span></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">meta</span><span class="kw">:</span></span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> schema</span></span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="at">  </span><span class="fu">date</span><span class="kw">:</span><span class="at"> </span><span class="st">'2026-09-24'</span></span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> HDI Example</span></span>
-<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="fu">nodes</span><span class="kw">:</span></span>
-<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> step-scaling</span></span>
-<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="at">  </span><span class="fu">objective</span><span class="kw">:</span><span class="at"> variables are in different scales</span></span>
-<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="at">  </span><span class="fu">decision</span><span class="kw">:</span><span class="at"> apply min-max scaling to each variable</span></span>
-<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="at">  </span><span class="fu">rationale</span><span class="kw">:</span><span class="at"> to put them on the same scale for combination</span></span>
-<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a><span class="at">  </span><span class="fu">inputs</span><span class="kw">:</span><span class="at"> </span><span class="kw">[]</span></span>
-<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="at">  </span><span class="fu">outputs</span><span class="kw">:</span><span class="at"> </span><span class="kw">[]</span></span>
-<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> step-combine</span></span>
-<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a><span class="at">  </span><span class="fu">objective</span><span class="kw">:</span><span class="at"> combine the three dimensions into a single index</span></span>
-<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a><span class="at">  </span><span class="fu">decision</span><span class="kw">:</span><span class="at"> use the geometric mean</span></span>
-<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a><span class="at">  </span><span class="fu">rationale</span><span class="kw">:</span><span class="at"> the geometric mean penalizes uneven development</span></span>
-<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a><span class="at">  </span><span class="fu">inputs</span><span class="kw">:</span><span class="at"> </span><span class="kw">[]</span></span>
-<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a><span class="at">  </span><span class="fu">outputs</span><span class="kw">:</span><span class="at"> </span><span class="kw">[]</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> File saved: <span style="color: #0000BB;">/tmp/RtmpgBCwW4/file1cca47849846.yml</span></span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">meta</span><span class="kw">:</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> schema</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="at">  </span><span class="fu">date</span><span class="kw">:</span><span class="at"> </span><span class="st">'2026-09-24'</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> HDI Example</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="fu">nodes</span><span class="kw">:</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> step-scaling</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="at">  </span><span class="fu">objective</span><span class="kw">:</span><span class="at"> variables are in different scales</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="at">  </span><span class="fu">decision</span><span class="kw">:</span><span class="at"> apply min-max scaling to each variable</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="at">  </span><span class="fu">rationale</span><span class="kw">:</span><span class="at"> to put them on the same scale for combination</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="at">  </span><span class="fu">inputs</span><span class="kw">:</span><span class="at"> </span><span class="kw">[]</span></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="at">  </span><span class="fu">outputs</span><span class="kw">:</span><span class="at"> </span><span class="kw">[]</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> step-combine</span></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="at">  </span><span class="fu">objective</span><span class="kw">:</span><span class="at"> combine the three dimensions into a single index</span></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="at">  </span><span class="fu">decision</span><span class="kw">:</span><span class="at"> use the geometric mean</span></span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a><span class="at">  </span><span class="fu">rationale</span><span class="kw">:</span><span class="at"> the geometric mean penalizes uneven development</span></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a><span class="at">  </span><span class="fu">inputs</span><span class="kw">:</span><span class="at"> </span><span class="kw">[]</span></span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a><span class="at">  </span><span class="fu">outputs</span><span class="kw">:</span><span class="at"> </span><span class="kw">[]</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="from-a-file">From a file<a class="anchor" aria-label="anchor" href="#from-a-file"></a>
+</h3>
+<p>Most often the schema already exists. <code><a href="../reference/read-write.html">read_tines()</a></code> reads
+one in – here the Human Development Index example shipped with the
+package, which combines health, education, and standard of living into a
+single index:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">meta</span><span class="kw">:</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> schema</span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="at">  </span><span class="fu">date</span><span class="kw">:</span><span class="at"> </span><span class="st">'2026-09-10'</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> HDI Example</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="fu">nodes</span><span class="kw">:</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> step-scaling</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="at">  </span><span class="fu">objective</span><span class="kw">:</span><span class="at"> variables are in different scales</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="at">  </span><span class="fu">decision</span><span class="kw">:</span><span class="at"> apply min-max scaling to each variable</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="at">  </span><span class="fu">rationale</span><span class="kw">:</span><span class="at"> to put them on the same scale for combination</span></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> step-education</span></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="at">  </span><span class="fu">objective</span><span class="kw">:</span><span class="at"> combine the school variables into one dimension</span></span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="at">  </span><span class="fu">decision</span><span class="kw">:</span><span class="at"> average exp sch and avg sch</span></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="at">  </span><span class="fu">rationale</span><span class="kw">:</span><span class="at"> the most intuitive way</span></span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> step-combine</span></span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="at">  </span><span class="fu">objective</span><span class="kw">:</span><span class="at"> combine the three dimensions into a single index</span></span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="at">  </span><span class="fu">decision</span><span class="kw">:</span><span class="at"> use the geometric mean</span></span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="at">  </span><span class="fu">rationale</span><span class="kw">:</span><span class="at"> the geometric mean is more appropriate than arithmetic mean</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">schema</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read-write.html">read_tines</a></span><span class="op">(</span><span class="va">schema_path</span><span class="op">)</span></span>
+<span><span class="va">schema</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A schema: HDI Example</span></span></span>
+<span><span class="co">#&gt;   id             objective                     decision rationale inputs outputs</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> step-scaling   variables are in different s… apply m… to put t… <span style="color: #949494;">&lt;chr&gt;</span>  <span style="color: #949494;">&lt;chr&gt;</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> step-education combine the school variables… average… the most… <span style="color: #949494;">&lt;chr&gt;</span>  <span style="color: #949494;">&lt;chr&gt;</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> step-combine   combine the three dimensions… use the… the geom… <span style="color: #949494;">&lt;chr&gt;</span>  <span style="color: #949494;">&lt;chr&gt;</span></span></span></code></pre></div>
+<p>Because the result is a tibble, the decisions of an analysis can be
+inspected with the tools you already use for data frames:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">schema</span><span class="op">$</span><span class="va">id</span></span>
+<span><span class="co">#&gt; [1] "step-scaling"   "step-education" "step-combine"</span></span>
+<span><span class="va">schema</span><span class="op">$</span><span class="va">rationale</span><span class="op">[</span><span class="va">schema</span><span class="op">$</span><span class="va">id</span> <span class="op">==</span> <span class="st">"step-combine"</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] "the geometric mean is more appropriate than arithmetic mean"</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="from-a-data-frame">From a data frame<a class="anchor" aria-label="anchor" href="#from-a-data-frame"></a>
+</h3>
+<p>Decisions are often catalogued somewhere else first – a spreadsheet,
+or a table in a lab notebook. Any data frame carrying the four step
+fields coerces directly:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">steps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"step-clean"</span>, <span class="st">"step-model"</span><span class="op">)</span>,</span>
+<span>  objective <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"handle missing values"</span>, <span class="st">"estimate the effect"</span><span class="op">)</span>,</span>
+<span>  decision <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"drop incomplete cases"</span>, <span class="st">"fit a linear model"</span><span class="op">)</span>,</span>
+<span>  rationale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"listwise deletion keeps the sample interpretable"</span>,</span>
+<span>                <span class="st">"the relationship is assumed linear"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/constructor.html">as_schema</a></span><span class="op">(</span><span class="va">steps</span>, name <span class="op">=</span> <span class="st">"From a spreadsheet"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A schema: From a spreadsheet</span></span></span>
+<span><span class="co">#&gt;   id         objective             decision              rationale              </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> step-clean handle missing values drop incomplete cases listwise deletion keep…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> step-model estimate the effect   fit a linear model    the relationship is as…</span></span></code></pre></div>
+<p><code>inputs</code> and <code>outputs</code> may be supplied as
+list-columns if you have them; otherwise add them later with
+<code><a href="../reference/update-io.html">update_io()</a></code>. A data frame missing any of the four required
+fields is refused, and says which:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/constructor.html">as_schema</a></span><span class="op">(</span><span class="va">steps</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"decision"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `as_schema()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Cannot coerce to a <span style="color: #0000BB;">&lt;schema&gt;</span>: columns <span style="color: #00BB00;">objective</span> and <span style="color: #00BB00;">rationale</span> are</span></span>
+<span><span class="co">#&gt;   missing.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> A schema needs one row per step, with columns <span style="color: #00BB00;">id</span>, <span style="color: #00BB00;">objective</span>, <span style="color: #00BB00;">decision</span>, and</span></span>
+<span><span class="co">#&gt;   <span style="color: #00BB00;">rationale</span>.</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="from-a-manuscript-with-an-llm">From a manuscript, with an LLM<a class="anchor" aria-label="anchor" href="#from-a-manuscript-with-an-llm"></a>
@@ -241,7 +315,7 @@ steps, ready to fill in by hand:</p>
 <p><code><a href="../reference/extract_schema.html">extract_schema()</a></code> drafts a schema from a prose
 description of the methodology, such as the methods section of a
 paper:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Requires an LLM API key (e.g. ANTHROPIC_API_KEY); not run automatically.</span></span>
 <span><span class="fu"><a href="../reference/extract_schema.html">extract_schema</a></span><span class="op">(</span></span>
 <span>  text <span class="op">=</span> <span class="va">football_grp20</span>,</span>
@@ -254,7 +328,7 @@ paper:</p>
 that it read each decision correctly. Any extra field is preserved as
 its own column when the file is read, and written back out
 unchanged:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">drafted</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/example_tines.html">example_football_grp20</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">drafted</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "id"                     "objective"              "decision"              </span></span>
@@ -268,12 +342,12 @@ unchanged:</p>
 <p>The four core fields describe an analysis, but generating code that
 runs against a real dataset also requires knowing which variables each
 step consumes and produces. Two optional fields record that:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> step-scaling</span></span>
-<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="at">    </span><span class="fu">objective</span><span class="kw">:</span><span class="at"> variables are in different scales</span></span>
-<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="at">    </span><span class="fu">decision</span><span class="kw">:</span><span class="at"> apply min-max scaling to each variable</span></span>
-<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a><span class="at">    </span><span class="fu">rationale</span><span class="kw">:</span><span class="at"> to put them on the same scale for combination</span></span>
-<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a><span class="at">    </span><span class="fu">inputs</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">life_exp</span><span class="kw">,</span><span class="at"> exp_sch</span><span class="kw">,</span><span class="at"> avg_sch</span><span class="kw">,</span><span class="at"> gni</span><span class="kw">]</span></span>
-<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a><span class="at">    </span><span class="fu">outputs</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">scaled</span><span class="kw">]</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> step-scaling</span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="at">    </span><span class="fu">objective</span><span class="kw">:</span><span class="at"> variables are in different scales</span></span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a><span class="at">    </span><span class="fu">decision</span><span class="kw">:</span><span class="at"> apply min-max scaling to each variable</span></span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a><span class="at">    </span><span class="fu">rationale</span><span class="kw">:</span><span class="at"> to put them on the same scale for combination</span></span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="at">    </span><span class="fu">inputs</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">life_exp</span><span class="kw">,</span><span class="at"> exp_sch</span><span class="kw">,</span><span class="at"> avg_sch</span><span class="kw">,</span><span class="at"> gni</span><span class="kw">]</span></span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="at">    </span><span class="fu">outputs</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">scaled</span><span class="kw">]</span></span></code></pre></div>
 <ul>
 <li>
 <strong><code>inputs</code></strong> name the variables the step
@@ -288,7 +362,7 @@ the steps in order, starting from the dataset’s own columns, and
 requires every step’s <code>inputs</code> to be available by that point
 – either a column of the original data, or an output created by an
 earlier step:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hdi_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  life_exp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">72</span>, <span class="fl">81</span>, <span class="fl">66</span><span class="op">)</span>,</span>
 <span>  exp_sch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">13</span>, <span class="fl">16</span>, <span class="fl">10</span><span class="op">)</span>,</span>
@@ -316,7 +390,7 @@ column of <code>hdi_data</code> but is produced by
 <code>step-scaling</code>, so the mapping is valid.</p>
 <p>Swapping in a dataset that breaks the mapping is refused outright,
 naming the step and the variables it can no longer reach:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">renamed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  life_exp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">70</span>, <span class="fl">80</span>, <span class="fl">60</span><span class="op">)</span>,</span>
 <span>  exp_sch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">15</span>, <span class="fl">9</span><span class="op">)</span>,</span>
@@ -352,7 +426,7 @@ carrying out one or more of its steps – and passing both to
 <code><a href="../reference/expand.html">expand_tines()</a></code> produces a <code>multiverse</code>, one
 schema per branch the alternatives file describes, alongside the
 original:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">alts</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read-write-alternatives.html">read_alternatives</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"hdi-alt-single.yml"</span>, package <span class="op">=</span> <span class="st">"tines"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/expand.html">expand_tines</a></span><span class="op">(</span><span class="va">schema</span>, <span class="va">alts</span><span class="op">)</span></span>
 <span><span class="co">#&gt; A multiverse with 2 schemas:</span></span>

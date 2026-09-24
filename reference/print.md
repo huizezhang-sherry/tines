@@ -29,7 +29,7 @@ inspect_dot(
 
 - x:
 
-  A `schema` or `multiverse` object.
+  A `schema` or `multiverse` object, or the path to a YAML file.
 
 - ...:
 

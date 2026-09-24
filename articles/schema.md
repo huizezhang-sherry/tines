@@ -11,9 +11,10 @@ decisions, each written in natural language. It is the central object in
 modifies to produce a multiverse. This vignette covers
 
 - the anatomy of a schema YAML file,
-- how to create one by hand, in R, or with an LLM,
+- the five ways to create one – from a template, in R, from a file, from
+  a data frame, or from prose with an LLM,
 - how a schema is mapped to a dataset, and
-- how the file relates to the `schema` object in R.
+- how pairing one with an alternatives file turns it into a multiverse.
 
 ## The big picture
 
@@ -45,65 +46,25 @@ Each step carries four fields:
   that lets a reader agree or disagree with a choice, rather than only
   observe it.
 
-## The HDI example
+You can initialize the template above via
+[`draft_tines()`](../reference/template.md), and fill in the steps by
+hand. Apart from that, there are four ways to create a schema:
 
-The Human Development Index (HDI) combines three dimensions – health,
-education, and standard of living – into a single index. Written as a
-schema, that analysis is three decisions:
+| If you are starting from | Use |
+|----|----|
+| nothing, and you would rather write YAML | [`draft_tines()`](../reference/template.md), fill in the template, then [`read_tines()`](../reference/read-write.md) |
+| nothing, and you would rather work in R | [`build_schema()`](../reference/constructor.md), then one [`add_step()`](../reference/constructor.md) per decision |
+| a schema file written earlier | `read_tines(path)` |
+| a table of decisions, say from a spreadsheet | `as_schema(df)` |
+| prose, such as a manuscript’s methods section | `extract_schema(text, data_dict)` |
 
-``` yaml
-meta:
-  type: schema
-  date: '2026-09-10'
-  name: HDI Example
-nodes:
-- id: step-scaling
-  objective: variables are in different scales
-  decision: apply min-max scaling to each variable
-  rationale: to put them on the same scale for combination
-- id: step-education
-  objective: combine the school variables into one dimension
-  decision: average exp sch and avg sch
-  rationale: the most intuitive way
-- id: step-combine
-  objective: combine the three dimensions into a single index
-  decision: use the geometric mean
-  rationale: the geometric mean is more appropriate than arithmetic mean
-```
-
-[`read_tines()`](../reference/read-write.md) turns the file into a
-`schema` object:
-
-``` r
-
-schema <- read_tines(schema_path)
-schema
-#> # A schema: HDI Example
-#>   id             objective                     decision rationale inputs outputs
-#>   <chr>          <chr>                         <chr>    <chr>     <list> <list> 
-#> 1 step-scaling   variables are in different s… apply m… to put t… <chr>  <chr>  
-#> 2 step-education combine the school variables… average… the most… <chr>  <chr>  
-#> 3 step-combine   combine the three dimensions… use the… the geom… <chr>  <chr>
-```
-
-A `schema` is a tibble, so the decisions of an analysis can be inspected
-with the tools you already use for data frames:
-
-``` r
-
-schema$id
-#> [1] "step-scaling"   "step-education" "step-combine"
-nrow(schema)
-#> [1] 3
-schema$rationale[schema$id == "step-combine"]
-#> [1] "the geometric mean is more appropriate than arithmetic mean"
-```
-
-The YAML file is the format you author, share, and put under version
-control; the object is the format you compute with. Everything
-downstream – [`expand_tines()`](../reference/expand.md),
+All five converge on the same thing: a `schema` object, which is a
+tibble of steps. The YAML file is the format you store and share; the
+object is what you work with in R. Most functions that consume a schema
+([`expand_tines()`](../reference/expand.md),
 [`gen_code()`](../reference/gen_code.md),
-[`draw_tines()`](../reference/print.md) – takes the object.
+[`draw_tines()`](../reference/print.md)) take either. Below we show
+examples of creating a schema in each of the five ways.
 
 ## Creating a schema
 
@@ -116,7 +77,7 @@ placeholder steps, ready to fill in by hand:
 
 draft_path <- withr::local_tempfile(fileext = ".yml")
 draft_tines(file_path = draft_path)
-#> ✔ Drafted "schema" template at /tmp/RtmpJoWvi8/file1d6d70c8c215.yml
+#> ✔ Drafted "schema" template at /tmp/RtmpgBCwW4/file1cca1833408e.yml
 #> ℹ Open this file to start defining your steps!
 ```
 
@@ -170,7 +131,7 @@ YAML:
 
 out_path <- withr::local_tempfile(fileext = ".yml")
 write_tines(hdi, out_path)
-#> ✔ File saved: /tmp/RtmpJoWvi8/file1d6d5dd166e9.yml
+#> ✔ File saved: /tmp/RtmpgBCwW4/file1cca47849846.yml
 ```
 
 ``` yaml
@@ -191,6 +152,95 @@ nodes:
   rationale: the geometric mean penalizes uneven development
   inputs: []
   outputs: []
+```
+
+### From a file
+
+Most often the schema already exists.
+[`read_tines()`](../reference/read-write.md) reads one in – here the
+Human Development Index example shipped with the package, which combines
+health, education, and standard of living into a single index:
+
+``` yaml
+meta:
+  type: schema
+  date: '2026-09-10'
+  name: HDI Example
+nodes:
+- id: step-scaling
+  objective: variables are in different scales
+  decision: apply min-max scaling to each variable
+  rationale: to put them on the same scale for combination
+- id: step-education
+  objective: combine the school variables into one dimension
+  decision: average exp sch and avg sch
+  rationale: the most intuitive way
+- id: step-combine
+  objective: combine the three dimensions into a single index
+  decision: use the geometric mean
+  rationale: the geometric mean is more appropriate than arithmetic mean
+```
+
+``` r
+
+schema <- read_tines(schema_path)
+schema
+#> # A schema: HDI Example
+#>   id             objective                     decision rationale inputs outputs
+#>   <chr>          <chr>                         <chr>    <chr>     <list> <list> 
+#> 1 step-scaling   variables are in different s… apply m… to put t… <chr>  <chr>  
+#> 2 step-education combine the school variables… average… the most… <chr>  <chr>  
+#> 3 step-combine   combine the three dimensions… use the… the geom… <chr>  <chr>
+```
+
+Because the result is a tibble, the decisions of an analysis can be
+inspected with the tools you already use for data frames:
+
+``` r
+
+schema$id
+#> [1] "step-scaling"   "step-education" "step-combine"
+schema$rationale[schema$id == "step-combine"]
+#> [1] "the geometric mean is more appropriate than arithmetic mean"
+```
+
+### From a data frame
+
+Decisions are often catalogued somewhere else first – a spreadsheet, or
+a table in a lab notebook. Any data frame carrying the four step fields
+coerces directly:
+
+``` r
+
+steps <- data.frame(
+  id = c("step-clean", "step-model"),
+  objective = c("handle missing values", "estimate the effect"),
+  decision = c("drop incomplete cases", "fit a linear model"),
+  rationale = c("listwise deletion keeps the sample interpretable",
+                "the relationship is assumed linear")
+)
+
+as_schema(steps, name = "From a spreadsheet")
+#> # A schema: From a spreadsheet
+#>   id         objective             decision              rationale              
+#>   <chr>      <chr>                 <chr>                 <chr>                  
+#> 1 step-clean handle missing values drop incomplete cases listwise deletion keep…
+#> 2 step-model estimate the effect   fit a linear model    the relationship is as…
+```
+
+`inputs` and `outputs` may be supplied as list-columns if you have them;
+otherwise add them later with
+[`update_io()`](../reference/update-io.md). A data frame missing any of
+the four required fields is refused, and says which:
+
+``` r
+
+as_schema(steps[, c("id", "decision")])
+#> Error in `as_schema()`:
+#> ! Cannot coerce to a <schema>: columns objective and rationale are
+#>   missing.
+#> ℹ A schema needs one row per step, with columns id, objective, decision, and
+#>   rationale.
 ```
 
 ### From a manuscript, with an LLM
