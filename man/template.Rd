@@ -17,30 +17,29 @@ default name.}
 \item{overwrite}{Logical. If TRUE, will overwrite an existing file at the
 specified file_path. Defaults to FALSE.}
 
-\item{x}{A `schema` or `multiverse` object, or a character string
+\item{x}{A \code{schema} or \code{multiverse} object, or a character string
 specifying the file path to a valid schema YAML file.}
 
-\item{id}{A character string specifying the `id` of the step in the
-schema. For `draft_alternatives()`, a vector naming one or more steps --
+\item{id}{A character string specifying the \code{id} of the step in the
+schema. For \code{\link[=draft_alternatives]{draft_alternatives()}}, a vector naming one or more steps --
 one node is drafted per step.}
 
-\item{branch}{For `draft_alternatives()` only. Required: either `"multi"`
-(drafts 2 placeholder alternatives per node) or `"single"` (drafts
-exactly 1 per node, for a template meant to combine into one coordinated
-branch). There is no default -- see [alternative()] for what the two
+\item{branch}{For \code{\link[=draft_alternatives]{draft_alternatives()}} only. Required: either \code{"multi"}
+(drafts 2 placeholder alternatives per node) or \code{"single"} (drafts
+exactly 1 per node). See \code{vignette("alternatives")} for what the two
 modes mean when expanded.}
 }
 \value{
-`draft_tines()` and `draft_alternatives()` both invisibly return
-  the path they wrote to; each is called primarily for its side effect
-  of writing a template YAML file to disk.
+\code{\link[=draft_tines]{draft_tines()}} and \code{\link[=draft_alternatives]{draft_alternatives()}} both invisibly return
+the path they wrote to; each is called primarily for its side effect
+of writing a template YAML file to disk.
 }
 \description{
-Generates a starter YAML file for a `schema` to help you begin building
-your garden of forking paths. There is no template for a `multiverse`:
+Generates a starter YAML file for a schema to help you begin building
+your garden of forking paths. There is no template for a multiverse:
 a multiverse is always produced either by combining schema objects with
-[build_multiverse()], or by expanding a schema (or another multiverse)
-with an alternatives file via [expand_tines()] -- never hand-authored
+\code{\link[=build_multiverse]{build_multiverse()}}, or by expanding a schema (or another multiverse)
+with an alternatives file via \code{\link[=expand_tines]{expand_tines()}} -- never hand-authored
 from a blank template.
 }
 \examples{

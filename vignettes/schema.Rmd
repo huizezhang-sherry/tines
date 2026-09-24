@@ -1,0 +1,255 @@
+---
+title: "Structuring Schema Files"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Structuring Schema Files}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(tines)
+```
+
+A **schema** records a data analysis as an ordered sequence of decisions,
+each written in natural language. It is the central object in `tines`: code
+is generated from it, and it is what an alternatives file modifies to
+produce a multiverse. This vignette covers
+
+  * the anatomy of a schema YAML file,
+  * how to create one by hand, in R, or with an LLM,
+  * how a schema is mapped to a dataset, and
+  * how the file relates to the `schema` object in R.
+
+# The big picture
+
+A schema file has two parts: a `meta` block marking the document as a
+schema, and a `nodes` list holding the steps of the analysis. The skeleton
+always looks like this:
+
+```yaml
+meta:
+  type: schema
+  name: <optional label for the analysis>
+nodes:
+  - id: <step id>
+    objective: <the problem this step solves>
+    decision: <what was done>
+    rationale: <why it was done that way>
+  - id: <step id>
+    ...
+```
+
+Each step carries four fields:
+
+* **`id`** names the step. Ids must be unique within a schema, and they are
+  how an alternatives file points at the step it overrides.
+* **`objective`** states the problem the step addresses -- the question, not
+  the answer.
+* **`decision`** records what was actually done.
+* **`rationale`** records why it was done that way. This is the field that
+  lets a reader agree or disagree with a choice, rather than only observe it.
+
+# The HDI example
+
+The Human Development Index (HDI) combines three dimensions -- health,
+education, and standard of living -- into a single index. Written as a
+schema, that analysis is three decisions:
+
+```{r results = "asis", echo = FALSE}
+schema_path <- system.file("hdi.yml", package = "tines")
+cat("```yaml\n")
+cat(readLines(schema_path), sep = "\n")
+cat("\n```\n")
+```
+
+`read_tines()` turns the file into a `schema` object:
+
+```{r}
+schema <- read_tines(schema_path)
+schema
+```
+
+A `schema` is a tibble, so the decisions of an analysis can be inspected
+with the tools you already use for data frames:
+
+```{r}
+schema$id
+nrow(schema)
+schema$rationale[schema$id == "step-combine"]
+```
+
+The YAML file is the format you author, share, and put under version
+control; the object is the format you compute with. Everything downstream
+-- `expand_tines()`, `gen_code()`, `draw_tines()` -- takes the object.
+
+# Creating a schema
+
+## From a template
+
+`draft_tines()` writes a skeleton with two placeholder steps, ready to fill
+in by hand:
+
+```{r}
+draft_path <- withr::local_tempfile(fileext = ".yml")
+draft_tines(file_path = draft_path)
+```
+
+```{r results = "asis", echo = FALSE}
+cat("```yaml\n")
+cat(readLines(draft_path), sep = "\n")
+cat("\n```\n")
+```
+
+## In R
+
+`build_schema()` starts an empty schema and `add_step()` appends to it, one
+step per decision:
+
+```{r}
+hdi <- build_schema(name = "HDI Example") |>
+  add_step(
+    id = "step-scaling",
+    objective = "variables are in different scales",
+    decision = "apply min-max scaling to each variable",
+    rationale = "to put them on the same scale for combination"
+  ) |>
+  add_step(
+    id = "step-combine",
+    objective = "combine the three dimensions into a single index",
+    decision = "use the geometric mean",
+    rationale = "the geometric mean penalizes uneven development"
+  )
+hdi
+```
+
+`write_tines()` writes it back out as YAML:
+
+```{r}
+out_path <- withr::local_tempfile(fileext = ".yml")
+write_tines(hdi, out_path)
+```
+
+```{r results = "asis", echo = FALSE}
+cat("```yaml\n")
+cat(readLines(out_path), sep = "\n")
+cat("\n```\n")
+```
+
+## From a manuscript, with an LLM
+
+`extract_schema()` drafts a schema from a prose description of the
+methodology, such as the methods section of a paper:
+
+```{r eval = FALSE}
+# Requires an LLM API key (e.g. ANTHROPIC_API_KEY); not run automatically.
+extract_schema(
+  text = football_grp20,
+  data_dict = c("player", "redCards", "rater1", "rater2"),
+  output_file = "draft_schema.yml"
+)
+```
+
+A schema drafted this way carries extra bookkeeping fields -- `status`,
+`confidence`, and `clarification_question` -- recording how sure the model
+was that it read each decision correctly. Any extra field is preserved as
+its own column when the file is read, and written back out unchanged:
+
+```{r}
+drafted <- example_football_grp20()
+colnames(drafted)
+```
+
+# Mapping a schema to data
+
+The four core fields describe an analysis, but generating code that runs
+against a real dataset also requires knowing which variables each step
+consumes and produces. Two optional fields record that:
+
+```yaml
+  - id: step-scaling
+    objective: variables are in different scales
+    decision: apply min-max scaling to each variable
+    rationale: to put them on the same scale for combination
+    inputs: [life_exp, exp_sch, avg_sch, gni]
+    outputs: [scaled]
+```
+
+* **`inputs`** name the variables the step reads.
+* **`outputs`** name the variables it creates. An output need not exist in
+  the dataset yet -- the schema describes the analysis before its code
+  exists.
+
+Supply a dataset and `tines` checks the mapping. It walks the steps in
+order, starting from the dataset's own columns, and requires every step's
+`inputs` to be available by that point -- either a column of the original
+data, or an output created by an earlier step:
+
+```{r}
+hdi_data <- data.frame(
+  life_exp = c(72, 81, 66),
+  exp_sch = c(13, 16, 10),
+  gni = c(9000, 42000, 3200)
+)
+
+mapped <- build_schema(name = "HDI", data = hdi_data) |>
+  add_step(
+    id = "step-scaling",
+    objective = "variables are in different scales",
+    decision = "apply min-max scaling to each variable",
+    inputs = c("life_exp", "exp_sch", "gni"),
+    outputs = "scaled"
+  ) |>
+  add_step(
+    id = "step-combine",
+    objective = "combine the dimensions into a single index",
+    decision = "use the geometric mean",
+    inputs = "scaled",
+    outputs = "hdi"
+  )
+```
+
+`step-combine` reads `scaled`, which is not a column of `hdi_data` but is
+produced by `step-scaling`, so the mapping is valid.
+
+Swapping in a dataset that breaks the mapping is refused outright, naming
+the step and the variables it can no longer reach:
+
+```{r error = TRUE}
+renamed <- data.frame(
+  life_exp = c(70, 80, 60),
+  exp_sch = c(12, 15, 9),
+  income = c(8000, 40000, 3000) # `gni` renamed
+)
+update_data(mapped, renamed)
+```
+
+Three functions maintain the mapping. `update_data()` attaches a different
+dataset and re-validates the whole schema against it, as above.
+`update_io()` edits the mapping for a single step; it warns rather than
+refuses when a variable is unreachable, so you can fix several steps in
+sequence without the intermediate states blocking you. `gen_io()` fills in
+the mapping for every step at once by asking an LLM to match the steps
+against the columns of a dataset.
+
+# From one schema to many
+
+A schema describes one analysis. Pairing it with an **alternatives file** --
+which records different ways of carrying out one or more of its steps --
+and passing both to `expand_tines()` produces a `multiverse`, one schema per
+branch the alternatives file describes, alongside the original:
+
+```{r}
+alts <- read_alternatives(system.file("hdi-alt-single.yml", package = "tines"))
+expand_tines(schema, alts)
+```
+
+See `vignette("alternatives")` for the anatomy of an alternatives file and
+the two ways it can be expanded.

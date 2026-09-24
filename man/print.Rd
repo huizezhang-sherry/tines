@@ -5,7 +5,7 @@
 \alias{plot.multiverse}
 \alias{draw_tines}
 \alias{inspect_dot}
-\title{Visualize and inspect `tines` objects}
+\title{Visualize and inspect tines objects}
 \usage{
 \method{plot}{schema}(x, ...)
 
@@ -21,37 +21,37 @@ inspect_dot(
 )
 }
 \arguments{
-\item{x}{A `schema` or `multiverse` object.}
+\item{x}{A \code{schema} or \code{multiverse} object.}
 
 \item{...}{Additional arguments passed to methods or to
-`DiagrammeR::grViz()`.}
+\code{DiagrammeR::grViz()}.}
 
-\item{index}{An integer. For a `multiverse`, which path index to draw.
+\item{index}{An integer. For a \code{multiverse}, which path index to draw.
 Defaults to 1.}
 
 \item{data}{Optional. A data frame or path to a data file. If schema is
 unmapped, this will be used to automatically map variables for
 visualization.}
 
-\item{schema}{A `schema` object to convert to DOT code for inspection.}
+\item{schema}{A \code{schema} object to convert to DOT code for inspection.}
 
 \item{indent}{Integer. The number of spaces to use for each indentation
-level in `inspect_dot()`. Defaults to 2.}
+level in \code{\link[=inspect_dot]{inspect_dot()}}. Defaults to 2.}
 
-\item{keep_attr_blocks_one_line}{Logical. If `TRUE`, attempts to keep
-square bracket `[]` attribute blocks on a single line.}
+\item{keep_attr_blocks_one_line}{Logical. If \code{TRUE}, attempts to keep
+square bracket \verb{[]} attribute blocks on a single line.}
 
-\item{trim_trailing_ws}{Logical. If `TRUE`, trims trailing whitespace from
+\item{trim_trailing_ws}{Logical. If \code{TRUE}, trims trailing whitespace from
 the final output.}
 }
 \value{
-`draw_tines()` and `plot()` return an `htmlwidget` object produced by
-`DiagrammeR::grViz()`. `inspect_dot()` invisibly returns `NULL` and prints
+\code{\link[=draw_tines]{draw_tines()}} and \code{plot()} return an \code{htmlwidget} object produced by
+\code{DiagrammeR::grViz()}. \code{\link[=inspect_dot]{inspect_dot()}} invisibly returns \code{NULL} and prints
 to the console.
 }
 \description{
-Functions to plot the tines object with Graphviz diagrams. `draw_tines()`
-and the `plot()` methods render the interactive widget. `inspect_dot()`
+Functions to plot the tines object with Graphviz diagrams. \code{\link[=draw_tines]{draw_tines()}}
+and the \code{plot()} methods render the interactive widget. \code{\link[=inspect_dot]{inspect_dot()}}
 formats and prints raw DOT strings to the console for debugging.
 }
 \examples{

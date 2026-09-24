@@ -5,9 +5,6 @@
 \alias{example_multiverse}
 \alias{example_football}
 \alias{example_alternatives}
-\alias{example_spei}
-\alias{example_spi}
-\alias{example_rdi}
 \alias{example_football_grp20}
 \alias{example_football_grp5}
 \title{Generate examples}
@@ -20,29 +17,25 @@ example_football()
 
 example_alternatives(case = c("football", "hdi"))
 
-example_spei()
-
-example_spi()
-
-example_rdi()
-
 example_football_grp20()
 
 example_football_grp5()
 }
 \arguments{
-\item{case}{A character string specifying which example alternatives to generate. Options are "football" or "hdi". Only applies to `example_alternatives()`.}
+\item{case}{A character string specifying which example alternatives to generate. Options are "football" or "hdi". Only applies to \code{\link[=example_alternatives]{example_alternatives()}}.}
 }
 \value{
-* For `example_schema()`: An object of class `schema`.
-* For `example_multiverse()`: An object of class `multiverse`.
-* For `example_football()`: An object of class `schema`
-* For `example_alternatives()`: An object of class `alternatives`
+\itemize{
+\item For \code{\link[=example_schema]{example_schema()}}: An object of class \code{schema}.
+\item For \code{\link[=example_multiverse]{example_multiverse()}}: An object of class \code{multiverse}.
+\item For \code{\link[=example_football]{example_football()}}: An object of class \code{schema}
+\item For \code{\link[=example_alternatives]{example_alternatives()}}: An object of class \code{alternatives}
+}
 }
 \description{
-These functions generate pre-populated `schema` and `multiverse` objects.
+These functions generate pre-populated schema and multiverse objects.
 They are primarily designed for testing, running examples in the documentation,
-and helping new users explore the `tines` package without having to build a
+and helping new users explore the tines package without having to build a
 garden of forking paths from scratch.
 }
 \examples{

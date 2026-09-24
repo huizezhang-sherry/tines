@@ -10,19 +10,19 @@ write_tines(x, path = NULL, ...)
 read_tines(path, data = NULL, ...)
 }
 \arguments{
-\item{x}{An object of class `schema` or `multiverse`.}
+\item{x}{An object of class \code{schema} or \code{multiverse}.}
 
 \item{path}{A single string specifying the output file path. Optional.}
 
-\item{...}{Arguments passed on to `yaml::write_yaml()` or
-`yaml::read_yaml()`.}
+\item{...}{Arguments passed on to \code{yaml::write_yaml()} or
+\code{yaml::read_yaml()}.}
 
 \item{data}{Optional data frame or path to data file for validation (for
-`read_tines()` only).}
+\code{\link[=read_tines]{read_tines()}} only).}
 }
 \value{
-`write_tines()` returns `NULL` and `read_tines()` returns an object of
-class `schema` or `multiverse`.
+\code{\link[=write_tines]{write_tines()}} returns \code{NULL} and \code{\link[=read_tines]{read_tines()}} returns an object of
+class \code{schema} or \code{multiverse}.
 }
 \description{
 Read and write tines schemas and multiverses to YAML files

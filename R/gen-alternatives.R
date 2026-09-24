@@ -1,11 +1,11 @@
 #' Generate analytical alternatives via LLM
 #'
 #' @description
-#' `gen_alternatives()` takes an existing `schema` or `multiverse` and asks a
+#' [gen_alternatives()] takes an existing schema or multiverse and asks a
 #' Large Language Model to suggest methodologically valid, alternative
 #' approaches for a specific step in your analysis pipeline.
 #'
-#' `prompt_alternatives()` is a helper function that constructs the exact
+#' [prompt_alternatives()] is a helper function that constructs the exact
 #' instruction set sent to the LLM.
 #'
 #' @details
@@ -16,7 +16,7 @@
 #' for this to work.
 #'
 #' @param x A `schema` or `multiverse` object, or a character string specifying
-#'   the file path to a valid `tines` YML file.
+#'   the file path to a valid tines YAML file.
 #' @param step A character string. The exact `id` of the step you want
 #'   the LLM to generate alternatives for.
 #' @param n An integer. The number of distinct alternatives you want the LLM
@@ -39,9 +39,9 @@
 #' @param ... Additional arguments passed to methods or to `ellmer::chat()`.
 #'
 #' @return
-#' * `gen_alternatives()` invisibly returns `NULL` and writes the output to
+#' * [gen_alternatives()] invisibly returns `NULL` and writes the output to
 #'   `file_path`.
-#' * `prompt_alternatives()` returns a formatted character string containing
+#' * [prompt_alternatives()] returns a formatted character string containing
 #'   the LLM prompt.
 #'
 #' @export

@@ -138,5 +138,41 @@ test_that("print methods remain stable (snapshot)", {
 
 test_that("tbl_sum.schema reflects the name attribute", {
   expect_equal(pillar::tbl_sum(build_schema(name = "X")), c("A schema" = "X"))
-  expect_equal(pillar::tbl_sum(build_schema()), c("A schema" = "0 x 7"))
+  expect_equal(pillar::tbl_sum(build_schema()), c("A schema" = "0 x 6"))
+})
+
+test_that("add_step() works on schemas whose columns differ from the canonical set", {
+  # A schema read from a YAML file carries only the fields that file
+  # declared, so its columns need not match the ones add_step() builds.
+  # This used to fail outright under rbind().
+  from_file <- read_tines(system.file("hdi.yml", package = "tines"))
+  expect_false("source_schema" %in% names(from_file))
+
+  added <- add_step(
+    from_file,
+    id = "step-new", objective = "o", decision = "d", rationale = "r"
+  )
+  expect_s3_class(added, "schema")
+  expect_equal(nrow(added), nrow(from_file) + 1)
+  expect_equal(attr(added, "name"), attr(from_file, "name"))
+
+  # An all-NA source_schema column is not introduced where it wasn't used
+  expect_false("source_schema" %in% names(added))
+
+  # ...but a schema composed through the internal import_step() does carry
+  # the column, and add_step() lines up against it instead of widening it
+  composed <- tines:::import_step(
+    build_schema(), source_schema = example_schema(),
+    source_schema_name = "other_schema", id = "step-scaling"
+  )
+  expect_equal(composed$source_schema, "other_schema")
+  grown_composed <- add_step(composed, id = "extra", objective = "o", decision = "d")
+  expect_equal(grown_composed$source_schema, c("other_schema", NA))
+
+  # Extra fields carried by LLM-drafted schemas survive, NA for the new step
+  drafted <- example_football_grp20()
+  expect_true("confidence" %in% names(drafted))
+  grown <- add_step(drafted, id = "step-new", objective = "o", decision = "d")
+  expect_equal(nrow(grown), nrow(drafted) + 1)
+  expect_true(is.na(grown$confidence[nrow(grown)]))
 })

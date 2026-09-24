@@ -10,18 +10,18 @@ write_alternatives(x, file, ...)
 read_alternatives(file, ...)
 }
 \arguments{
-\item{x}{An `alternatives` object.}
+\item{x}{An \code{alternatives} object.}
 
 \item{file}{A character string specifying the file path.}
 
-\item{...}{Additional arguments passed to `yaml::read_yaml()`.}
+\item{...}{Additional arguments passed to \code{yaml::read_yaml()}.}
 }
 \value{
-`write_alternatives()` invisibly returns `file`, the path it
-  wrote to; it is called for its side effect of writing the YAML file.
+\code{\link[=write_alternatives]{write_alternatives()}} invisibly returns \code{file}, the path it
+wrote to; it is called for its side effect of writing the YAML file.
 
-  `read_alternatives()` returns an object of class `"alternatives"`,
-  the same structure produced by [new_alternatives()].
+\code{\link[=read_alternatives]{read_alternatives()}} returns an object of class \code{"alternatives"},
+the same structure produced by \code{\link[=new_alternatives]{new_alternatives()}}.
 }
 \description{
 Read and write an alternatives object from/to a YML file

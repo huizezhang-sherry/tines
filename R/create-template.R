@@ -1,7 +1,7 @@
 #' Create templates YAML files
 #'
-#' Generates a starter YAML file for a `schema` to help you begin building
-#' your garden of forking paths. There is no template for a `multiverse`:
+#' Generates a starter YAML file for a schema to help you begin building
+#' your garden of forking paths. There is no template for a multiverse:
 #' a multiverse is always produced either by combining schema objects with
 #' [build_multiverse()], or by expanding a schema (or another multiverse)
 #' with an alternatives file via [expand_tines()] -- never hand-authored
@@ -13,15 +13,15 @@
 #' @param x A `schema` or `multiverse` object, or a character string
 #'   specifying the file path to a valid schema YAML file.
 #' @param id A character string specifying the `id` of the step in the
-#'   schema. For `draft_alternatives()`, a vector naming one or more steps --
+#'   schema. For [draft_alternatives()], a vector naming one or more steps --
 #'   one node is drafted per step.
 #' @param overwrite Logical. If TRUE, will overwrite an existing file at the
 #'   specified file_path. Defaults to FALSE.
-#' @param branch For `draft_alternatives()` only. Required: either `"multi"`
+#' @param branch For [draft_alternatives()] only. Required: either `"multi"`
 #'   (drafts 2 placeholder alternatives per node) or `"single"` (drafts
-#'   exactly 1 per node). See the [alternative()] vignette for what the two
+#'   exactly 1 per node). See `vignette("alternatives")` for what the two
 #'   modes mean when expanded.
-#' @return `draft_tines()` and `draft_alternatives()` both invisibly return
+#' @return [draft_tines()] and [draft_alternatives()] both invisibly return
 #'   the path they wrote to; each is called primarily for its side effect
 #'   of writing a template YAML file to disk.
 #' @export

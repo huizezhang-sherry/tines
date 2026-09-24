@@ -20,7 +20,7 @@
 \alias{c.multiverse}
 \alias{as.data.frame.schema}
 \alias{print.schema}
-\title{Construct `schema` and `multiverse` objects}
+\title{Construct schema and multiverse objects}
 \usage{
 new_schema(name = NULL, nodes = tibble::tibble())
 
@@ -38,7 +38,6 @@ add_step(
   rationale = "",
   inputs = NULL,
   outputs = NULL,
-  source_schema = NA,
   ...
 )
 
@@ -73,19 +72,19 @@ as_multiverse(x, ...)
 \arguments{
 \item{name}{An optional name for the schema.}
 
-\item{nodes}{A data frame (typically a `tibble`) defining the steps of the
+\item{nodes}{A data frame (typically a \code{tibble}) defining the steps of the
 schema.}
 
 \item{data}{Optional data frame or path to data file for validation}
 
-\item{...}{One or more `schema` objects to be included in the multiverse.}
+\item{...}{One or more \code{schema} objects to be included in the multiverse.}
 
-\item{object}{A `schema` object.}
+\item{object}{A \code{schema} object.}
 
-\item{id, objective, decision, rationale, inputs, outputs, source_schema}{character
-strings to write a step}
+\item{id, objective, decision, rationale, inputs, outputs}{character strings
+to write a step}
 
-\item{x}{An object to be coerced into a `schema` or `multiverse`.}
+\item{x}{An object to be coerced into a \code{schema} or \code{multiverse}.}
 
 \item{row.names}{NULL or a character vector giving the row names for the
 data frame.}
@@ -95,17 +94,19 @@ names is optional.}
 
 \item{width}{Width for printing output.}
 
-\item{schema, schemas}{A single list containing objects of class `schema`.
+\item{schema, schemas}{A single list containing objects of class \code{schema}.
 Defaults to an empty list.}
 }
 \value{
-* `build_schema()` and `new_schema()` return an object of class `schema`.
-* `build_multiverse()` and `new_multiverse()` return an object of class
-  `c("multiverse", "list")`.
+\itemize{
+\item \code{\link[=build_schema]{build_schema()}} and \code{\link[=new_schema]{new_schema()}} return an object of class \code{schema}.
+\item \code{\link[=build_multiverse]{build_multiverse()}} and \code{\link[=new_multiverse]{new_multiverse()}} return an object of class
+\code{c("multiverse", "list")}.
+}
 }
 \description{
-Construct individual analytical paths (`schema`) and bundle them into a
-garden of forking paths (`multiverse`).
+Construct individual analytical paths (\code{schema}) and bundle them into a
+garden of forking paths (\code{multiverse}).
 }
 \examples{
 schema <- build_schema("HDI Example") |>

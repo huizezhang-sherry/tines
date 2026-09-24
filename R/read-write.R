@@ -3,12 +3,12 @@
 #' @param x An object of class `schema` or `multiverse`.
 #' @param path A single string specifying the output file path. Optional.
 #' @param data Optional data frame or path to data file for validation (for
-#'   `read_tines()` only).
+#'   [read_tines()] only).
 #' @param ... Arguments passed on to `yaml::write_yaml()` or
 #'   `yaml::read_yaml()`.
 #'
 #' @returns
-#' `write_tines()` returns `NULL` and `read_tines()` returns an object of
+#' [write_tines()] returns `NULL` and [read_tines()] returns an object of
 #' class `schema` or `multiverse`.
 #'
 #' @export
@@ -74,6 +74,12 @@ schema_to_yaml_list <- function(x) {
     # Ensure inputs and outputs are proper lists
     if (!is.null(node$inputs)) node$inputs <- normalize_io_field(node$inputs)
     if (!is.null(node$outputs)) node$outputs <- normalize_io_field(node$outputs)
+    # `source_schema` is provenance for steps pulled in by import_step(); an
+    # unset one says nothing, so it is omitted rather than written out as a
+    # typed null (`source_schema: .na.character`) on every step.
+    if (!is.null(node$source_schema) && is.na(node$source_schema)) {
+      node$source_schema <- NULL
+    }
     node
   })
 

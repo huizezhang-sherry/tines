@@ -19,16 +19,16 @@
 #'   [update_io()] by providing the new dataset using the `data` argument.
 #'
 #' @param schema A `schema` object
-#' @param data A data frame or path to a data file. For `gen_io()` and
-#'   `update_data()`, this is required. For `update_io()`, this is optional -
+#' @param data A data frame or path to a data file. For [gen_io()] and
+#'   [update_data()], this is required. For [update_io()], this is optional -
 #'   if provided, validates the updated inputs/outputs against this dataset
 #'   (without attaching it).
 #' @param id Character string identifying which step to update (for
-#'   `update_io()`)
+#'   [update_io()])
 #' @param inputs Character vector of input variable names
 #' @param outputs Character vector of output variable names
 #' @param interactive Logical. If TRUE, prompts user for ambiguous mappings
-#' @param model The LLM to use for `gen_io()`, as a string in
+#' @param model The LLM to use for [gen_io()], as a string in
 #'   `"provider/model"` form (e.g. `"anthropic/claude-opus-4-5"`,
 #'   `"openai/gpt-5"`, `"google_gemini/gemini-2.5-flash"`), passed to
 #'   `ellmer::chat()`. See [ellmer::chat()] for the full list of supported

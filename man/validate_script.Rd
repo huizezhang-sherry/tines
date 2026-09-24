@@ -45,11 +45,11 @@ dangerous file system commands before execution.}
 }
 \value{
 Invisibly returns a list with:
-  \describe{
-    \item{success}{Logical. Whether the script ran without error.}
-    \item{file}{Path to the (possibly fixed) script.}
-    \item{chat_history}{The \code{ellmer} chat object with full history.}
-  }
+\describe{
+\item{success}{Logical. Whether the script ran without error.}
+\item{file}{Path to the (possibly fixed) script.}
+\item{chat_history}{The \code{ellmer} chat object with full history.}
+}
 }
 \description{
 Executes an R script in an isolated sandbox. If execution fails, the error

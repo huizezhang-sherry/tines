@@ -1,8 +1,8 @@
-#' Visualize and inspect `tines` objects
+#' Visualize and inspect tines objects
 #'
 #' @description
-#' Functions to plot the tines object with Graphviz diagrams. `draw_tines()`
-#' and the `plot()` methods render the interactive widget. `inspect_dot()`
+#' Functions to plot the tines object with Graphviz diagrams. [draw_tines()]
+#' and the `plot()` methods render the interactive widget. [inspect_dot()]
 #' formats and prints raw DOT strings to the console for debugging.
 #'
 #' @param x A `schema` or `multiverse` object.
@@ -13,7 +13,7 @@
 #'   visualization.
 #' @param schema A `schema` object to convert to DOT code for inspection.
 #' @param indent Integer. The number of spaces to use for each indentation
-#'   level in `inspect_dot()`. Defaults to 2.
+#'   level in [inspect_dot()]. Defaults to 2.
 #' @param keep_attr_blocks_one_line Logical. If `TRUE`, attempts to keep
 #'   square bracket `[]` attribute blocks on a single line.
 #' @param trim_trailing_ws Logical. If `TRUE`, trims trailing whitespace from
@@ -22,8 +22,8 @@
 #'   `DiagrammeR::grViz()`.
 #'
 #' @return
-#' `draw_tines()` and `plot()` return an `htmlwidget` object produced by
-#' `DiagrammeR::grViz()`. `inspect_dot()` invisibly returns `NULL` and prints
+#' [draw_tines()] and `plot()` return an `htmlwidget` object produced by
+#' `DiagrammeR::grViz()`. [inspect_dot()] invisibly returns `NULL` and prints
 #' to the console.
 #'
 #' @export
@@ -229,3 +229,40 @@ inspect_dot <- function(schema,
 
 
 globalVariables("type")
+
+
+# Edges for the DOT graph: one runs from the step that produced a variable to
+# each later step that consumes it. Called only by tines2dotspec().
+generate_edges <- function(schema) {
+  edges <- data.frame(
+    from = character(), to = character(),
+    stringsAsFactors = FALSE
+  )
+  var_sources <- list()
+
+  for (i in seq_len(nrow(schema))) {
+    current_id <- schema$id[i]
+    current_inputs <- unlist(schema$inputs[[i]])
+    current_inputs <- current_inputs[!is.na(current_inputs)]
+
+    if (length(current_inputs) > 0) {
+      for (inp in current_inputs) {
+        if (inp %in% names(var_sources)) {
+          edges <- dplyr::bind_rows(edges, data.frame(
+            from = var_sources[[inp]], to = current_id,
+            stringsAsFactors = FALSE
+          ))
+        }
+      }
+    }
+
+    current_outputs <- unlist(schema$outputs[[i]])
+    current_outputs <- current_outputs[!is.na(current_outputs)]
+    if (length(current_outputs) > 0) {
+      for (outp in current_outputs) var_sources[[outp]] <- current_id
+    }
+  }
+
+  if (nrow(edges) > 0) edges <- dplyr::distinct(edges)
+  edges
+}

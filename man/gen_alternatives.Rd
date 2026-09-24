@@ -42,61 +42,63 @@ prompt_alternatives(
 )
 }
 \arguments{
-\item{x}{A `schema` or `multiverse` object, or a character string specifying
-the file path to a valid `tines` YML file.}
+\item{x}{A \code{schema} or \code{multiverse} object, or a character string specifying
+the file path to a valid tines YAML file.}
 
-\item{step}{A character string. The exact `id` of the step you want
+\item{step}{A character string. The exact \code{id} of the step you want
 the LLM to generate alternatives for.}
 
 \item{n}{An integer. The number of distinct alternatives you want the LLM
-to generate. Defaults to `3`.}
+to generate. Defaults to \code{3}.}
 
 \item{data}{Optional. A data frame or path to a data file. If provided,
 the LLM can suggest alternatives that use different variables from the
 dataset.}
 
 \item{model}{The LLM to use for generating alternatives, as a string in
-`"provider/model"` form (e.g. `"anthropic/claude-opus-4-5"`,
-`"openai/gpt-5"`, `"google_gemini/gemini-2.5-flash"`), passed to
-`ellmer::chat()`. See [ellmer::chat()] for the full list of supported
-providers. Defaults to `"anthropic/claude-opus-4-5"`.}
+\code{"provider/model"} form (e.g. \code{"anthropic/claude-opus-4-5"},
+\code{"openai/gpt-5"}, \code{"google_gemini/gemini-2.5-flash"}), passed to
+\code{ellmer::chat()}. See \code{\link[ellmer:chat]{ellmer::chat()}} for the full list of supported
+providers. Defaults to \code{"anthropic/claude-opus-4-5"}.}
 
 \item{file_path}{A character string specifying where to save the generated
-YML output. If `NULL` (the default), `capture.output()` will return the
+YML output. If \code{NULL} (the default), \code{capture.output()} will return the
 result as a character vector.}
 
-\item{...}{Additional arguments passed to methods or to `ellmer::chat()`.}
+\item{...}{Additional arguments passed to methods or to \code{ellmer::chat()}.}
 
 \item{schema}{A schema object to include in the prompt.}
 
 \item{data_dict}{Optional data dictionary for context (data frame with
 columns or character vector)}
 
-\item{print}{If `TRUE`, prints the prompt to console instead of returning
+\item{print}{If \code{TRUE}, prints the prompt to console instead of returning
 it.}
 
-\item{width}{If `print = TRUE`, the width to wrap the printed prompt
+\item{width}{If \code{print = TRUE}, the width to wrap the printed prompt
 (default 70).}
 }
 \value{
-* `gen_alternatives()` invisibly returns `NULL` and writes the output to
-  `file_path`.
-* `prompt_alternatives()` returns a formatted character string containing
-  the LLM prompt.
+\itemize{
+\item \code{\link[=gen_alternatives]{gen_alternatives()}} invisibly returns \code{NULL} and writes the output to
+\code{file_path}.
+\item \code{\link[=prompt_alternatives]{prompt_alternatives()}} returns a formatted character string containing
+the LLM prompt.
+}
 }
 \description{
-`gen_alternatives()` takes an existing `schema` or `multiverse` and asks a
+\code{\link[=gen_alternatives]{gen_alternatives()}} takes an existing schema or multiverse and asks a
 Large Language Model to suggest methodologically valid, alternative
 approaches for a specific step in your analysis pipeline.
 
-`prompt_alternatives()` is a helper function that constructs the exact
+\code{\link[=prompt_alternatives]{prompt_alternatives()}} is a helper function that constructs the exact
 instruction set sent to the LLM.
 }
 \details{
-**Important:** This function relies on the `ellmer` package to communicate
+\strong{Important:} This function relies on the \code{ellmer} package to communicate
 with an LLM provider. You must have your API credentials configured
 correctly in your R environment (e.g., via an environment variable such as
-`ANTHROPIC_API_KEY` or `OPENAI_API_KEY`, depending on the `model` chosen)
+\code{ANTHROPIC_API_KEY} or \code{OPENAI_API_KEY}, depending on the \code{model} chosen)
 for this to work.
 }
 \examples{

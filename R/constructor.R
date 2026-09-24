@@ -1,4 +1,4 @@
-#' Construct `schema` and `multiverse` objects
+#' Construct schema and multiverse objects
 #'
 #' Construct individual analytical paths (`schema`) and bundle them into a
 #' garden of forking paths (`multiverse`).
@@ -10,8 +10,8 @@
 #' @param schema,schemas A single list containing objects of class `schema`.
 #'   Defaults to an empty list.
 #' @param object A `schema` object.
-#' @param id,objective,decision,rationale,inputs,outputs,source_schema character
-#'   strings to write a step
+#' @param id,objective,decision,rationale,inputs,outputs character strings
+#'   to write a step
 #' @param x An object to be coerced into a `schema` or `multiverse`.
 #' @param row.names NULL or a character vector giving the row names for the
 #'   data frame.
@@ -19,8 +19,8 @@
 #'   names is optional.
 #' @param width Width for printing output.
 #' @return
-#' * `build_schema()` and `new_schema()` return an object of class `schema`.
-#' * `build_multiverse()` and `new_multiverse()` return an object of class
+#' * [build_schema()] and [new_schema()] return an object of class `schema`.
+#' * [build_multiverse()] and [new_multiverse()] return an object of class
 #'   `c("multiverse", "list")`.
 #'
 #' @rdname constructor
@@ -91,8 +91,7 @@ new_schema <- function(name = NULL, nodes = tibble::tibble()) {
 build_schema <- function(name = NULL, data = NULL) {
   nodes <- tibble::tibble(
     id = character(), objective = character(), decision = character(),
-    rationale = character(), inputs = list(), outputs = list(),
-    source_schema = character()
+    rationale = character(), inputs = list(), outputs = list()
   )
   schema <- new_schema(name = name, nodes = nodes)
 
@@ -172,8 +171,7 @@ build_multiverse <- function(...) {
 #' @rdname constructor
 #' @export
 add_step <- function(object, id, objective = "", decision = "",
-                     rationale = "", inputs = NULL, outputs = NULL,
-                     source_schema = NA, ...) {
+                     rationale = "", inputs = NULL, outputs = NULL, ...) {
   if (!inherits(object, "schema")) {
     cli::cli_abort("object must be of class {.cls schema}")
   }
@@ -185,14 +183,22 @@ add_step <- function(object, id, objective = "", decision = "",
 
   new_node <- tibble::tibble(
     id = id, objective = objective, decision = decision, rationale = rationale,
-    inputs = inputs_val, outputs = outputs_val, source_schema = source_schema
+    inputs = inputs_val, outputs = outputs_val
   )
 
-  # Preserve attributes before rbind
+  # A schema composed with the internal import_step() carries a
+  # `source_schema` provenance column; keep its shape so bind_rows() lines the
+  # new step up against it rather than widening every other row.
+  if ("source_schema" %in% names(object)) new_node$source_schema <- NA_character_
+
+  # Preserve attributes before binding (bind_rows drops the schema class)
   schema_name <- attr(object, "name", exact = TRUE)
   schema_data <- attr(object, "data", exact = TRUE)
 
-  object <- rbind(object, new_node)
+  # bind_rows() rather than rbind(): a schema read from a file carries only
+  # the fields its YAML declared, so its columns need not line up with the
+  # new step's. rbind() failed outright on any file-read schema.
+  object <- dplyr::bind_rows(object, new_node)
   class(object) <- c("schema", "tbl_df", "tbl", "data.frame")
 
   # Restore attributes

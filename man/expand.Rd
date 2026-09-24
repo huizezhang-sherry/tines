@@ -13,22 +13,22 @@ expand_tines(x, alternatives, ...)
 \method{expand_tines}{multiverse}(x, alternatives, ...)
 }
 \arguments{
-\item{x}{A `schema` object.}
+\item{x}{A \code{schema} object.}
 
-\item{alternatives}{an `alternatives` object or the path to an alternative
+\item{alternatives}{an \code{alternatives} object or the path to an alternative
 YAML}
 
 \item{...}{Additional arguments.}
 
-\item{include_original}{A logical. If `TRUE`, the original schema will be
-included as a branch in the resulting multiverse. Defaults to `TRUE`.}
+\item{include_original}{A logical. If \code{TRUE}, the original schema will be
+included as a branch in the resulting multiverse. Defaults to \code{TRUE}.}
 }
 \value{
-An object of class `"multiverse"`: a named list of `schema`
-  objects, one per branch produced from `alternatives` (plus, when
-  `include_original = TRUE`, the original schema/multiverse under the
-  name `"original"`). Each branch name is the `+`-joined ids of the
-  alternatives applied to reach it.
+An object of class \code{"multiverse"}: a named list of \code{schema}
+objects, one per branch produced from \code{alternatives} (plus, when
+\code{include_original = TRUE}, the original schema/multiverse under the
+name \code{"original"}). Each branch name is the \code{+}-joined ids of the
+alternatives applied to reach it.
 }
 \description{
 Expand a schema with an alternative YAML into a multiverse

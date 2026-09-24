@@ -19,50 +19,48 @@ update_data(schema, data)
 update_io(schema, id, inputs = NULL, outputs = NULL, data = NULL)
 }
 \arguments{
-\item{schema}{A `schema` object}
+\item{schema}{A \code{schema} object}
 
-\item{data}{A data frame or path to a data file. For `gen_io()` and
-`update_data()`, this is required. For `update_io()`, this is optional -
+\item{data}{A data frame or path to a data file. For \code{\link[=gen_io]{gen_io()}} and
+\code{\link[=update_data]{update_data()}}, this is required. For \code{\link[=update_io]{update_io()}}, this is optional -
 if provided, validates the updated inputs/outputs against this dataset
 (without attaching it).}
 
 \item{interactive}{Logical. If TRUE, prompts user for ambiguous mappings}
 
-\item{model}{The LLM to use for `gen_io()`, as a string in
-`"provider/model"` form (e.g. `"anthropic/claude-opus-4-5"`,
-`"openai/gpt-5"`, `"google_gemini/gemini-2.5-flash"`), passed to
-`ellmer::chat()`. See [ellmer::chat()] for the full list of supported
-providers. Defaults to `"google_gemini/gemini-2.5-flash"`.}
+\item{model}{The LLM to use for \code{\link[=gen_io]{gen_io()}}, as a string in
+\code{"provider/model"} form (e.g. \code{"anthropic/claude-opus-4-5"},
+\code{"openai/gpt-5"}, \code{"google_gemini/gemini-2.5-flash"}), passed to
+\code{ellmer::chat()}. See \code{\link[ellmer:chat]{ellmer::chat()}} for the full list of supported
+providers. Defaults to \code{"google_gemini/gemini-2.5-flash"}.}
 
 \item{force}{Logical. If TRUE, remaps even if already mapped}
 
 \item{id}{Character string identifying which step to update (for
-`update_io()`)}
+\code{\link[=update_io]{update_io()}})}
 
 \item{inputs}{Character vector of input variable names}
 
 \item{outputs}{Character vector of output variable names}
 }
 \value{
-A `schema` object with updated inputs/outputs and data reference
+A \code{schema} object with updated inputs/outputs and data reference
 }
 \description{
 These functions manage the relationship between a schema and its dataset.
 Here are the four main scenarios they cover:
-
-* Specify the dataset when creating the schema through [build_schema()] and
-  the inputs/outputs for each step as you add them with [add_step()].
-
-* Modify the inputs/outputs for a specific step later with [update_io()].
-  The function will validate the updated mapping against the attached
-  dataset (if any).
-
-* Provide a new dataset to an existing schema with [update_data()]. The
-  function will validate the entire schema (inputs/outputs) against the new
-  dataset.
-
-* Combine the update of data and inputs/outputs in one step with
-  [update_io()] by providing the new dataset using the `data` argument.
+\itemize{
+\item Specify the dataset when creating the schema through \code{\link[=build_schema]{build_schema()}} and
+the inputs/outputs for each step as you add them with \code{\link[=add_step]{add_step()}}.
+\item Modify the inputs/outputs for a specific step later with \code{\link[=update_io]{update_io()}}.
+The function will validate the updated mapping against the attached
+dataset (if any).
+\item Provide a new dataset to an existing schema with \code{\link[=update_data]{update_data()}}. The
+function will validate the entire schema (inputs/outputs) against the new
+dataset.
+\item Combine the update of data and inputs/outputs in one step with
+\code{\link[=update_io]{update_io()}} by providing the new dataset using the \code{data} argument.
+}
 }
 \examples{
 # Create example datasets
