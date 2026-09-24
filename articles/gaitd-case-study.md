@@ -19,7 +19,7 @@ Yee et al.’s manuscript and supplementary material already state each
 analytical decision and its rationale – assembling a schema from it
 required no new analysis, only collecting those decisions into the
 `tines` schema format. We drafted a template with
-[`draft_tines()`](../reference/template.md) and filled it in by hand.
+[`draft_tines()`](../reference/draft_tines.md) and filled it in by hand.
 
 Click to read the filled schema.
 
@@ -261,8 +261,8 @@ uptake – and correspondingly drop to an intercept-only model, matching
 how the authors computed AIC for this comparison. That is one
 coordinated change spanning three steps, so it belongs in a
 `branch: single` alternative file. Again, you can draft a template with
-[`draft_alternatives()`](../reference/template.md) and fill it in by
-hand.
+[`draft_alternatives()`](../reference/draft_alternatives.md) and fill it
+in by hand.
 
 Click to view the alternative YAML file.
 

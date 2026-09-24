@@ -10,7 +10,8 @@
 <url><loc>/authors.html</loc></url>
 <url><loc>/index.html</loc></url>
 <url><loc>/reference/alternatives.html</loc></url>
-<url><loc>/reference/constructor.html</loc></url>
+<url><loc>/reference/draft_alternatives.html</loc></url>
+<url><loc>/reference/draft_tines.html</loc></url>
 <url><loc>/reference/example_tines.html</loc></url>
 <url><loc>/reference/expand.html</loc></url>
 <url><loc>/reference/extract_schema.html</loc></url>
@@ -19,10 +20,11 @@
 <url><loc>/reference/get.html</loc></url>
 <url><loc>/reference/grp.html</loc></url>
 <url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/multiverse-constructor.html</loc></url>
 <url><loc>/reference/print.html</loc></url>
 <url><loc>/reference/read-write-alternatives.html</loc></url>
 <url><loc>/reference/read-write.html</loc></url>
-<url><loc>/reference/template.html</loc></url>
+<url><loc>/reference/schema-constructor.html</loc></url>
 <url><loc>/reference/tines-package.html</loc></url>
 <url><loc>/reference/update-io.html</loc></url>
 <url><loc>/reference/validate_script.html</loc></url>

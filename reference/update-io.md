@@ -4,8 +4,8 @@ These functions manage the relationship between a schema and its
 dataset. Here are the four main scenarios they cover:
 
 - Specify the dataset when creating the schema through
-  [`build_schema()`](constructor.md) and the inputs/outputs for each
-  step as you add them with [`add_step()`](constructor.md).
+  [`build_schema()`](schema-constructor.md) and the inputs/outputs for
+  each step as you add them with [`add_step()`](schema-constructor.md).
 
 - Modify the inputs/outputs for a specific step later with
   `update_io()`. The function will validate the updated mapping against

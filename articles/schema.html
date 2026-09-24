@@ -115,7 +115,7 @@ done.</li>
 way. This is the field that lets a reader agree or disagree with a
 choice, rather than only observe it.</li>
 </ul>
-<p>You can initialize the template above via <code><a href="../reference/template.html">draft_tines()</a></code>,
+<p>You can initialize the template above via <code><a href="../reference/draft_tines.html">draft_tines()</a></code>,
 and fill in the steps by hand. Apart from that, there are four ways to
 create a schema:</p>
 <table class="table">
@@ -131,14 +131,14 @@ create a schema:</p>
 <tr class="odd">
 <td>nothing, and you would rather write YAML</td>
 <td>
-<code><a href="../reference/template.html">draft_tines()</a></code>, fill in the template, then
+<code><a href="../reference/draft_tines.html">draft_tines()</a></code>, fill in the template, then
 <code><a href="../reference/read-write.html">read_tines()</a></code>
 </td>
 </tr>
 <tr class="even">
 <td>nothing, and you would rather work in R</td>
 <td>
-<code><a href="../reference/constructor.html">build_schema()</a></code>, then one <code><a href="../reference/constructor.html">add_step()</a></code> per
+<code><a href="../reference/schema-constructor.html">build_schema()</a></code>, then one <code><a href="../reference/schema-constructor.html">add_step()</a></code> per
 decision</td>
 </tr>
 <tr class="odd">
@@ -168,12 +168,12 @@ creating a schema in each of the five ways.</p>
 <div class="section level3">
 <h3 id="from-a-template">From a template<a class="anchor" aria-label="anchor" href="#from-a-template"></a>
 </h3>
-<p><code><a href="../reference/template.html">draft_tines()</a></code> writes a skeleton with two placeholder
+<p><code><a href="../reference/draft_tines.html">draft_tines()</a></code> writes a skeleton with two placeholder
 steps, ready to fill in by hand:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">draft_path</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yml"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/template.html">draft_tines</a></span><span class="op">(</span>file_path <span class="op">=</span> <span class="va">draft_path</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Drafted <span style="color: #0000BB;">"schema"</span> template at <span style="color: #0000BB;">/tmp/Rtmpq71eJr/file1cbf58f71bc1.yml</span></span></span>
+<span><span class="fu"><a href="../reference/draft_tines.html">draft_tines</a></span><span class="op">(</span>file_path <span class="op">=</span> <span class="va">draft_path</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Drafted <span style="color: #0000BB;">"schema"</span> template at <span style="color: #0000BB;">/tmp/RtmpyA42Q2/file1d0e71a29969.yml</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Open this file to start defining your steps!</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">meta</span><span class="kw">:</span></span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> schema</span></span>
@@ -190,17 +190,17 @@ steps, ready to fill in by hand:</p>
 <div class="section level3">
 <h3 id="in-r">In R<a class="anchor" aria-label="anchor" href="#in-r"></a>
 </h3>
-<p><code><a href="../reference/constructor.html">build_schema()</a></code> starts an empty schema and
-<code><a href="../reference/constructor.html">add_step()</a></code> appends to it, one step per decision:</p>
+<p><code><a href="../reference/schema-constructor.html">build_schema()</a></code> starts an empty schema and
+<code><a href="../reference/schema-constructor.html">add_step()</a></code> appends to it, one step per decision:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">hdi</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/constructor.html">build_schema</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"HDI Example"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/constructor.html">add_step</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">hdi</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/schema-constructor.html">build_schema</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"HDI Example"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/schema-constructor.html">add_step</a></span><span class="op">(</span></span>
 <span>    id <span class="op">=</span> <span class="st">"step-scaling"</span>,</span>
 <span>    objective <span class="op">=</span> <span class="st">"variables are in different scales"</span>,</span>
 <span>    decision <span class="op">=</span> <span class="st">"apply min-max scaling to each variable"</span>,</span>
 <span>    rationale <span class="op">=</span> <span class="st">"to put them on the same scale for combination"</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/constructor.html">add_step</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../reference/schema-constructor.html">add_step</a></span><span class="op">(</span></span>
 <span>    id <span class="op">=</span> <span class="st">"step-combine"</span>,</span>
 <span>    objective <span class="op">=</span> <span class="st">"combine the three dimensions into a single index"</span>,</span>
 <span>    decision <span class="op">=</span> <span class="st">"use the geometric mean"</span>,</span>
@@ -216,7 +216,7 @@ steps, ready to fill in by hand:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_path</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yml"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/read-write.html">write_tines</a></span><span class="op">(</span><span class="va">hdi</span>, <span class="va">out_path</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> File saved: <span style="color: #0000BB;">/tmp/Rtmpq71eJr/file1cbf677a1740.yml</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> File saved: <span style="color: #0000BB;">/tmp/RtmpyA42Q2/file1d0e926a594.yml</span></span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">meta</span><span class="kw">:</span></span>
 <span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> schema</span></span>
 <span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="at">  </span><span class="fu">date</span><span class="kw">:</span><span class="at"> </span><span class="st">'2026-09-24'</span></span>
@@ -291,7 +291,7 @@ fields coerces directly:</p>
 <span>                <span class="st">"the relationship is assumed linear"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/constructor.html">as_schema</a></span><span class="op">(</span><span class="va">steps</span>, name <span class="op">=</span> <span class="st">"From a spreadsheet"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/schema-constructor.html">as_schema</a></span><span class="op">(</span><span class="va">steps</span>, name <span class="op">=</span> <span class="st">"From a spreadsheet"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A schema: From a spreadsheet</span></span></span>
 <span><span class="co">#&gt;   id         objective             decision              rationale              </span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  </span></span>
@@ -302,7 +302,7 @@ list-columns if you have them; otherwise add them later with
 <code><a href="../reference/update-io.html">update_io()</a></code>. A data frame missing any of the four required
 fields is refused, and says which:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/constructor.html">as_schema</a></span><span class="op">(</span><span class="va">steps</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"decision"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/schema-constructor.html">as_schema</a></span><span class="op">(</span><span class="va">steps</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"decision"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `as_schema()`:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Cannot coerce to a <span style="color: #0000BB;">&lt;schema&gt;</span>: columns <span style="color: #00BB00;">objective</span> and <span style="color: #00BB00;">rationale</span> are</span></span>
 <span><span class="co">#&gt;   missing.</span></span>
@@ -369,15 +369,15 @@ earlier step:</p>
 <span>  gni <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">9000</span>, <span class="fl">42000</span>, <span class="fl">3200</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">mapped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/constructor.html">build_schema</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"HDI"</span>, data <span class="op">=</span> <span class="va">hdi_data</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/constructor.html">add_step</a></span><span class="op">(</span></span>
+<span><span class="va">mapped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/schema-constructor.html">build_schema</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"HDI"</span>, data <span class="op">=</span> <span class="va">hdi_data</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/schema-constructor.html">add_step</a></span><span class="op">(</span></span>
 <span>    id <span class="op">=</span> <span class="st">"step-scaling"</span>,</span>
 <span>    objective <span class="op">=</span> <span class="st">"variables are in different scales"</span>,</span>
 <span>    decision <span class="op">=</span> <span class="st">"apply min-max scaling to each variable"</span>,</span>
 <span>    inputs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"life_exp"</span>, <span class="st">"exp_sch"</span>, <span class="st">"gni"</span><span class="op">)</span>,</span>
 <span>    outputs <span class="op">=</span> <span class="st">"scaled"</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/constructor.html">add_step</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../reference/schema-constructor.html">add_step</a></span><span class="op">(</span></span>
 <span>    id <span class="op">=</span> <span class="st">"step-combine"</span>,</span>
 <span>    objective <span class="op">=</span> <span class="st">"combine the dimensions into a single index"</span>,</span>
 <span>    decision <span class="op">=</span> <span class="st">"use the geometric mean"</span>,</span>

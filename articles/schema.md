@@ -47,13 +47,13 @@ Each step carries four fields:
   observe it.
 
 You can initialize the template above via
-[`draft_tines()`](../reference/template.md), and fill in the steps by
+[`draft_tines()`](../reference/draft_tines.md), and fill in the steps by
 hand. Apart from that, there are four ways to create a schema:
 
 | If you are starting from | Use |
 |----|----|
-| nothing, and you would rather write YAML | [`draft_tines()`](../reference/template.md), fill in the template, then [`read_tines()`](../reference/read-write.md) |
-| nothing, and you would rather work in R | [`build_schema()`](../reference/constructor.md), then one [`add_step()`](../reference/constructor.md) per decision |
+| nothing, and you would rather write YAML | [`draft_tines()`](../reference/draft_tines.md), fill in the template, then [`read_tines()`](../reference/read-write.md) |
+| nothing, and you would rather work in R | [`build_schema()`](../reference/schema-constructor.md), then one [`add_step()`](../reference/schema-constructor.md) per decision |
 | a schema file written earlier | `read_tines(path)` |
 | a table of decisions, say from a spreadsheet | `as_schema(df)` |
 | prose, such as a manuscript’s methods section | `extract_schema(text, data_dict)` |
@@ -70,14 +70,14 @@ examples of creating a schema in each of the five ways.
 
 ### From a template
 
-[`draft_tines()`](../reference/template.md) writes a skeleton with two
-placeholder steps, ready to fill in by hand:
+[`draft_tines()`](../reference/draft_tines.md) writes a skeleton with
+two placeholder steps, ready to fill in by hand:
 
 ``` r
 
 draft_path <- withr::local_tempfile(fileext = ".yml")
 draft_tines(file_path = draft_path)
-#> ✔ Drafted "schema" template at /tmp/Rtmpq71eJr/file1cbf58f71bc1.yml
+#> ✔ Drafted "schema" template at /tmp/RtmpyA42Q2/file1d0e71a29969.yml
 #> ℹ Open this file to start defining your steps!
 ```
 
@@ -97,9 +97,9 @@ nodes:
 
 ### In R
 
-[`build_schema()`](../reference/constructor.md) starts an empty schema
-and [`add_step()`](../reference/constructor.md) appends to it, one step
-per decision:
+[`build_schema()`](../reference/schema-constructor.md) starts an empty
+schema and [`add_step()`](../reference/schema-constructor.md) appends to
+it, one step per decision:
 
 ``` r
 
@@ -131,7 +131,7 @@ YAML:
 
 out_path <- withr::local_tempfile(fileext = ".yml")
 write_tines(hdi, out_path)
-#> ✔ File saved: /tmp/Rtmpq71eJr/file1cbf677a1740.yml
+#> ✔ File saved: /tmp/RtmpyA42Q2/file1d0e926a594.yml
 ```
 
 ``` yaml

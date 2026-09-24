@@ -130,16 +130,16 @@ independently.
 
 We can create this alternatives file in two ways:
 
-- use [`draft_alternatives()`](../reference/template.md) to create a
-  draft template and fill it in by hand, or
+- use [`draft_alternatives()`](../reference/draft_alternatives.md) to
+  create a draft template and fill it in by hand, or
 - create it programmatically in R using the
   [`node()`](../reference/alternatives.md),
   [`alternative()`](../reference/alternatives.md), and
   [`new_alternatives()`](../reference/alternatives.md) functions.
 
 **1. Draft a template with
-[`draft_alternatives()`](../reference/template.md) and fill it in by
-hand:**
+[`draft_alternatives()`](../reference/draft_alternatives.md) and fill it
+in by hand:**
 
 ``` r
 
@@ -150,7 +150,7 @@ draft_alternatives(
   branch = "single",
   file_path = draft_path_single
 )
-#> ✔ Created template at /tmp/RtmpP8aSoO/file1c123507dad3.yml
+#> ✔ Created template at /tmp/RtmpGHK30l/file1c6153227511.yml
 ```
 
 ``` yaml
@@ -211,7 +211,7 @@ alts_combo
 
 tmp_file_single <- withr::local_tempfile(fileext = ".yml")
 write_alternatives(alts_combo, tmp_file_single)
-#> ✔ Successfully wrote alternatives to /tmp/RtmpP8aSoO/file1c1215fac729.yml
+#> ✔ Successfully wrote alternatives to /tmp/RtmpGHK30l/file1c614bd6c443.yml
 ```
 
 ------------------------------------------------------------------------
@@ -279,8 +279,8 @@ nodes:
 
 We can create this alternatives file in two ways:
 
-- use [`draft_alternatives()`](../reference/template.md) to create a
-  draft template and fill it in by hand, or
+- use [`draft_alternatives()`](../reference/draft_alternatives.md) to
+  create a draft template and fill it in by hand, or
 - create it programmatically in R using the
   [`node()`](../reference/alternatives.md),
   [`alternative()`](../reference/alternatives.md), and
@@ -289,8 +289,8 @@ We can create this alternatives file in two ways:
   [`gen_alternatives()`](../reference/gen_alternatives.md).
 
 **1. Draft a template with
-[`draft_alternatives()`](../reference/template.md) and fill it in by
-hand:**
+[`draft_alternatives()`](../reference/draft_alternatives.md) and fill it
+in by hand:**
 
 ``` r
 
@@ -298,7 +298,7 @@ draft_path <- withr::local_tempfile(fileext = ".yml")
 draft_alternatives(
   schema, id = "step-combine", branch = "multi", file_path = draft_path
 )
-#> ✔ Created template at /tmp/RtmpP8aSoO/file1c1217f3fba0.yml
+#> ✔ Created template at /tmp/RtmpGHK30l/file1c61604b2bf3.yml
 ```
 
 ``` yaml
@@ -316,8 +316,8 @@ nodes:
         rationale: ""
 ```
 
-[`draft_alternatives()`](../reference/template.md) requires a `branch`
-and `id` argument. The draft template contians two placeholder
+[`draft_alternatives()`](../reference/draft_alternatives.md) requires a
+`branch` and `id` argument. The draft template contians two placeholder
 alternatives for one nodes. Users can edit the file to fill in the
 decision and rationale for each alternative, and add more alternatives
 or nodes as needed.
@@ -362,7 +362,7 @@ alts
 
 tmp_file <- withr::local_tempfile(fileext = ".yml")
 write_alternatives(alts, tmp_file)
-#> ✔ Successfully wrote alternatives to /tmp/RtmpP8aSoO/file1c12a931b1b.yml
+#> ✔ Successfully wrote alternatives to /tmp/RtmpGHK30l/file1c615130b91a.yml
 ```
 
 ``` yaml
@@ -536,10 +536,11 @@ schemas you already have:
 | a schema and an alternatives file   | `expand_tines(schema, alternatives)`  |
 | several schemas you want to compare | `as_multiverse(list(a = s1, b = s2))` |
 
-[`as_multiverse()`](../reference/constructor.md) takes a list, so you
-can use [`lapply()`](https://rdrr.io/r/base/lapply.html) to read in a
-set of schema once with [`read_tines()`](../reference/read-write.md).
-Branch names are optional and you can set them with
+[`as_multiverse()`](../reference/multiverse-constructor.md) takes a
+list, so you can use [`lapply()`](https://rdrr.io/r/base/lapply.html) to
+read in a set of schema once with
+[`read_tines()`](../reference/read-write.md). Branch names are optional
+and you can set them with
 [`setNames()`](https://rdrr.io/r/stats/setNames.html), when you want to
 index by name later:
 

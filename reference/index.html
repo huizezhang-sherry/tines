@@ -38,46 +38,9 @@
     </div>
 
     <div class="section level2">
-      <h2 id="create-a-tine-multiverse-object">Create a <code>tine</code>/ <code>multiverse</code> object<a class="anchor" aria-label="anchor" href="#create-a-tine-multiverse-object"></a></h2>
+      <h2 id="schema">Schema<a class="anchor" aria-label="anchor" href="#schema"></a></h2>
 
-
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="constructor.html">new_schema()</a></code> <code><a href="constructor.html">build_schema()</a></code> <code><a href="constructor.html">new_multiverse()</a></code> <code><a href="constructor.html">add_step()</a></code> <code><a href="constructor.html">as_schema()</a></code> <code><a href="constructor.html">as_multiverse()</a></code> <code><a href="constructor.html">as.data.frame(<i>&lt;schema&gt;</i>)</a></code> <code><a href="constructor.html">print(<i>&lt;schema&gt;</i>)</a></code>
-
-        </dt>
-        <dd>Construct schema and multiverse objects</dd>
-
-        <dt>
-
-          <code><a href="print.html">plot(<i>&lt;schema&gt;</i>)</a></code> <code><a href="print.html">plot(<i>&lt;multiverse&gt;</i>)</a></code> <code><a href="print.html">draw_tines()</a></code> <code><a href="print.html">inspect_dot()</a></code>
-
-        </dt>
-        <dd>Visualize and inspect tines objects</dd>
-
-        <dt>
-
-          <code><a href="alternatives.html">alternative()</a></code> <code><a href="alternatives.html">node()</a></code> <code><a href="alternatives.html">new_alternatives()</a></code>
-
-        </dt>
-        <dd>Construct alternatives objects</dd>
-
-        <dt>
-
-          <code><a href="update-io.html">gen_io()</a></code> <code><a href="update-io.html">update_data()</a></code> <code><a href="update-io.html">update_io()</a></code>
-
-        </dt>
-        <dd>Data mapping and validation for schemas</dd>
-      </dl></div><div class="section level2">
-      <h2 id="generate-analytical-alternatives-and-corresponding-code">Generate analytical alternatives and corresponding code<a class="anchor" aria-label="anchor" href="#generate-analytical-alternatives-and-corresponding-code"></a></h2>
-
-
+      <div class="section-desc"><p>A schema records one analysis as an ordered sequence of decisions.</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -85,6 +48,27 @@
 
 
       <dl><dt>
+
+          <code><a href="schema-constructor.html">new_schema()</a></code> <code><a href="schema-constructor.html">build_schema()</a></code> <code><a href="schema-constructor.html">add_step()</a></code> <code><a href="schema-constructor.html">as_schema()</a></code> <code><a href="schema-constructor.html">as.data.frame(<i>&lt;schema&gt;</i>)</a></code> <code><a href="schema-constructor.html">print(<i>&lt;schema&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Construct a schema</dd>
+
+        <dt>
+
+          <code><a href="read-write.html">write_tines()</a></code> <code><a href="read-write.html">read_tines()</a></code>
+
+        </dt>
+        <dd>Read and write tines schemas and multiverses to YAML files</dd>
+
+        <dt>
+
+          <code><a href="draft_tines.html">draft_tines()</a></code>
+
+        </dt>
+        <dd>Draft a schema template</dd>
+
+        <dt>
 
           <code><a href="extract_schema.html">extract_schema()</a></code> <code><a href="extract_schema.html">prompt_extract_schema()</a></code>
 
@@ -93,12 +77,74 @@
 
         <dt>
 
+          <code><a href="get.html">get_step_names()</a></code>
+
+        </dt>
+        <dd>Functions to access components of a tine object</dd>
+      </dl></div><div class="section level2">
+      <h2 id="mapping-a-schema-to-data">Mapping a schema to data<a class="anchor" aria-label="anchor" href="#mapping-a-schema-to-data"></a></h2>
+
+      <div class="section-desc"><p>Tie each step to the variables it reads and the ones it creates, so the generated code runs against a real dataset.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="update-io.html">gen_io()</a></code> <code><a href="update-io.html">update_data()</a></code> <code><a href="update-io.html">update_io()</a></code>
+
+        </dt>
+        <dd>Data mapping and validation for schemas</dd>
+      </dl></div><div class="section level2">
+      <h2 id="alternatives">Alternatives<a class="anchor" aria-label="anchor" href="#alternatives"></a></h2>
+
+      <div class="section-desc"><p>Record different ways of carrying out one or more steps of a schema.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="alternatives.html">alternative()</a></code> <code><a href="alternatives.html">node()</a></code> <code><a href="alternatives.html">new_alternatives()</a></code>
+
+        </dt>
+        <dd>Construct alternatives objects</dd>
+
+        <dt>
+
+          <code><a href="read-write-alternatives.html">write_alternatives()</a></code> <code><a href="read-write-alternatives.html">read_alternatives()</a></code>
+
+        </dt>
+        <dd>Read and write an alternatives object from/to a YML file</dd>
+
+        <dt>
+
+          <code><a href="draft_alternatives.html">draft_alternatives()</a></code>
+
+        </dt>
+        <dd>Draft an alternatives template</dd>
+
+        <dt>
+
           <code><a href="gen_alternatives.html">gen_alternatives()</a></code> <code><a href="gen_alternatives.html">prompt_alternatives()</a></code>
 
         </dt>
         <dd>Generate analytical alternatives via LLM</dd>
+      </dl></div><div class="section level2">
+      <h2 id="multiverse">Multiverse<a class="anchor" aria-label="anchor" href="#multiverse"></a></h2>
 
-        <dt>
+      <div class="section-desc"><p>Expand one analysis into many, or collect several analyses together.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
 
           <code><a href="expand.html">expand_tines()</a></code>
 
@@ -106,6 +152,22 @@
         <dd>Expand a schema with an alternative YAML into a multiverse</dd>
 
         <dt>
+
+          <code><a href="multiverse-constructor.html">new_multiverse()</a></code> <code><a href="multiverse-constructor.html">as_multiverse()</a></code>
+
+        </dt>
+        <dd>Construct a multiverse</dd>
+      </dl></div><div class="section level2">
+      <h2 id="generating-and-validating-code">Generating and validating code<a class="anchor" aria-label="anchor" href="#generating-and-validating-code"></a></h2>
+
+      <div class="section-desc"><p>Turn a schema into an R script, then run it and repair what fails.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
 
           <code><a href="gen_code.html">gen_code()</a></code> <code><a href="gen_code.html">prompt_gen_code()</a></code>
 
@@ -119,7 +181,7 @@
         </dt>
         <dd>Auto-Fix an R Script via Iterative LLM Debugging</dd>
       </dl></div><div class="section level2">
-      <h2 id="interface-with-yaml-files">Interface with YAML files<a class="anchor" aria-label="anchor" href="#interface-with-yaml-files"></a></h2>
+      <h2 id="visualising">Visualising<a class="anchor" aria-label="anchor" href="#visualising"></a></h2>
 
 
 
@@ -130,26 +192,12 @@
 
       <dl><dt>
 
-          <code><a href="template.html">draft_tines()</a></code> <code><a href="template.html">draft_alternatives()</a></code>
+          <code><a href="print.html">plot(<i>&lt;schema&gt;</i>)</a></code> <code><a href="print.html">plot(<i>&lt;multiverse&gt;</i>)</a></code> <code><a href="print.html">draw_tines()</a></code> <code><a href="print.html">inspect_dot()</a></code>
 
         </dt>
-        <dd>Create templates YAML files</dd>
-
-        <dt>
-
-          <code><a href="read-write.html">write_tines()</a></code> <code><a href="read-write.html">read_tines()</a></code>
-
-        </dt>
-        <dd>Read and write tines schemas and multiverses to YAML files</dd>
-
-        <dt>
-
-          <code><a href="read-write-alternatives.html">write_alternatives()</a></code> <code><a href="read-write-alternatives.html">read_alternatives()</a></code>
-
-        </dt>
-        <dd>Read and write an alternatives object from/to a YML file</dd>
+        <dd>Visualize and inspect tines objects</dd>
       </dl></div><div class="section level2">
-      <h2 id="utility">Utility<a class="anchor" aria-label="anchor" href="#utility"></a></h2>
+      <h2 id="examples-and-data">Examples and data<a class="anchor" aria-label="anchor" href="#examples-and-data"></a></h2>
 
 
 
@@ -159,13 +207,6 @@
 
 
       <dl><dt>
-
-          <code><a href="get.html">get_step_names()</a></code>
-
-        </dt>
-        <dd>Functions to access components of a tine object</dd>
-
-        <dt>
 
           <code><a href="example_tines.html">example_schema()</a></code> <code><a href="example_tines.html">example_multiverse()</a></code> <code><a href="example_tines.html">example_football()</a></code> <code><a href="example_tines.html">example_alternatives()</a></code> <code><a href="example_tines.html">example_football_grp20()</a></code> <code><a href="example_tines.html">example_football_grp5()</a></code>
 

@@ -195,23 +195,23 @@ independently.</p>
 <hr>
 <p>We can create this alternatives file in two ways:</p>
 <ul>
-<li>use <code><a href="../reference/template.html">draft_alternatives()</a></code> to create a draft template and
+<li>use <code><a href="../reference/draft_alternatives.html">draft_alternatives()</a></code> to create a draft template and
 fill it in by hand, or</li>
 <li>create it programmatically in R using the <code><a href="../reference/alternatives.html">node()</a></code>,
 <code><a href="../reference/alternatives.html">alternative()</a></code>, and <code><a href="../reference/alternatives.html">new_alternatives()</a></code>
 functions.</li>
 </ul>
-<p><strong>1. Draft a template with <code><a href="../reference/template.html">draft_alternatives()</a></code>
+<p><strong>1. Draft a template with <code><a href="../reference/draft_alternatives.html">draft_alternatives()</a></code>
 and fill it in by hand:</strong></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">draft_path_single</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yml"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/template.html">draft_alternatives</a></span><span class="op">(</span></span>
+<span><span class="fu"><a href="../reference/draft_alternatives.html">draft_alternatives</a></span><span class="op">(</span></span>
 <span>  <span class="va">schema</span>,</span>
 <span>  id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"step-scaling"</span>, <span class="st">"step-education"</span><span class="op">)</span>,</span>
 <span>  branch <span class="op">=</span> <span class="st">"single"</span>,</span>
 <span>  file_path <span class="op">=</span> <span class="va">draft_path_single</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Created template at <span style="color: #0000BB;">/tmp/RtmpP8aSoO/file1c123507dad3.yml</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Created template at <span style="color: #0000BB;">/tmp/RtmpGHK30l/file1c6153227511.yml</span></span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">meta</span><span class="kw">:</span></span>
 <span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> alternatives</span></span>
 <span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="at">  </span><span class="fu">branch</span><span class="kw">:</span><span class="at"> single</span></span>
@@ -260,7 +260,7 @@ and fill it in by hand:</strong></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tmp_file_single</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yml"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/read-write-alternatives.html">write_alternatives</a></span><span class="op">(</span><span class="va">alts_combo</span>, <span class="va">tmp_file_single</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Successfully wrote alternatives to <span style="color: #0000BB;">/tmp/RtmpP8aSoO/file1c1215fac729.yml</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Successfully wrote alternatives to <span style="color: #0000BB;">/tmp/RtmpGHK30l/file1c614bd6c443.yml</span></span></span></code></pre></div>
 <hr>
 <p>You can combine this alternative specification with the original
 schema to form a set of new schemas, or a <strong>multiverse</strong>,
@@ -315,7 +315,7 @@ alternatives file as follows:</p>
 <span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="at">        </span><span class="fu">rationale</span><span class="kw">:</span><span class="at"> </span><span class="st">"down-weights noisier dimensions"</span></span></code></pre></div>
 <p>We can create this alternatives file in two ways:</p>
 <ul>
-<li>use <code><a href="../reference/template.html">draft_alternatives()</a></code> to create a draft template and
+<li>use <code><a href="../reference/draft_alternatives.html">draft_alternatives()</a></code> to create a draft template and
 fill it in by hand, or</li>
 <li>create it programmatically in R using the <code><a href="../reference/alternatives.html">node()</a></code>,
 <code><a href="../reference/alternatives.html">alternative()</a></code>, and <code><a href="../reference/alternatives.html">new_alternatives()</a></code>
@@ -323,14 +323,14 @@ functions.</li>
 <li>ask an LLM to propose alternatives with
 <code><a href="../reference/gen_alternatives.html">gen_alternatives()</a></code>.</li>
 </ul>
-<p><strong>1. Draft a template with <code><a href="../reference/template.html">draft_alternatives()</a></code>
+<p><strong>1. Draft a template with <code><a href="../reference/draft_alternatives.html">draft_alternatives()</a></code>
 and fill it in by hand:</strong></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">draft_path</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yml"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/template.html">draft_alternatives</a></span><span class="op">(</span></span>
+<span><span class="fu"><a href="../reference/draft_alternatives.html">draft_alternatives</a></span><span class="op">(</span></span>
 <span>  <span class="va">schema</span>, id <span class="op">=</span> <span class="st">"step-combine"</span>, branch <span class="op">=</span> <span class="st">"multi"</span>, file_path <span class="op">=</span> <span class="va">draft_path</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Created template at <span style="color: #0000BB;">/tmp/RtmpP8aSoO/file1c1217f3fba0.yml</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Created template at <span style="color: #0000BB;">/tmp/RtmpGHK30l/file1c61604b2bf3.yml</span></span></span></code></pre></div>
 <div class="sourceCode" id="cb14"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">meta</span><span class="kw">:</span></span>
 <span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> alternatives</span></span>
 <span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="at">  </span><span class="fu">branch</span><span class="kw">:</span><span class="at"> multi</span></span>
@@ -343,7 +343,7 @@ and fill it in by hand:</strong></p>
 <span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> </span><span class="st">"new-alternative-2"</span></span>
 <span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a><span class="at">        </span><span class="fu">decision</span><span class="kw">:</span><span class="at"> </span><span class="st">""</span></span>
 <span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a><span class="at">        </span><span class="fu">rationale</span><span class="kw">:</span><span class="at"> </span><span class="st">""</span></span></code></pre></div>
-<p><code><a href="../reference/template.html">draft_alternatives()</a></code> requires a <code>branch</code> and
+<p><code><a href="../reference/draft_alternatives.html">draft_alternatives()</a></code> requires a <code>branch</code> and
 <code>id</code> argument. The draft template contians two placeholder
 alternatives for one nodes. Users can edit the file to fill in the
 decision and rationale for each alternative, and add more alternatives
@@ -380,7 +380,7 @@ to be given explicitly:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tmp_file</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yml"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/read-write-alternatives.html">write_alternatives</a></span><span class="op">(</span><span class="va">alts</span>, <span class="va">tmp_file</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Successfully wrote alternatives to <span style="color: #0000BB;">/tmp/RtmpP8aSoO/file1c12a931b1b.yml</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Successfully wrote alternatives to <span style="color: #0000BB;">/tmp/RtmpGHK30l/file1c615130b91a.yml</span></span></span></code></pre></div>
 <div class="sourceCode" id="cb17"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">meta</span><span class="kw">:</span></span>
 <span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> alternatives</span></span>
 <span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a><span class="at">  </span><span class="fu">branch</span><span class="kw">:</span><span class="at"> multi</span></span>
@@ -543,7 +543,7 @@ schemas you already have:</p>
 </tr>
 </tbody>
 </table>
-<p><code><a href="../reference/constructor.html">as_multiverse()</a></code> takes a list, so you can use
+<p><code><a href="../reference/multiverse-constructor.html">as_multiverse()</a></code> takes a list, so you can use
 <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply()</a></code> to read in a set of schema once with
 <code><a href="../reference/read-write.html">read_tines()</a></code>. Branch names are optional and you can set
 them with <code><a href="https://rdrr.io/r/stats/setNames.html" class="external-link">setNames()</a></code>, when you want to index by name
@@ -554,9 +554,9 @@ later:</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"football-grp5/football-grp5.yaml"</span>, package <span class="op">=</span> <span class="st">"tines"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="../reference/constructor.html">as_multiverse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">files</span>, <span class="va">read_tines</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="../reference/multiverse-constructor.html">as_multiverse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">files</span>, <span class="va">read_tines</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; NULL</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="../reference/constructor.html">as_multiverse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/setNames.html" class="external-link">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">files</span>, <span class="va">read_tines</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hdi"</span>, <span class="st">"football"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="../reference/multiverse-constructor.html">as_multiverse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/setNames.html" class="external-link">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">files</span>, <span class="va">read_tines</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hdi"</span>, <span class="st">"football"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "hdi"      "football"</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

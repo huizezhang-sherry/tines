@@ -300,8 +300,8 @@ validate_script(here::here("inst/football-grp5.R"), data = here::here("inst/foot
 
 Given a schema, you may want to explore alternative analytical choices.
 You can write an alternative YAML file by hands from the template
-([`draft_alternatives()`](reference/template.md)) or ask LLM to propose
-alternatives for a step in the schema
+([`draft_alternatives()`](reference/draft_alternatives.md)) or ask LLM
+to propose alternatives for a step in the schema
 ([`gen_alternatives()`](reference/gen_alternatives.md)).
 
 Here we have a pre-written alternative YAML file for the football
