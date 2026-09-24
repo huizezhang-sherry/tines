@@ -11,26 +11,51 @@ articles:
   - future-extensions
 
 reference:
-- title: "Create a `tine`/ `multiverse` object"
+- title: "Schema"
+  desc: >
+    A schema records one analysis as an ordered sequence of decisions.
   contents:
-   - new_schema
-   - draw_tines
-   - alternative
-   - gen_io
-- title: "Generate analytical alternatives and corresponding code"
+  - build_schema
+  - read_tines
+  - draft_tines
+  - extract_schema
+  - get_step_names
+
+- title: "Mapping a schema to data"
+  desc: >
+    Tie each step to the variables it reads and the ones it creates, so the
+    generated code runs against a real dataset.
   contents:
-   - extract_schema
-   - gen_alternatives
-   - expand_tines
-   - gen_code
-   - validate_script
-- title: "Interface with YAML files"
+  - gen_io
+
+- title: "Alternatives"
+  desc: >
+    Record different ways of carrying out one or more steps of a schema.
   contents:
-   - draft_tines
-   - write_tines
-   - write_alternatives
-- title: "Utility"
+  - alternative
+  - read_alternatives
+  - draft_alternatives
+  - gen_alternatives
+
+- title: "Multiverse"
+  desc: >
+    Expand one analysis into many, or collect several analyses together.
   contents:
-   - get_step_names
-   - example_schema
-   - football_grp20
+  - expand_tines
+  - as_multiverse
+
+- title: "Generating and validating code"
+  desc: >
+    Turn a schema into an R script, then run it and repair what fails.
+  contents:
+  - gen_code
+  - validate_script
+
+- title: "Visualising"
+  contents:
+  - draw_tines
+
+- title: "Examples and data"
+  contents:
+  - example_schema
+  - football_grp20

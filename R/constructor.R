@@ -1,82 +1,53 @@
-#' Construct schema and multiverse objects
+#' Construct a schema
 #'
-#' Construct individual analytical paths (`schema`) and bundle them into a
-#' garden of forking paths (`multiverse`).
+#' A schema records one analysis as an ordered sequence of decisions.
+#' [build_schema()] starts an empty one and [add_step()] appends a decision to
+#' it; [as_schema()] coerces an existing table of steps; [new_schema()] is the
+#' low-level constructor the others are built on.
 #'
 #' @param nodes A data frame (typically a `tibble`) defining the steps of the
 #'   schema.
 #' @param name An optional name for the schema.
-#' @param ... One or more `schema` objects to be included in the multiverse.
-#' @param schema,schemas A single list containing objects of class `schema`.
-#'   Defaults to an empty list.
 #' @param object A `schema` object.
 #' @param id,objective,decision,rationale,inputs,outputs character strings
 #'   to write a step
-#' @param x An object to be coerced into a `schema` or `multiverse`.
+#' @param x An object to be coerced into a `schema`.
+#' @param ... Passed on to methods.
 #' @param row.names NULL or a character vector giving the row names for the
 #'   data frame.
 #' @param optional logical. If TRUE, setting row names and converting column
 #'   names is optional.
 #' @param width Width for printing output.
-#' @return
-#' * [build_schema()] and [new_schema()] return an object of class `schema`.
-#' * [as_multiverse()] and [new_multiverse()] return an object of class
-#'   `c("multiverse", "list")`.
+#' @return An object of class `schema`: a tibble with one row per step.
 #'
-#' @rdname constructor
+#' @seealso [as_multiverse()] to collect several schemas together, and
+#'   [expand_tines()] to expand one into a multiverse.
+#' @rdname schema-constructor
 #' @export
 #'
 #' @examples
 #' schema <- build_schema("HDI Example") |>
-#'   # 1. The Scaling step
 #'   add_step(
 #'     id = "step-scaling",
 #'     objective = "variables are in different scales",
 #'     decision = "apply min-max scaling to each variable",
 #'     rationale = "to put them on the same scale for combination"
 #'   ) |>
-#'   # 2. The Education step
-#'   add_step(
-#'     id = "step-education",
-#'     objective = "combine the school variables into one dimension",
-#'     decision = "average exp sch and avg sch",
-#'     rationale = "the most intuitive way"
-#'   ) |>
-#'   # 3. The Combine step
 #'   add_step(
 #'     id = "step-combine",
 #'     objective = "combine the three dimensions into a single index",
 #'     decision = "use the geometric mean",
-#'     rationale = "the geometric mean is more appropriate than arithmetic mean"
+#'     rationale = "the geometric mean penalizes uneven development"
 #'   )
 #'
 #' schema
 #'
-#' schema2 <- build_schema("HDI Example") |>
-#'   # 1. The Education Step
-#'   add_step(
-#'     id = "step-education",
-#'     objective = "combine the school variables into one dimension",
-#'     decision = "average exp sch and avg sch",
-#'     rationale = "the most intuitive way"
-#'   ) |>
-#'   # 2. The Scaling Step
-#'   add_step(
-#'     id = "step-scaling",
-#'     objective = "variables are in different scales",
-#'     decision = "apply min-max scaling to each variable",
-#'     rationale = "to put them on the same scale for combination"
-#'   ) |>
-#'   # 3. The Combine Step
-#'   add_step(
-#'     id = "step-combine",
-#'     objective = "combine the three dimensions into a single index",
-#'     decision = "use the geometric mean",
-#'     rationale = "the geometric mean is more appropriate than arithmetic mean"
-#'   )
+#' # coerce a table of steps that was catalogued elsewhere
+#' as_schema(data.frame(
+#'   id = "step-clean", objective = "handle missing values",
+#'   decision = "drop incomplete cases", rationale = "keeps it simple"
+#' ))
 #'
-#' my_multiverse <- as_multiverse(list(original = schema, reversed = schema2))
-#' my_multiverse
 new_schema <- function(name = NULL, nodes = tibble::tibble()) {
   stopifnot(is.data.frame(nodes))
   res <- nodes
@@ -86,7 +57,7 @@ new_schema <- function(name = NULL, nodes = tibble::tibble()) {
 }
 
 #' @param data Optional data frame or path to data file for validation
-#' @rdname constructor
+#' @rdname schema-constructor
 #' @export
 build_schema <- function(name = NULL, data = NULL) {
   nodes <- tibble::tibble(
@@ -123,8 +94,34 @@ build_schema <- function(name = NULL, data = NULL) {
 }
 
 
-#' @rdname constructor
+#' Construct a multiverse
+#'
+#' A multiverse is a collection of related schemas. It is never authored from
+#' scratch: [as_multiverse()] collects schemas you already have, and
+#' [expand_tines()] derives one from a schema and an alternatives file.
+#' [new_multiverse()] is the low-level constructor.
+#'
+#' Branches follow list conventions -- they may be named or not, exactly as
+#' the list you pass in leaves them.
+#'
+#' @param schemas A list of `schema` objects.
+#' @param x A `schema`, a `multiverse`, or a list of either to be coerced.
+#' @param ... Passed on to methods.
+#' @return An object of class `c("multiverse", "list")`.
+#'
+#' @seealso [build_schema()] to make the schemas in the first place.
+#' @rdname multiverse-constructor
 #' @export
+#'
+#' @examples
+#' s1 <- example_schema()
+#' s2 <- example_football()
+#'
+#' as_multiverse(list(hdi = s1, football = s2))
+#'
+#' # names are optional, as in any list
+#' as_multiverse(list(s1, s2))
+#'
 new_multiverse <- function(schemas = list()) {
   stopifnot(is.list(schemas))
 
@@ -146,7 +143,7 @@ new_multiverse <- function(schemas = list()) {
 
 ########################################################################
 ########################################################################
-#' @rdname constructor
+#' @rdname schema-constructor
 #' @export
 add_step <- function(object, id, objective = "", decision = "",
                      rationale = "", inputs = NULL, outputs = NULL, ...) {
@@ -196,22 +193,22 @@ add_step <- function(object, id, objective = "", decision = "",
 }
 
 #' @export
-#' @rdname constructor
+#' @rdname schema-constructor
 as_schema <- function(x, ...) UseMethod("as_schema")
 
 #' @export
-#' @rdname constructor
+#' @rdname schema-constructor
 as_schema.default <- function(x, ...) {
   cli::cli_abort(
     "Cannot coerce an object of class {.cls {class(x)}} to a {.cls schema}."
   )
 }
 
-#' @rdname constructor
+#' @rdname schema-constructor
 #' @export
 as_schema.schema <- function(x, ...) x
 
-#' @rdname constructor
+#' @rdname schema-constructor
 #' @export
 as_schema.data.frame <- function(x, name = NULL, ...) {
   required <- c("id", "objective", "decision", "rationale")
@@ -225,13 +222,13 @@ as_schema.data.frame <- function(x, name = NULL, ...) {
   new_schema(name = name, nodes = tibble::as_tibble(x))
 }
 
-#' @rdname constructor
+#' @rdname multiverse-constructor
 #' @export
 as_multiverse <- function(x, ...) {
   UseMethod("as_multiverse")
 }
 
-#' @rdname constructor
+#' @rdname multiverse-constructor
 #' @export
 as_multiverse.default <- function(x, ...) {
   cli::cli_abort(
@@ -242,20 +239,20 @@ as_multiverse.default <- function(x, ...) {
   )
 }
 
-#' @rdname constructor
+#' @rdname multiverse-constructor
 #' @export
 as_multiverse.multiverse <- function(x, ...) {
   x
 }
 
-#' @rdname constructor
+#' @rdname multiverse-constructor
 #' @export
 as_multiverse.schema <- function(x, ...) {
   # A single schema gracefully becomes a 1-branch multiverse
   new_multiverse(list(x))
 }
 
-#' @rdname constructor
+#' @rdname multiverse-constructor
 #' @export
 as_multiverse.list <- function(x, ...) {
   # Flatten a mixed list of schemas, multiverses, and nested lists, carrying
@@ -304,14 +301,14 @@ tbl_sum.schema <- function(x) {
 }
 
 #' @export
-#' @rdname constructor
+#' @rdname schema-constructor
 as.data.frame.schema <- function(x, row.names = NULL, optional = FALSE, ...) {
   class(x) <- "data.frame"
   x
 }
 
 #' @export
-#' @rdname constructor
+#' @rdname schema-constructor
 print.schema <- function(x, width = NULL, ...) {
   writeLines(format(x, width = width, ...))
 }

@@ -1,54 +1,24 @@
-#' Create templates YAML files
+#' Draft a schema template
 #'
-#' Generates a starter YAML file for a schema to help you begin building
-#' your garden of forking paths. There is no template for a multiverse:
-#' a multiverse is always produced either by combining schema objects with
-#' [as_multiverse()], or by expanding a schema with an alternatives file via
-#' [expand_tines()] -- never hand-authored
-#' from a blank template.
+#' Writes a starter YAML file with two placeholder steps, ready to fill in by
+#' hand. There is no equivalent for a multiverse: a multiverse is always
+#' derived, either by collecting schemas with [as_multiverse()] or by
+#' expanding one with an alternatives file via [expand_tines()].
 #'
-#' @param file_path The file path where the template should be saved. If NULL,
-#'   the template will be saved in the current working directory with a
-#'   default name.
-#' @param x A `schema` or `multiverse` object, or a character string
-#'   specifying the file path to a valid schema YAML file.
-#' @param id A character string specifying the `id` of the step in the
-#'   schema. For [draft_alternatives()], a vector naming one or more steps --
-#'   one node is drafted per step.
-#' @param overwrite Logical. If TRUE, will overwrite an existing file at the
-#'   specified file_path. Defaults to FALSE.
-#' @param branch For [draft_alternatives()] only. Required: either `"multi"`
-#'   (drafts 2 placeholder alternatives per node) or `"single"` (drafts
-#'   exactly 1 per node). See `vignette("alternatives")` for what the two
-#'   modes mean when expanded.
-#' @return [draft_tines()] and [draft_alternatives()] both invisibly return
-#'   the path they wrote to; each is called primarily for its side effect
-#'   of writing a template YAML file to disk.
+#' @param file_path Where to save the template. If `NULL`, it is written to
+#'   the working directory as `schema_template.yml`.
+#' @param overwrite Logical. If `TRUE`, overwrites an existing file at
+#'   `file_path`. Defaults to `FALSE`.
+#' @return Invisibly, the path written to; called for its side effect of
+#'   writing the file.
+#'
+#' @seealso [draft_alternatives()] for the alternatives-file equivalent, and
+#'   [read_tines()] to read the filled-in template back.
 #' @export
-#' @rdname template
+#' @rdname draft_tines
 #' @examples
-#' # Create a new schema template
 #' schema_path <- withr::local_tempfile(fileext = ".yml")
 #' draft_tines(file_path = schema_path)
-#'
-#' # Draft alternatives from a schema object
-#' my_schema <- example_schema()
-#' draft_alternatives(
-#'   x = my_schema,
-#'   id = "step-scaling",
-#'   file_path = withr::local_tempfile(fileext = ".yml"),
-#'   branch = "multi"
-#' )
-#'
-#' # `x` also accepts a path to a schema file -- draft a single-branch
-#' # template combining two steps together
-#' schema_file <- system.file("hdi.yml", package = "tines")
-#' draft_alternatives(
-#'   x = schema_file,
-#'   id = c("step-scaling", "step-education"),
-#'   file_path = withr::local_tempfile(fileext = ".yml"),
-#'   branch = "single"
-#' )
 #'
 draft_tines <- function(file_path = NULL, overwrite = FALSE) {
   if (is.null(file_path)) {
@@ -97,8 +67,45 @@ draft_tines <- function(file_path = NULL, overwrite = FALSE) {
   invisible(file_path)
 }
 
+#' Draft an alternatives template
+#'
+#' Writes a starter alternatives YAML file, with one node per step named in
+#' `id` and placeholder alternatives inside each, ready to fill in by hand.
+#'
+#' @param x A `schema` object, or the path to a schema YAML file.
+#' @param id The `id` of the step to draft alternatives for; a vector names
+#'   several, and one node is drafted per step.
+#' @param file_path Where to save the template. If `NULL`, it is written to
+#'   the working directory, named after the steps it covers.
+#' @param branch Required: either `"multi"` (drafts 2 placeholder
+#'   alternatives per node) or `"single"` (drafts exactly 1 per node). See
+#'   `vignette("alternatives")` for what the two modes mean when expanded.
+#' @return Invisibly, the path written to; called for its side effect of
+#'   writing the file.
+#'
+#' @seealso [gen_alternatives()] to have an LLM propose them instead, and
+#'   [read_alternatives()] to read the filled-in file back.
 #' @export
-#' @rdname template
+#' @rdname draft_alternatives
+#' @examples
+#' my_schema <- example_schema()
+#'
+#' draft_alternatives(
+#'   x = my_schema,
+#'   id = "step-scaling",
+#'   file_path = withr::local_tempfile(fileext = ".yml"),
+#'   branch = "multi"
+#' )
+#'
+#' # `x` also accepts a path to a schema file -- draft a single-branch
+#' # template combining two steps together
+#' draft_alternatives(
+#'   x = system.file("hdi.yml", package = "tines"),
+#'   id = c("step-scaling", "step-education"),
+#'   file_path = withr::local_tempfile(fileext = ".yml"),
+#'   branch = "single"
+#' )
+#'
 draft_alternatives <- function(x, id, file_path = NULL, branch) {
   if (missing(branch)) {
     cli::cli_abort(
