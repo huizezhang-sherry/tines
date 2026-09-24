@@ -5,7 +5,7 @@
 #' and the `plot()` methods render the interactive widget. [inspect_dot()]
 #' formats and prints raw DOT strings to the console for debugging.
 #'
-#' @param x A `schema` or `multiverse` object.
+#' @param x A `schema` or `multiverse` object, or the path to a YAML file.
 #' @param index An integer. For a `multiverse`, which path index to draw.
 #'   Defaults to 1.
 #' @param data Optional. A data frame or path to a data file. If schema is
@@ -66,6 +66,11 @@ plot.multiverse <- function(x, index = 1, ...) {
 #' @export
 #' @rdname print
 draw_tines <- function(x, index = 1, data = NULL, ...) {
+  if (is.character(x) && length(x) == 1) {
+    if (!file.exists(x)) cli::cli_abort("File not found: {.val {x}}")
+    x <- read_tines(x)
+  }
+
   if (!inherits(x, c("schema", "multiverse"))) {
     cli::cli_abort(c(
       paste0(

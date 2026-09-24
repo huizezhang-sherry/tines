@@ -21,7 +21,7 @@ inspect_dot(
 )
 }
 \arguments{
-\item{x}{A \code{schema} or \code{multiverse} object.}
+\item{x}{A \code{schema} or \code{multiverse} object, or the path to a YAML file.}
 
 \item{...}{Additional arguments passed to methods or to
 \code{DiagrammeR::grViz()}.}
