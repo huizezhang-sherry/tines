@@ -150,7 +150,7 @@ nodes:
 
 The YAML file can be loaded with `read_schema()`. Here the data is also
 stored in the package as
-[`example_football_grp5()`](reference/example_tines.md):
+[`example_football_grp5()`](reference/example_football_grp5.md):
 
 ``` r
 

@@ -71,11 +71,11 @@ Turn a schema into an R script, then run it and repair what fails.
 
 ## Examples and data
 
-- [`example_schema()`](example_tines.md)
-  [`example_multiverse()`](example_tines.md)
-  [`example_football()`](example_tines.md)
-  [`example_alternatives()`](example_tines.md)
-  [`example_football_grp20()`](example_tines.md)
-  [`example_football_grp5()`](example_tines.md) : Generate examples
-- [`football_grp20`](grp.md) [`football_grp5`](grp.md) : Football red
-  cards study methodology text (Group 5 and 20)
+- [`example_hdi()`](example_tines.md)
+  [`example_hdi_alternatives()`](example_tines.md)
+  [`example_hdi_multiverse()`](example_tines.md) : Example HDI schema,
+  alternatives, and multiverse
+- [`example_football_grp5()`](example_football_grp5.md)
+  [`example_football_grp5_alternatives()`](example_football_grp5.md) :
+  Example schema and alternatives from the football red cards study
+- [`football_grp5`](football_grp5.md) : Football red cards study: Team 5

@@ -23,13 +23,13 @@ schema in the multiverse.
 ## Examples
 
 ``` r
-get_step_names(example_schema())
+get_step_names(example_hdi())
 #> [1] "step-scaling"   "step-education" "step-combine"  
-get_step_names(example_multiverse())
+get_step_names(example_hdi_multiverse())
 #> $original
 #> [1] "step-scaling"   "step-education" "step-combine"  
 #> 
-#> $reversed
-#> [1] "step-education" "step-scaling"   "step-combine"  
+#> $`step-arithmetic-mean`
+#> [1] "step-scaling"   "step-education" "step-combine"  
 #> 
 ```

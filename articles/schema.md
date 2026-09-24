@@ -77,7 +77,7 @@ two placeholder steps, ready to fill in by hand:
 
 draft_path <- withr::local_tempfile(fileext = ".yml")
 draft_tines(file_path = draft_path)
-#> ✔ Drafted "schema" template at /tmp/RtmpyA42Q2/file1d0e71a29969.yml
+#> ✔ Drafted "schema" template at /tmp/RtmpryIAeH/file1d1245f7f920.yml
 #> ℹ Open this file to start defining your steps!
 ```
 
@@ -131,7 +131,7 @@ YAML:
 
 out_path <- withr::local_tempfile(fileext = ".yml")
 write_tines(hdi, out_path)
-#> ✔ File saved: /tmp/RtmpyA42Q2/file1d0e926a594.yml
+#> ✔ File saved: /tmp/RtmpryIAeH/file1d127aaf3136.yml
 ```
 
 ``` yaml
@@ -253,25 +253,24 @@ of a paper:
 
 # Requires an LLM API key (e.g. ANTHROPIC_API_KEY); not run automatically.
 extract_schema(
-  text = football_grp20,
+  text = football_grp5,
   data_dict = c("player", "redCards", "rater1", "rater2"),
   output_file = "draft_schema.yml"
 )
 ```
 
-A schema drafted this way carries extra bookkeeping fields – `status`,
-`confidence`, and `clarification_question` – recording how sure the
-model was that it read each decision correctly. Any extra field is
-preserved as its own column when the file is read, and written back out
-unchanged:
+A schema drafted this way carries extra bookkeeping fields –
+`confidence` and `clarification_question` – recording how sure the model
+was that it read each decision correctly. Any extra field is preserved
+as its own column when the file is read, and written back out unchanged:
 
 ``` r
 
-drafted <- example_football_grp20()
+drafted <- example_football_grp5()
 colnames(drafted)
 #> [1] "id"                     "objective"              "decision"              
-#> [4] "rationale"              "status"                 "confidence"            
-#> [7] "clarification_question" "inputs"                 "outputs"
+#> [4] "rationale"              "confidence"             "clarification_question"
+#> [7] "inputs"                 "outputs"
 ```
 
 ## Mapping a schema to data

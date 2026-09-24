@@ -72,11 +72,11 @@ a list-column of per-node tibbles as built by `node()`), with the chosen
 ## Examples
 
 ``` r
-example_alternatives(case = "football")
-#> # Alternatives: step-logistic-model (multi)
-#>   overrides           alternatives    
-#>   <chr>               <list>          
-#> 1 step-logistic-model <tibble [3 × 3]>
+example_football_grp5_alternatives()
+#> # Alternatives: specify_random_effects_structure (multi)
+#>   overrides                        alternatives    
+#>   <chr>                            <list>          
+#> 1 specify_random_effects_structure <tibble [3 × 3]>
 
 # multi-branch: 3 independent alternatives for one step
 new_alternatives(

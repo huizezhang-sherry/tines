@@ -129,7 +129,7 @@ the `model` chosen) for this to work.
 ## Examples
 
 ``` r
-hdi <- example_schema()
+hdi <- example_hdi()
 
 if (FALSE) { # \dontrun{
 # Requires an LLM API key (e.g. ANTHROPIC_API_KEY); not run automatically.

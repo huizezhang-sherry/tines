@@ -103,19 +103,19 @@ the list you pass in leaves them.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu"><a href="example_tines.html">example_schema</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">s2</span> <span class="op">&lt;-</span> <span class="fu"><a href="example_tines.html">example_football</a></span><span class="op">(</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu"><a href="example_tines.html">example_hdi</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">s2</span> <span class="op">&lt;-</span> <span class="fu"><a href="example_football_grp5.html">example_football_grp5</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">as_multiverse</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>hdi <span class="op">=</span> <span class="va">s1</span>, football <span class="op">=</span> <span class="va">s2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A multiverse with 2 schemas:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   hdi: "HDI Example" (3 steps)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   football: (3 steps)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   football: (7 steps)</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># names are optional, as in any list</span></span></span>
 <span class="r-in"><span><span class="fu">as_multiverse</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">s1</span>, <span class="va">s2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A multiverse with 2 schemas:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [[1]]: "HDI Example" (3 steps)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [[2]]: (3 steps)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [[2]]: (7 steps)</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

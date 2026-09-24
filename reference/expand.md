@@ -49,23 +49,23 @@ alternatives applied to reach it.
 ``` r
 
 # expand on a schema
-base_schema <- example_football()
-alts <- example_alternatives(case = "football")
+base_schema <- example_football_grp5()
+alts <- example_football_grp5_alternatives()
 expand_tines(base_schema, alts)
 #> A multiverse with 4 schemas:
-#>   original: (3 steps)
-#>   step-mixed-effects-logistic-model: (3 steps)
-#>   step-probit-regression-model: (3 steps)
-#>   step-bayesian-logistic-model: (3 steps)
+#>   original: (7 steps)
+#>   gm1: (7 steps)
+#>   gm2: (7 steps)
+#>   gm3: (7 steps)
 
 # read the alternatives from a YML file
 tmp_file <- tempfile(fileext = ".yml")
 write_alternatives(alts, tmp_file)
-#> ✔ Successfully wrote alternatives to /tmp/RtmpwUOPUJ/file1a511280be6c.yml
+#> ✔ Successfully wrote alternatives to /tmp/Rtmpd9DCgw/file1a495d0ca50.yml
 expand_tines(base_schema, tmp_file)
 #> A multiverse with 4 schemas:
-#>   original: (3 steps)
-#>   step-mixed-effects-logistic-model: (3 steps)
-#>   step-probit-regression-model: (3 steps)
-#>   step-bayesian-logistic-model: (3 steps)
+#>   original: (7 steps)
+#>   gm1: (7 steps)
+#>   gm2: (7 steps)
+#>   gm3: (7 steps)
 ```

@@ -173,7 +173,7 @@ steps, ready to fill in by hand:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">draft_path</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yml"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/draft_tines.html">draft_tines</a></span><span class="op">(</span>file_path <span class="op">=</span> <span class="va">draft_path</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Drafted <span style="color: #0000BB;">"schema"</span> template at <span style="color: #0000BB;">/tmp/RtmpyA42Q2/file1d0e71a29969.yml</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Drafted <span style="color: #0000BB;">"schema"</span> template at <span style="color: #0000BB;">/tmp/RtmpryIAeH/file1d1245f7f920.yml</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Open this file to start defining your steps!</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">meta</span><span class="kw">:</span></span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> schema</span></span>
@@ -216,7 +216,7 @@ steps, ready to fill in by hand:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_path</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yml"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/read-write.html">write_tines</a></span><span class="op">(</span><span class="va">hdi</span>, <span class="va">out_path</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> File saved: <span style="color: #0000BB;">/tmp/RtmpyA42Q2/file1d0e926a594.yml</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> File saved: <span style="color: #0000BB;">/tmp/RtmpryIAeH/file1d127aaf3136.yml</span></span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">meta</span><span class="kw">:</span></span>
 <span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> schema</span></span>
 <span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="at">  </span><span class="fu">date</span><span class="kw">:</span><span class="at"> </span><span class="st">'2026-09-24'</span></span>
@@ -318,22 +318,21 @@ paper:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Requires an LLM API key (e.g. ANTHROPIC_API_KEY); not run automatically.</span></span>
 <span><span class="fu"><a href="../reference/extract_schema.html">extract_schema</a></span><span class="op">(</span></span>
-<span>  text <span class="op">=</span> <span class="va">football_grp20</span>,</span>
+<span>  text <span class="op">=</span> <span class="va">football_grp5</span>,</span>
 <span>  data_dict <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"player"</span>, <span class="st">"redCards"</span>, <span class="st">"rater1"</span>, <span class="st">"rater2"</span><span class="op">)</span>,</span>
 <span>  output_file <span class="op">=</span> <span class="st">"draft_schema.yml"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>A schema drafted this way carries extra bookkeeping fields –
-<code>status</code>, <code>confidence</code>, and
-<code>clarification_question</code> – recording how sure the model was
-that it read each decision correctly. Any extra field is preserved as
-its own column when the file is read, and written back out
-unchanged:</p>
+<code>confidence</code> and <code>clarification_question</code> –
+recording how sure the model was that it read each decision correctly.
+Any extra field is preserved as its own column when the file is read,
+and written back out unchanged:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">drafted</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/example_tines.html">example_football_grp20</a></span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">drafted</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/example_football_grp5.html">example_football_grp5</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">drafted</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "id"                     "objective"              "decision"              </span></span>
-<span><span class="co">#&gt; [4] "rationale"              "status"                 "confidence"            </span></span>
-<span><span class="co">#&gt; [7] "clarification_question" "inputs"                 "outputs"</span></span></code></pre></div>
+<span><span class="co">#&gt; [4] "rationale"              "confidence"             "clarification_question"</span></span>
+<span><span class="co">#&gt; [7] "inputs"                 "outputs"</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">

@@ -56,17 +56,17 @@ first place.
 ## Examples
 
 ``` r
-s1 <- example_schema()
-s2 <- example_football()
+s1 <- example_hdi()
+s2 <- example_football_grp5()
 
 as_multiverse(list(hdi = s1, football = s2))
 #> A multiverse with 2 schemas:
 #>   hdi: "HDI Example" (3 steps)
-#>   football: (3 steps)
+#>   football: (7 steps)
 
 # names are optional, as in any list
 as_multiverse(list(s1, s2))
 #> A multiverse with 2 schemas:
 #>   [[1]]: "HDI Example" (3 steps)
-#>   [[2]]: (3 steps)
+#>   [[2]]: (7 steps)
 ```

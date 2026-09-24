@@ -40,6 +40,6 @@ read the filled-in template back.
 ``` r
 schema_path <- withr::local_tempfile(fileext = ".yml")
 draft_tines(file_path = schema_path)
-#> ✔ Drafted "schema" template at /tmp/RtmpwUOPUJ/file1a518a90a84.yml
+#> ✔ Drafted "schema" template at /tmp/Rtmpd9DCgw/file1a4951e29175.yml
 #> ℹ Open this file to start defining your steps!
 ```

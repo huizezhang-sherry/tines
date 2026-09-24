@@ -46,7 +46,7 @@ the filled-in file back.
 ## Examples
 
 ``` r
-my_schema <- example_schema()
+my_schema <- example_hdi()
 
 draft_alternatives(
   x = my_schema,
@@ -54,7 +54,7 @@ draft_alternatives(
   file_path = withr::local_tempfile(fileext = ".yml"),
   branch = "multi"
 )
-#> ✔ Created template at /tmp/RtmpwUOPUJ/file1a5141d037f0.yml
+#> ✔ Created template at /tmp/Rtmpd9DCgw/file1a496be22711.yml
 
 # `x` also accepts a path to a schema file -- draft a single-branch
 # template combining two steps together
@@ -64,5 +64,5 @@ draft_alternatives(
   file_path = withr::local_tempfile(fileext = ".yml"),
   branch = "single"
 )
-#> ✔ Created template at /tmp/RtmpwUOPUJ/file1a517cf2b428.yml
+#> ✔ Created template at /tmp/Rtmpd9DCgw/file1a4915d8087d.yml
 ```
