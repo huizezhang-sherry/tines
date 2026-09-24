@@ -2,8 +2,8 @@
 
 A character string describing the methodology reported by Team 20 in the
 many-analysts study of racial bias in football referee decisions
-(Silberzahn et al., 2018: \<https://osf.io/qix4g/\>). The text can be
-passed directly to \[extract_schema()\].
+(Silberzahn et al., 2018: <https://osf.io/qix4g/>). The text can be
+passed directly to [`extract_schema()`](extract_schema.md).
 
 ## Usage
 

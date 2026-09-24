@@ -18,11 +18,11 @@ expand_tines(x, alternatives, ...)
 
 - x:
 
-  A \`schema\` object.
+  A `schema` object.
 
 - alternatives:
 
-  an \`alternatives\` object or the path to an alternative YAML
+  an `alternatives` object or the path to an alternative YAML
 
 - ...:
 
@@ -30,15 +30,15 @@ expand_tines(x, alternatives, ...)
 
 - include_original:
 
-  A logical. If \`TRUE\`, the original schema will be included as a
-  branch in the resulting multiverse. Defaults to \`TRUE\`.
+  A logical. If `TRUE`, the original schema will be included as a branch
+  in the resulting multiverse. Defaults to `TRUE`.
 
 ## Value
 
-An object of class \`"multiverse"\`: a named list of \`schema\` objects,
-one per branch produced from \`alternatives\` (plus, when
-\`include_original = TRUE\`, the original schema/multiverse under the
-name \`"original"\`). Each branch name is the \`+\`-joined ids of the
+An object of class `"multiverse"`: a named list of `schema` objects, one
+per branch produced from `alternatives` (plus, when
+`include_original = TRUE`, the original schema/multiverse under the name
+`"original"`). Each branch name is the `+`-joined ids of the
 alternatives applied to reach it.
 
 ## Examples
@@ -58,7 +58,7 @@ expand_tines(base_schema, alts)
 # read the alternatives from a YML file
 tmp_file <- tempfile(fileext = ".yml")
 write_alternatives(alts, tmp_file)
-#> ✔ Successfully wrote alternatives to /tmp/Rtmp5Ur8Dy/file1b2c594b15eb.yml
+#> ✔ Successfully wrote alternatives to /tmp/Rtmp7pk0G8/file1a4a507a40d6.yml
 expand_tines(base_schema, tmp_file)
 #> A multiverse with 4 schemas:
 #>   original: (3 steps)

@@ -1,7 +1,7 @@
-# Construct \`schema\` and \`multiverse\` objects
+# Construct schema and multiverse objects
 
-Construct individual analytical paths (\`schema\`) and bundle them into
-a garden of forking paths (\`multiverse\`).
+Construct individual analytical paths (`schema`) and bundle them into a
+garden of forking paths (`multiverse`).
 
 ## Usage
 
@@ -22,7 +22,6 @@ add_step(
   rationale = "",
   inputs = NULL,
   outputs = NULL,
-  source_schema = NA,
   ...
 )
 
@@ -75,8 +74,7 @@ print(x, width = NULL, ...)
 
 - nodes:
 
-  A data frame (typically a \`tibble\`) defining the steps of the
-  schema.
+  A data frame (typically a `tibble`) defining the steps of the schema.
 
 - data:
 
@@ -84,19 +82,19 @@ print(x, width = NULL, ...)
 
 - ...:
 
-  One or more \`schema\` objects to be included in the multiverse.
+  One or more `schema` objects to be included in the multiverse.
 
 - object:
 
-  A \`schema\` object.
+  A `schema` object.
 
-- id, objective, decision, rationale, inputs, outputs, source_schema:
+- id, objective, decision, rationale, inputs, outputs:
 
   character strings to write a step
 
 - x:
 
-  An object to be coerced into a \`schema\` or \`multiverse\`.
+  An object to be coerced into a `schema` or `multiverse`.
 
 - row.names:
 
@@ -113,14 +111,16 @@ print(x, width = NULL, ...)
 
 - schema, schemas:
 
-  A single list containing objects of class \`schema\`. Defaults to an
+  A single list containing objects of class `schema`. Defaults to an
   empty list.
 
 ## Value
 
-\* \`build_schema()\` and \`new_schema()\` return an object of class
-\`schema\`. \* \`build_multiverse()\` and \`new_multiverse()\` return an
-object of class \`c("multiverse", "list")\`.
+- `build_schema()` and `new_schema()` return an object of class
+  `schema`.
+
+- `build_multiverse()` and `new_multiverse()` return an object of class
+  `c("multiverse", "list")`.
 
 ## Examples
 
@@ -150,11 +150,11 @@ schema <- build_schema("HDI Example") |>
 
 schema
 #> # A schema: HDI Example
-#>   id             objective       decision rationale inputs outputs source_schema
-#>   <chr>          <chr>           <chr>    <chr>     <list> <list>  <lgl>        
-#> 1 step-scaling   variables are … apply m… to put t… <lgl>  <lgl>   NA           
-#> 2 step-education combine the sc… average… the most… <lgl>  <lgl>   NA           
-#> 3 step-combine   combine the th… use the… the geom… <lgl>  <lgl>   NA           
+#>   id             objective                     decision rationale inputs outputs
+#>   <chr>          <chr>                         <chr>    <chr>     <list> <list> 
+#> 1 step-scaling   variables are in different s… apply m… to put t… <lgl>  <lgl>  
+#> 2 step-education combine the school variables… average… the most… <lgl>  <lgl>  
+#> 3 step-combine   combine the three dimensions… use the… the geom… <lgl>  <lgl>  
 
 schema2 <- build_schema("HDI Example") |>
   # 1. The Education Step

@@ -1,10 +1,10 @@
 # Generate analytical alternatives via LLM
 
-\`gen_alternatives()\` takes an existing \`schema\` or \`multiverse\`
-and asks a Large Language Model to suggest methodologically valid,
-alternative approaches for a specific step in your analysis pipeline.
+`gen_alternatives()` takes an existing schema or multiverse and asks a
+Large Language Model to suggest methodologically valid, alternative
+approaches for a specific step in your analysis pipeline.
 
-\`prompt_alternatives()\` is a helper function that constructs the exact
+`prompt_alternatives()` is a helper function that constructs the exact
 instruction set sent to the LLM.
 
 ## Usage
@@ -51,18 +51,18 @@ prompt_alternatives(
 
 - x:
 
-  A \`schema\` or \`multiverse\` object, or a character string
-  specifying the file path to a valid \`tines\` YML file.
+  A `schema` or `multiverse` object, or a character string specifying
+  the file path to a valid tines YAML file.
 
 - step:
 
-  A character string. The exact \`id\` of the step you want the LLM to
+  A character string. The exact `id` of the step you want the LLM to
   generate alternatives for.
 
 - n:
 
   An integer. The number of distinct alternatives you want the LLM to
-  generate. Defaults to \`3\`.
+  generate. Defaults to `3`.
 
 - data:
 
@@ -73,20 +73,25 @@ prompt_alternatives(
 - model:
 
   The LLM to use for generating alternatives, as a string in
-  \`"provider/model"\` form (e.g. \`"anthropic/claude-opus-4-5"\`,
-  \`"openai/gpt-5"\`, \`"google_gemini/gemini-2.5-flash"\`), passed to
-  \`ellmer::chat()\`. See \[ellmer::chat()\] for the full list of
-  supported providers. Defaults to \`"anthropic/claude-opus-4-5"\`.
+  `"provider/model"` form (e.g. `"anthropic/claude-opus-4-5"`,
+  `"openai/gpt-5"`, `"google_gemini/gemini-2.5-flash"`), passed to
+  [`ellmer::chat()`](https://ellmer.tidyverse.org/reference/chat-any.html).
+  See
+  [`ellmer::chat()`](https://ellmer.tidyverse.org/reference/chat-any.html)
+  for the full list of supported providers. Defaults to
+  `"anthropic/claude-opus-4-5"`.
 
 - file_path:
 
   A character string specifying where to save the generated YML output.
-  If \`NULL\` (the default), \`capture.output()\` will return the result
-  as a character vector.
+  If `NULL` (the default),
+  [`capture.output()`](https://rdrr.io/r/utils/capture.output.html) will
+  return the result as a character vector.
 
 - ...:
 
-  Additional arguments passed to methods or to \`ellmer::chat()\`.
+  Additional arguments passed to methods or to
+  [`ellmer::chat()`](https://ellmer.tidyverse.org/reference/chat-any.html).
 
 - schema:
 
@@ -99,26 +104,27 @@ prompt_alternatives(
 
 - print:
 
-  If \`TRUE\`, prints the prompt to console instead of returning it.
+  If `TRUE`, prints the prompt to console instead of returning it.
 
 - width:
 
-  If \`print = TRUE\`, the width to wrap the printed prompt (default
-  70).
+  If `print = TRUE`, the width to wrap the printed prompt (default 70).
 
 ## Value
 
-\* \`gen_alternatives()\` invisibly returns \`NULL\` and writes the
-output to \`file_path\`. \* \`prompt_alternatives()\` returns a
-formatted character string containing the LLM prompt.
+- `gen_alternatives()` invisibly returns `NULL` and writes the output to
+  `file_path`.
+
+- `prompt_alternatives()` returns a formatted character string
+  containing the LLM prompt.
 
 ## Details
 
-\*\*Important:\*\* This function relies on the \`ellmer\` package to
+**Important:** This function relies on the `ellmer` package to
 communicate with an LLM provider. You must have your API credentials
 configured correctly in your R environment (e.g., via an environment
-variable such as \`ANTHROPIC_API_KEY\` or \`OPENAI_API_KEY\`, depending
-on the \`model\` chosen) for this to work.
+variable such as `ANTHROPIC_API_KEY` or `OPENAI_API_KEY`, depending on
+the `model` chosen) for this to work.
 
 ## Examples
 
@@ -204,5 +210,5 @@ prompt_alternatives(schema = hdi, step = "step-combine", print = TRUE)
 #> and avg sch - use the geometric mean rationale: - to put them on the
 #> same scale for combination - the most intuitive way - the geometric
 #> mean is more appropriate than arithmetic mean inputs: - .na - .na -
-#> .na outputs: - .na - .na - .na source_schema: - .na - .na - .na
+#> .na outputs: - .na - .na - .na
 ```

@@ -14,7 +14,7 @@ read_tines(path, data = NULL, ...)
 
 - x:
 
-  An object of class \`schema\` or \`multiverse\`.
+  An object of class `schema` or `multiverse`.
 
 - path:
 
@@ -22,18 +22,20 @@ read_tines(path, data = NULL, ...)
 
 - ...:
 
-  Arguments passed on to \`yaml::write_yaml()\` or
-  \`yaml::read_yaml()\`.
+  Arguments passed on to
+  [`yaml::write_yaml()`](https://yaml.r-lib.org/reference/write_yaml.html)
+  or
+  [`yaml::read_yaml()`](https://yaml.r-lib.org/reference/read_yaml.html).
 
 - data:
 
   Optional data frame or path to data file for validation (for
-  \`read_tines()\` only).
+  `read_tines()` only).
 
 ## Value
 
-\`write_tines()\` returns \`NULL\` and \`read_tines()\` returns an
-object of class \`schema\` or \`multiverse\`.
+`write_tines()` returns `NULL` and `read_tines()` returns an object of
+class `schema` or `multiverse`.
 
 ## Examples
 
@@ -41,7 +43,7 @@ object of class \`schema\` or \`multiverse\`.
 schema <- example_schema()
 temp_path <- withr::local_tempfile(fileext = ".yaml")
 write_tines(schema, temp_path)
-#> ✔ File saved: /tmp/Rtmp5Ur8Dy/file1b2c60c55d37.yaml
+#> ✔ File saved: /tmp/Rtmp7pk0G8/file1a4a4a2c4f02.yaml
 schema_read <- read_tines(temp_path)
 
 # Read and validate against a data frame or file path

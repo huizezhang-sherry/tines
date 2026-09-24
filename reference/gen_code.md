@@ -74,11 +74,14 @@ prompt_gen_code(
 
 - model:
 
-  The LLM to use for code generation, as a string in
-  \`"provider/model"\` form (e.g. \`"anthropic/claude-opus-4-5"\`,
-  \`"openai/gpt-5"\`, \`"google_gemini/gemini-2.5-flash"\`), passed to
-  \`ellmer::chat()\`. See \[ellmer::chat()\] for the full list of
-  supported providers. Defaults to \`"anthropic/claude-opus-4-5"\`.
+  The LLM to use for code generation, as a string in `"provider/model"`
+  form (e.g. `"anthropic/claude-opus-4-5"`, `"openai/gpt-5"`,
+  `"google_gemini/gemini-2.5-flash"`), passed to
+  [`ellmer::chat()`](https://ellmer.tidyverse.org/reference/chat-any.html).
+  See
+  [`ellmer::chat()`](https://ellmer.tidyverse.org/reference/chat-any.html)
+  for the full list of supported providers. Defaults to
+  `"anthropic/claude-opus-4-5"`.
 
 - ...:
 
@@ -90,12 +93,11 @@ prompt_gen_code(
 
 - print:
 
-  If \`TRUE\`, prints the prompt to console instead of returning it.
+  If `TRUE`, prints the prompt to console instead of returning it.
 
 - width:
 
-  If \`print = TRUE\`, the width to wrap the printed prompt (default
-  70).
+  If `print = TRUE`, the width to wrap the printed prompt (default 70).
 
 ## Value
 

@@ -150,7 +150,7 @@ draft_alternatives(
   branch = "single",
   file_path = draft_path_single
 )
-#> ✔ Created template at /tmp/RtmpEpGpOm/file1cd92cbc884d.yml
+#> ✔ Created template at /tmp/RtmpYjygHS/file1be2304d9b2f.yml
 ```
 
 ``` yaml
@@ -211,7 +211,7 @@ alts_combo
 
 tmp_file_single <- withr::local_tempfile(fileext = ".yml")
 write_alternatives(alts_combo, tmp_file_single)
-#> ✔ Successfully wrote alternatives to /tmp/RtmpEpGpOm/file1cd97e5b34b8.yml
+#> ✔ Successfully wrote alternatives to /tmp/RtmpYjygHS/file1be26f612678.yml
 ```
 
 ------------------------------------------------------------------------
@@ -298,7 +298,7 @@ draft_path <- withr::local_tempfile(fileext = ".yml")
 draft_alternatives(
   schema, id = "step-combine", branch = "multi", file_path = draft_path
 )
-#> ✔ Created template at /tmp/RtmpEpGpOm/file1cd9b6de3d3.yml
+#> ✔ Created template at /tmp/RtmpYjygHS/file1be222c93026.yml
 ```
 
 ``` yaml
@@ -362,7 +362,7 @@ alts
 
 tmp_file <- withr::local_tempfile(fileext = ".yml")
 write_alternatives(alts, tmp_file)
-#> ✔ Successfully wrote alternatives to /tmp/RtmpEpGpOm/file1cd938d0eb9d.yml
+#> ✔ Successfully wrote alternatives to /tmp/RtmpYjygHS/file1be27a6cac51.yml
 ```
 
 ``` yaml

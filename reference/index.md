@@ -9,16 +9,14 @@
   [`c(`*`<schema>`*`)`](constructor.md)
   [`c(`*`<multiverse>`*`)`](constructor.md)
   [`as.data.frame(`*`<schema>`*`)`](constructor.md)
-  [`print(`*`<schema>`*`)`](constructor.md) : Construct \`schema\` and
-  \`multiverse\` objects
+  [`print(`*`<schema>`*`)`](constructor.md) : Construct schema and
+  multiverse objects
 - [`plot(`*`<schema>`*`)`](print.md)
   [`plot(`*`<multiverse>`*`)`](print.md) [`draw_tines()`](print.md)
-  [`inspect_dot()`](print.md) : Visualize and inspect \`tines\` objects
+  [`inspect_dot()`](print.md) : Visualize and inspect tines objects
 - [`alternative()`](alternatives.md) [`node()`](alternatives.md)
-  [`new_alternatives()`](alternatives.md) : Construct \`alternatives\`
+  [`new_alternatives()`](alternatives.md) : Construct alternatives
   objects
-- [`import_step()`](import.md) [`generate_edges()`](import.md) : Import
-  a Step from a source schema into the current schema
 - [`gen_io()`](update-io.md) [`update_data()`](update-io.md)
   [`update_io()`](update-io.md) : Data mapping and validation for
   schemas
@@ -35,8 +33,6 @@
   YAML into a multiverse
 - [`gen_code()`](gen_code.md) [`prompt_gen_code()`](gen_code.md) :
   Generate R code from a schema or multiverse
-- [`gen_composite_code()`](gen_composite_code.md) : Generate R code from
-  a composite schema built from several source schemas
 - [`validate_script()`](validate_script.md) : Auto-Fix an R Script via
   Iterative LLM Debugging
 
@@ -58,9 +54,6 @@
   [`example_multiverse()`](example_tines.md)
   [`example_football()`](example_tines.md)
   [`example_alternatives()`](example_tines.md)
-  [`example_spei()`](example_tines.md)
-  [`example_spi()`](example_tines.md)
-  [`example_rdi()`](example_tines.md)
   [`example_football_grp20()`](example_tines.md)
   [`example_football_grp5()`](example_tines.md) : Generate examples
 - [`football_grp20`](grp.md) [`football_grp5`](grp.md) : Football red

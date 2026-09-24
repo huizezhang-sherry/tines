@@ -29,7 +29,7 @@ prompt_extract_schema(data_dict, text, print = TRUE, width = 70)
 - data_dict:
 
   Either a character vector of column names, or a data frame with at
-  least a \`name\` column and an optional \`description\` column.
+  least a `name` column and an optional `description` column.
 
 - output_file:
 
@@ -37,20 +37,22 @@ prompt_extract_schema(data_dict, text, print = TRUE, width = 70)
 
 - model:
 
-  The LLM to use, as a string in \`"provider/model"\` form (e.g.
-  \`"anthropic/claude-opus-4-5"\`, \`"openai/gpt-5"\`,
-  \`"google_gemini/gemini-2.5-flash"\`), passed to \`ellmer::chat()\`.
-  See \[ellmer::chat()\] for the full list of supported providers.
-  Defaults to \`"anthropic/claude-opus-4-5"\`.
+  The LLM to use, as a string in `"provider/model"` form (e.g.
+  `"anthropic/claude-opus-4-5"`, `"openai/gpt-5"`,
+  `"google_gemini/gemini-2.5-flash"`), passed to
+  [`ellmer::chat()`](https://ellmer.tidyverse.org/reference/chat-any.html).
+  See
+  [`ellmer::chat()`](https://ellmer.tidyverse.org/reference/chat-any.html)
+  for the full list of supported providers. Defaults to
+  `"anthropic/claude-opus-4-5"`.
 
 - print:
 
-  If \`TRUE\`, prints the prompt to console instead of returning it.
+  If `TRUE`, prints the prompt to console instead of returning it.
 
 - width:
 
-  If \`print = TRUE\`, the width to wrap the printed prompt (default
-  70).
+  If `print = TRUE`, the width to wrap the printed prompt (default 70).
 
 ## Value
 

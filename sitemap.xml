@@ -3,8 +3,10 @@
 <url><loc>/LICENSE-text.html</loc></url>
 <url><loc>/LICENSE.html</loc></url>
 <url><loc>/articles/alternatives.html</loc></url>
+<url><loc>/articles/future-extensions.html</loc></url>
 <url><loc>/articles/gaitd-case-study.html</loc></url>
 <url><loc>/articles/index.html</loc></url>
+<url><loc>/articles/schema.html</loc></url>
 <url><loc>/authors.html</loc></url>
 <url><loc>/index.html</loc></url>
 <url><loc>/reference/alternatives.html</loc></url>
@@ -14,10 +16,8 @@
 <url><loc>/reference/extract_schema.html</loc></url>
 <url><loc>/reference/gen_alternatives.html</loc></url>
 <url><loc>/reference/gen_code.html</loc></url>
-<url><loc>/reference/gen_composite_code.html</loc></url>
 <url><loc>/reference/get.html</loc></url>
 <url><loc>/reference/grp.html</loc></url>
-<url><loc>/reference/import.html</loc></url>
 <url><loc>/reference/index.html</loc></url>
 <url><loc>/reference/print.html</loc></url>
 <url><loc>/reference/read-write-alternatives.html</loc></url>

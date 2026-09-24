@@ -19,7 +19,9 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/alternatives.html">Structuring Alternative Files</a></li>
+    <li><a class="dropdown-item" href="../articles/future-extensions.html">Future Extensions</a></li>
     <li><a class="dropdown-item" href="../articles/gaitd-case-study.html">Case Study: A Published GAITD Regression Analysis</a></li>
+    <li><a class="dropdown-item" href="../articles/schema.html">Structuring Schema Files</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -53,7 +55,7 @@
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>An `alternatives` object.</p></dd>
+<dd><p>An <code>alternatives</code> object.</p></dd>
 
 
 <dt id="arg-file">file<a class="anchor" aria-label="anchor" href="#arg-file"></a></dt>
@@ -61,15 +63,15 @@
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Additional arguments passed to `yaml::read_yaml()`.</p></dd>
+<dd><p>Additional arguments passed to <code><a href="https://yaml.r-lib.org/reference/read_yaml.html" class="external-link">yaml::read_yaml()</a></code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>`write_alternatives()` invisibly returns `file`, the path it
-  wrote to; it is called for its side effect of writing the YAML file.</p>
-<p>`read_alternatives()` returns an object of class `"alternatives"`,
-  the same structure produced by [new_alternatives()].</p>
+    <p><code>write_alternatives()</code> invisibly returns <code>file</code>, the path it
+wrote to; it is called for its side effect of writing the YAML file.</p>
+<p><code>read_alternatives()</code> returns an object of class <code>"alternatives"</code>,
+the same structure produced by <code><a href="alternatives.html">new_alternatives()</a></code>.</p>
     </div>
 
     <div class="section level2">
@@ -77,7 +79,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">alts</span> <span class="op">&lt;-</span> <span class="fu"><a href="example_tines.html">example_alternatives</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">temp_path</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yml"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">write_alternatives</span><span class="op">(</span><span class="va">alts</span>, <span class="va">temp_path</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Successfully wrote alternatives to <span style="color: #0000BB;">/tmp/Rtmp5Ur8Dy/file1b2c3fbd68a4.yml</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Successfully wrote alternatives to <span style="color: #0000BB;">/tmp/Rtmp7pk0G8/file1a4a52c4d55a.yml</span></span>
 <span class="r-in"><span><span class="va">alts_read</span> <span class="op">&lt;-</span> <span class="fu">read_alternatives</span><span class="op">(</span><span class="va">temp_path</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">alts</span>, <span class="va">alts_read</span><span class="op">)</span></span></span>

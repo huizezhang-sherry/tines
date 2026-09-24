@@ -3,21 +3,20 @@
 These functions manage the relationship between a schema and its
 dataset. Here are the four main scenarios they cover:
 
-\* Specify the dataset when creating the schema through
-\[build_schema()\] and the inputs/outputs for each step as you add them
-with \[add_step()\].
+- Specify the dataset when creating the schema through
+  [`build_schema()`](constructor.md) and the inputs/outputs for each
+  step as you add them with [`add_step()`](constructor.md).
 
-\* Modify the inputs/outputs for a specific step later with
-\[update_io()\]. The function will validate the updated mapping against
-the attached dataset (if any).
+- Modify the inputs/outputs for a specific step later with
+  `update_io()`. The function will validate the updated mapping against
+  the attached dataset (if any).
 
-\* Provide a new dataset to an existing schema with \[update_data()\].
-The function will validate the entire schema (inputs/outputs) against
-the new dataset.
+- Provide a new dataset to an existing schema with `update_data()`. The
+  function will validate the entire schema (inputs/outputs) against the
+  new dataset.
 
-\* Combine the update of data and inputs/outputs in one step with
-\[update_io()\] by providing the new dataset using the \`data\`
-argument.
+- Combine the update of data and inputs/outputs in one step with
+  `update_io()` by providing the new dataset using the `data` argument.
 
 ## Usage
 
@@ -39,12 +38,12 @@ update_io(schema, id, inputs = NULL, outputs = NULL, data = NULL)
 
 - schema:
 
-  A \`schema\` object
+  A `schema` object
 
 - data:
 
-  A data frame or path to a data file. For \`gen_io()\` and
-  \`update_data()\`, this is required. For \`update_io()\`, this is
+  A data frame or path to a data file. For `gen_io()` and
+  `update_data()`, this is required. For `update_io()`, this is
   optional - if provided, validates the updated inputs/outputs against
   this dataset (without attaching it).
 
@@ -54,11 +53,14 @@ update_io(schema, id, inputs = NULL, outputs = NULL, data = NULL)
 
 - model:
 
-  The LLM to use for \`gen_io()\`, as a string in \`"provider/model"\`
-  form (e.g. \`"anthropic/claude-opus-4-5"\`, \`"openai/gpt-5"\`,
-  \`"google_gemini/gemini-2.5-flash"\`), passed to \`ellmer::chat()\`.
-  See \[ellmer::chat()\] for the full list of supported providers.
-  Defaults to \`"google_gemini/gemini-2.5-flash"\`.
+  The LLM to use for `gen_io()`, as a string in `"provider/model"` form
+  (e.g. `"anthropic/claude-opus-4-5"`, `"openai/gpt-5"`,
+  `"google_gemini/gemini-2.5-flash"`), passed to
+  [`ellmer::chat()`](https://ellmer.tidyverse.org/reference/chat-any.html).
+  See
+  [`ellmer::chat()`](https://ellmer.tidyverse.org/reference/chat-any.html)
+  for the full list of supported providers. Defaults to
+  `"google_gemini/gemini-2.5-flash"`.
 
 - force:
 
@@ -66,8 +68,7 @@ update_io(schema, id, inputs = NULL, outputs = NULL, data = NULL)
 
 - id:
 
-  Character string identifying which step to update (for
-  \`update_io()\`)
+  Character string identifying which step to update (for `update_io()`)
 
 - inputs:
 
@@ -79,7 +80,7 @@ update_io(schema, id, inputs = NULL, outputs = NULL, data = NULL)
 
 ## Value
 
-A \`schema\` object with updated inputs/outputs and data reference
+A `schema` object with updated inputs/outputs and data reference
 
 ## Examples
 

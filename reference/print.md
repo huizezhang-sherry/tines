@@ -1,9 +1,10 @@
-# Visualize and inspect \`tines\` objects
+# Visualize and inspect tines objects
 
 Functions to plot the tines object with Graphviz diagrams.
-\`draw_tines()\` and the \`plot()\` methods render the interactive
-widget. \`inspect_dot()\` formats and prints raw DOT strings to the
-console for debugging.
+`draw_tines()` and the
+[`plot()`](https://rdrr.io/r/graphics/plot.default.html) methods render
+the interactive widget. `inspect_dot()` formats and prints raw DOT
+strings to the console for debugging.
 
 ## Usage
 
@@ -28,16 +29,17 @@ inspect_dot(
 
 - x:
 
-  A \`schema\` or \`multiverse\` object.
+  A `schema` or `multiverse` object.
 
 - ...:
 
-  Additional arguments passed to methods or to \`DiagrammeR::grViz()\`.
+  Additional arguments passed to methods or to
+  [`DiagrammeR::grViz()`](https://rich-iannone.github.io/DiagrammeR/reference/grViz.html).
 
 - index:
 
-  An integer. For a \`multiverse\`, which path index to draw. Defaults
-  to 1.
+  An integer. For a `multiverse`, which path index to draw. Defaults to
+  1.
 
 - data:
 
@@ -46,27 +48,29 @@ inspect_dot(
 
 - schema:
 
-  A \`schema\` object to convert to DOT code for inspection.
+  A `schema` object to convert to DOT code for inspection.
 
 - indent:
 
   Integer. The number of spaces to use for each indentation level in
-  \`inspect_dot()\`. Defaults to 2.
+  `inspect_dot()`. Defaults to 2.
 
 - keep_attr_blocks_one_line:
 
-  Logical. If \`TRUE\`, attempts to keep square bracket \`\[\]\`
-  attribute blocks on a single line.
+  Logical. If `TRUE`, attempts to keep square bracket `[]` attribute
+  blocks on a single line.
 
 - trim_trailing_ws:
 
-  Logical. If \`TRUE\`, trims trailing whitespace from the final output.
+  Logical. If `TRUE`, trims trailing whitespace from the final output.
 
 ## Value
 
-\`draw_tines()\` and \`plot()\` return an \`htmlwidget\` object produced
-by \`DiagrammeR::grViz()\`. \`inspect_dot()\` invisibly returns \`NULL\`
-and prints to the console.
+`draw_tines()` and
+[`plot()`](https://rdrr.io/r/graphics/plot.default.html) return an
+`htmlwidget` object produced by
+[`DiagrammeR::grViz()`](https://rich-iannone.github.io/DiagrammeR/reference/grViz.html).
+`inspect_dot()` invisibly returns `NULL` and prints to the console.
 
 ## Examples
 
