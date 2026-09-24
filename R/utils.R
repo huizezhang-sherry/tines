@@ -1,17 +1,17 @@
 #' Generate examples
 #'
 #' @description
-#' These functions generate pre-populated `schema` and `multiverse` objects.
+#' These functions generate pre-populated schema and multiverse objects.
 #' They are primarily designed for testing, running examples in the documentation,
-#' and helping new users explore the `tines` package without having to build a
+#' and helping new users explore the tines package without having to build a
 #' garden of forking paths from scratch.
 #'
-#' @param case A character string specifying which example alternatives to generate. Options are "football" or "hdi". Only applies to `example_alternatives()`.
+#' @param case A character string specifying which example alternatives to generate. Options are "football" or "hdi". Only applies to [example_alternatives()].
 #' @return
-#' * For `example_schema()`: An object of class `schema`.
-#' * For `example_multiverse()`: An object of class `multiverse`.
-#' * For `example_football()`: An object of class `schema`
-#' * For `example_alternatives()`: An object of class `alternatives`
+#' * For [example_schema()]: An object of class `schema`.
+#' * For [example_multiverse()]: An object of class `multiverse`.
+#' * For [example_football()]: An object of class `schema`
+#' * For [example_alternatives()]: An object of class `alternatives`
 #'
 #' @rdname example_tines
 #' @export
@@ -145,126 +145,6 @@ example_alternatives <- function(case = c("football", "hdi")) {
   } else {
     cli::cli_abort("Invalid case specified. Choose either 'football' or 'hdi'.")
   }
-}
-
-#' @rdname example_tines
-#' @export
-example_spei <- function() {
-  build_schema() |>
-    add_step(
-      id = "step-calc-pet",
-      objective = "transform average temperature to obtain potential evapotranspiration (PET)",
-      decision = "use Thornthwaite equation",
-      rationale = "estimates PET using only mean temperature and latitude",
-      inputs = c(".proxy_tavg"),
-      outputs = c(".proxy_pet")
-    ) |>
-    add_step(
-      id = "step-calc-diff",
-      objective = "calculate difference series between precipitation and PET",
-      decision = "subtract PET from Precipitation (P - PET)",
-      rationale = "represents the climatic water balance (surplus or deficit)",
-      inputs = c(".proxy_prcp", ".proxy_pet"),
-      outputs = c(".proxy_diff")
-    ) |>
-    add_step(
-      id = "step-temporal-agg",
-      objective = "perform temporal aggregation on the difference series",
-      decision = "calculate rolling sum of the P-PET difference",
-      rationale = "accumulates water balance over a specific time scale",
-      inputs = c(".proxy_diff"),
-      outputs = c(".proxy_agg")
-    ) |>
-    add_step(
-      id = "step-dist-fit",
-      objective = "fit a probability distribution to the aggregated series",
-      decision = "fit a Log-Logistic distribution",
-      rationale = "difference series can be negative, so Gamma cannot be used; Log-Logistic handles negative values",
-      inputs = c(".proxy_agg"),
-      outputs = c(".proxy_fit")
-    ) |>
-    add_step(
-      id = "step-normalize",
-      objective = "normalize the fitted values",
-      decision = "transform to standard normal z-scores",
-      rationale = "standardizes the index",
-      inputs = c(".proxy_fit"),
-      outputs = c(".proxy_index")
-    )
-}
-
-#' @rdname example_tines
-#' @export
-example_spi <- function() {
-  build_schema() |>
-    add_step(
-      id = "step-temporal-agg",
-      objective = "perform temporal aggregation on the input precipitation series",
-      decision = "calculate rolling sum over user-defined time scale",
-      rationale = "droughts operate on varying time scales (e.g., 3-month, 6-month)",
-      inputs = c(".proxy_prcp"),
-      outputs = c(".proxy_agg")
-    ) |>
-    add_step(
-      id = "step-dist-fit",
-      objective = "fit a probability distribution to the aggregated series",
-      decision = "fit a Gamma distribution",
-      rationale = "precipitation is zero-bounded and highly skewed; Gamma fits well",
-      inputs = c(".proxy_agg"),
-      outputs = c(".proxy_fit")
-    ) |>
-    add_step(
-      id = "step-normalize",
-      objective = "normalize the fitted values",
-      decision = "transform the cumulative probabilities to standard normal z-scores",
-      rationale = "allows comparison of SPI values across different climates",
-      inputs = c(".proxy_fit"),
-      outputs = c(".proxy_index")
-    )
-}
-
-#' @rdname example_tines
-#' @export
-example_rdi <- function() {
-  spi_template <- example_spi()
-  spei_template <- example_spei()
-
-  build_schema() |>
-    import_step(
-      source_schema = spei_template,
-      source_schema_name = "spei_template",
-      id = "step-calc-pet"
-    ) |>
-    add_step(
-      id = "step-calc-ratio",
-      objective = "calculate the ratio of precipitation to PET",
-      decision = "divide precipitation by PET",
-      rationale = "RDI relies on the P/PET ratio rather than difference",
-      inputs = c(".proxy_prcp", ".proxy_pet"),
-      outputs = c(".proxy_ratio")
-    ) |>
-    import_step(
-      source_schema = spi_template,
-      source_schema_name = "spi_template",
-      id = "step-temporal-agg",
-      inputs = c(".proxy_ratio")
-    ) |>
-    add_step(
-      id = "step-log-transform",
-      objective = "take log10 of aggregated series",
-      decision = "apply log10 transformation",
-      rationale = "to normalize the heavily skewed ratio distribution",
-      inputs = c(".proxy_agg"),
-      outputs = c(".proxy_y")
-    ) |>
-    add_step(
-      id = "step-zscore",
-      objective = "rescale to standard normal",
-      decision = "calculate z-score (y - mean / sd)",
-      rationale = "final step to obtain the standardized RDI index",
-      inputs = c(".proxy_y"),
-      outputs = c(".proxy_index")
-    )
 }
 
 #' @rdname example_tines

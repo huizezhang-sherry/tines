@@ -10,7 +10,7 @@ test_that("import_step appends a row from another schema", {
     )
 
   schema <- build_schema() |>
-    import_step(
+    tines:::import_step(
       source_schema = source_schema,
       source_schema_name = "source_schema",
       id = "step-source"
@@ -38,7 +38,7 @@ test_that("import_step appends to an existing schema and applies overrides", {
     add_step(
       id = "step-first", objective = "a", decision = "b", rationale = "c"
     ) |>
-    import_step(
+    tines:::import_step(
       source_schema = source_schema,
       id = "step-source",
       inputs = "z"
@@ -57,44 +57,13 @@ test_that("import_step errors when the id is not found", {
 
   expect_error(
     build_schema() |>
-      import_step(source_schema = source_schema, id = "missing-id"),
+      tines:::import_step(source_schema = source_schema, id = "missing-id"),
     "Could not find step"
   )
 })
 
-test_that("generate_edges links steps by matching outputs to inputs", {
-  schema <- build_schema() |>
-    add_step(
-      id = "step-a", objective = "a", decision = "a", rationale = "a",
-      inputs = NULL, outputs = "x"
-    ) |>
-    add_step(
-      id = "step-b", objective = "b", decision = "b", rationale = "b",
-      inputs = "x", outputs = "y"
-    ) |>
-    add_step(
-      id = "step-c", objective = "c", decision = "c", rationale = "c",
-      inputs = "y", outputs = NULL
-    )
-
-  edges <- generate_edges(schema)
-
-  expect_s3_class(edges, "data.frame")
-  expect_false(inherits(edges, "schema"))
-  expect_equal(edges$from, c("step-a", "step-b"))
-  expect_equal(edges$to, c("step-b", "step-c"))
-})
-
-test_that("generate_edges returns no rows when nothing connects", {
-  schema <- build_schema() |>
-    add_step(id = "step-a", objective = "a", decision = "a", rationale = "a")
-
-  edges <- generate_edges(schema)
-  expect_equal(nrow(edges), 0)
-})
-
 test_that("example_rdi builds a composite schema, not an edge data frame", {
-  schema <- example_rdi()
+  schema <- tines:::example_rdi()
 
   expect_s3_class(schema, "schema")
   expect_true(

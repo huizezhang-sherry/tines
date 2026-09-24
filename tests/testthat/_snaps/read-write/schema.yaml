@@ -9,18 +9,15 @@ nodes:
   rationale: to put them on the same scale for combination
   inputs: []
   outputs: []
-  source_schema: .na
 - id: step-education
   objective: combine the school variables into one dimension
   decision: average exp sch and avg sch
   rationale: the most intuitive way
   inputs: []
   outputs: []
-  source_schema: .na
 - id: step-combine
   objective: combine the three dimensions into a single index
   decision: use the geometric mean
   rationale: the geometric mean is more appropriate than arithmetic mean
   inputs: []
   outputs: []
-  source_schema: .na

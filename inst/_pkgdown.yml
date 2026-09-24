@@ -7,7 +7,6 @@ reference:
    - new_schema
    - draw_tines
    - alternative
-   - import_step
    - gen_io
 - title: "Generate analytical alternatives and corresponding code"
   contents:
@@ -15,7 +14,6 @@ reference:
    - gen_alternatives
    - expand_tines
    - gen_code
-   - gen_composite_code
    - validate_script
 - title: "Interface with YAML files"
   contents:
