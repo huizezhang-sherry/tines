@@ -33,10 +33,10 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/alternatives.html">Structuring Alternative Files</a></li>
-    <li><a class="dropdown-item" href="../articles/future-extensions.html">Future Extensions</a></li>
+<li><a class="dropdown-item" href="../articles/schema.html">Structuring Schema Files</a></li>
+    <li><a class="dropdown-item" href="../articles/alternatives.html">Structuring Alternative Files</a></li>
     <li><a class="dropdown-item" href="../articles/gaitd-case-study.html">Case Study: A Published GAITD Regression Analysis</a></li>
-    <li><a class="dropdown-item" href="../articles/schema.html">Structuring Schema Files</a></li>
+    <li><a class="dropdown-item" href="../articles/future-extensions.html">Future Extensions</a></li>
   </ul>
 </li>
       </ul>
@@ -173,7 +173,7 @@ steps, ready to fill in by hand:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">draft_path</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yml"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/template.html">draft_tines</a></span><span class="op">(</span>file_path <span class="op">=</span> <span class="va">draft_path</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Drafted <span style="color: #0000BB;">"schema"</span> template at <span style="color: #0000BB;">/tmp/Rtmpxp3cx1/file1c903f7d5ed1.yml</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Drafted <span style="color: #0000BB;">"schema"</span> template at <span style="color: #0000BB;">/tmp/RtmpJoWvi8/file1d6d70c8c215.yml</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Open this file to start defining your steps!</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">meta</span><span class="kw">:</span></span>
 <span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> schema</span></span>
@@ -216,7 +216,7 @@ steps, ready to fill in by hand:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_path</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yml"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/read-write.html">write_tines</a></span><span class="op">(</span><span class="va">hdi</span>, <span class="va">out_path</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> File saved: <span style="color: #0000BB;">/tmp/Rtmpxp3cx1/file1c907f10e449.yml</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> File saved: <span style="color: #0000BB;">/tmp/RtmpJoWvi8/file1d6d5dd166e9.yml</span></span></span></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">meta</span><span class="kw">:</span></span>
 <span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> schema</span></span>
 <span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="at">  </span><span class="fu">date</span><span class="kw">:</span><span class="at"> </span><span class="st">'2026-09-24'</span></span>

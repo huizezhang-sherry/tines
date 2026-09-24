@@ -33,10 +33,10 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/alternatives.html">Structuring Alternative Files</a></li>
-    <li><a class="dropdown-item" href="../articles/future-extensions.html">Future Extensions</a></li>
+<li><a class="dropdown-item" href="../articles/schema.html">Structuring Schema Files</a></li>
+    <li><a class="dropdown-item" href="../articles/alternatives.html">Structuring Alternative Files</a></li>
     <li><a class="dropdown-item" href="../articles/gaitd-case-study.html">Case Study: A Published GAITD Regression Analysis</a></li>
-    <li><a class="dropdown-item" href="../articles/schema.html">Structuring Schema Files</a></li>
+    <li><a class="dropdown-item" href="../articles/future-extensions.html">Future Extensions</a></li>
   </ul>
 </li>
       </ul>
@@ -211,7 +211,7 @@ and fill it in by hand:</strong></p>
 <span>  branch <span class="op">=</span> <span class="st">"single"</span>,</span>
 <span>  file_path <span class="op">=</span> <span class="va">draft_path_single</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Created template at <span style="color: #0000BB;">/tmp/RtmpYjygHS/file1be2304d9b2f.yml</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Created template at <span style="color: #0000BB;">/tmp/RtmpNlCUXM/file1cc12de11acb.yml</span></span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">meta</span><span class="kw">:</span></span>
 <span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> alternatives</span></span>
 <span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="at">  </span><span class="fu">branch</span><span class="kw">:</span><span class="at"> single</span></span>
@@ -260,7 +260,7 @@ and fill it in by hand:</strong></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tmp_file_single</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yml"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/read-write-alternatives.html">write_alternatives</a></span><span class="op">(</span><span class="va">alts_combo</span>, <span class="va">tmp_file_single</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Successfully wrote alternatives to <span style="color: #0000BB;">/tmp/RtmpYjygHS/file1be26f612678.yml</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Successfully wrote alternatives to <span style="color: #0000BB;">/tmp/RtmpNlCUXM/file1cc1256ff057.yml</span></span></span></code></pre></div>
 <hr>
 <p>You can combine this alternative specification with the original
 schema to form a set of new schemas, or a <strong>multiverse</strong>,
@@ -330,7 +330,7 @@ and fill it in by hand:</strong></p>
 <span><span class="fu"><a href="../reference/template.html">draft_alternatives</a></span><span class="op">(</span></span>
 <span>  <span class="va">schema</span>, id <span class="op">=</span> <span class="st">"step-combine"</span>, branch <span class="op">=</span> <span class="st">"multi"</span>, file_path <span class="op">=</span> <span class="va">draft_path</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Created template at <span style="color: #0000BB;">/tmp/RtmpYjygHS/file1be222c93026.yml</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Created template at <span style="color: #0000BB;">/tmp/RtmpNlCUXM/file1cc15c5dd14d.yml</span></span></span></code></pre></div>
 <div class="sourceCode" id="cb14"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">meta</span><span class="kw">:</span></span>
 <span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> alternatives</span></span>
 <span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="at">  </span><span class="fu">branch</span><span class="kw">:</span><span class="at"> multi</span></span>
@@ -380,7 +380,7 @@ to be given explicitly:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tmp_file</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yml"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/read-write-alternatives.html">write_alternatives</a></span><span class="op">(</span><span class="va">alts</span>, <span class="va">tmp_file</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Successfully wrote alternatives to <span style="color: #0000BB;">/tmp/RtmpYjygHS/file1be27a6cac51.yml</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Successfully wrote alternatives to <span style="color: #0000BB;">/tmp/RtmpNlCUXM/file1cc16568eb99.yml</span></span></span></code></pre></div>
 <div class="sourceCode" id="cb17"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">meta</span><span class="kw">:</span></span>
 <span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> alternatives</span></span>
 <span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a><span class="at">  </span><span class="fu">branch</span><span class="kw">:</span><span class="at"> multi</span></span>
@@ -421,10 +421,15 @@ case, with 2 alternatives, this results in 3 branches:</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> step-scaling   variables are in different s… apply m… to put t… <span style="color: #949494;">&lt;chr&gt;</span>  <span style="color: #949494;">&lt;chr&gt;</span>  </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> step-education combine the school variables… average… the most… <span style="color: #949494;">&lt;chr&gt;</span>  <span style="color: #949494;">&lt;chr&gt;</span>  </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> step-combine   combine the three dimensions… use a w… down-wei… <span style="color: #949494;">&lt;chr&gt;</span>  <span style="color: #949494;">&lt;chr&gt;</span></span></span></code></pre></div>
-<p><code><a href="../reference/expand.html">expand_tines()</a></code> also accepts a path to a YAML file
-directly:</p>
+<p>Either argument may be a path to a YAML file instead of an object, so
+you can expand straight from files without reading them in first:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/expand.html">expand_tines</a></span><span class="op">(</span><span class="va">schema</span>, <span class="va">tmp_file</span><span class="op">)</span></span>
+<span><span class="co">#&gt; A multiverse with 3 schemas:</span></span>
+<span><span class="co">#&gt;   original: "HDI Example" (3 steps)</span></span>
+<span><span class="co">#&gt;   step-arithmetic-mean: "HDI Example" (3 steps)</span></span>
+<span><span class="co">#&gt;   step-weighted-mean: "HDI Example" (3 steps)</span></span>
+<span><span class="fu"><a href="../reference/expand.html">expand_tines</a></span><span class="op">(</span><span class="va">schema_path</span>, <span class="va">tmp_file</span><span class="op">)</span></span>
 <span><span class="co">#&gt; A multiverse with 3 schemas:</span></span>
 <span><span class="co">#&gt;   original: "HDI Example" (3 steps)</span></span>
 <span><span class="co">#&gt;   step-arithmetic-mean: "HDI Example" (3 steps)</span></span>
@@ -484,6 +489,75 @@ directly:</p>
 <code>step-scaling-zscore</code> alone, each of
 <code>step-combine</code>’s two alternatives alone, and each of those
 two paired with <code>step-scaling-zscore</code>.</p>
+</div>
+<div class="section level2">
+<h2 id="a-closer-look-at-the-multiverse-object">A closer look at the multiverse object<a class="anchor" aria-label="anchor" href="#a-closer-look-at-the-multiverse-object"></a>
+</h2>
+<p>Every case above ends the same way: <code><a href="../reference/expand.html">expand_tines()</a></code> hands
+back a <code>multiverse</code>, so it is worth spending a moment on what
+that object is.</p>
+<p>A multiverse is a list of <code>schema</code> objects. That means the
+ordinary vocabulary for lists applies – <code><a href="https://rdrr.io/r/base/length.html" class="external-link">length()</a></code> counts the
+branches, <code><a href="https://rdrr.io/r/base/names.html" class="external-link">names()</a></code> tells you what they are, and
+<code>[[</code> pulls one out to inspect or pass on:</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mv</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/expand.html">expand_tines</a></span><span class="op">(</span><span class="va">schema</span>, <span class="va">alts_factorial</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">mv</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 6</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">mv</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "original"                                </span></span>
+<span><span class="co">#&gt; [2] "step-scaling-zscore"                     </span></span>
+<span><span class="co">#&gt; [3] "step-arithmetic-mean"                    </span></span>
+<span><span class="co">#&gt; [4] "step-scaling-zscore+step-arithmetic-mean"</span></span>
+<span><span class="co">#&gt; [5] "step-weighted-mean"                      </span></span>
+<span><span class="co">#&gt; [6] "step-scaling-zscore+step-weighted-mean"</span></span>
+<span><span class="va">mv</span><span class="op">[[</span><span class="st">"step-scaling-zscore"</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A schema: HDI Example</span></span></span>
+<span><span class="co">#&gt;   id             objective                     decision rationale inputs outputs</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> step-scaling   variables are in different s… z-score… puts var… <span style="color: #949494;">&lt;chr&gt;</span>  <span style="color: #949494;">&lt;chr&gt;</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> step-education combine the school variables… average… the most… <span style="color: #949494;">&lt;chr&gt;</span>  <span style="color: #949494;">&lt;chr&gt;</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> step-combine   combine the three dimensions… use the… the geom… <span style="color: #949494;">&lt;chr&gt;</span>  <span style="color: #949494;">&lt;chr&gt;</span></span></span></code></pre></div>
+<p>Unlike a schema, a multiverse is never authored from scratch. There
+is no blank template to fill in, and no multiverse file to read back,
+because a multiverse only means anything in relation to the analyses it
+collects. It arrives by one of two routes, and both build it out of
+schemas you already have:</p>
+<table class="table">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<thead><tr class="header">
+<th>If you are starting from</th>
+<th>Use</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>a schema and an alternatives file</td>
+<td><code>expand_tines(schema, alternatives)</code></td>
+</tr>
+<tr class="even">
+<td>several schemas you want to compare</td>
+<td><code>as_multiverse(list(a = s1, b = s2))</code></td>
+</tr>
+</tbody>
+</table>
+<p><code><a href="../reference/constructor.html">as_multiverse()</a></code> takes a list, so you can use
+<code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply()</a></code> to read in a set of schema once with
+<code><a href="../reference/read-write.html">read_tines()</a></code>. Branch names are optional and you can set
+them with <code><a href="https://rdrr.io/r/stats/setNames.html" class="external-link">setNames()</a></code>, when you want to index by name
+later:</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"hdi.yml"</span>, package <span class="op">=</span> <span class="st">"tines"</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"football-grp5/football-grp5.yaml"</span>, package <span class="op">=</span> <span class="st">"tines"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="../reference/constructor.html">as_multiverse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">files</span>, <span class="va">read_tines</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; NULL</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="../reference/constructor.html">as_multiverse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/setNames.html" class="external-link">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">files</span>, <span class="va">read_tines</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hdi"</span>, <span class="st">"football"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "hdi"      "football"</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

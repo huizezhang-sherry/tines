@@ -105,7 +105,7 @@ schema2 <- build_schema(data = my_data) |>
     inputs = c("age", "income"), outputs = "df_clean"
   )
 #> ✔ Data attached: "my_data"
-multiverse <- build_multiverse(schema, schema2)
+multiverse <- as_multiverse(list(schema, schema2))
 draw_tines(multiverse, index = 2)
 
 {"x":{"diagram":"digraph schema {\n  graph [rankdir=TD, fontname=Arial]\n  node [fontname=Arial, fontsize=10]\n  edge [fontname=Arial, fontsize=8]\n  \"step-filter\" [label=\"step-filter\n(impute with median)\", shape=box, style=filled, fillcolor=white]\n\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}

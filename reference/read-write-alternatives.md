@@ -39,7 +39,7 @@ same structure produced by [`new_alternatives()`](alternatives.md).
 alts <- example_alternatives()
 temp_path <- withr::local_tempfile(fileext = ".yml")
 write_alternatives(alts, temp_path)
-#> ✔ Successfully wrote alternatives to /tmp/Rtmp7pk0G8/file1a4a52c4d55a.yml
+#> ✔ Successfully wrote alternatives to /tmp/RtmpFB6av5/file1b277021046.yml
 alts_read <- read_alternatives(temp_path)
 
 identical(alts, alts_read)

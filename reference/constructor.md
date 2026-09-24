@@ -12,8 +12,6 @@ build_schema(name = NULL, data = NULL)
 
 new_multiverse(schemas = list())
 
-build_multiverse(...)
-
 add_step(
   object,
   id,
@@ -33,11 +31,8 @@ as_schema(x, ...)
 # S3 method for class 'schema'
 as_schema(x, ...)
 
-# S3 method for class 'list'
-as_schema(x, ...)
-
-# S3 method for class 'character'
-as_schema(x, ...)
+# S3 method for class 'data.frame'
+as_schema(x, name = NULL, ...)
 
 as_multiverse(x, ...)
 
@@ -52,12 +47,6 @@ as_multiverse(x, ...)
 
 # S3 method for class 'list'
 as_multiverse(x, ...)
-
-# S3 method for class 'schema'
-c(...)
-
-# S3 method for class 'multiverse'
-c(...)
 
 # S3 method for class 'schema'
 as.data.frame(x, row.names = NULL, optional = FALSE, ...)
@@ -80,10 +69,6 @@ print(x, width = NULL, ...)
 
   Optional data frame or path to data file for validation
 
-- ...:
-
-  One or more `schema` objects to be included in the multiverse.
-
 - object:
 
   A `schema` object.
@@ -91,6 +76,10 @@ print(x, width = NULL, ...)
 - id, objective, decision, rationale, inputs, outputs:
 
   character strings to write a step
+
+- ...:
+
+  One or more `schema` objects to be included in the multiverse.
 
 - x:
 
@@ -119,7 +108,7 @@ print(x, width = NULL, ...)
 - `build_schema()` and `new_schema()` return an object of class
   `schema`.
 
-- `build_multiverse()` and `new_multiverse()` return an object of class
+- `as_multiverse()` and `new_multiverse()` return an object of class
   `c("multiverse", "list")`.
 
 ## Examples
@@ -179,7 +168,7 @@ schema2 <- build_schema("HDI Example") |>
     rationale = "the geometric mean is more appropriate than arithmetic mean"
   )
 
-my_multiverse <- build_multiverse(original = schema, reversed = schema2)
+my_multiverse <- as_multiverse(list(original = schema, reversed = schema2))
 my_multiverse
 #> A multiverse with 2 schemas:
 #>   original: "HDI Example" (3 steps)

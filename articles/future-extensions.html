@@ -33,10 +33,10 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/alternatives.html">Structuring Alternative Files</a></li>
-    <li><a class="dropdown-item" href="../articles/future-extensions.html">Future Extensions</a></li>
+<li><a class="dropdown-item" href="../articles/schema.html">Structuring Schema Files</a></li>
+    <li><a class="dropdown-item" href="../articles/alternatives.html">Structuring Alternative Files</a></li>
     <li><a class="dropdown-item" href="../articles/gaitd-case-study.html">Case Study: A Published GAITD Regression Analysis</a></li>
-    <li><a class="dropdown-item" href="../articles/schema.html">Structuring Schema Files</a></li>
+    <li><a class="dropdown-item" href="../articles/future-extensions.html">Future Extensions</a></li>
   </ul>
 </li>
       </ul>
@@ -187,35 +187,6 @@ and neither substitutes for the other:</p>
 analysis, assembling one analysis out of parts.</li>
 </ul>
 </div>
-</div>
-<div class="section level2">
-<h2 id="a-single-file-multiverse">A single-file multiverse<a class="anchor" aria-label="anchor" href="#a-single-file-multiverse"></a>
-</h2>
-<p><code><a href="../reference/expand.html">expand_tines()</a></code> returns a <code>multiverse</code> – a
-collection of schemas – and <code><a href="../reference/read-write.html">write_tines()</a></code> can persist one.
-Whether it <em>should</em> is unsettled.</p>
-<p>A multiverse produced by expansion is fully derived from its inputs:
-the same base schema and alternatives file reproduce it exactly.
-Persisting it is therefore convenience rather than necessity, and the
-expanded form is both bulkier than its inputs (one near-complete copy of
-the schema per branch) and less informative (the base-versus-varied
-structure has to be recovered by diffing branches).</p>
-<p>The cases where a multiverse is <em>not</em> re-derivable are the
-ones that would justify a format:</p>
-<ul>
-<li>branches pruned after expansion, because a cross-product generates
-combinations that are not all coherent;</li>
-<li>a branch patched by hand with a step no alternative expresses;</li>
-<li>a chain of expansions, where nothing records the order they were
-applied in;</li>
-<li>a collection of independently authored analyses, as in a
-many-analysts study, which no expansion produced.</li>
-</ul>
-<p>None of those are supported workflows today, and a results-carrying
-variant – mapping each branch to its script and its estimate – would be
-a different artifact again, closer to a manifest than to a schema
-collection. Designing the format before deciding which of these matters
-would mean designing the wrong one.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

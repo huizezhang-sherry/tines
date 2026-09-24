@@ -3,10 +3,9 @@
 Generates a starter YAML file for a schema to help you begin building
 your garden of forking paths. There is no template for a multiverse: a
 multiverse is always produced either by combining schema objects with
-[`build_multiverse()`](constructor.md), or by expanding a schema (or
-another multiverse) with an alternatives file via
-[`expand_tines()`](expand.md) – never hand-authored from a blank
-template.
+[`as_multiverse()`](constructor.md), or by expanding a schema with an
+alternatives file via [`expand_tines()`](expand.md) – never
+hand-authored from a blank template.
 
 ## Usage
 
@@ -59,7 +58,7 @@ writing a template YAML file to disk.
 # Create a new schema template
 schema_path <- withr::local_tempfile(fileext = ".yml")
 draft_tines(file_path = schema_path)
-#> ✔ Drafted "schema" template at /tmp/Rtmp7pk0G8/file1a4a4a3b5f5f.yml
+#> ✔ Drafted "schema" template at /tmp/RtmpFB6av5/file1b275e1ac49d.yml
 #> ℹ Open this file to start defining your steps!
 
 # Draft alternatives from a schema object
@@ -70,7 +69,7 @@ draft_alternatives(
   file_path = withr::local_tempfile(fileext = ".yml"),
   branch = "multi"
 )
-#> ✔ Created template at /tmp/Rtmp7pk0G8/file1a4a3f290a7.yml
+#> ✔ Created template at /tmp/RtmpFB6av5/file1b2739044cc5.yml
 
 # `x` also accepts a path to a schema file -- draft a single-branch
 # template combining two steps together
@@ -81,5 +80,5 @@ draft_alternatives(
   file_path = withr::local_tempfile(fileext = ".yml"),
   branch = "single"
 )
-#> ✔ Created template at /tmp/Rtmp7pk0G8/file1a4a47ba66f6.yml
+#> ✔ Created template at /tmp/RtmpFB6av5/file1b2741c81503.yml
 ```

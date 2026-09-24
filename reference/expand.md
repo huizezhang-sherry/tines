@@ -10,7 +10,10 @@ expand_tines(x, alternatives, ...)
 # S3 method for class 'schema'
 expand_tines(x, alternatives, include_original = TRUE, ...)
 
-# S3 method for class 'multiverse'
+# S3 method for class 'character'
+expand_tines(x, alternatives, ...)
+
+# Default S3 method
 expand_tines(x, alternatives, ...)
 ```
 
@@ -18,11 +21,11 @@ expand_tines(x, alternatives, ...)
 
 - x:
 
-  A `schema` object.
+  A `schema` object, or the path to a schema YAML file.
 
 - alternatives:
 
-  an `alternatives` object or the path to an alternative YAML
+  An `alternatives` object, or the path to an alternatives YAML file.
 
 - ...:
 
@@ -37,7 +40,7 @@ expand_tines(x, alternatives, ...)
 
 An object of class `"multiverse"`: a named list of `schema` objects, one
 per branch produced from `alternatives` (plus, when
-`include_original = TRUE`, the original schema/multiverse under the name
+`include_original = TRUE`, the original schema under the name
 `"original"`). Each branch name is the `+`-joined ids of the
 alternatives applied to reach it.
 
@@ -58,21 +61,11 @@ expand_tines(base_schema, alts)
 # read the alternatives from a YML file
 tmp_file <- tempfile(fileext = ".yml")
 write_alternatives(alts, tmp_file)
-#> ✔ Successfully wrote alternatives to /tmp/Rtmp7pk0G8/file1a4a507a40d6.yml
+#> ✔ Successfully wrote alternatives to /tmp/RtmpFB6av5/file1b272d7da76f.yml
 expand_tines(base_schema, tmp_file)
 #> A multiverse with 4 schemas:
 #>   original: (3 steps)
 #>   step-mixed-effects-logistic-model: (3 steps)
 #>   step-probit-regression-model: (3 steps)
 #>   step-bayesian-logistic-model: (3 steps)
-
-# expand on the multiverse
-multiverse <- example_multiverse()
-alts <- example_alternatives(case = "hdi")
-expand_tines(multiverse, alts)
-#> A multiverse with 4 schemas:
-#>   original: "HDI Example" (3 steps)
-#>   reversed: "HDI Example" (3 steps)
-#>   original.step-arithmetic-mean: "HDI Example" (3 steps)
-#>   reversed.step-arithmetic-mean: "HDI Example" (3 steps)
 ```

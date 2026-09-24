@@ -20,10 +20,10 @@ garden of forking paths (multiverse)."></head><body>
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/alternatives.html">Structuring Alternative Files</a></li>
-    <li><a class="dropdown-item" href="../articles/future-extensions.html">Future Extensions</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/schema.html">Structuring Schema Files</a></li>
+    <li><a class="dropdown-item" href="../articles/alternatives.html">Structuring Alternative Files</a></li>
     <li><a class="dropdown-item" href="../articles/gaitd-case-study.html">Case Study: A Published GAITD Regression Analysis</a></li>
-    <li><a class="dropdown-item" href="../articles/schema.html">Structuring Schema Files</a></li>
+    <li><a class="dropdown-item" href="../articles/future-extensions.html">Future Extensions</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -54,8 +54,6 @@ garden of forking paths (<code>multiverse</code>).</p>
 <span></span>
 <span><span class="fu">new_multiverse</span><span class="op">(</span>schemas <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">build_multiverse</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
-<span></span>
 <span><span class="fu">add_step</span><span class="op">(</span></span>
 <span>  <span class="va">object</span>,</span>
 <span>  <span class="va">id</span>,</span>
@@ -75,11 +73,8 @@ garden of forking paths (<code>multiverse</code>).</p>
 <span><span class="co"># S3 method for class 'schema'</span></span>
 <span><span class="fu">as_schema</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># S3 method for class 'list'</span></span>
-<span><span class="fu">as_schema</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S3 method for class 'character'</span></span>
-<span><span class="fu">as_schema</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="co"># S3 method for class 'data.frame'</span></span>
+<span><span class="fu">as_schema</span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">as_multiverse</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
@@ -94,12 +89,6 @@ garden of forking paths (<code>multiverse</code>).</p>
 <span></span>
 <span><span class="co"># S3 method for class 'list'</span></span>
 <span><span class="fu">as_multiverse</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S3 method for class 'schema'</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S3 method for class 'multiverse'</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'schema'</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">x</span>, row.names <span class="op">=</span> <span class="cn">NULL</span>, optional <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
@@ -125,10 +114,6 @@ schema.</p></dd>
 <dd><p>Optional data frame or path to data file for validation</p></dd>
 
 
-<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>One or more <code>schema</code> objects to be included in the multiverse.</p></dd>
-
-
 <dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
 <dd><p>A <code>schema</code> object.</p></dd>
 
@@ -136,6 +121,10 @@ schema.</p></dd>
 <dt id="arg-id-objective-decision-rationale-inputs-outputs">id, objective, decision, rationale, inputs, outputs<a class="anchor" aria-label="anchor" href="#arg-id-objective-decision-rationale-inputs-outputs"></a></dt>
 <dd><p>character strings
 to write a step</p></dd>
+
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>One or more <code>schema</code> objects to be included in the multiverse.</p></dd>
 
 
 <dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
@@ -165,7 +154,7 @@ Defaults to an empty list.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
 
 <ul><li><p><code>build_schema()</code> and <code>new_schema()</code> return an object of class <code>schema</code>.</p></li>
-<li><p><code>build_multiverse()</code> and <code>new_multiverse()</code> return an object of class
+<li><p><code>as_multiverse()</code> and <code>new_multiverse()</code> return an object of class
 <code>c("multiverse", "list")</code>.</p></li>
 </ul></div>
 
@@ -225,7 +214,7 @@ Defaults to an empty list.</p></dd>
 <span class="r-in"><span>    rationale <span class="op">=</span> <span class="st">"the geometric mean is more appropriate than arithmetic mean"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">my_multiverse</span> <span class="op">&lt;-</span> <span class="fu">build_multiverse</span><span class="op">(</span>original <span class="op">=</span> <span class="va">schema</span>, reversed <span class="op">=</span> <span class="va">schema2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">my_multiverse</span> <span class="op">&lt;-</span> <span class="fu">as_multiverse</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>original <span class="op">=</span> <span class="va">schema</span>, reversed <span class="op">=</span> <span class="va">schema2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">my_multiverse</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A multiverse with 2 schemas:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   original: "HDI Example" (3 steps)</span>

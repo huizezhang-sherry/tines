@@ -150,7 +150,7 @@ draft_alternatives(
   branch = "single",
   file_path = draft_path_single
 )
-#> ✔ Created template at /tmp/RtmpYjygHS/file1be2304d9b2f.yml
+#> ✔ Created template at /tmp/RtmpNlCUXM/file1cc12de11acb.yml
 ```
 
 ``` yaml
@@ -211,7 +211,7 @@ alts_combo
 
 tmp_file_single <- withr::local_tempfile(fileext = ".yml")
 write_alternatives(alts_combo, tmp_file_single)
-#> ✔ Successfully wrote alternatives to /tmp/RtmpYjygHS/file1be26f612678.yml
+#> ✔ Successfully wrote alternatives to /tmp/RtmpNlCUXM/file1cc1256ff057.yml
 ```
 
 ------------------------------------------------------------------------
@@ -298,7 +298,7 @@ draft_path <- withr::local_tempfile(fileext = ".yml")
 draft_alternatives(
   schema, id = "step-combine", branch = "multi", file_path = draft_path
 )
-#> ✔ Created template at /tmp/RtmpYjygHS/file1be222c93026.yml
+#> ✔ Created template at /tmp/RtmpNlCUXM/file1cc15c5dd14d.yml
 ```
 
 ``` yaml
@@ -362,7 +362,7 @@ alts
 
 tmp_file <- withr::local_tempfile(fileext = ".yml")
 write_alternatives(alts, tmp_file)
-#> ✔ Successfully wrote alternatives to /tmp/RtmpYjygHS/file1be27a6cac51.yml
+#> ✔ Successfully wrote alternatives to /tmp/RtmpNlCUXM/file1cc16568eb99.yml
 ```
 
 ``` yaml
@@ -418,12 +418,17 @@ mv$`step-weighted-mean`
 #> 3 step-combine   combine the three dimensions… use a w… down-wei… <chr>  <chr>
 ```
 
-[`expand_tines()`](../reference/expand.md) also accepts a path to a YAML
-file directly:
+Either argument may be a path to a YAML file instead of an object, so
+you can expand straight from files without reading them in first:
 
 ``` r
 
 expand_tines(schema, tmp_file)
+#> A multiverse with 3 schemas:
+#>   original: "HDI Example" (3 steps)
+#>   step-arithmetic-mean: "HDI Example" (3 steps)
+#>   step-weighted-mean: "HDI Example" (3 steps)
+expand_tines(schema_path, tmp_file)
 #> A multiverse with 3 schemas:
 #>   original: "HDI Example" (3 steps)
 #>   step-arithmetic-mean: "HDI Example" (3 steps)
@@ -486,3 +491,67 @@ names(mv)
 crosses into `(1 + 1) x (2 + 1)` = 6 schemas: `original`,
 `step-scaling-zscore` alone, each of `step-combine`’s two alternatives
 alone, and each of those two paired with `step-scaling-zscore`.
+
+## A closer look at the multiverse object
+
+Every case above ends the same way:
+[`expand_tines()`](../reference/expand.md) hands back a `multiverse`, so
+it is worth spending a moment on what that object is.
+
+A multiverse is a list of `schema` objects. That means the ordinary
+vocabulary for lists applies –
+[`length()`](https://rdrr.io/r/base/length.html) counts the branches,
+[`names()`](https://rdrr.io/r/base/names.html) tells you what they are,
+and `[[` pulls one out to inspect or pass on:
+
+``` r
+
+mv <- expand_tines(schema, alts_factorial)
+length(mv)
+#> [1] 6
+names(mv)
+#> [1] "original"                                
+#> [2] "step-scaling-zscore"                     
+#> [3] "step-arithmetic-mean"                    
+#> [4] "step-scaling-zscore+step-arithmetic-mean"
+#> [5] "step-weighted-mean"                      
+#> [6] "step-scaling-zscore+step-weighted-mean"
+mv[["step-scaling-zscore"]]
+#> # A schema: HDI Example
+#>   id             objective                     decision rationale inputs outputs
+#>   <chr>          <chr>                         <chr>    <chr>     <list> <list> 
+#> 1 step-scaling   variables are in different s… z-score… puts var… <chr>  <chr>  
+#> 2 step-education combine the school variables… average… the most… <chr>  <chr>  
+#> 3 step-combine   combine the three dimensions… use the… the geom… <chr>  <chr>
+```
+
+Unlike a schema, a multiverse is never authored from scratch. There is
+no blank template to fill in, and no multiverse file to read back,
+because a multiverse only means anything in relation to the analyses it
+collects. It arrives by one of two routes, and both build it out of
+schemas you already have:
+
+| If you are starting from            | Use                                   |
+|-------------------------------------|---------------------------------------|
+| a schema and an alternatives file   | `expand_tines(schema, alternatives)`  |
+| several schemas you want to compare | `as_multiverse(list(a = s1, b = s2))` |
+
+[`as_multiverse()`](../reference/constructor.md) takes a list, so you
+can use [`lapply()`](https://rdrr.io/r/base/lapply.html) to read in a
+set of schema once with [`read_tines()`](../reference/read-write.md).
+Branch names are optional and you can set them with
+[`setNames()`](https://rdrr.io/r/stats/setNames.html), when you want to
+index by name later:
+
+``` r
+
+files <- c(
+  system.file("hdi.yml", package = "tines"),
+  system.file("football-grp5/football-grp5.yaml", package = "tines")
+)
+
+names(as_multiverse(lapply(files, read_tines)))
+#> NULL
+names(as_multiverse(setNames(lapply(files, read_tines), c("hdi", "football"))))
+#> [1] "hdi"      "football"
+```
