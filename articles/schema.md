@@ -77,7 +77,7 @@ placeholder steps, ready to fill in by hand:
 
 draft_path <- withr::local_tempfile(fileext = ".yml")
 draft_tines(file_path = draft_path)
-#> ✔ Drafted "schema" template at /tmp/RtmpgBCwW4/file1cca1833408e.yml
+#> ✔ Drafted "schema" template at /tmp/Rtmpq71eJr/file1cbf58f71bc1.yml
 #> ℹ Open this file to start defining your steps!
 ```
 
@@ -131,7 +131,7 @@ YAML:
 
 out_path <- withr::local_tempfile(fileext = ".yml")
 write_tines(hdi, out_path)
-#> ✔ File saved: /tmp/RtmpgBCwW4/file1cca47849846.yml
+#> ✔ File saved: /tmp/Rtmpq71eJr/file1cbf677a1740.yml
 ```
 
 ``` yaml

@@ -58,7 +58,7 @@ writing a template YAML file to disk.
 # Create a new schema template
 schema_path <- withr::local_tempfile(fileext = ".yml")
 draft_tines(file_path = schema_path)
-#> ✔ Drafted "schema" template at /tmp/RtmpVm4Qyz/file1a853c326aff.yml
+#> ✔ Drafted "schema" template at /tmp/Rtmpo0c3Kt/file1a793342e572.yml
 #> ℹ Open this file to start defining your steps!
 
 # Draft alternatives from a schema object
@@ -69,7 +69,7 @@ draft_alternatives(
   file_path = withr::local_tempfile(fileext = ".yml"),
   branch = "multi"
 )
-#> ✔ Created template at /tmp/RtmpVm4Qyz/file1a857df51a69.yml
+#> ✔ Created template at /tmp/Rtmpo0c3Kt/file1a792b142aa1.yml
 
 # `x` also accepts a path to a schema file -- draft a single-branch
 # template combining two steps together
@@ -80,5 +80,5 @@ draft_alternatives(
   file_path = withr::local_tempfile(fileext = ".yml"),
   branch = "single"
 )
-#> ✔ Created template at /tmp/RtmpVm4Qyz/file1a854b7bed44.yml
+#> ✔ Created template at /tmp/Rtmpo0c3Kt/file1a7923988b05.yml
 ```
