@@ -43,7 +43,7 @@
 ---
 
     Code
-      print(build_multiverse(only_branch = example_schema()))
+      print(as_multiverse(list(only_branch = example_schema())))
     Output
       A multiverse with 1 schema:
         only_branch: "HDI Example" (3 steps)

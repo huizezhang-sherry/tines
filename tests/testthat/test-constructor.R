@@ -58,23 +58,7 @@ test_that("add_step preserves name and data attributes across appends", {
 
 test_that("as_schema coercion methods work as expected", {
   expect_error(as_schema(1), "Cannot coerce")
-  expect_error(as_schema(list(a = 1)), "Only a data frame")
-  expect_error(as_schema("no/such/file.yml"), "must be a valid file path")
-
-  schema <- example_schema()
-  expect_identical(as_schema(schema), schema)
-})
-
-test_that("as_schema.list's data.frame branch is unreachable via normal dispatch", {
-  # NOTE: as_schema.list() checks is.data.frame(x) internally, but S3 dispatch
-  # only reaches `.list` methods when class(x) contains "list" -- which a
-  # plain data.frame's class ("data.frame") never does. So a bare data frame
-  # actually falls through to as_schema.default() and errors, rather than
-  # being coerced. This test documents the current (likely unintended)
-  # behavior; see if this should be fixed by adding an as_schema.data.frame
-  # method instead.
-  df <- as.data.frame(example_schema())
-  expect_error(as_schema(df), "Cannot coerce")
+  expect_identical(as_schema(example_schema()), example_schema())
 })
 
 test_that("as_multiverse coercion methods work as expected", {
@@ -108,32 +92,83 @@ test_that("as_multiverse.list errors on elements it cannot coerce", {
   )
 })
 
-test_that("build_multiverse auto-names branches from each schema's last step id", {
-  named_schema <- build_schema() |> add_step(id = "final-step")
-  empty_schema <- build_schema()
+test_that("a multiverse follows list conventions for names", {
+  s1 <- example_schema()
+  s2 <- example_football()
 
-  mv <- build_multiverse(named_schema, empty_schema)
+  # names supplied are kept
+  expect_equal(names(as_multiverse(list(hdi = s1, football = s2))), c("hdi", "football"))
 
-  expect_equal(names(mv), c("final-step", "unnamed_path"))
+  # none supplied: none are invented
+  expect_null(names(as_multiverse(list(s1, s2))))
+  expect_null(names(as_multiverse(s1)))
+
+  # partly named stays partly named, as a plain list would
+  expect_equal(names(as_multiverse(list(hdi = s1, s2))), c("hdi", ""))
+
+  # nested multiverses contribute the names their own branches had
+  inner <- as_multiverse(list(hdi = s1))
+  expect_equal(names(as_multiverse(list(inner, football = s2))), c("hdi", "football"))
 })
 
-test_that("c.schema and c.multiverse combine into a flattened multiverse", {
-  schema1 <- example_schema()
-  schema2 <- example_football()
+test_that("gen_code() derives a usable file name for every branch", {
+  s <- build_schema() |> add_step(id = "a", objective = "o", decision = "d")
+  two <- rep(list(s), 2)
 
-  mv <- c(schema1, schema2)
-  expect_s3_class(mv, "multiverse")
-  expect_length(mv, 2)
+  # unnamed branches fall back to their position
+  expect_equal(tines:::multiverse_file_ids(two), c("branch_01", "branch_02"))
 
-  mv2 <- c(mv, schema1)
-  expect_s3_class(mv2, "multiverse")
-  expect_length(mv2, 3)
+  # a blank name among named ones also falls back, rather than yielding ".R"
+  names(two) <- c("alpha", "")
+  expect_equal(tines:::multiverse_file_ids(two), c("alpha", "branch_02"))
+
+  # two branches sharing a name must not overwrite each other's script
+  names(two) <- c("dup", "dup")
+  expect_equal(tines:::multiverse_file_ids(two), c("dup", "dup_1"))
+
+  # characters that are unsafe in a file name are replaced
+  names(two) <- c("branch one!", "b")
+  expect_equal(tines:::multiverse_file_ids(two), c("branch_one", "b"))
+})
+
+test_that("as_multiverse flattens nested multiverses, keeping their branch names", {
+  inner <- as_multiverse(list(hdi = example_schema()))
+  flat <- as_multiverse(list(inner, football = example_football()))
+
+  expect_s3_class(flat, "multiverse")
+  expect_equal(names(flat), c("hdi", "football"))
+})
+
+test_that("as_schema() coerces a data frame of steps", {
+  df <- data.frame(
+    id = c("step-clean", "step-model"),
+    objective = c("handle missing values", "estimate the effect"),
+    decision = c("drop incomplete cases", "fit a linear model"),
+    rationale = c("keeps it simple", "the effect is assumed linear")
+  )
+
+  schema <- as_schema(df, name = "from a spreadsheet")
+  expect_s3_class(schema, "schema")
+  expect_s3_class(schema, "tbl_df")
+  expect_equal(nrow(schema), 2)
+  expect_equal(attr(schema, "name"), "from a spreadsheet")
+
+  # a data frame that is missing required columns says which ones
+  expect_error(as_schema(df[, c("id", "decision")]), "objective")
+})
+
+test_that("expand_tines() rejects a multiverse with a pointer to the right approach", {
+  mv <- as_multiverse(list(hdi = example_schema()))
+  expect_error(
+    expand_tines(mv, example_alternatives(case = "hdi")),
+    "not a"
+  )
 })
 
 test_that("print methods remain stable (snapshot)", {
   expect_snapshot(print(build_schema()))
   expect_snapshot(print(new_multiverse(list())))
-  expect_snapshot(print(build_multiverse(only_branch = example_schema())))
+  expect_snapshot(print(as_multiverse(list(only_branch = example_schema()))))
 })
 
 test_that("tbl_sum.schema reflects the name attribute", {

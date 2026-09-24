@@ -293,10 +293,12 @@ mv
 mv$`step-weighted-mean`
 ```
 
-`expand_tines()` also accepts a path to a YAML file directly:
+Either argument may be a path to a YAML file instead of an object, so you
+can expand straight from files without reading them in first:
 
 ```{r}
 expand_tines(schema, tmp_file)
+expand_tines(schema_path, tmp_file)
 ```
 
 # Case 3: Checking multiple alternatives of multiple steps
@@ -340,3 +342,44 @@ into `(1 + 1) x (2 + 1)` = 6 schemas: `original`, `step-scaling-zscore`
 alone, each of `step-combine`'s two alternatives alone, and each of those
 two paired with `step-scaling-zscore`. 
 
+
+# A closer look at the multiverse object
+
+Every case above ends the same way: `expand_tines()` hands back a
+`multiverse`, so it is worth spending a moment on what that object is.
+
+A multiverse is a list of `schema` objects. That means the ordinary
+vocabulary for lists applies -- `length()` counts the branches, `names()`
+tells you what they are, and `[[` pulls one out to inspect or pass on:
+
+```{r}
+mv <- expand_tines(schema, alts_factorial)
+length(mv)
+names(mv)
+mv[["step-scaling-zscore"]]
+```
+
+Unlike a schema, a multiverse is never authored from scratch. There is no
+blank template to fill in, and no multiverse file to read back, because a
+multiverse only means anything in relation to the analyses it collects. It
+arrives by one of two routes, and both build it out of schemas you already
+have:
+
+| If you are starting from | Use |
+|----|----|
+| a schema and an alternatives file | `expand_tines(schema, alternatives)` |
+| several schemas you want to compare | `as_multiverse(list(a = s1, b = s2))` |
+
+`as_multiverse()` takes a list, so you can use `lapply()` to read in a set of 
+schema once with `read_tines()`. Branch names are optional and you can set them 
+with `setNames()`, when you want to index by name later:
+
+```{r}
+files <- c(
+  system.file("hdi.yml", package = "tines"),
+  system.file("football-grp5/football-grp5.yaml", package = "tines")
+)
+
+names(as_multiverse(lapply(files, read_tines)))
+names(as_multiverse(setNames(lapply(files, read_tines), c("hdi", "football"))))
+```

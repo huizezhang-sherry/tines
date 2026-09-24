@@ -103,12 +103,12 @@ gen_code.multiverse <- function(x, base_code = NULL, data = NULL,
   if (!dir.exists(output)) dir.create(output, recursive = TRUE)
 
   paths <- character(length(x))
+  file_ids <- multiverse_file_ids(x)
 
   for (i in seq_along(x)) {
-    id <- names(x)[i] %||% sprintf("branch_%02d", i)
-    safe_id <- gsub("[^a-zA-Z0-9]+", "_", id)
-    safe_id <- gsub("^_|_$", "", safe_id)
-    file_path <- file.path(output, paste0(safe_id, ".R"))
+    id <- names(x)[i]
+    if (is.null(id) || is.na(id) || !nzchar(id)) id <- file_ids[i]
+    file_path <- file.path(output, paste0(file_ids[i], ".R"))
 
     cli::cli_alert_info("Generating {i}/{length(x)}: {.val {id}}")
 
@@ -125,6 +125,24 @@ gen_code.multiverse <- function(x, base_code = NULL, data = NULL,
 
   cli::cli_alert_success("Generated {length(x)} scripts in {.path {output}}")
   invisible(paths)
+}
+
+# A multiverse follows list conventions, so its branches may be unnamed,
+# partly named, or share a name. File names cannot: each branch needs one,
+# and two branches must not overwrite each other's script. Fall back to the
+# branch position where there is no usable name, and disambiguate the rest.
+multiverse_file_ids <- function(x) {
+  ids <- names(x)
+  if (is.null(ids)) ids <- rep("", length(x))
+  ids[is.na(ids)] <- ""
+
+  ids <- gsub("[^a-zA-Z0-9]+", "_", ids)
+  ids <- gsub("^_|_$", "", ids)
+
+  blank <- !nzchar(ids)
+  ids[blank] <- sprintf("branch_%02d", seq_along(ids))[blank]
+
+  make.unique(ids, sep = "_")
 }
 
 #' @keywords internal

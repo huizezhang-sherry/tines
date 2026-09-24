@@ -184,7 +184,7 @@ read_tines <- function(path, data = NULL, ...) {
     }
   } else if (type == "multiverse") {
     schemas <- purrr::map(raw$schemas, rebuild_schema)
-    res <- do.call(build_multiverse, schemas)
+    res <- as_multiverse(schemas)
 
     # Attach data to all schemas if provided
     if (!is.null(data)) {

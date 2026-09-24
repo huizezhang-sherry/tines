@@ -3,20 +3,23 @@
 \name{expand_tines}
 \alias{expand_tines}
 \alias{expand_tines.schema}
-\alias{expand_tines.multiverse}
+\alias{expand_tines.character}
+\alias{expand_tines.default}
 \title{Expand a schema with an alternative YAML into a multiverse}
 \usage{
 expand_tines(x, alternatives, ...)
 
 \method{expand_tines}{schema}(x, alternatives, include_original = TRUE, ...)
 
-\method{expand_tines}{multiverse}(x, alternatives, ...)
+\method{expand_tines}{character}(x, alternatives, ...)
+
+\method{expand_tines}{default}(x, alternatives, ...)
 }
 \arguments{
-\item{x}{A \code{schema} object.}
+\item{x}{A \code{schema} object, or the path to a schema YAML file.}
 
-\item{alternatives}{an \code{alternatives} object or the path to an alternative
-YAML}
+\item{alternatives}{An \code{alternatives} object, or the path to an
+alternatives YAML file.}
 
 \item{...}{Additional arguments.}
 
@@ -26,8 +29,8 @@ included as a branch in the resulting multiverse. Defaults to \code{TRUE}.}
 \value{
 An object of class \code{"multiverse"}: a named list of \code{schema}
 objects, one per branch produced from \code{alternatives} (plus, when
-\code{include_original = TRUE}, the original schema/multiverse under the
-name \code{"original"}). Each branch name is the \code{+}-joined ids of the
+\code{include_original = TRUE}, the original schema under the name
+\code{"original"}). Each branch name is the \code{+}-joined ids of the
 alternatives applied to reach it.
 }
 \description{
@@ -44,10 +47,5 @@ expand_tines(base_schema, alts)
 tmp_file <- tempfile(fileext = ".yml")
 write_alternatives(alts, tmp_file)
 expand_tines(base_schema, tmp_file)
-
-# expand on the multiverse
-multiverse <- example_multiverse()
-alts <- example_alternatives(case = "hdi")
-expand_tines(multiverse, alts)
 
 }

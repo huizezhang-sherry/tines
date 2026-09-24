@@ -1,6 +1,15 @@
 template:
   bootstrap: 5
 
+articles:
+- title: Articles
+  navbar: ~
+  contents:
+  - schema
+  - alternatives
+  - gaitd-case-study
+  - future-extensions
+
 reference:
 - title: "Create a `tine`/ `multiverse` object"
   contents:

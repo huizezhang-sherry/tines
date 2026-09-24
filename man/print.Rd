@@ -74,6 +74,6 @@ schema2 <- build_schema(data = my_data) |>
     decision = "impute with median",
     inputs = c("age", "income"), outputs = "df_clean"
   )
-multiverse <- build_multiverse(schema, schema2)
+multiverse <- as_multiverse(list(schema, schema2))
 draw_tines(multiverse, index = 2)
 }

@@ -38,8 +38,8 @@ of writing a template YAML file to disk.
 Generates a starter YAML file for a schema to help you begin building
 your garden of forking paths. There is no template for a multiverse:
 a multiverse is always produced either by combining schema objects with
-\code{\link[=build_multiverse]{build_multiverse()}}, or by expanding a schema (or another multiverse)
-with an alternatives file via \code{\link[=expand_tines]{expand_tines()}} -- never hand-authored
+\code{\link[=as_multiverse]{as_multiverse()}}, or by expanding a schema with an alternatives file via
+\code{\link[=expand_tines]{expand_tines()}} -- never hand-authored
 from a blank template.
 }
 \examples{

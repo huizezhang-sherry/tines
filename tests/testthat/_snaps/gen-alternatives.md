@@ -104,12 +104,6 @@
 
 ---
 
-    Code
-      expand_tines(multiverse, alts)
-    Output
-      A multiverse with 4 schemas:
-        original: "HDI Example" (3 steps)
-        reversed: "HDI Example" (3 steps)
-        original.step-arithmetic-mean: "HDI Example" (3 steps)
-        reversed.step-arithmetic-mean: "HDI Example" (3 steps)
+    `expand_tines()` expands a <schema>, not a <multiverse>.
+    i To vary several steps at once, put every node in one alternatives file with `branch: multi` -- expanding once gives the full cross product, with a name per branch.
 

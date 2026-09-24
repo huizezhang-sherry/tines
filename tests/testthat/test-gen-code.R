@@ -63,7 +63,7 @@ test_that("gen_code.schema errors when the schema is unmapped and no data is giv
 test_that("gen_code.multiverse requires a directory for output", {
   mapped_schema <- build_schema() |>
     add_step(id = "step-1", inputs = "x", outputs = "y")
-  mv <- build_multiverse(branch_a = mapped_schema)
+  mv <- as_multiverse(list(branch_a = mapped_schema))
 
   expect_error(gen_code(mv, output = "pipeline.R"), "must be a directory")
 })
@@ -73,7 +73,7 @@ test_that("gen_code.multiverse sanitizes branch names into safe filenames", {
 
   mapped_schema <- build_schema() |>
     add_step(id = "step-1", inputs = "x", outputs = "y")
-  mv <- build_multiverse(`branch one!` = mapped_schema, branch_two = mapped_schema)
+  mv <- as_multiverse(list(`branch one!` = mapped_schema, branch_two = mapped_schema))
 
   out_dir <- withr::local_tempdir()
   paths <- gen_code(mv, output = out_dir)

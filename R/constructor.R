@@ -20,7 +20,7 @@
 #' @param width Width for printing output.
 #' @return
 #' * [build_schema()] and [new_schema()] return an object of class `schema`.
-#' * [build_multiverse()] and [new_multiverse()] return an object of class
+#' * [as_multiverse()] and [new_multiverse()] return an object of class
 #'   `c("multiverse", "list")`.
 #'
 #' @rdname constructor
@@ -75,7 +75,7 @@
 #'     rationale = "the geometric mean is more appropriate than arithmetic mean"
 #'   )
 #'
-#' my_multiverse <- build_multiverse(original = schema, reversed = schema2)
+#' my_multiverse <- as_multiverse(list(original = schema, reversed = schema2))
 #' my_multiverse
 new_schema <- function(name = NULL, nodes = tibble::tibble()) {
   stopifnot(is.data.frame(nodes))
@@ -142,28 +142,6 @@ new_multiverse <- function(schemas = list()) {
     schemas,
     class = c("multiverse", "list")
   )
-}
-
-#' @rdname constructor
-#' @export
-build_multiverse <- function(...) {
-  schemas <- list(...)
-
-  # Return an empty multiverse if no schemas are provided
-  if (length(schemas) == 0) {
-    return(new_multiverse(list()))
-  }
-
-  # 2. Auto-naming: If the user didn't name them, try to find ids
-  if (is.null(names(schemas))) {
-    names(schemas) <- vapply(schemas, function(s) {
-      # Use the id of the last row as a default name
-      id <- if (nrow(s) > 0) s$id[nrow(s)] else NA_character_
-      if (is.na(id) || length(id) == 0) "unnamed_path" else id
-    }, FUN.VALUE = character(1))
-  }
-
-  new_multiverse(schemas)
 }
 
 ########################################################################
@@ -235,31 +213,16 @@ as_schema.schema <- function(x, ...) x
 
 #' @rdname constructor
 #' @export
-as_schema.list <- function(x, ...) {
-  # Accept a list that is a data frame (for legacy support)
-  if (is.data.frame(x)) {
-    class(x) <- "schema"
-    return(x)
+as_schema.data.frame <- function(x, name = NULL, ...) {
+  required <- c("id", "objective", "decision", "rationale")
+  missing_cols <- setdiff(required, names(x))
+  if (length(missing_cols) > 0) {
+    cli::cli_abort(c(
+      "Cannot coerce to a {.cls schema}: column{?s} {.field {missing_cols}} {?is/are} missing.",
+      "i" = "A schema needs one row per step, with columns {.field {required}}."
+    ))
   }
-  cli::cli_abort(
-    paste0(
-      "Cannot coerce list to {.cls schema}. ",
-      "Only a data frame is allowed for schema."
-    )
-  )
-}
-
-#' @rdname constructor
-#' @export
-as_schema.character <- function(x, ...) {
-  if (length(x) == 1 && file.exists(x)) {
-    raw_df <- yaml::read_yaml(x)
-    # Try to coerce to tibble/data.frame if possible
-    df <- tibble::as_tibble(raw_df)
-    class(df) <- "schema"
-    return(df)
-  }
-  cli::cli_abort("Character string must be a valid file path to a YAML schema.")
+  new_schema(name = name, nodes = tibble::as_tibble(x))
 }
 
 #' @rdname constructor
@@ -295,19 +258,25 @@ as_multiverse.schema <- function(x, ...) {
 #' @rdname constructor
 #' @export
 as_multiverse.list <- function(x, ...) {
-  # The Workhorse: Flatten a mixed list of schemas, multiverses, and nested
-  # lists
+  # Flatten a mixed list of schemas, multiverses, and nested lists, carrying
+  # names through: a name given here labels the branch, and a nested
+  # multiverse keeps the names its own branches already had.
   flat_list <- list()
+  labels <- character()
+  outer <- names(x)
+  if (is.null(outer)) outer <- rep("", length(x))
 
-  for (item in x) {
+  for (i in seq_along(x)) {
+    item <- x[[i]]
     if (inherits(item, "schema")) {
-      flat_list <- append(flat_list, list(item))
-    } else if (inherits(item, "multiverse")) {
-      # Strip the class to extract the raw list of schemas, then append
-      flat_list <- append(flat_list, unclass(item))
-    } else if (is.list(item)) {
-      # Recursively flatten nested lists
-      flat_list <- append(flat_list, unclass(as_multiverse(item)))
+      flat_list <- c(flat_list, list(item))
+      labels <- c(labels, outer[i])
+    } else if (inherits(item, "multiverse") || is.list(item)) {
+      inner <- unclass(if (inherits(item, "multiverse")) item else as_multiverse(item))
+      inner_names <- names(inner)
+      if (is.null(inner_names)) inner_names <- rep("", length(inner))
+      flat_list <- c(flat_list, inner)
+      labels <- c(labels, inner_names)
     } else {
       cli::cli_abort(
         "List contains items that cannot be coerced into the multiverse."
@@ -315,22 +284,13 @@ as_multiverse.list <- function(x, ...) {
     }
   }
 
+  # A multiverse is a list, so it follows list conventions: branches may be
+  # named or not, exactly as the caller left them. gen_code() supplies a
+  # positional fallback where it needs a file name.
+  if (any(nzchar(labels))) names(flat_list) <- labels
   new_multiverse(flat_list)
 }
 
-
-#' @export
-#' @rdname constructor
-c.schema <- function(...) {
-  # Capture all arguments as a list, then coerce to a flattened multiverse
-  as_multiverse(list(...))
-}
-
-#' @rdname constructor
-#' @export
-c.multiverse <- function(...) {
-  as_multiverse(list(...))
-}
 
 #' @importFrom pillar tbl_sum
 #' @export

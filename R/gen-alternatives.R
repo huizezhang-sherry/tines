@@ -243,17 +243,17 @@ prompt_alternatives <- function(schema = NULL, step, n = 3, data_dict = NULL,
 
 #' Expand a schema with an alternative YAML into a multiverse
 #'
-#' @param x A `schema` object.
-#' @param alternatives an `alternatives` object or the path to an alternative
-#'   YAML
+#' @param x A `schema` object, or the path to a schema YAML file.
+#' @param alternatives An `alternatives` object, or the path to an
+#'   alternatives YAML file.
 #' @param include_original A logical. If `TRUE`, the original schema will be
 #'   included as a branch in the resulting multiverse. Defaults to `TRUE`.
 #' @param ... Additional arguments.
 #'
 #' @return An object of class `"multiverse"`: a named list of `schema`
 #'   objects, one per branch produced from `alternatives` (plus, when
-#'   `include_original = TRUE`, the original schema/multiverse under the
-#'   name `"original"`). Each branch name is the `+`-joined ids of the
+#'   `include_original = TRUE`, the original schema under the name
+#'   `"original"`). Each branch name is the `+`-joined ids of the
 #'   alternatives applied to reach it.
 #' @rdname expand
 #' @export
@@ -268,11 +268,6 @@ prompt_alternatives <- function(schema = NULL, step, n = 3, data_dict = NULL,
 #' tmp_file <- tempfile(fileext = ".yml")
 #' write_alternatives(alts, tmp_file)
 #' expand_tines(base_schema, tmp_file)
-#'
-#' # expand on the multiverse
-#' multiverse <- example_multiverse()
-#' alts <- example_alternatives(case = "hdi")
-#' expand_tines(multiverse, alts)
 #'
 expand_tines <- function(x, alternatives, ...) {
   UseMethod("expand_tines")
@@ -373,31 +368,25 @@ expand_tines.schema <- function(x, alternatives, include_original = TRUE, ...) {
 
 #' @rdname expand
 #' @export
-expand_tines.multiverse <- function(x, alternatives, ...) {
-  if (is.character(alternatives) && file.exists(alternatives)) {
-    alts_data <- read_alternatives(alternatives)
-  } else {
-    alts_data <- alternatives
-  }
-  target_steps <- alts_data$overrides
+expand_tines.character <- function(x, alternatives, ...) {
+  if (!file.exists(x)) cli::cli_abort("File not found: {.val {x}}")
+  expand_tines(read_tines(x), alternatives, ...)
+}
 
-  expanded_list <- lapply(x, function(single_schema) {
-    ids <- single_schema$id
-
-    if (all(target_steps %in% ids)) {
-      # It has the step(s)! Expand it, and extract the resulting list of schemas
-      expanded_mini_multi <- expand_tines(
-        single_schema, alts_data,
-        include_original = FALSE
+#' @rdname expand
+#' @export
+expand_tines.default <- function(x, alternatives, ...) {
+  if (inherits(x, "multiverse")) {
+    cli::cli_abort(c(
+      "{.fn expand_tines} expands a {.cls schema}, not a {.cls multiverse}.",
+      "i" = paste0(
+        "To vary several steps at once, put every node in one alternatives ",
+        "file with {.code branch: multi} -- expanding once gives the full ",
+        "cross product, with a name per branch."
       )
-      return(unclass(expanded_mini_multi)) # Return the list of schemas
-    } else {
-      # It DOES NOT have the step! Return it untouched, wrapped in a list
-      return(list(single_schema))
-    }
-  })
-
-  # Flatten the expanded list properly
-  all_schemas <- c(unclass(x), unlist(expanded_list, recursive = FALSE))
-  new_multiverse(all_schemas)
+    ))
+  }
+  cli::cli_abort(
+    "{.fn expand_tines} has no method for an object of class {.cls {class(x)}}."
+  )
 }

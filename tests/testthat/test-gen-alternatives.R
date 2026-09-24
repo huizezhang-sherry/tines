@@ -34,11 +34,10 @@ test_that("expand_tines", {
     expand_tines(base_schema, alts)
   })
 
-  # expand on the multiverse
-  multiverse <- example_multiverse()
-  alts <- example_alternatives(case = "hdi")
-  expect_snapshot({
-    expand_tines(multiverse, alts)
+  # a multiverse is not expandable: one alternatives file with `branch: multi`
+  # is the way to vary several steps at once
+  expect_snapshot_error({
+    expand_tines(example_multiverse(), example_alternatives(case = "hdi"))
   })
 })
 

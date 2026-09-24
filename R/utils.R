@@ -70,7 +70,7 @@ example_multiverse <- function() {
       rationale = "the geometric mean is more appropriate than arithmetic mean"
     )
 
-  my_multiverse <- build_multiverse(original = schema, reversed = schema2)
+  my_multiverse <- as_multiverse(list(original = schema, reversed = schema2))
   return(my_multiverse)
 }
 

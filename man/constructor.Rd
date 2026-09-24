@@ -4,20 +4,16 @@
 \alias{new_schema}
 \alias{build_schema}
 \alias{new_multiverse}
-\alias{build_multiverse}
 \alias{add_step}
 \alias{as_schema}
 \alias{as_schema.default}
 \alias{as_schema.schema}
-\alias{as_schema.list}
-\alias{as_schema.character}
+\alias{as_schema.data.frame}
 \alias{as_multiverse}
 \alias{as_multiverse.default}
 \alias{as_multiverse.multiverse}
 \alias{as_multiverse.schema}
 \alias{as_multiverse.list}
-\alias{c.schema}
-\alias{c.multiverse}
 \alias{as.data.frame.schema}
 \alias{print.schema}
 \title{Construct schema and multiverse objects}
@@ -27,8 +23,6 @@ new_schema(name = NULL, nodes = tibble::tibble())
 build_schema(name = NULL, data = NULL)
 
 new_multiverse(schemas = list())
-
-build_multiverse(...)
 
 add_step(
   object,
@@ -47,9 +41,7 @@ as_schema(x, ...)
 
 \method{as_schema}{schema}(x, ...)
 
-\method{as_schema}{list}(x, ...)
-
-\method{as_schema}{character}(x, ...)
+\method{as_schema}{data.frame}(x, name = NULL, ...)
 
 as_multiverse(x, ...)
 
@@ -60,10 +52,6 @@ as_multiverse(x, ...)
 \method{as_multiverse}{schema}(x, ...)
 
 \method{as_multiverse}{list}(x, ...)
-
-\method{c}{schema}(...)
-
-\method{c}{multiverse}(...)
 
 \method{as.data.frame}{schema}(x, row.names = NULL, optional = FALSE, ...)
 
@@ -77,12 +65,12 @@ schema.}
 
 \item{data}{Optional data frame or path to data file for validation}
 
-\item{...}{One or more \code{schema} objects to be included in the multiverse.}
-
 \item{object}{A \code{schema} object.}
 
 \item{id, objective, decision, rationale, inputs, outputs}{character strings
 to write a step}
+
+\item{...}{One or more \code{schema} objects to be included in the multiverse.}
 
 \item{x}{An object to be coerced into a \code{schema} or \code{multiverse}.}
 
@@ -100,7 +88,7 @@ Defaults to an empty list.}
 \value{
 \itemize{
 \item \code{\link[=build_schema]{build_schema()}} and \code{\link[=new_schema]{new_schema()}} return an object of class \code{schema}.
-\item \code{\link[=build_multiverse]{build_multiverse()}} and \code{\link[=new_multiverse]{new_multiverse()}} return an object of class
+\item \code{\link[=as_multiverse]{as_multiverse()}} and \code{\link[=new_multiverse]{new_multiverse()}} return an object of class
 \code{c("multiverse", "list")}.
 }
 }
@@ -157,6 +145,6 @@ schema2 <- build_schema("HDI Example") |>
     rationale = "the geometric mean is more appropriate than arithmetic mean"
   )
 
-my_multiverse <- build_multiverse(original = schema, reversed = schema2)
+my_multiverse <- as_multiverse(list(original = schema, reversed = schema2))
 my_multiverse
 }
