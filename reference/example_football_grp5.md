@@ -38,6 +38,10 @@ schema <- example_football_grp5()
 alts <- example_football_grp5_alternatives()
 
 expand_tines(schema, alts)
+#> ℹ 3 branches have an incomplete mapping: their alternatives give no
+#>   inputs/outputs for the steps they replace.
+#>   Branches: "gm1", "gm2", and "gm3". Give the replaced steps inputs/outputs
+#>   with `update_io()`, or add them to the alternatives.
 #> A multiverse with 4 schemas:
 #>   original: (7 steps)
 #>   gm1: (7 steps)

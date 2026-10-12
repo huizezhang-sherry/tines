@@ -209,6 +209,5 @@ prompt_alternatives(schema = hdi, step = "step-combine", print = TRUE)
 #> decision: - apply min-max scaling to each variable - average exp sch
 #> and avg sch - use the geometric mean rationale: - to put them on the
 #> same scale for combination - the most intuitive way - the geometric
-#> mean is more appropriate than arithmetic mean inputs: - .na - .na -
-#> .na outputs: - .na - .na - .na
+#> mean is more appropriate than arithmetic mean
 ```

@@ -36,9 +36,9 @@
 <li><a class="dropdown-item" href="../articles/schema.html">Structuring Schema Files</a></li>
     <li><a class="dropdown-item" href="../articles/alternatives.html">Structuring Alternative Files</a></li>
     <li><a class="dropdown-item" href="../articles/gaitd-case-study.html">Case Study: A Published GAITD Regression Analysis</a></li>
-    <li><a class="dropdown-item" href="../articles/future-extensions.html">Future Extensions</a></li>
   </ul>
 </li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -57,8 +57,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-
-      <h1>Structuring Alternative Files</h1>
+      <img src="../logo.svg" class="logo" alt=""><h1>Structuring Alternative Files</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/huizezhang-sherry/tines/blob/main/vignettes/alternatives.Rmd" class="external-link"><code>vignettes/alternatives.Rmd</code></a></small>
@@ -160,11 +159,11 @@ with <code><a href="../reference/read-write.html">read_tines()</a></code>:</p>
 <code class="sourceCode R"><span><span class="va">schema</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read-write.html">read_tines</a></span><span class="op">(</span><span class="va">schema_path</span><span class="op">)</span></span>
 <span><span class="va">schema</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A schema: HDI Example</span></span></span>
-<span><span class="co">#&gt;   id             objective                     decision rationale inputs outputs</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> step-scaling   variables are in different s… apply m… to put t… <span style="color: #949494;">&lt;chr&gt;</span>  <span style="color: #949494;">&lt;chr&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> step-education combine the school variables… average… the most… <span style="color: #949494;">&lt;chr&gt;</span>  <span style="color: #949494;">&lt;chr&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> step-combine   combine the three dimensions… use the… the geom… <span style="color: #949494;">&lt;chr&gt;</span>  <span style="color: #949494;">&lt;chr&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt;   id             objective                                    decision rationale</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> step-scaling   variables are in different scales            apply m… to put t…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> step-education combine the school variables into one dimen… average… the most…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> step-combine   combine the three dimensions into a single … use the… the geom…</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="case-1-multiple-steps-on-a-single-branch">Case 1: Multiple steps on a single branch<a class="anchor" aria-label="anchor" href="#case-1-multiple-steps-on-a-single-branch"></a>
@@ -211,7 +210,7 @@ and fill it in by hand:</strong></p>
 <span>  branch <span class="op">=</span> <span class="st">"single"</span>,</span>
 <span>  file_path <span class="op">=</span> <span class="va">draft_path_single</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Created template at <span style="color: #0000BB;">/tmp/RtmpqfCFpw/file1c6579d6f967.yml</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Created template at <span style="color: #0000BB;">/tmp/RtmpOII7Qb/file1d7875b359aa.yml</span></span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">meta</span><span class="kw">:</span></span>
 <span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> alternatives</span></span>
 <span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="at">  </span><span class="fu">branch</span><span class="kw">:</span><span class="at"> single</span></span>
@@ -260,7 +259,7 @@ and fill it in by hand:</strong></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tmp_file_single</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yml"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/read-write-alternatives.html">write_alternatives</a></span><span class="op">(</span><span class="va">alts_combo</span>, <span class="va">tmp_file_single</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Successfully wrote alternatives to <span style="color: #0000BB;">/tmp/RtmpqfCFpw/file1c653c0162e8.yml</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Successfully wrote alternatives to <span style="color: #0000BB;">/tmp/RtmpOII7Qb/file1d7815943ec2.yml</span></span></span></code></pre></div>
 <hr>
 <p>You can combine this alternative specification with the original
 schema to form a set of new schemas, or a <strong>multiverse</strong>,
@@ -273,11 +272,11 @@ with 2 branches using <code><a href="../reference/expand.html">expand_tines()</a
 <span><span class="co">#&gt;   step-scaling-zscore+step-education-max: "HDI Example" (3 steps)</span></span>
 <span><span class="va">mv</span><span class="op">$</span><span class="va">`step-scaling-zscore+step-education-max`</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A schema: HDI Example</span></span></span>
-<span><span class="co">#&gt;   id             objective                     decision rationale inputs outputs</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> step-scaling   variables are in different s… z-score… puts var… <span style="color: #949494;">&lt;chr&gt;</span>  <span style="color: #949494;">&lt;chr&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> step-education combine the school variables… use the… captures… <span style="color: #949494;">&lt;chr&gt;</span>  <span style="color: #949494;">&lt;chr&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> step-combine   combine the three dimensions… use the… the geom… <span style="color: #949494;">&lt;chr&gt;</span>  <span style="color: #949494;">&lt;chr&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt;   id             objective                                    decision rationale</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> step-scaling   variables are in different scales            z-score… puts var…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> step-education combine the school variables into one dimen… use the… captures…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> step-combine   combine the three dimensions into a single … use the… the geom…</span></span></code></pre></div>
 <p>Under <code>branch: single</code>, every node must have exactly one
 alternative. This is checked as soon as an <code>alternatives</code>
 object is built, read, and printed:</p>
@@ -330,7 +329,7 @@ and fill it in by hand:</strong></p>
 <span><span class="fu"><a href="../reference/draft_alternatives.html">draft_alternatives</a></span><span class="op">(</span></span>
 <span>  <span class="va">schema</span>, id <span class="op">=</span> <span class="st">"step-combine"</span>, branch <span class="op">=</span> <span class="st">"multi"</span>, file_path <span class="op">=</span> <span class="va">draft_path</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Created template at <span style="color: #0000BB;">/tmp/RtmpqfCFpw/file1c65107300e.yml</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Created template at <span style="color: #0000BB;">/tmp/RtmpOII7Qb/file1d7837a71a14.yml</span></span></span></code></pre></div>
 <div class="sourceCode" id="cb14"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">meta</span><span class="kw">:</span></span>
 <span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> alternatives</span></span>
 <span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="at">  </span><span class="fu">branch</span><span class="kw">:</span><span class="at"> multi</span></span>
@@ -380,7 +379,7 @@ to be given explicitly:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tmp_file</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".yml"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/read-write-alternatives.html">write_alternatives</a></span><span class="op">(</span><span class="va">alts</span>, <span class="va">tmp_file</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Successfully wrote alternatives to <span style="color: #0000BB;">/tmp/RtmpqfCFpw/file1c65430e9761.yml</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Successfully wrote alternatives to <span style="color: #0000BB;">/tmp/RtmpOII7Qb/file1d781ea8de0b.yml</span></span></span></code></pre></div>
 <div class="sourceCode" id="cb17"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">meta</span><span class="kw">:</span></span>
 <span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> alternatives</span></span>
 <span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a><span class="at">  </span><span class="fu">branch</span><span class="kw">:</span><span class="at"> multi</span></span>
@@ -416,11 +415,11 @@ case, with 2 alternatives, this results in 3 branches:</p>
 <span><span class="co">#&gt;   step-weighted-mean: "HDI Example" (3 steps)</span></span>
 <span><span class="va">mv</span><span class="op">$</span><span class="va">`step-weighted-mean`</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A schema: HDI Example</span></span></span>
-<span><span class="co">#&gt;   id             objective                     decision rationale inputs outputs</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> step-scaling   variables are in different s… apply m… to put t… <span style="color: #949494;">&lt;chr&gt;</span>  <span style="color: #949494;">&lt;chr&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> step-education combine the school variables… average… the most… <span style="color: #949494;">&lt;chr&gt;</span>  <span style="color: #949494;">&lt;chr&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> step-combine   combine the three dimensions… use a w… down-wei… <span style="color: #949494;">&lt;chr&gt;</span>  <span style="color: #949494;">&lt;chr&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt;   id             objective                                    decision rationale</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> step-scaling   variables are in different scales            apply m… to put t…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> step-education combine the school variables into one dimen… average… the most…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> step-combine   combine the three dimensions into a single … use a w… down-wei…</span></span></code></pre></div>
 <p>Either argument may be a path to a YAML file instead of an object, so
 you can expand straight from files without reading them in first:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
@@ -513,11 +512,11 @@ branches, <code><a href="https://rdrr.io/r/base/names.html" class="external-link
 <span><span class="co">#&gt; [6] "step-scaling-zscore+step-weighted-mean"</span></span>
 <span><span class="va">mv</span><span class="op">[[</span><span class="st">"step-scaling-zscore"</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A schema: HDI Example</span></span></span>
-<span><span class="co">#&gt;   id             objective                     decision rationale inputs outputs</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> step-scaling   variables are in different s… z-score… puts var… <span style="color: #949494;">&lt;chr&gt;</span>  <span style="color: #949494;">&lt;chr&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> step-education combine the school variables… average… the most… <span style="color: #949494;">&lt;chr&gt;</span>  <span style="color: #949494;">&lt;chr&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> step-combine   combine the three dimensions… use the… the geom… <span style="color: #949494;">&lt;chr&gt;</span>  <span style="color: #949494;">&lt;chr&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt;   id             objective                                    decision rationale</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> step-scaling   variables are in different scales            z-score… puts var…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> step-education combine the school variables into one dimen… average… the most…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> step-combine   combine the three dimensions into a single … use the… the geom…</span></span></code></pre></div>
 <p>Unlike a schema, a multiverse is never authored from scratch. There
 is no blank template to fill in, and no multiverse file to read back,
 because a multiverse only means anything in relation to the analyses it

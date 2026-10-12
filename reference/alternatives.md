@@ -5,7 +5,7 @@ Construct alternatives objects
 ## Usage
 
 ``` r
-alternative(id, decision, rationale)
+alternative(id, decision, rationale, inputs = NULL, outputs = NULL)
 
 node(overrides, ...)
 
@@ -25,6 +25,14 @@ new_alternatives(..., branch)
 - rationale:
 
   Why this method is valid.
+
+- inputs, outputs:
+
+  Optional character vectors: the variables the step reads and creates
+  under this alternative. When the base schema has inputs/outputs, the
+  replaced step takes these in its branch; the original step's are never
+  carried over, since they may no longer apply. An alternative without
+  them leaves its branch's mapping incomplete.
 
 - overrides:
 
@@ -56,7 +64,8 @@ new_alternatives(..., branch)
 ## Value
 
 `alternative()` returns a plain list with elements `id`, `decision`,
-`rationale` – one candidate change for a single step.
+`rationale` (and `inputs`/`outputs`, if given) – one candidate change
+for a single step.
 
 `node()` returns a plain list with elements `overrides` (the step id)
 and `alternatives` (a tibble of the candidates passed via `...`, one row

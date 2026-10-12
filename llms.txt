@@ -1,4 +1,4 @@
-# tines [![tines package hex sticker logo featuring a fork-like branching diagram on a clean background, symbolising the multiverse of analytical paths the package helps explore](reference/figures/imgfile.svg)](https://huizezhang-sherry.github.io/tines/)
+# tines
 
 The goal of tines is to help analysts document, explore, and communicate
 the analytical decisions made during a data analysis. Analytical
@@ -627,12 +627,13 @@ A schema records one analysis as an ordered sequence of decisions.
 
 ## Mapping a schema to data
 
-Tie each step to the variables it reads and the ones it creates, so the
-generated code runs against a real dataset.
+Optionally tie a schema to its data, and each step to the variables it
+reads and creates, so the schema can be checked before code is
+generated.
 
-- [`gen_io()`](update-io.md) [`update_data()`](update-io.md)
-  [`update_io()`](update-io.md) : Data mapping and validation for
-  schemas
+- [`update_data()`](data-mapping.md) [`update_io()`](data-mapping.md)
+  [`gen_io()`](data-mapping.md) : Map a schema to data
+- [`validate_schema()`](validate_schema.md) : Check a schema
 
 ## Alternatives
 
@@ -694,4 +695,3 @@ Turn a schema into an R script, then run it and repair what fails.
 - [Structuring Alternative Files](alternatives.md):
 - [Case Study: A Published GAITD Regression
   Analysis](gaitd-case-study.md):
-- [Future Extensions](future-extensions.md):

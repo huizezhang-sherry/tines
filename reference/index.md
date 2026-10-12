@@ -21,12 +21,13 @@ A schema records one analysis as an ordered sequence of decisions.
 
 ## Mapping a schema to data
 
-Tie each step to the variables it reads and the ones it creates, so the
-generated code runs against a real dataset.
+Optionally tie a schema to its data, and each step to the variables it
+reads and creates, so the schema can be checked before code is
+generated.
 
-- [`gen_io()`](update-io.md) [`update_data()`](update-io.md)
-  [`update_io()`](update-io.md) : Data mapping and validation for
-  schemas
+- [`update_data()`](data-mapping.md) [`update_io()`](data-mapping.md)
+  [`gen_io()`](data-mapping.md) : Map a schema to data
+- [`validate_schema()`](validate_schema.md) : Check a schema
 
 ## Alternatives
 

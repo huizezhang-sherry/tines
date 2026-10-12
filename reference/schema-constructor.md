@@ -8,7 +8,7 @@ is the low-level constructor the others are built on.
 ## Usage
 
 ``` r
-new_schema(name = NULL, nodes = tibble::tibble())
+new_schema(name = NULL, nodes = tibble::tibble(), data = NULL)
 
 build_schema(name = NULL, data = NULL)
 
@@ -53,15 +53,24 @@ print(x, width = NULL, ...)
 
 - data:
 
-  Optional data frame or path to data file for validation
+  Optional. The data the schema runs on – a file path, a
+  `"package::dataset"` string, an R script that builds the data, or a
+  data frame. See [`update_data()`](data-mapping.md).
 
 - object:
 
   A `schema` object.
 
-- id, objective, decision, rationale, inputs, outputs:
+- id, objective, decision, rationale:
 
-  character strings to write a step
+  Character strings describing the step.
+
+- inputs, outputs:
+
+  Optional character vectors naming the variables the step reads and
+  creates (`character(0)` for none). A schema is mapped once every step
+  has both; until then the mapping is incomplete and not used. See
+  [`update_io()`](data-mapping.md).
 
 - ...:
 
@@ -113,10 +122,10 @@ schema <- build_schema("HDI Example") |>
 
 schema
 #> # A schema: HDI Example
-#>   id           objective                       decision rationale inputs outputs
-#>   <chr>        <chr>                           <chr>    <chr>     <list> <list> 
-#> 1 step-scaling variables are in different sca… apply m… to put t… <lgl>  <lgl>  
-#> 2 step-combine combine the three dimensions i… use the… the geom… <lgl>  <lgl>  
+#>   id           objective                                      decision rationale
+#>   <chr>        <chr>                                          <chr>    <chr>    
+#> 1 step-scaling variables are in different scales              apply m… to put t…
+#> 2 step-combine combine the three dimensions into a single in… use the… the geom…
 
 # coerce a table of steps that was catalogued elsewhere
 as_schema(data.frame(

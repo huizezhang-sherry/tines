@@ -13,7 +13,7 @@ modifies to produce a multiverse. This vignette covers
 - the anatomy of a schema YAML file,
 - the five ways to create one – from a template, in R, from a file, from
   a data frame, or from prose with an LLM,
-- how a schema is mapped to a dataset, and
+- how a schema can optionally be mapped to a dataset, and
 - how pairing one with an alternatives file turns it into a multiverse.
 
 ## The big picture
@@ -77,7 +77,7 @@ two placeholder steps, ready to fill in by hand:
 
 draft_path <- withr::local_tempfile(fileext = ".yml")
 draft_tines(file_path = draft_path)
-#> ✔ Drafted "schema" template at /tmp/RtmpryIAeH/file1d1245f7f920.yml
+#> ✔ Drafted "schema" template at /tmp/RtmpchBdNg/file1e03a5b716c.yml
 #> ℹ Open this file to start defining your steps!
 ```
 
@@ -118,10 +118,10 @@ hdi <- build_schema(name = "HDI Example") |>
   )
 hdi
 #> # A schema: HDI Example
-#>   id           objective                       decision rationale inputs outputs
-#>   <chr>        <chr>                           <chr>    <chr>     <list> <list> 
-#> 1 step-scaling variables are in different sca… apply m… to put t… <lgl>  <lgl>  
-#> 2 step-combine combine the three dimensions i… use the… the geom… <lgl>  <lgl>
+#>   id           objective                                      decision rationale
+#>   <chr>        <chr>                                          <chr>    <chr>    
+#> 1 step-scaling variables are in different scales              apply m… to put t…
+#> 2 step-combine combine the three dimensions into a single in… use the… the geom…
 ```
 
 [`write_tines()`](../reference/read-write.md) writes it back out as
@@ -131,27 +131,23 @@ YAML:
 
 out_path <- withr::local_tempfile(fileext = ".yml")
 write_tines(hdi, out_path)
-#> ✔ File saved: /tmp/RtmpryIAeH/file1d127aaf3136.yml
+#> ✔ File saved: /tmp/RtmpchBdNg/file1e03638cb0b.yml
 ```
 
 ``` yaml
 meta:
   type: schema
-  date: '2026-09-24'
+  date: '2026-10-12'
   name: HDI Example
 nodes:
 - id: step-scaling
   objective: variables are in different scales
   decision: apply min-max scaling to each variable
   rationale: to put them on the same scale for combination
-  inputs: []
-  outputs: []
 - id: step-combine
   objective: combine the three dimensions into a single index
   decision: use the geometric mean
   rationale: the geometric mean penalizes uneven development
-  inputs: []
-  outputs: []
 ```
 
 ### From a file
@@ -186,11 +182,11 @@ nodes:
 schema <- read_tines(schema_path)
 schema
 #> # A schema: HDI Example
-#>   id             objective                     decision rationale inputs outputs
-#>   <chr>          <chr>                         <chr>    <chr>     <list> <list> 
-#> 1 step-scaling   variables are in different s… apply m… to put t… <chr>  <chr>  
-#> 2 step-education combine the school variables… average… the most… <chr>  <chr>  
-#> 3 step-combine   combine the three dimensions… use the… the geom… <chr>  <chr>
+#>   id             objective                                    decision rationale
+#>   <chr>          <chr>                                        <chr>    <chr>    
+#> 1 step-scaling   variables are in different scales            apply m… to put t…
+#> 2 step-education combine the school variables into one dimen… average… the most…
+#> 3 step-combine   combine the three dimensions into a single … use the… the geom…
 ```
 
 Because the result is a tibble, the decisions of an analysis can be
@@ -230,8 +226,8 @@ as_schema(steps, name = "From a spreadsheet")
 
 `inputs` and `outputs` may be supplied as list-columns if you have them;
 otherwise add them later with
-[`update_io()`](../reference/update-io.md). A data frame missing any of
-the four required fields is refused, and says which:
+[`update_io()`](../reference/data-mapping.md). A data frame missing any
+of the four required fields is refused, and says which:
 
 ``` r
 
@@ -275,92 +271,46 @@ colnames(drafted)
 
 ## Mapping a schema to data
 
-The four core fields describe an analysis, but generating code that runs
-against a real dataset also requires knowing which variables each step
-consumes and produces. Two optional fields record that:
+A schema’s four core fields describe an analysis without reference to
+any dataset, and that is enough to generate code:
+[`gen_code()`](../reference/gen_code.md) leaves the LLM to work out
+which variables each step uses, and
+[`validate_script()`](../reference/validate_script.md) then runs the
+script on the real data. Optionally, a schema can also record the data
+it runs on and be *mapped*, giving every step the variables it reads
+(`inputs`) and creates (`outputs`):
 
 ``` yaml
-  - id: step-scaling
-    objective: variables are in different scales
-    decision: apply min-max scaling to each variable
-    rationale: to put them on the same scale for combination
-    inputs: [life_exp, exp_sch, avg_sch, gni]
-    outputs: [scaled]
+meta:
+  type: schema
+  name: HDI
+  data:
+    source: data/hdi.csv
+nodes:
+- id: step-scaling
+  objective: variables are in different scales
+  decision: apply min-max scaling to each variable
+  rationale: to put them on the same scale for combination
+  inputs: [life_exp, exp_sch, gni]
+  outputs: [scaled]
 ```
 
-- **`inputs`** name the variables the step reads.
-- **`outputs`** name the variables it creates. An output need not exist
-  in the dataset yet – the schema describes the analysis before its code
-  exists.
+A mapped schema can be checked against its data before any code is
+generated, and [`draw_tines()`](../reference/print.md) draws it by data
+flow rather than by step order. Most schemas are never mapped. If you
+write a schema by hand, we recommend leaving inputs and outputs out,
+since they are easy to get wrong. If an LLM drafts it and is given the
+data, it maps the variables as well. Either way, you can review the
+inputs and outputs and modify them.
 
-Supply a dataset and `tines` checks the mapping. It walks the steps in
-order, starting from the dataset’s own columns, and requires every
-step’s `inputs` to be available by that point – either a column of the
-original data, or an output created by an earlier step:
-
-``` r
-
-hdi_data <- data.frame(
-  life_exp = c(72, 81, 66),
-  exp_sch = c(13, 16, 10),
-  gni = c(9000, 42000, 3200)
-)
-
-mapped <- build_schema(name = "HDI", data = hdi_data) |>
-  add_step(
-    id = "step-scaling",
-    objective = "variables are in different scales",
-    decision = "apply min-max scaling to each variable",
-    inputs = c("life_exp", "exp_sch", "gni"),
-    outputs = "scaled"
-  ) |>
-  add_step(
-    id = "step-combine",
-    objective = "combine the dimensions into a single index",
-    decision = "use the geometric mean",
-    inputs = "scaled",
-    outputs = "hdi"
-  )
-#> ✔ Data attached: "hdi_data"
-```
-
-`step-combine` reads `scaled`, which is not a column of `hdi_data` but
-is produced by `step-scaling`, so the mapping is valid.
-
-Swapping in a dataset that breaks the mapping is refused outright,
-naming the step and the variables it can no longer reach:
-
-``` r
-
-renamed <- data.frame(
-  life_exp = c(70, 80, 60),
-  exp_sch = c(12, 15, 9),
-  income = c(8000, 40000, 3000) # `gni` renamed
-)
-update_data(mapped, renamed)
-#> Error in `update_data()`:
-#> ✖ Validation failed - data NOT attached
-#>   
-#> ℹ Missing variables:
-#>   Step 'step-scaling': gni
-#>   
-#> ℹ Available in new dataset: life_exp, exp_sch, income
-#>   
-#> ℹ Fix options:
-#>   1. Manual fix: update_io(schema, id, inputs = ..., outputs = ..., data = ...)
-#>   2. Auto-fix with LLM: gen_io(schema, data, force = TRUE)
-```
-
-Three functions maintain the mapping.
-[`update_data()`](../reference/update-io.md) attaches a different
-dataset and re-validates the whole schema against it, as above.
-[`update_io()`](../reference/update-io.md) edits the mapping for a
-single step; it warns rather than refuses when a variable is
-unreachable, so you can fix several steps in sequence without the
-intermediate states blocking you.
-[`gen_io()`](../reference/update-io.md) fills in the mapping for every
-step at once by asking an LLM to match the steps against the columns of
-a dataset.
+The data a schema runs on is a data file (`.csv`, `.rds`, `.rda`), a
+package dataset (`"VGAMdata::smqP"`), an R script that creates the data,
+or a data frame. The schema keeps only this reference and the data’s
+column names, never the data itself. A file path is written relative to
+the YAML file, so the two can be moved together; a data frame has no
+reference that can be written down.
+[`gen_code()`](../reference/gen_code.md) uses the reference to load the
+data, so it is worth setting even on a schema that is not mapped.
 
 ## From one schema to many
 

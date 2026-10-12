@@ -49,7 +49,8 @@ prompt_gen_code(
   base_code = NULL,
   data = NULL,
   print = TRUE,
-  width = 70
+  width = 70,
+  data_object = NULL
 )
 ```
 
@@ -65,7 +66,8 @@ prompt_gen_code(
 
 - data:
 
-  Optional. Data source specification (file path or "package::dataset").
+  Optional. Data source specification (a data file, an R script that
+  creates the data, or `"package::dataset"`).
 
 - output:
 
@@ -99,6 +101,11 @@ prompt_gen_code(
 
   If `print = TRUE`, the width to wrap the printed prompt (default 70).
 
+- data_object:
+
+  Optional. When `data` is an R script, the name of the object it
+  creates that holds the data.
+
 ## Value
 
 Invisibly returns the path(s) to the generated script(s).
@@ -130,9 +137,8 @@ prompt_gen_code(data = "inst/football.csv")
 #> circumstances. Your task is to write a complete, working R script
 #> that implements this pipeline step-by-step. Use modern R practices
 #> (like dplyr or base pipe) and ensure variables flow correctly from
-#> one step to the next as defined by the inputs and outputs. Output
-#> ONLY the complete R script. Do not start with markdown formatting
-#> blocks (like ```R) or backticks.
+#> one step to the next. Output ONLY the complete R script. Do not start
+#> with markdown formatting blocks (like ```R) or backticks.
 #> 
 #> === DATA ===
 #> 

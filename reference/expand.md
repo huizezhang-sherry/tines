@@ -52,6 +52,10 @@ alternatives applied to reach it.
 base_schema <- example_football_grp5()
 alts <- example_football_grp5_alternatives()
 expand_tines(base_schema, alts)
+#> ℹ 3 branches have an incomplete mapping: their alternatives give no
+#>   inputs/outputs for the steps they replace.
+#>   Branches: "gm1", "gm2", and "gm3". Give the replaced steps inputs/outputs
+#>   with `update_io()`, or add them to the alternatives.
 #> A multiverse with 4 schemas:
 #>   original: (7 steps)
 #>   gm1: (7 steps)
@@ -61,8 +65,12 @@ expand_tines(base_schema, alts)
 # read the alternatives from a YML file
 tmp_file <- tempfile(fileext = ".yml")
 write_alternatives(alts, tmp_file)
-#> ✔ Successfully wrote alternatives to /tmp/Rtmpd9DCgw/file1a495d0ca50.yml
+#> ✔ Successfully wrote alternatives to /tmp/RtmpKSp3wS/file1b3e68736ee2.yml
 expand_tines(base_schema, tmp_file)
+#> ℹ 3 branches have an incomplete mapping: their alternatives give no
+#>   inputs/outputs for the steps they replace.
+#>   Branches: "gm1", "gm2", and "gm3". Give the replaced steps inputs/outputs
+#>   with `update_io()`, or add them to the alternatives.
 #> A multiverse with 4 schemas:
 #>   original: (7 steps)
 #>   gm1: (7 steps)

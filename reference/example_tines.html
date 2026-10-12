@@ -9,7 +9,7 @@ the documentation, and testing.
 These are small and invented – the Human Development Index written out as
 three decisions – and are the ones to reach for when you want something
 short enough to read at a glance. For a real analysis, with the messiness
-that implies, see football_grp5."></head><body>
+that implies, see football_grp5."><meta property="og:image" content="/logo.svg"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -31,8 +31,8 @@ that implies, see football_grp5."></head><body>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/schema.html">Structuring Schema Files</a></li>
     <li><a class="dropdown-item" href="../articles/alternatives.html">Structuring Alternative Files</a></li>
     <li><a class="dropdown-item" href="../articles/gaitd-case-study.html">Case Study: A Published GAITD Regression Analysis</a></li>
-    <li><a class="dropdown-item" href="../articles/future-extensions.html">Future Extensions</a></li>
   </ul></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/huizezhang-sherry/tines/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -43,8 +43,7 @@ that implies, see football_grp5."></head><body>
 </nav><div class="container template-reference-topic">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-
-      <h1>Example HDI schema, alternatives, and multiverse</h1>
+      <img src="../logo.svg" class="logo" alt=""><h1>Example HDI schema, alternatives, and multiverse</h1>
       <small class="dont-index">Source: <a href="https://github.com/huizezhang-sherry/tines/blob/main/R/utils.R" class="external-link"><code>R/utils.R</code></a></small>
       <div class="d-none name"><code>example_tines.Rd</code></div>
     </div>
@@ -79,11 +78,11 @@ that implies, see <a href="football_grp5.html">football_grp5</a>.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">example_hdi</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A schema: HDI Example</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   id             objective                     decision rationale inputs outputs</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> step-scaling   variables are in different s… apply m… to put t… <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> step-education combine the school variables… average… the most… <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> step-combine   combine the three dimensions… use the… the geom… <span style="color: #949494;">&lt;lgl&gt;</span>  <span style="color: #949494;">&lt;lgl&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   id             objective                                    decision rationale</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> step-scaling   variables are in different scales            apply m… to put t…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> step-education combine the school variables into one dimen… average… the most…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> step-combine   combine the three dimensions into a single … use the… the geom…</span>
 <span class="r-in"><span><span class="fu">example_hdi_alternatives</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Alternatives: step-combine (multi)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   overrides    alternatives    </span>

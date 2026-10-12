@@ -13,6 +13,7 @@
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Building the Prongs of Your Forking Paths">
 <meta name="description" content="Documents a data analysis as a schema, a set of steps that each record an analytical decision in natural language. Large language models are used to generate and validate the R code for each step. A schema can be expanded with an alternative file into a multiverse of related analyses, making it possible to compare alternative decisions systematically.">
 <meta property="og:description" content="Documents a data analysis as a schema, a set of steps that each record an analytical decision in natural language. Large language models are used to generate and validate the R code for each step. A schema can be expanded with an alternative file into a multiverse of related analyses, making it possible to compare alternative decisions systematically.">
+<meta property="og:image" content="/logo.svg">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -38,9 +39,9 @@
 <li><a class="dropdown-item" href="articles/schema.html">Structuring Schema Files</a></li>
     <li><a class="dropdown-item" href="articles/alternatives.html">Structuring Alternative Files</a></li>
     <li><a class="dropdown-item" href="articles/gaitd-case-study.html">Case Study: A Published GAITD Regression Analysis</a></li>
-    <li><a class="dropdown-item" href="articles/future-extensions.html">Future Extensions</a></li>
   </ul>
 </li>
+<li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -55,9 +56,11 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="tines-">tines <a href="https://huizezhang-sherry.github.io/tines/" class="external-link"><img src="reference/figures/imgfile.svg" align="right" height="138.5" alt="tines package hex sticker logo featuring a fork-like branching diagram on a clean background, symbolising the multiverse of analytical paths the package helps explore"></a>
+<div class="page-header">
+<img src="logo.svg" class="logo" alt=""><h1 id="tines-">tines 
 <a class="anchor" aria-label="anchor" href="#tines-"></a>
-</h1></div>
+</h1>
+</div>
 <!-- badges: start -->
 
 <p>The goal of tines is to help analysts document, explore, and communicate the analytical decisions made during a data analysis. Analytical decisions are recorded as a schema of steps, and large language models are used to propose alternative choices at each step and to generate and validate the corresponding R code. A schema can be expanded into a multiverse of analyses, letting you see how your conclusions depend on the analytical choices you made.</p>

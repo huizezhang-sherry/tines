@@ -89,11 +89,11 @@ We can read this in and turn it into a `schema` object with
 schema <- read_tines(schema_path)
 schema
 #> # A schema: HDI Example
-#>   id             objective                     decision rationale inputs outputs
-#>   <chr>          <chr>                         <chr>    <chr>     <list> <list> 
-#> 1 step-scaling   variables are in different s… apply m… to put t… <chr>  <chr>  
-#> 2 step-education combine the school variables… average… the most… <chr>  <chr>  
-#> 3 step-combine   combine the three dimensions… use the… the geom… <chr>  <chr>
+#>   id             objective                                    decision rationale
+#>   <chr>          <chr>                                        <chr>    <chr>    
+#> 1 step-scaling   variables are in different scales            apply m… to put t…
+#> 2 step-education combine the school variables into one dimen… average… the most…
+#> 3 step-combine   combine the three dimensions into a single … use the… the geom…
 ```
 
 ## Case 1: Multiple steps on a single branch
@@ -150,7 +150,7 @@ draft_alternatives(
   branch = "single",
   file_path = draft_path_single
 )
-#> ✔ Created template at /tmp/RtmpqfCFpw/file1c6579d6f967.yml
+#> ✔ Created template at /tmp/RtmpOII7Qb/file1d7875b359aa.yml
 ```
 
 ``` yaml
@@ -211,7 +211,7 @@ alts_combo
 
 tmp_file_single <- withr::local_tempfile(fileext = ".yml")
 write_alternatives(alts_combo, tmp_file_single)
-#> ✔ Successfully wrote alternatives to /tmp/RtmpqfCFpw/file1c653c0162e8.yml
+#> ✔ Successfully wrote alternatives to /tmp/RtmpOII7Qb/file1d7815943ec2.yml
 ```
 
 ------------------------------------------------------------------------
@@ -229,11 +229,11 @@ mv
 #>   step-scaling-zscore+step-education-max: "HDI Example" (3 steps)
 mv$`step-scaling-zscore+step-education-max`
 #> # A schema: HDI Example
-#>   id             objective                     decision rationale inputs outputs
-#>   <chr>          <chr>                         <chr>    <chr>     <list> <list> 
-#> 1 step-scaling   variables are in different s… z-score… puts var… <chr>  <chr>  
-#> 2 step-education combine the school variables… use the… captures… <chr>  <chr>  
-#> 3 step-combine   combine the three dimensions… use the… the geom… <chr>  <chr>
+#>   id             objective                                    decision rationale
+#>   <chr>          <chr>                                        <chr>    <chr>    
+#> 1 step-scaling   variables are in different scales            z-score… puts var…
+#> 2 step-education combine the school variables into one dimen… use the… captures…
+#> 3 step-combine   combine the three dimensions into a single … use the… the geom…
 ```
 
 Under `branch: single`, every node must have exactly one alternative.
@@ -298,7 +298,7 @@ draft_path <- withr::local_tempfile(fileext = ".yml")
 draft_alternatives(
   schema, id = "step-combine", branch = "multi", file_path = draft_path
 )
-#> ✔ Created template at /tmp/RtmpqfCFpw/file1c65107300e.yml
+#> ✔ Created template at /tmp/RtmpOII7Qb/file1d7837a71a14.yml
 ```
 
 ``` yaml
@@ -362,7 +362,7 @@ alts
 
 tmp_file <- withr::local_tempfile(fileext = ".yml")
 write_alternatives(alts, tmp_file)
-#> ✔ Successfully wrote alternatives to /tmp/RtmpqfCFpw/file1c65430e9761.yml
+#> ✔ Successfully wrote alternatives to /tmp/RtmpOII7Qb/file1d781ea8de0b.yml
 ```
 
 ``` yaml
@@ -411,11 +411,11 @@ mv
 #>   step-weighted-mean: "HDI Example" (3 steps)
 mv$`step-weighted-mean`
 #> # A schema: HDI Example
-#>   id             objective                     decision rationale inputs outputs
-#>   <chr>          <chr>                         <chr>    <chr>     <list> <list> 
-#> 1 step-scaling   variables are in different s… apply m… to put t… <chr>  <chr>  
-#> 2 step-education combine the school variables… average… the most… <chr>  <chr>  
-#> 3 step-combine   combine the three dimensions… use a w… down-wei… <chr>  <chr>
+#>   id             objective                                    decision rationale
+#>   <chr>          <chr>                                        <chr>    <chr>    
+#> 1 step-scaling   variables are in different scales            apply m… to put t…
+#> 2 step-education combine the school variables into one dimen… average… the most…
+#> 3 step-combine   combine the three dimensions into a single … use a w… down-wei…
 ```
 
 Either argument may be a path to a YAML file instead of an object, so
@@ -518,11 +518,11 @@ names(mv)
 #> [6] "step-scaling-zscore+step-weighted-mean"
 mv[["step-scaling-zscore"]]
 #> # A schema: HDI Example
-#>   id             objective                     decision rationale inputs outputs
-#>   <chr>          <chr>                         <chr>    <chr>     <list> <list> 
-#> 1 step-scaling   variables are in different s… z-score… puts var… <chr>  <chr>  
-#> 2 step-education combine the school variables… average… the most… <chr>  <chr>  
-#> 3 step-combine   combine the three dimensions… use the… the geom… <chr>  <chr>
+#>   id             objective                                    decision rationale
+#>   <chr>          <chr>                                        <chr>    <chr>    
+#> 1 step-scaling   variables are in different scales            z-score… puts var…
+#> 2 step-education combine the school variables into one dimen… average… the most…
+#> 3 step-combine   combine the three dimensions into a single … use the… the geom…
 ```
 
 Unlike a schema, a multiverse is never authored from scratch. There is

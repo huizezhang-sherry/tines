@@ -54,7 +54,7 @@ draft_alternatives(
   file_path = withr::local_tempfile(fileext = ".yml"),
   branch = "multi"
 )
-#> ✔ Created template at /tmp/Rtmpd9DCgw/file1a496be22711.yml
+#> ✔ Created template at /tmp/RtmpKSp3wS/file1b3e172f8b5f.yml
 
 # `x` also accepts a path to a schema file -- draft a single-branch
 # template combining two steps together
@@ -64,5 +64,5 @@ draft_alternatives(
   file_path = withr::local_tempfile(fileext = ".yml"),
   branch = "single"
 )
-#> ✔ Created template at /tmp/Rtmpd9DCgw/file1a4915d8087d.yml
+#> ✔ Created template at /tmp/RtmpKSp3wS/file1b3e28470a13.yml
 ```

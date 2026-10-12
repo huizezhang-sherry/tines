@@ -6,6 +6,12 @@ Functions to plot the tines object with Graphviz diagrams.
 the interactive widget. `inspect_dot()` formats and prints raw DOT
 strings to the console for debugging.
 
+A plain schema is drawn as a chain of steps in order (dashed edges: they
+record order only). A mapped schema is drawn by data flow: a solid edge
+runs from the step that creates a variable to each later step that reads
+it, so steps that share no variables are not joined. A schema whose
+mapping is incomplete is drawn as a plain one.
+
 ## Usage
 
 ``` r
@@ -15,7 +21,7 @@ plot(x, ...)
 # S3 method for class 'multiverse'
 plot(x, index = 1, ...)
 
-draw_tines(x, index = 1, data = NULL, ...)
+draw_tines(x, index = 1, ...)
 
 inspect_dot(
   schema,
@@ -40,11 +46,6 @@ inspect_dot(
 
   An integer. For a `multiverse`, which path index to draw. Defaults to
   1.
-
-- data:
-
-  Optional. A data frame or path to a data file. If schema is unmapped,
-  this will be used to automatically map variables for visualization.
 
 - schema:
 
@@ -82,7 +83,6 @@ schema <- build_schema(data = my_data) |>
     decision = "exclude rows with NA",
     inputs = c("age", "income"), outputs = "df_clean"
   )
-#> ✔ Data attached: "my_data"
 
 # plot() and draw_tines() are interchangeable
 draw_tines(schema)
@@ -104,7 +104,6 @@ schema2 <- build_schema(data = my_data) |>
     decision = "impute with median",
     inputs = c("age", "income"), outputs = "df_clean"
   )
-#> ✔ Data attached: "my_data"
 multiverse <- as_multiverse(list(schema, schema2))
 draw_tines(multiverse, index = 2)
 
