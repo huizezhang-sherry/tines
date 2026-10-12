@@ -5,12 +5,15 @@
 #' and the `plot()` methods render the interactive widget. [inspect_dot()]
 #' formats and prints raw DOT strings to the console for debugging.
 #'
+#' A plain schema is drawn as a chain of steps in order (dashed edges: they
+#' record order only). A mapped schema is drawn by data flow: a solid edge
+#' runs from the step that creates a variable to each later step that reads
+#' it, so steps that share no variables are not joined. A schema whose
+#' mapping is incomplete is drawn as a plain one.
+#'
 #' @param x A `schema` or `multiverse` object, or the path to a YAML file.
 #' @param index An integer. For a `multiverse`, which path index to draw.
 #'   Defaults to 1.
-#' @param data Optional. A data frame or path to a data file. If schema is
-#'   unmapped, this will be used to automatically map variables for
-#'   visualization.
 #' @param schema A `schema` object to convert to DOT code for inspection.
 #' @param indent Integer. The number of spaces to use for each indentation
 #'   level in [inspect_dot()]. Defaults to 2.
@@ -65,7 +68,7 @@ plot.multiverse <- function(x, index = 1, ...) {
 
 #' @export
 #' @rdname print
-draw_tines <- function(x, index = 1, data = NULL, ...) {
+draw_tines <- function(x, index = 1, ...) {
   if (is.character(x) && length(x) == 1) {
     if (!file.exists(x)) cli::cli_abort("File not found: {.val {x}}")
     x <- read_tines(x)
@@ -87,8 +90,7 @@ draw_tines <- function(x, index = 1, data = NULL, ...) {
     schema <- x
   }
 
-  # Ensure schema has inputs/outputs for edge generation
-  schema <- ensure_mapped(schema, data = data, operation = "Visualization")
+  check_schema(schema)
 
   dot_code <- tines2dotspec(schema, ...)
 
@@ -111,19 +113,14 @@ tines2dotspec <- function(x, ...) {
     "shape=box, style=filled, fillcolor=white]"
   )
 
-  # 2. Prepare Edge Definitions with Semantic Styling
-  # TODO: currently only doing sequential edges - for now create simple
-  # sequential flow
-  if (nrow(x) > 1) {
-    edge_df <- generate_edges(x)
-  } else {
-    edge_df <- data.frame(from = character(), to = character())
-  }
+  # 2. Prepare Edge Definitions: data flow where the schema is mapped, the
+  # order of the steps where it is not
+  edge_df <- generate_edges(x)
 
   edge_strings <- if (nrow(edge_df) > 0) {
     paste0(
       '  "', edge_df$from, '" -> "', edge_df$to,
-      '" [style=solid, color=black]'
+      '" [style=', edge_df$style, ', color=black]'
     )
   } else {
     character(0)
@@ -233,41 +230,34 @@ inspect_dot <- function(schema,
 }
 
 
-globalVariables("type")
+globalVariables(c("type", "from", "to"))
 
 
-# Edges for the DOT graph: one runs from the step that produced a variable to
-# each later step that consumes it. Called only by tines2dotspec().
+# Edges for the DOT graph. In a mapped schema a solid edge runs from the step
+# that created a variable to each later step that reads it. A plain schema is
+# a dashed chain in step order. Called only by tines2dotspec().
 generate_edges <- function(schema) {
-  edges <- data.frame(
-    from = character(), to = character(),
-    stringsAsFactors = FALSE
-  )
+  empty <- data.frame(from = character(), to = character(), style = character())
+  n <- nrow(schema)
+  if (n < 2) return(empty)
+  ids <- schema$id
+  chain <- function(i) data.frame(from = ids[i], to = ids[i + 1], style = "dashed")
+
+  if (!is_mapped(schema)) return(do.call(rbind, lapply(seq_len(n - 1), chain)))
+
+  edges <- list()
   var_sources <- list()
-
-  for (i in seq_len(nrow(schema))) {
-    current_id <- schema$id[i]
-    current_inputs <- unlist(schema$inputs[[i]])
-    current_inputs <- current_inputs[!is.na(current_inputs)]
-
-    if (length(current_inputs) > 0) {
-      for (inp in current_inputs) {
-        if (inp %in% names(var_sources)) {
-          edges <- dplyr::bind_rows(edges, data.frame(
-            from = var_sources[[inp]], to = current_id,
-            stringsAsFactors = FALSE
-          ))
-        }
+  for (i in seq_len(n)) {
+    for (inp in schema$inputs[[i]]) {
+      if (inp %in% names(var_sources)) {
+        edges[[length(edges) + 1]] <- data.frame(
+          from = var_sources[[inp]], to = ids[i], style = "solid"
+        )
       }
     }
-
-    current_outputs <- unlist(schema$outputs[[i]])
-    current_outputs <- current_outputs[!is.na(current_outputs)]
-    if (length(current_outputs) > 0) {
-      for (outp in current_outputs) var_sources[[outp]] <- current_id
-    }
+    for (outp in schema$outputs[[i]]) var_sources[[outp]] <- ids[i]
   }
 
-  if (nrow(edges) > 0) edges <- dplyr::distinct(edges)
-  edges
+  if (length(edges) == 0) return(empty)
+  dplyr::distinct(do.call(rbind, edges), from, to, .keep_all = TRUE)
 }

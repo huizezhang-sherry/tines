@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# tines <a href='https://huizezhang-sherry.github.io/tines/'><img src='man/figures/imgfile.svg' align="right" height="138.5" alt="tines package hex sticker logo featuring a fork-like branching diagram on a clean background, symbolising the multiverse of analytical paths the package helps explore" /></a>
+# tines <a href='https://huizezhang-sherry.github.io/tines/'><img src='man/figures/logo.png' align="right" height="139" alt="tines hex sticker: a cream fork on a purple background, whose handle splits at a gold dot into three tines, symbolising the forking paths of a multiverse analysis" /></a>
 
 <!-- badges: start -->
 

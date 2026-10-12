@@ -36,15 +36,21 @@ test_that("add_step validates its inputs", {
   expect_error(add_step(schema, id = "a"), "already exists")
 })
 
-test_that("add_step defaults NULL inputs/outputs to NA and accepts vectors", {
-  schema <- build_schema() |>
-    add_step(id = "a") |>
-    add_step(id = "b", inputs = c("x", "y"), outputs = "z")
+test_that("add_step() adds inputs/outputs to a schema when given", {
+  plain <- build_schema() |> add_step(id = "a")
+  expect_false("inputs" %in% names(plain))
 
-  expect_true(is.na(schema$inputs[[1]]))
-  expect_true(is.na(schema$outputs[[1]]))
-  expect_equal(schema$inputs[[2]], c("x", "y"))
-  expect_equal(schema$outputs[[2]], "z")
+  # given for a later step, they leave the earlier one unset
+  later <- suppressMessages(add_step(plain, id = "b", inputs = "x", outputs = "y"))
+  expect_true(is.na(later$inputs[[1]]))
+  expect_equal(later$inputs[[2]], "x")
+
+  mapped <- build_schema() |>
+    add_step(id = "a", inputs = character(0), outputs = "x") |>
+    add_step(id = "b", inputs = c("x", "y"), outputs = "z")
+  expect_equal(mapped$inputs[[1]], character(0))
+  expect_equal(mapped$inputs[[2]], c("x", "y"))
+  expect_equal(mapped$outputs[[2]], "z")
 })
 
 test_that("add_step preserves name and data attributes across appends", {
@@ -139,6 +145,21 @@ test_that("as_multiverse flattens nested multiverses, keeping their branch names
   expect_equal(names(flat), c("hdi", "football"))
 })
 
+test_that("as_schema() carries inputs/outputs list-columns through", {
+  df <- data.frame(id = c("a", "b"), objective = "", decision = "", rationale = "")
+  df$inputs <- list("x", "y")
+  df$outputs <- list("y", character(0))
+  schema <- as_schema(df)
+  expect_equal(schema$inputs[[1]], "x")
+  expect_equal(schema$outputs[[2]], character(0))
+
+  # a step without I/O is unset, and one column alone gives the other, unset
+  df$inputs <- list("x", NULL)
+  expect_equal(tines:::unmapped_steps(suppressMessages(as_schema(df))), "b")
+  only_outputs <- suppressMessages(as_schema(df[, c("id", "objective", "decision", "rationale", "outputs")]))
+  expect_equal(tines:::unmapped_steps(only_outputs), c("a", "b"))
+})
+
 test_that("as_schema() coerces a data frame of steps", {
   df <- data.frame(
     id = c("step-clean", "step-model"),
@@ -173,7 +194,7 @@ test_that("print methods remain stable (snapshot)", {
 
 test_that("tbl_sum.schema reflects the name attribute", {
   expect_equal(pillar::tbl_sum(build_schema(name = "X")), c("A schema" = "X"))
-  expect_equal(pillar::tbl_sum(build_schema()), c("A schema" = "0 x 6"))
+  expect_equal(pillar::tbl_sum(build_schema()), c("A schema" = "0 x 4"))
 })
 
 test_that("add_step() works on schemas whose columns differ from the canonical set", {
@@ -207,7 +228,21 @@ test_that("add_step() works on schemas whose columns differ from the canonical s
   # Extra fields carried by LLM-drafted schemas survive, NA for the new step
   drafted <- example_football_grp5()
   expect_true("confidence" %in% names(drafted))
-  grown <- add_step(drafted, id = "step-new", objective = "o", decision = "d")
+  grown <- add_step(
+    drafted, id = "step-new", objective = "o", decision = "d",
+    inputs = character(0), outputs = character(0)
+  )
   expect_equal(nrow(grown), nrow(drafted) + 1)
   expect_true(is.na(grown$confidence[nrow(grown)]))
+})
+
+test_that("constructors return their schema visibly", {
+  expect_visible(build_schema())
+  expect_visible(add_step(build_schema(), id = "a"))
+  mapped <- add_step(build_schema(), id = "a", inputs = "x", outputs = "y")
+  expect_visible(update_io(mapped, "a", inputs = "z"))
+  path <- withr::local_tempfile(fileext = ".yml")
+  write_tines(example_hdi(), path)
+  expect_visible(read_tines(path))
+  expect_invisible(validate_schema(example_hdi()))
 })

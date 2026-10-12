@@ -80,6 +80,9 @@
 
     Code
       expand_tines(base_schema, alts)
+    Message
+      i 3 branches have an incomplete mapping: their alternatives give no inputs/outputs for the steps they replace.
+        Branches: "gm1", "gm2", and "gm3". Give the replaced steps inputs/outputs with `update_io()`, or add them to the alternatives.
     Output
       A multiverse with 4 schemas:
         original: (7 steps)
@@ -91,6 +94,9 @@
 
     Code
       expand_tines(base_schema, tmp_file)
+    Message
+      i 3 branches have an incomplete mapping: their alternatives give no inputs/outputs for the steps they replace.
+        Branches: "gm1", "gm2", and "gm3". Give the replaced steps inputs/outputs with `update_io()`, or add them to the alternatives.
     Output
       A multiverse with 4 schemas:
         original: (7 steps)

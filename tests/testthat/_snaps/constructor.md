@@ -4,11 +4,11 @@
       schema
     Output
       # A schema: HDI Example
-        id             objective                     decision rationale inputs outputs
-        <chr>          <chr>                         <chr>    <chr>     <list> <list> 
-      1 step-scaling   variables are in different s~ apply m~ to put t~ <lgl>  <lgl>  
-      2 step-education combine the school variables~ average~ the most~ <lgl>  <lgl>  
-      3 step-combine   combine the three dimensions~ use the~ the geom~ <lgl>  <lgl>  
+        id             objective                                    decision rationale
+        <chr>          <chr>                                        <chr>    <chr>    
+      1 step-scaling   variables are in different scales            apply m~ to put t~
+      2 step-education combine the school variables into one dimen~ average~ the most~
+      3 step-combine   combine the three dimensions into a single ~ use the~ the geom~
 
 ---
 
@@ -29,9 +29,8 @@
     Code
       print(build_schema())
     Output
-      # A schema: 0 x 6
-      # i 6 variables: id <chr>, objective <chr>, decision <chr>, rationale <chr>,
-      #   inputs <list>, outputs <list>
+      # A schema: 0 x 4
+      # i 4 variables: id <chr>, objective <chr>, decision <chr>, rationale <chr>
 
 ---
 

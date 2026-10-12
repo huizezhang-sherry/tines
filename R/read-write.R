@@ -1,27 +1,54 @@
 #' Read and write tines schemas and multiverses to YAML files
 #'
+#' @description
+#' [write_tines()] writes a schema (or a multiverse) to YAML, and
+#' [read_tines()] reads it back.
+#'
+#' A schema's data reference is written under `meta.data`, with a file path
+#' stored relative to the YAML file, so the two can be moved or shared
+#' together. A schema whose data was given as a data frame has no reference
+#' to write; supply the data again with `read_tines(path, data = )`.
+#'
+#' When a mapped schema is read, it is checked against its data: the
+#' columns are looked up (never the data itself) and each step's inputs are
+#' checked with [validate_schema()]. A plain schema has nothing to check
+#' against the data, so its data is not touched. If the data comes from an R
+#' script, running it means running code from the file, so `validate`
+#' decides whether that happens.
+#'
 #' @param x An object of class `schema` or `multiverse`.
-#' @param path A single string specifying the output file path. Optional.
-#' @param data Optional data frame or path to data file for validation (for
-#'   [read_tines()] only).
-#' @param ... Arguments passed on to `yaml::write_yaml()` or
+#' @param path A single string specifying the file path. Optional for
+#'   [write_tines()].
+#' @param data Optional. Data to check the schema against instead of the one
+#'   the file references; see [update_data()] for the forms it takes.
+#' @param validate How to handle a data source that is an R script:
+#'   `"ask"` (the default) asks in an interactive session and skips the check
+#'   otherwise, `"always"` runs it without asking, and `"never"` skips
+#'   looking up the data's columns altogether.
+#' @param ... Arguments passed on to `yaml::as.yaml()` or
 #'   `yaml::read_yaml()`.
 #'
 #' @returns
-#' [write_tines()] returns `NULL` and [read_tines()] returns an object of
-#' class `schema` or `multiverse`.
+#' [write_tines()] invisibly returns `path`, and [read_tines()] returns an
+#' object of class `schema` or `multiverse`.
 #'
 #' @export
 #' @rdname read-write
 #' @examples
 #' schema <- example_hdi()
-#' temp_path <- withr::local_tempfile(fileext = ".yaml")
+#' temp_path <- withr::local_tempfile(fileext = ".yml")
 #' write_tines(schema, temp_path)
 #' schema_read <- read_tines(temp_path)
 #'
-#' # Read and validate against a data frame or file path
+#' # a mapped schema, checked against a data frame on read
 #' my_data <- data.frame(age = c(25, 30, 35), income = c(50000, 60000, 70000))
-#' schema_read <- read_tines(temp_path, data = my_data)
+#' mapped <- build_schema("Income") |>
+#'   add_step(
+#'     id = "step-log", decision = "log-transform income",
+#'     inputs = "income", outputs = "log_income"
+#'   )
+#' write_tines(mapped, temp_path)
+#' read_tines(temp_path, data = my_data)
 #'
 write_tines <- function(x, path = NULL, ...) {
   if (!inherits(x, c("schema", "multiverse"))) {
@@ -44,16 +71,18 @@ write_tines <- function(x, path = NULL, ...) {
       type = "multiverse",
       date = as.character(Sys.Date())
     ))
-    output <- c(header, list(schemas = purrr::map(x, schema_to_yaml_list)))
+    output <- c(header, list(schemas = purrr::map(x, schema_to_yaml_list, path = path)))
+    unwritable <- any(purrr::map_lgl(x, data_is_unwritable))
   }
 
   if (inherits(x, "schema")) {
-    header <- list(meta = list(
-      type = "schema",
-      date = as.character(Sys.Date()),
-      name = attr(x, "name", exact = TRUE)
-    ))
-    output <- c(header, list(nodes = schema_to_yaml_list(x)$nodes))
+    body <- schema_to_yaml_list(x, path = path)
+    body$meta <- c(
+      list(type = "schema", date = as.character(Sys.Date())),
+      body$meta[setdiff(names(body$meta), "type")]
+    )
+    output <- body
+    unwritable <- data_is_unwritable(x)
   }
 
   txt <- yaml::as.yaml(output, column.major = FALSE, ...)
@@ -61,19 +90,38 @@ write_tines <- function(x, path = NULL, ...) {
   writeLines(txt, path)
 
   cli::cli_alert_success("File saved: {.file {path}}")
+  if (unwritable) {
+    cli::cli_inform(c(
+      "i" = "The data was given as a data frame, so no data reference was written.",
+      " " = "Supply it again with {.code read_tines(path, data = )}."
+    ))
+  }
+  invisible(path)
+}
+
+data_is_unwritable <- function(x) {
+  ref <- attr(x, "data", exact = TRUE)
+  !is.null(ref) && is.null(ref$source)
 }
 
 # Converts a single `schema` object into the list-of-nodes shape expected by
 # both the standalone schema file format and each entry under a multiverse
 # file's `schemas:` field -- shared so a multiverse's schemas serialize
-# identically to a standalone schema (required for read_tines() to be able
-# to rebuild them the same way via rebuild_schema()).
-schema_to_yaml_list <- function(x) {
+# identically to a standalone schema. `path` is the file being written, which
+# a data file's path is made relative to.
+schema_to_yaml_list <- function(x, path = NULL) {
+  with_io <- has_io(x)
   nodes_list <- purrr::pmap(as.data.frame(x), function(...) {
     node <- list(...)
-    # Ensure inputs and outputs are proper lists
-    if (!is.null(node$inputs)) node$inputs <- normalize_io_field(node$inputs)
-    if (!is.null(node$outputs)) node$outputs <- normalize_io_field(node$outputs)
+    if (with_io) {
+      # A field not yet given is left out; as.list() writes a step with none
+      # as `[]`. An incomplete mapping is written as it stands, so it can be
+      # finished later.
+      for (field in c("inputs", "outputs")) {
+        node[field] <- if (io_missing(node[[field]])) list(NULL) else list(as.list(node[[field]]))
+      }
+      node <- node[!vapply(node, is.null, logical(1))]
+    }
     # `source_schema` is provenance for steps pulled in by import_step(); an
     # unset one says nothing, so it is omitted rather than written out as a
     # typed null (`source_schema: .na.character`) on every step.
@@ -83,29 +131,14 @@ schema_to_yaml_list <- function(x) {
     node
   })
 
-  list(
-    meta = list(type = "schema", name = attr(x, "name", exact = TRUE)),
-    nodes = nodes_list
-  )
-}
-
-# A schema's inputs/outputs list-column shows up in two different shapes
-# depending on how the schema was produced: gen_io()/update_io() store each
-# row as list(vector) (one level of list-wrapping per row, from `<-` on a
-# single element of an existing list-column), while a schema freshly rebuilt
-# by read_tines() yields a plain vector per row (possibly character(0) for
-# an empty `[]`, or a length-1 NA sentinel for "unset"). The old
-# `if (is.na(node$inputs[[1]]))` check assumed the vector always had exactly
-# one element and broke ("the condition has length > 1") on any node with
-# more than one input/output. Normalize both shapes into a plain R list of
-# strings (possibly empty) instead.
-normalize_io_field <- function(field) {
-  if (is.list(field) && length(field) == 1 && !is.list(field[[1]])) {
-    field <- field[[1]]
+  meta <- list(type = "schema", name = attr(x, "name", exact = TRUE))
+  ref <- attr(x, "data", exact = TRUE)
+  if (!is.null(ref$source)) {
+    src <- if (is.null(path)) ref$source else source_for_file(ref$source, path)
+    meta$data <- purrr::compact(list(source = src, object = ref$object))
   }
-  if (length(field) == 0) return(list())
-  if (length(field) == 1 && is.na(field)) return(list())
-  as.list(field)
+
+  list(meta = purrr::compact(meta), nodes = nodes_list)
 }
 
 # yaml::write_yaml()/as.yaml() always emit sequences in block style:
@@ -150,53 +183,76 @@ collapse_io_lists <- function(txt) {
 
 #' @export
 #' @rdname read-write
-read_tines <- function(path, data = NULL, ...) {
+read_tines <- function(path, data = NULL, validate = c("ask", "always", "never"), ...) {
+  validate <- match.arg(validate)
   raw <- yaml::read_yaml(path, ...)
   type <- raw$meta$type
 
-  rebuild_schema <- function(raw) {
-    nodes <- purrr::map(raw$nodes, function(node) {
-      # Keep inputs/outputs as lists, coerce everything else to scalar
-      list_cols <- c("inputs", "outputs")
-      scalar_fields <- setdiff(names(node), list_cols)
-      row <- tibble::as_tibble(lapply(node[scalar_fields], function(x) {
-        if (length(x) == 0) NA_character_ else as.character(x[[1]])
-      }))
-      for (col in list_cols) {
-        row[[col]] <- list(
-          if (is.null(node[[col]])) character(0) else as.character(node[[col]])
-        )
-      }
-      row
-    })
-    new_schema(
-      name = raw$meta$name,
-      nodes = dplyr::bind_rows(nodes)
-    )
+  # One lookup per distinct source, so the branches of a multiverse file
+  # sharing a script ask (and run it) once.
+  looked_up <- list()
+  rebuild <- function(raw) {
+    x <- rebuild_schema(raw, path)
+    if (!is.null(data)) {
+      attr(x, "data") <- data_ref(data)
+    } else if (is_mapped(x) && has_data(x)) {
+      ref <- attr(x, "data", exact = TRUE)
+      key <- paste(ref$source, ref$object %||% "")
+      if (is.null(looked_up[[key]])) looked_up[[key]] <<- resolve_columns(ref, validate)
+      attr(x, "data") <- looked_up[[key]]
+    }
+    check_schema(x)
   }
 
-  if (type == "schema") {
-    res <- rebuild_schema(raw)
-
-    # Attach and validate data if provided
-    if (!is.null(data)) {
-      res <- update_data(res, data)
-    }
-  } else if (type == "multiverse") {
-    schemas <- purrr::map(raw$schemas, rebuild_schema)
-    res <- as_multiverse(schemas)
-
-    # Attach data to all schemas if provided
-    if (!is.null(data)) {
-      res <- purrr::map(res, function(s) update_data(s, data))
-      class(res) <- c("multiverse", "list")
-    }
+  if (identical(type, "schema")) {
+    rebuild(raw)
+  } else if (identical(type, "multiverse")) {
+    new_multiverse(purrr::map(raw$schemas, rebuild))
   } else {
     cli::cli_abort(c(
       "Unrecognized type in YAML file: {.val {type}}.",
       "i" = "Expected 'schema' or 'multiverse'."
     ))
   }
+}
 
-  return(res)
+# One schema's `meta` + `nodes` -> a `schema` object. A file in which no
+# step declares inputs or outputs gives a plain schema; if any step does, a
+# step without them is left unset (NA), leaving the mapping incomplete.
+rebuild_schema <- function(raw, path) {
+  io_fields <- c("inputs", "outputs")
+  mapped <- any(purrr::map_lgl(raw$nodes, function(n) any(io_fields %in% names(n))))
+
+  nodes <- purrr::map(raw$nodes, function(node) {
+    scalar_fields <- setdiff(names(node), io_fields)
+    row <- tibble::as_tibble(lapply(node[scalar_fields], function(x) {
+      if (length(x) == 0) NA_character_ else as.character(x[[1]])
+    }))
+    if (mapped) {
+      for (col in io_fields) {
+        # A missing field and `inputs: null` both arrive as NULL, which as_io()
+        # turns into NA (not given). `[]` arrives as an empty list.
+        row[[col]] <- list(as_io(node[[col]]))
+      }
+    }
+    row
+  })
+
+  ref <- raw$meta$data
+  if (is.character(ref)) ref <- list(source = ref)
+  if (!is.null(ref$source)) {
+    ref <- list(source = source_from_file(ref$source, path), object = ref$object, columns = NULL)
+  } else {
+    ref <- NULL
+  }
+
+  nodes <- if (length(nodes) == 0) {
+    tibble::tibble(
+      id = character(), objective = character(), decision = character(),
+      rationale = character()
+    )
+  } else {
+    dplyr::bind_rows(nodes)
+  }
+  new_schema(name = raw$meta$name, nodes = nodes, data = ref)
 }

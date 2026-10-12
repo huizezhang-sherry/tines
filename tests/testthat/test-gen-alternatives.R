@@ -76,3 +76,45 @@ test_that("expand_tines() re-validates branch = 'single' even if the object was 
   )
   expect_error(expand_tines(base_schema, alts), "exactly one alternative")
 })
+
+test_that("an overridden step takes the alternative's I/O, or is left unset", {
+  base <- build_schema() |>
+    add_step(id = "a", decision = "average r1 and r2", inputs = c("r1", "r2"), outputs = "x") |>
+    add_step(id = "b", decision = "model", inputs = "x", outputs = "fit")
+
+  alts <- new_alternatives(
+    node(
+      overrides = "a",
+      alternative("a-r1", "use r1 only", "fewer raters"),
+      alternative("a-max", "take the max", "robust", inputs = c("r1", "r2"), outputs = "x")
+    ),
+    branch = "multi"
+  )
+  expect_message(mv <- expand_tines(base, alts), "1 branch has an incomplete mapping")
+
+  expect_equal(mv$original$inputs[[1]], c("r1", "r2"))
+  expect_equal(mv$`a-max`$inputs[[1]], c("r1", "r2"))
+  # steps the alternative did not touch keep theirs
+  expect_equal(mv$`a-max`$inputs[[2]], "x")
+  # the original step's I/O is not carried over: the step is left unset
+  expect_equal(tines:::unmapped_steps(mv$`a-r1`), "a")
+  expect_equal(mv$`a-r1`$inputs[[2]], "x")
+})
+
+test_that("expand_tines() carries the data reference to every branch", {
+  base <- update_data(example_hdi(), "datasets::mtcars")
+  mv <- expand_tines(base, example_hdi_alternatives())
+  for (branch in mv) expect_equal(attr(branch, "data")$source, "datasets::mtcars")
+})
+
+test_that("alternative I/O survives a write/read round trip", {
+  alts <- new_alternatives(
+    node(overrides = "a", alternative("a1", "d", "r", inputs = "r1", outputs = character(0))),
+    branch = "multi"
+  )
+  path <- withr::local_tempfile(fileext = ".yml")
+  write_alternatives(alts, path)
+  back <- read_alternatives(path)
+  expect_equal(back$alternatives[[1]]$inputs[[1]], "r1")
+  expect_equal(back$alternatives[[1]]$outputs[[1]], character(0))
+})

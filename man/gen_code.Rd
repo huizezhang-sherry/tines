@@ -49,7 +49,8 @@ prompt_gen_code(
   base_code = NULL,
   data = NULL,
   print = TRUE,
-  width = 70
+  width = 70,
+  data_object = NULL
 )
 }
 \arguments{
@@ -58,8 +59,8 @@ prompt_gen_code(
 \item{base_code}{Optional. File path to an R script to use as style
 reference.}
 
-\item{data}{Optional. Data source specification (file path or
-"package::dataset").}
+\item{data}{Optional. Data source specification (a data file, an R
+script that creates the data, or \code{"package::dataset"}).}
 
 \item{output}{For schemas: file path (ending in .R) or directory.
 For multiverses: must be a directory. Defaults to "scripts".}
@@ -79,6 +80,9 @@ it.}
 
 \item{width}{If \code{print = TRUE}, the width to wrap the printed prompt
 (default 70).}
+
+\item{data_object}{Optional. When \code{data} is an R script, the name of the
+object it creates that holds the data.}
 }
 \value{
 Invisibly returns the path(s) to the generated script(s).

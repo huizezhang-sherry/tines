@@ -98,16 +98,10 @@ gen_alternatives.schema <- function(x, step, n = 3, data = NULL,
 
   # Prepare data context if available
   data_dict <- if (!is.null(data)) {
-    if (is.data.frame(data)) {
-      prepare_data_dict(data)
-    } else if (is.character(data) && file.exists(data)) {
-      prepare_data_dict(load_data_file(data))
-    } else {
-      NULL
-    }
+    data_ref(data)$columns
   } else if (has_data(x)) {
-    # Use attached data if available
-    attr(x, "data")$dict
+    # Use the schema's own data, if its columns are known
+    attr(x, "data", exact = TRUE)$columns
   } else {
     NULL
   }
@@ -293,6 +287,9 @@ expand_tines.schema <- function(x, alternatives, include_original = TRUE, ...) {
 
   # Apply a named list of choices (one per target step, NULL meaning "keep
   # the original decision/rationale for this step") to build one branch.
+  keep <- schema_attrs(x)
+  baseline <- schema_issues(x)
+  mapped <- is_mapped(x)
   apply_choices <- function(chosen) {
     branch <- x
     for (step_id in names(chosen)) {
@@ -305,10 +302,20 @@ expand_tines.schema <- function(x, alternatives, include_original = TRUE, ...) {
       # lets the same step be located across the original and every branch.
       branch$decision[[step_idx]] <- choice$decision
       branch$rationale[[step_idx]] <- choice$rationale
+
+      # The original step's inputs/outputs described the original decision,
+      # so they are not carried over: the step takes the alternative's own,
+      # or is left unset, which leaves the branch's mapping incomplete. In a
+      # plain base schema, an alternative's inputs/outputs are not used.
+      if (has_io(branch)) {
+        branch <- set_step_io(branch, step_idx, "inputs", choice$inputs %||% NA)
+        branch <- set_step_io(branch, step_idx, "outputs", choice$outputs %||% NA)
+      }
     }
-    class(branch) <- c("schema", "tbl_df", "tbl", "data.frame")
-    attr(branch, "name") <- attr(x, "name", exact = TRUE)
-    branch
+    # Report only what a branch adds to the base schema's own problems, so
+    # those are not repeated once per branch. Incomplete branches are
+    # summarised once, below.
+    check_schema(restore_schema(branch, keep), baseline = baseline, info = FALSE)
   }
 
   if (branch_mode == "single") {
@@ -320,7 +327,7 @@ expand_tines.schema <- function(x, alternatives, include_original = TRUE, ...) {
 
     # Combine every node's (sole) alternative into a single coordinated
     # branch.
-    chosen <- purrr::map(alts_data$alternatives, function(alts) as.list(alts[1, ]))
+    chosen <- purrr::map(alts_data$alternatives, alt_choice, j = 1)
     names(chosen) <- target_steps
 
     branch <- apply_choices(chosen)
@@ -335,9 +342,7 @@ expand_tines.schema <- function(x, alternatives, include_original = TRUE, ...) {
     # alternative (identical to the un-crossed behaviour); the
     # all-original combination is one cell of the grid, named "original".
     choice_lists <- purrr::map(alts_data$alternatives, function(alts) {
-      c(list(NULL), purrr::pmap(alts, function(id, decision, rationale) {
-        list(id = id, decision = decision, rationale = rationale)
-      }))
+      c(list(NULL), lapply(seq_len(nrow(alts)), alt_choice, alts = alts))
     })
 
     grid <- expand.grid(lapply(choice_lists, seq_along), KEEP.OUT.ATTRS = FALSE)
@@ -363,7 +368,30 @@ expand_tines.schema <- function(x, alternatives, include_original = TRUE, ...) {
     if (!include_original) new_schemas <- new_schemas[names(new_schemas) != "original"]
   }
 
+  if (mapped) {
+    incomplete <- names(new_schemas)[!purrr::map_lgl(new_schemas, is_mapped)]
+    if (length(incomplete) > 0) {
+      cli::cli_inform(c(
+        "i" = paste0(
+          "{length(incomplete)} branch{?es} {?has/have} an incomplete mapping: ",
+          "{?its/their} alternative{?s} give{?s/} no inputs/outputs for the step{?s} {?it/they} replace{?s/}."
+        ),
+        " " = "Branch{?es}: {.val {incomplete}}. Give the replaced steps inputs/outputs with {.fn update_io}, or add them to the alternatives."
+      ))
+    }
+  }
+
   new_multiverse(new_schemas)
+}
+
+# The j-th alternative of a node, as a list: id, decision, rationale, and
+# inputs/outputs (NULL when not given).
+alt_choice <- function(alts, j) {
+  choice <- list(id = alts$id[j], decision = alts$decision[j], rationale = alts$rationale[j])
+  for (field in c("inputs", "outputs")) {
+    if (field %in% names(alts)) choice[field] <- list(alts[[field]][[j]])
+  }
+  choice
 }
 
 #' @rdname expand

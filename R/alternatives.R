@@ -28,6 +28,11 @@ check_single_branch <- function(x) {
 #' @param id Unique identifier for this alternative (kebab-case).
 #' @param decision The new method/implementation.
 #' @param rationale Why this method is valid.
+#' @param inputs,outputs Optional character vectors: the variables the step
+#'   reads and creates under this alternative. When the base schema has
+#'   inputs/outputs, the replaced step takes these in its branch; the
+#'   original step's are never carried over, since they may no longer apply.
+#'   An alternative without them leaves its branch's mapping incomplete.
 #' @param overrides The id of the step this node overrides.
 #' @param ... For [node()]: one or more alternatives, created by
 #'   [alternative()]. For [new_alternatives()]: one or more nodes, created by
@@ -49,7 +54,8 @@ check_single_branch <- function(x) {
 #'   for expressing one change that spans several steps together.
 #'
 #' @return [alternative()] returns a plain list with elements `id`,
-#'   `decision`, `rationale` -- one candidate change for a single step.
+#'   `decision`, `rationale` (and `inputs`/`outputs`, if given) -- one
+#'   candidate change for a single step.
 #'
 #'   [node()] returns a plain list with elements `overrides` (the step id)
 #'   and `alternatives` (a tibble of the candidates passed via `...`, one
@@ -104,7 +110,7 @@ check_single_branch <- function(x) {
 #'   branch = "single"
 #' )
 #'
-alternative <- function(id, decision, rationale) {
+alternative <- function(id, decision, rationale, inputs = NULL, outputs = NULL) {
   # Quick validation to ensure no missing pieces
   if (missing(id) || missing(decision) || missing(rationale)) {
     cli::cli_abort(
@@ -112,11 +118,32 @@ alternative <- function(id, decision, rationale) {
     )
   }
 
-  list(
+  drop_null(list(
     id = id,
     decision = decision,
-    rationale = rationale
+    rationale = rationale,
+    inputs = if (!is.null(inputs)) as_io(inputs),
+    outputs = if (!is.null(outputs)) as_io(outputs)
+  ))
+}
+
+# Unlike purrr::compact(), keeps character(0): an empty `outputs` means "this
+# step creates nothing", which is not the same as not saying.
+drop_null <- function(x) x[!vapply(x, is.null, logical(1))]
+
+# One row per alternative. `inputs`/`outputs` are list-columns, present only
+# when some alternative gives them; NULL in a row means "not given".
+alternatives_tibble <- function(alts) {
+  df <- tibble::tibble(
+    id = purrr::map_chr(alts, "id"),
+    decision = purrr::map_chr(alts, "decision"),
+    rationale = purrr::map_chr(alts, "rationale")
   )
+  for (field in c("inputs", "outputs")) {
+    vals <- purrr::map(alts, function(a) if (!is.null(a[[field]])) as_io(a[[field]]))
+    if (any(!purrr::map_lgl(vals, is.null))) df[[field]] <- vals
+  }
+  df
 }
 
 #' @export
@@ -130,15 +157,7 @@ node <- function(overrides, ...) {
     )
   }
 
-  alternatives <- purrr::map_dfr(alts, function(alt) {
-    tibble::tibble(
-      id = alt$id,
-      decision = alt$decision,
-      rationale = alt$rationale
-    )
-  })
-
-  list(overrides = overrides, alternatives = alternatives)
+  list(overrides = overrides, alternatives = alternatives_tibble(alts))
 }
 
 #' @export
@@ -194,8 +213,12 @@ write_alternatives <- function(x, file, ...) {
   nodes_list <- purrr::map2(x$overrides, x$alternatives, function(step_id, alts) {
     list(
       overrides = step_id,
-      alternatives = purrr::pmap(alts, function(id, decision, rationale) {
-        list(id = id, decision = decision, rationale = rationale)
+      alternatives = purrr::pmap(alts, function(...) {
+        alt <- drop_null(list(...))
+        for (field in intersect(c("inputs", "outputs"), names(alt))) {
+          alt[[field]] <- as.list(alt[[field]])
+        }
+        alt
       })
     )
   })
@@ -229,9 +252,7 @@ read_alternatives <- function(file, ...) {
   df <- tibble::tibble(
     overrides = purrr::map_chr(raw_yaml$nodes, "overrides"),
     alternatives = purrr::map(raw_yaml$nodes, function(node) {
-      purrr::map_dfr(node$alternatives, function(a) {
-        tibble::tibble(id = a$id, decision = a$decision, rationale = a$rationale)
-      })
+      alternatives_tibble(node$alternatives)
     })
   )
 

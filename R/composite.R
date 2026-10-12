@@ -10,7 +10,7 @@
 # the user-facing schema surface. The provenance key is a deparsed R variable
 # name, resolved out-of-band through gen_composite_code()'s `base_scripts`
 # argument, so it does not survive being written to a file in any form a
-# reader could follow. See vignette("future-extensions") for the
+# reader could follow. See vignettes/_future-extensions.Rmd (not built) for the
 # locator-based redesign that would have to land before this becomes part of
 # the public API.
 

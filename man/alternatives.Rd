@@ -6,7 +6,7 @@
 \alias{new_alternatives}
 \title{Construct alternatives objects}
 \usage{
-alternative(id, decision, rationale)
+alternative(id, decision, rationale, inputs = NULL, outputs = NULL)
 
 node(overrides, ...)
 
@@ -18,6 +18,12 @@ new_alternatives(..., branch)
 \item{decision}{The new method/implementation.}
 
 \item{rationale}{Why this method is valid.}
+
+\item{inputs, outputs}{Optional character vectors: the variables the step
+reads and creates under this alternative. When the base schema has
+inputs/outputs, the replaced step takes these in its branch; the
+original step's are never carried over, since they may no longer apply.
+An alternative without them leaves its branch's mapping incomplete.}
 
 \item{overrides}{The id of the step this node overrides.}
 
@@ -43,7 +49,8 @@ for expressing one change that spans several steps together.}
 }
 \value{
 \code{\link[=alternative]{alternative()}} returns a plain list with elements \code{id},
-\code{decision}, \code{rationale} -- one candidate change for a single step.
+\code{decision}, \code{rationale} (and \code{inputs}/\code{outputs}, if given) -- one
+candidate change for a single step.
 
 \code{\link[=node]{node()}} returns a plain list with elements \code{overrides} (the step id)
 and \code{alternatives} (a tibble of the candidates passed via \code{...}, one

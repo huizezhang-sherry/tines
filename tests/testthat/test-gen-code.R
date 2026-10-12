@@ -52,12 +52,36 @@ test_that("gen_code.schema resolves the output path correctly", {
   expect_true(dir.exists(dirname(out_file)))
 })
 
-test_that("gen_code.schema errors when the schema is unmapped and no data is given", {
-  unmapped_schema <- example_football_grp5()
-  expect_error(
-    gen_code(unmapped_schema, output = withr::local_tempdir()),
-    "requires inputs/outputs but schema is unmapped"
-  )
+test_that("gen_code.schema works on an unmapped schema, using its data reference", {
+  seen <- NULL
+  local_mocked_bindings(gen_code_single = function(...) seen <<- list(...))
+
+  schema <- update_data(example_hdi(), "datasets::mtcars")
+  gen_code(schema, output = withr::local_tempdir())
+  expect_equal(seen$data, "datasets::mtcars")
+
+  # an explicit `data` overrides the reference
+  gen_code(schema, data = "other.csv", output = withr::local_tempdir())
+  expect_equal(seen$data, "other.csv")
+})
+
+test_that("prompt_gen_code describes a script data source", {
+  prompt <- prompt_gen_code(data = "make-data.R", data_object = "df", print = FALSE)
+  expect_match(prompt, 'source("make-data.R")', fixed = TRUE)
+  expect_match(prompt, "`df`", fixed = TRUE)
+})
+
+test_that("prompt_gen_code sends inputs/outputs only when the mapping is complete", {
+  incomplete <- suppressMessages(update_io(example_hdi(), "step-scaling", inputs = "a", outputs = "b"))
+  expect_no_match(prompt_gen_code(schema = incomplete, print = FALSE), "inputs", fixed = TRUE)
+})
+
+test_that("prompt_gen_code asks for the declared names only when mapped", {
+  plain <- prompt_gen_code(schema = example_hdi(), print = FALSE)
+  expect_no_match(plain, "use exactly those variable names", fixed = TRUE)
+
+  mapped <- add_step(build_schema(), id = "a", inputs = "x", outputs = "y")
+  expect_match(prompt_gen_code(schema = mapped, print = FALSE), "use exactly those", fixed = TRUE)
 })
 
 test_that("gen_code.multiverse requires a directory for output", {

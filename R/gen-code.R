@@ -3,9 +3,11 @@
 #' @param x A schema object, multiverse object, or file path to a schema YML.
 #' @param base_code Optional. The file path to an existing R script to use as
 #'   a style reference or template.
-#' @param data Optional. Either a file path to a data file (e.g., CSV) or a
-#'   string like `"packagename::dataset"` indicating a built-in package dataset.
-#'   If `NULL`, the LLM will not receive any data instructions.
+#' @param data Optional. Where the generated script reads its data from: a
+#'   file path to a data file (e.g., CSV), an R script that creates the data,
+#'   or a string like `"packagename::dataset"` for a package dataset.
+#'   Defaults to the schema's own data reference (see [update_data()]); if
+#'   there is none, the LLM receives no data instructions.
 #' @param output For schemas: file path (ending in .R) or directory.
 #'   For multiverses: must be a directory. Defaults to "scripts".
 #' @param model The LLM to use for code generation, as a string in
@@ -73,13 +75,16 @@ gen_code.schema <- function(x, base_code = NULL, data = NULL,
 
   cli::cli_alert_info("Generating script from schema")
 
-  # Ensure schema has inputs/outputs for code generation
-  x <- ensure_mapped(x, data = data, operation = "Code generation")
+  # Mapping is optional: an unmapped schema is generated from its decisions
+  # alone. A mapped one is checked first, so a broken mapping is reported
+  # before it reaches the LLM.
+  check_schema(x)
 
   gen_code_single(
     base_schema = x,
     base_code = base_code,
-    data = data,
+    data = data %||% attr(x, "data", exact = TRUE)$source,
+    data_object = if (is.null(data)) attr(x, "data", exact = TRUE)$object,
     file_path = file_path,
     model = model
   )
@@ -112,10 +117,13 @@ gen_code.multiverse <- function(x, base_code = NULL, data = NULL,
 
     cli::cli_alert_info("Generating {i}/{length(x)}: {.val {id}}")
 
+    check_schema(x[[i]])
+    ref <- attr(x[[i]], "data", exact = TRUE)
     gen_code_single(
       base_schema = x[[i]],
       base_code = base_code,
-      data = data,
+      data = data %||% ref$source,
+      data_object = if (is.null(data)) ref$object,
       file_path = file_path,
       model = model
     )
@@ -149,7 +157,8 @@ multiverse_file_ids <- function(x) {
 gen_code_single <- function(base_schema, base_code = NULL,
                             data = NULL,
                             model = "anthropic/claude-opus-4-5",
-                            file_path = NULL) {
+                            file_path = NULL,
+                            data_object = NULL) {
   if (is.null(file_path)) {
     cli::cli_abort(
       "You must provide a {.arg file_path} to save the generated code."
@@ -164,6 +173,7 @@ gen_code_single <- function(base_schema, base_code = NULL,
     schema = base_schema,
     base_code = base_code,
     data = data,
+    data_object = data_object,
     print = FALSE
   )
 
@@ -177,14 +187,16 @@ gen_code_single <- function(base_schema, base_code = NULL,
 #' @param schema A schema object to include in the prompt.
 #' @param base_code Optional. File path to an R script to use as style
 #'   reference.
-#' @param data Optional. Data source specification (file path or
-#'   "package::dataset").
+#' @param data Optional. Data source specification (a data file, an R
+#'   script that creates the data, or `"package::dataset"`).
+#' @param data_object Optional. When `data` is an R script, the name of the
+#'   object it creates that holds the data.
 #' @param print If `TRUE`, prints the prompt to console instead of returning
 #'   it.
 #' @param width If `print = TRUE`, the width to wrap the printed prompt
 #'   (default 70).
 prompt_gen_code <- function(schema = NULL, base_code = NULL, data = NULL,
-                            print = TRUE, width = 70) {
+                            print = TRUE, width = 70, data_object = NULL) {
   has_data <- !is.null(data)
   has_base_code <- !is.null(base_code)
 
@@ -218,8 +230,15 @@ prompt_gen_code <- function(schema = NULL, base_code = NULL, data = NULL,
     " Your task is to write a complete, working R script that implements ",
     "this pipeline step-by-step. ",
     "Use modern R practices (like dplyr or base pipe) and ensure variables ",
-    "flow correctly from one step to the next as defined by the inputs and ",
-    "outputs. ",
+    "flow correctly from one step to the next",
+    if (!is.null(schema) && is_mapped(schema)) {
+      paste0(
+        ". Where a step lists inputs and outputs, use exactly those variable ",
+        "names; where it does not, choose sensible names. "
+      )
+    } else {
+      ". "
+    },
     "Output ONLY the complete R script. Do not start with markdown ",
     "formatting blocks (like ```R) or backticks."
   )
@@ -231,13 +250,26 @@ prompt_gen_code <- function(schema = NULL, base_code = NULL, data = NULL,
     context_parts <- c(
       context_parts,
       "=== SCHEMA ===",
-      yaml::as.yaml(schema)
+      # An incomplete mapping is not relied on, so it is not sent.
+      yaml::as.yaml(schema_to_yaml_list(
+        if (is_mapped(schema)) schema else drop_io_columns(schema)
+      )$nodes)
     )
   }
 
   if (!is.null(data)) {
-    is_pkg_data <- grepl("::", data, fixed = TRUE)
-    if (is_pkg_data) {
+    kind <- source_kind(data)
+    if (kind == "script") {
+      data_txt <- paste0(
+        "The data is created by the R script `", data, "`. ",
+        "Start the pipeline with `source(\"", data, "\")`",
+        if (!is.null(data_object)) {
+          paste0(" and use the object `", data_object, "` it creates.")
+        } else {
+          " and use the data frame it creates."
+        }
+      )
+    } else if (kind == "package") {
       data_txt <- paste0(
         "The data is available as a built-in package dataset: `", data, "`. ",
         "Load it with `data(", sub(".*::", "", data), ", package = \"",

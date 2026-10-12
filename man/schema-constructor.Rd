@@ -12,7 +12,7 @@
 \alias{print.schema}
 \title{Construct a schema}
 \usage{
-new_schema(name = NULL, nodes = tibble::tibble())
+new_schema(name = NULL, nodes = tibble::tibble(), data = NULL)
 
 build_schema(name = NULL, data = NULL)
 
@@ -45,12 +45,19 @@ as_schema(x, ...)
 \item{nodes}{A data frame (typically a \code{tibble}) defining the steps of the
 schema.}
 
-\item{data}{Optional data frame or path to data file for validation}
+\item{data}{Optional. The data the schema runs on -- a file path, a
+\code{"package::dataset"} string, an R script that builds the data, or a data
+frame. See \code{\link[=update_data]{update_data()}}.}
 
 \item{object}{A \code{schema} object.}
 
-\item{id, objective, decision, rationale, inputs, outputs}{character strings
-to write a step}
+\item{id, objective, decision, rationale}{Character strings describing the
+step.}
+
+\item{inputs, outputs}{Optional character vectors naming the variables the
+step reads and creates (\code{character(0)} for none). A schema is mapped
+once every step has both; until then the mapping is incomplete and not
+used. See \code{\link[=update_io]{update_io()}}.}
 
 \item{...}{Passed on to methods.}
 

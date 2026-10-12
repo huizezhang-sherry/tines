@@ -8,7 +8,6 @@ articles:
   - schema
   - alternatives
   - gaitd-case-study
-  - future-extensions
 
 reference:
 - title: "Schema"
@@ -23,10 +22,11 @@ reference:
 
 - title: "Mapping a schema to data"
   desc: >
-    Tie each step to the variables it reads and the ones it creates, so the
-    generated code runs against a real dataset.
+    Optionally tie a schema to its data, and each step to the variables it
+    reads and creates, so the schema can be checked before code is generated.
   contents:
-  - gen_io
+  - update_data
+  - validate_schema
 
 - title: "Alternatives"
   desc: >

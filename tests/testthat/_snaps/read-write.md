@@ -4,11 +4,11 @@
       schema_read
     Output
       # A schema: HDI Example
-        id             objective                     decision rationale inputs outputs
-        <chr>          <chr>                         <chr>    <chr>     <list> <list> 
-      1 step-scaling   variables are in different s~ apply m~ to put t~ <chr>  <chr>  
-      2 step-education combine the school variables~ average~ the most~ <chr>  <chr>  
-      3 step-combine   combine the three dimensions~ use the~ the geom~ <chr>  <chr>  
+        id             objective                                    decision rationale
+        <chr>          <chr>                                        <chr>    <chr>    
+      1 step-scaling   variables are in different scales            apply m~ to put t~
+      2 step-education combine the school variables into one dimen~ average~ the most~
+      3 step-combine   combine the three dimensions into a single ~ use the~ the geom~
 
 ---
 

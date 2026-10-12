@@ -32,7 +32,7 @@ test_that("generate_edges links steps by matching outputs to inputs", {
   schema <- build_schema() |>
     add_step(
       id = "step-a", objective = "a", decision = "a", rationale = "a",
-      inputs = NULL, outputs = "x"
+      inputs = character(0), outputs = "x"
     ) |>
     add_step(
       id = "step-b", objective = "b", decision = "b", rationale = "b",
@@ -40,7 +40,7 @@ test_that("generate_edges links steps by matching outputs to inputs", {
     ) |>
     add_step(
       id = "step-c", objective = "c", decision = "c", rationale = "c",
-      inputs = "y", outputs = NULL
+      inputs = "y", outputs = character(0)
     )
 
   edges <- tines:::generate_edges(schema)
@@ -49,9 +49,26 @@ test_that("generate_edges links steps by matching outputs to inputs", {
   expect_false(inherits(edges, "schema"))
   expect_equal(edges$from, c("step-a", "step-b"))
   expect_equal(edges$to, c("step-b", "step-c"))
+  expect_equal(edges$style, c("solid", "solid"))
 })
 
-test_that("generate_edges returns no rows when nothing connects", {
+test_that("a plain schema is drawn as a dashed chain", {
+  edges <- tines:::generate_edges(example_hdi())
+  expect_equal(edges$from, c("step-scaling", "step-education"))
+  expect_equal(edges$to, c("step-education", "step-combine"))
+  expect_equal(unique(edges$style), "dashed")
+})
+
+test_that("mapped steps that share no variables are not joined", {
+  schema <- build_schema() |>
+    add_step(id = "a", inputs = "x", outputs = "x1") |>
+    add_step(id = "b", inputs = "y", outputs = "y1") |>
+    add_step(id = "c", inputs = c("x1", "y1"), outputs = "z")
+  edges <- tines:::generate_edges(schema)
+  expect_equal(paste(edges$from, edges$to), c("a c", "b c"))
+})
+
+test_that("generate_edges returns no rows for a single step", {
   schema <- build_schema() |>
     add_step(id = "step-a", objective = "a", decision = "a", rationale = "a")
 

@@ -7,34 +7,59 @@
 \usage{
 write_tines(x, path = NULL, ...)
 
-read_tines(path, data = NULL, ...)
+read_tines(path, data = NULL, validate = c("ask", "always", "never"), ...)
 }
 \arguments{
 \item{x}{An object of class \code{schema} or \code{multiverse}.}
 
-\item{path}{A single string specifying the output file path. Optional.}
+\item{path}{A single string specifying the file path. Optional for
+\code{\link[=write_tines]{write_tines()}}.}
 
-\item{...}{Arguments passed on to \code{yaml::write_yaml()} or
+\item{...}{Arguments passed on to \code{yaml::as.yaml()} or
 \code{yaml::read_yaml()}.}
 
-\item{data}{Optional data frame or path to data file for validation (for
-\code{\link[=read_tines]{read_tines()}} only).}
+\item{data}{Optional. Data to check the schema against instead of the one
+the file references; see \code{\link[=update_data]{update_data()}} for the forms it takes.}
+
+\item{validate}{How to handle a data source that is an R script:
+\code{"ask"} (the default) asks in an interactive session and skips the check
+otherwise, \code{"always"} runs it without asking, and \code{"never"} skips
+looking up the data's columns altogether.}
 }
 \value{
-\code{\link[=write_tines]{write_tines()}} returns \code{NULL} and \code{\link[=read_tines]{read_tines()}} returns an object of
-class \code{schema} or \code{multiverse}.
+\code{\link[=write_tines]{write_tines()}} invisibly returns \code{path}, and \code{\link[=read_tines]{read_tines()}} returns an
+object of class \code{schema} or \code{multiverse}.
 }
 \description{
-Read and write tines schemas and multiverses to YAML files
+\code{\link[=write_tines]{write_tines()}} writes a schema (or a multiverse) to YAML, and
+\code{\link[=read_tines]{read_tines()}} reads it back.
+
+A schema's data reference is written under \code{meta.data}, with a file path
+stored relative to the YAML file, so the two can be moved or shared
+together. A schema whose data was given as a data frame has no reference
+to write; supply the data again with \code{read_tines(path, data = )}.
+
+When a mapped schema is read, it is checked against its data: the
+columns are looked up (never the data itself) and each step's inputs are
+checked with \code{\link[=validate_schema]{validate_schema()}}. A plain schema has nothing to check
+against the data, so its data is not touched. If the data comes from an R
+script, running it means running code from the file, so \code{validate}
+decides whether that happens.
 }
 \examples{
 schema <- example_hdi()
-temp_path <- withr::local_tempfile(fileext = ".yaml")
+temp_path <- withr::local_tempfile(fileext = ".yml")
 write_tines(schema, temp_path)
 schema_read <- read_tines(temp_path)
 
-# Read and validate against a data frame or file path
+# a mapped schema, checked against a data frame on read
 my_data <- data.frame(age = c(25, 30, 35), income = c(50000, 60000, 70000))
-schema_read <- read_tines(temp_path, data = my_data)
+mapped <- build_schema("Income") |>
+  add_step(
+    id = "step-log", decision = "log-transform income",
+    inputs = "income", outputs = "log_income"
+  )
+write_tines(mapped, temp_path)
+read_tines(temp_path, data = my_data)
 
 }

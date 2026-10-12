@@ -11,7 +11,7 @@
 
 \method{plot}{multiverse}(x, index = 1, ...)
 
-draw_tines(x, index = 1, data = NULL, ...)
+draw_tines(x, index = 1, ...)
 
 inspect_dot(
   schema,
@@ -28,10 +28,6 @@ inspect_dot(
 
 \item{index}{An integer. For a \code{multiverse}, which path index to draw.
 Defaults to 1.}
-
-\item{data}{Optional. A data frame or path to a data file. If schema is
-unmapped, this will be used to automatically map variables for
-visualization.}
 
 \item{schema}{A \code{schema} object to convert to DOT code for inspection.}
 
@@ -53,6 +49,12 @@ to the console.
 Functions to plot the tines object with Graphviz diagrams. \code{\link[=draw_tines]{draw_tines()}}
 and the \code{plot()} methods render the interactive widget. \code{\link[=inspect_dot]{inspect_dot()}}
 formats and prints raw DOT strings to the console for debugging.
+
+A plain schema is drawn as a chain of steps in order (dashed edges: they
+record order only). A mapped schema is drawn by data flow: a solid edge
+runs from the step that creates a variable to each later step that reads
+it, so steps that share no variables are not joined. A schema whose
+mapping is incomplete is drawn as a plain one.
 }
 \examples{
 my_data <- data.frame(age = c(25, 30, 35), income = c(50000, 60000, 70000))

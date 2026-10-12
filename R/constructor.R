@@ -9,8 +9,12 @@
 #'   schema.
 #' @param name An optional name for the schema.
 #' @param object A `schema` object.
-#' @param id,objective,decision,rationale,inputs,outputs character strings
-#'   to write a step
+#' @param id,objective,decision,rationale Character strings describing the
+#'   step.
+#' @param inputs,outputs Optional character vectors naming the variables the
+#'   step reads and creates (`character(0)` for none). A schema is mapped
+#'   once every step has both; until then the mapping is incomplete and not
+#'   used. See [update_io()].
 #' @param x An object to be coerced into a `schema`.
 #' @param ... Passed on to methods.
 #' @param row.names NULL or a character vector giving the row names for the
@@ -48,49 +52,27 @@
 #'   decision = "drop incomplete cases", rationale = "keeps it simple"
 #' ))
 #'
-new_schema <- function(name = NULL, nodes = tibble::tibble()) {
+new_schema <- function(name = NULL, nodes = tibble::tibble(), data = NULL) {
   stopifnot(is.data.frame(nodes))
   res <- nodes
   class(res) <- c("schema", "tbl_df", "tbl", "data.frame")
   attr(res, "name") <- name
+  attr(res, "data") <- data
   res
 }
 
-#' @param data Optional data frame or path to data file for validation
+#' @param data Optional. The data the schema runs on -- a file path, a
+#'   `"package::dataset"` string, an R script that builds the data, or a data
+#'   frame. See [update_data()].
 #' @rdname schema-constructor
 #' @export
 build_schema <- function(name = NULL, data = NULL) {
   nodes <- tibble::tibble(
     id = character(), objective = character(), decision = character(),
-    rationale = character(), inputs = list(), outputs = list()
+    rationale = character()
   )
-  schema <- new_schema(name = name, nodes = nodes)
-
-  # Attach data if provided
-  if (!is.null(data)) {
-    # Load data if path
-    is_path <- is.character(data) && length(data) == 1 && file.exists(data)
-    data_obj <- if (is_path) {
-      load_data_file(data)
-    } else if (is.data.frame(data)) {
-      data
-    } else {
-      cli::cli_abort("{.arg data} must be a data frame or path to a data file")
-    }
-
-    data_source <- if (is.character(data)) data else deparse(substitute(data))
-
-    # Attach data reference
-    attr(schema, "data") <- list(
-      source = data_source,
-      hash = digest::digest(data_obj),
-      dict = prepare_data_dict(data_obj)
-    )
-
-    cli::cli_alert_success("Data attached: {.val {data_source}}")
-  }
-
-  schema
+  ref <- if (!is.null(data)) data_ref(data) else NULL
+  new_schema(name = name, nodes = nodes, data = ref)
 }
 
 
@@ -152,44 +134,33 @@ add_step <- function(object, id, objective = "", decision = "",
   }
   if (id %in% object$id) cli::cli_abort("Id {.val {id}} already exists!")
 
-  # Allow inputs/outputs to be NULL (unmapped), character vector, or NA
-  inputs_val <- if (is.null(inputs)) list(NA) else list(inputs)
-  outputs_val <- if (is.null(outputs)) list(NA) else list(outputs)
-
   new_node <- tibble::tibble(
-    id = id, objective = objective, decision = decision, rationale = rationale,
-    inputs = inputs_val, outputs = outputs_val
+    id = id, objective = objective, decision = decision, rationale = rationale
   )
+
+  # Giving inputs or outputs adds them to the schema; a step added without
+  # them to a schema that has them is left unset (NA), which leaves the
+  # mapping incomplete until the step is given them.
+  if (!is.null(inputs) || !is.null(outputs)) object <- add_io_columns(object)
+  if (has_io(object)) {
+    new_node$inputs <- list(as_io(inputs))
+    new_node$outputs <- list(as_io(outputs))
+  }
 
   # A schema composed with the internal import_step() carries a
   # `source_schema` provenance column; keep its shape so bind_rows() lines the
   # new step up against it rather than widening every other row.
   if ("source_schema" %in% names(object)) new_node$source_schema <- NA_character_
 
-  # Preserve attributes before binding (bind_rows drops the schema class)
-  schema_name <- attr(object, "name", exact = TRUE)
-  schema_data <- attr(object, "data", exact = TRUE)
+  baseline <- schema_issues(object)
+  keep <- schema_attrs(object)
 
   # bind_rows() rather than rbind(): a schema read from a file carries only
   # the fields its YAML declared, so its columns need not line up with the
   # new step's. rbind() failed outright on any file-read schema.
-  object <- dplyr::bind_rows(object, new_node)
-  class(object) <- c("schema", "tbl_df", "tbl", "data.frame")
+  object <- restore_schema(dplyr::bind_rows(object, new_node), keep)
 
-  # Restore attributes
-  attr(object, "name") <- schema_name
-  if (!is.null(schema_data)) {
-    attr(object, "data") <- schema_data
-  }
-
-  # Validate if data is attached
-  if (has_data(object)) {
-    data_dict <- attr(object, "data")$dict
-    step_idx <- nrow(object)
-    validate_step_variables(object, step_idx, data_dict)
-  }
-
-  object
+  check_schema(object, baseline = baseline)
 }
 
 #' @export
@@ -219,7 +190,18 @@ as_schema.data.frame <- function(x, name = NULL, ...) {
       "i" = "A schema needs one row per step, with columns {.field {required}}."
     ))
   }
-  new_schema(name = name, nodes = tibble::as_tibble(x))
+  nodes <- tibble::as_tibble(x)
+  # One of the two columns alone gives the other, unset
+  if (any(c("inputs", "outputs") %in% names(nodes))) {
+    for (col in c("inputs", "outputs")) {
+      nodes[[col]] <- if (col %in% names(nodes)) {
+        lapply(as.list(nodes[[col]]), as_io)
+      } else {
+        rep(list(NA_character_), nrow(nodes))
+      }
+    }
+  }
+  check_schema(new_schema(name = name, nodes = nodes))
 }
 
 #' @rdname multiverse-constructor
@@ -293,11 +275,22 @@ as_multiverse.list <- function(x, ...) {
 #' @export
 tbl_sum.schema <- function(x) {
   name <- attr(x, "name", exact = TRUE)
-  if (!is.null(name)) {
+  head <- if (!is.null(name)) {
     c("A schema" = name)
   } else {
     c("A schema" = paste(nrow(x), "x", ncol(x)))
   }
+  ref <- attr(x, "data", exact = TRUE)
+  if (!is.null(ref)) {
+    head <- c(head, "Data" = ref$source %||% "a data frame (not written to file)")
+  }
+  missing <- unmapped_steps(x)
+  if (length(missing) > 0) {
+    head <- c(head, "Mapping" = sprintf(
+      "incomplete (%d of %d steps have inputs/outputs)", nrow(x) - length(missing), nrow(x)
+    ))
+  }
+  head
 }
 
 #' @export

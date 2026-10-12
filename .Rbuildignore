@@ -7,3 +7,6 @@ inst/football.csv
 ^\.claude$
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
+^docs$
+^vignettes/_future-extensions\.Rmd$
+^dev$
