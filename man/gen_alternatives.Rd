@@ -14,7 +14,7 @@ gen_alternatives(
   n = 3,
   data = NULL,
   model = "anthropic/claude-opus-4-5",
-  file_path = NULL,
+  file_path,
   ...
 )
 
@@ -26,7 +26,7 @@ gen_alternatives(
   n = 3,
   data = NULL,
   model = "anthropic/claude-opus-4-5",
-  file_path = NULL,
+  file_path,
   ...
 )
 
@@ -61,9 +61,8 @@ dataset.}
 \code{ellmer::chat()}. See \code{\link[ellmer:chat]{ellmer::chat()}} for the full list of supported
 providers. Defaults to \code{"anthropic/claude-opus-4-5"}.}
 
-\item{file_path}{A character string specifying where to save the generated
-YML output. If \code{NULL} (the default), \code{capture.output()} will return the
-result as a character vector.}
+\item{file_path}{Required. A character string specifying where to save the
+generated YML output.}
 
 \item{...}{Additional arguments passed to methods or to \code{ellmer::chat()}.}
 
@@ -108,7 +107,7 @@ hdi <- example_hdi()
 # Requires an LLM API key (e.g. ANTHROPIC_API_KEY); not run automatically.
 gen_alternatives(hdi,
   step = "step-combine", n = 1,
-  file_path = "step-combine-alt.yml"
+  file_path = tempfile(fileext = ".yml")
 )
 }
 

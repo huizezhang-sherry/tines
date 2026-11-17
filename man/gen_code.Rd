@@ -12,7 +12,7 @@ gen_code(
   x,
   base_code = NULL,
   data = NULL,
-  output = "scripts",
+  output,
   model = "anthropic/claude-opus-4-5",
   ...
 )
@@ -21,7 +21,7 @@ gen_code(
   x,
   base_code = NULL,
   data = NULL,
-  output = "scripts",
+  output,
   model = "anthropic/claude-opus-4-5",
   ...
 )
@@ -30,7 +30,7 @@ gen_code(
   x,
   base_code = NULL,
   data = NULL,
-  output = "scripts",
+  output,
   model = "anthropic/claude-opus-4-5",
   ...
 )
@@ -39,7 +39,7 @@ gen_code(
   x,
   base_code = NULL,
   data = NULL,
-  output = "scripts",
+  output,
   model = "anthropic/claude-opus-4-5",
   ...
 )
@@ -62,8 +62,8 @@ reference.}
 \item{data}{Optional. Data source specification (a data file, an R
 script that creates the data, or \code{"package::dataset"}).}
 
-\item{output}{For schemas: file path (ending in .R) or directory.
-For multiverses: must be a directory. Defaults to "scripts".}
+\item{output}{Required. For schemas: a file path (ending in .R) or a
+directory. For multiverses: must be a directory.}
 
 \item{model}{The LLM to use for code generation, as a string in
 \code{"provider/model"} form (e.g. \code{"anthropic/claude-opus-4-5"},
@@ -95,12 +95,12 @@ Generate R code from a schema or multiverse
 # Requires an LLM API key (e.g. ANTHROPIC_API_KEY); not run automatically.
 # Generate from a single schema
 schema <- example_hdi()
-gen_code(schema, output = "analysis.R")
+gen_code(schema, output = file.path(tempdir(), "analysis.R"))
 
 # Generate from a multiverse (use expand_tines first)
 schema |>
-  expand_tines(alternatives) |>
-  gen_code(output = "scripts/")
+  expand_tines(example_hdi_alternatives()) |>
+  gen_code(output = file.path(tempdir(), "scripts"))
 }
 
 # The prompt generation function can be used directly to see the full

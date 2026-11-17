@@ -59,9 +59,13 @@ script. This loop repeats up to \code{max_runs} times.
 \examples{
 \dontrun{
 # Requires an LLM API key (e.g. ANTHROPIC_API_KEY); not run automatically.
+# Work on a copy in the temporary directory: with `verbose = TRUE`, a copy
+# of the script at each attempt is saved next to it.
+script <- file.path(tempdir(), "dplyr-filter-equal.R")
+file.copy(system.file("dplyr-filter-equal.R", package = "tines"), script)
 validate_script(
-  file = here::here("inst/dplyr-filter-equal.R"),
-  data = here::here("inst/dplyr-filter-equal.csv")
+  file = script,
+  data = system.file("dplyr-filter-equal.csv", package = "tines")
 )
 }
 

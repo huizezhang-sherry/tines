@@ -4,11 +4,10 @@
 \alias{draft_tines}
 \title{Draft a schema template}
 \usage{
-draft_tines(file_path = NULL, overwrite = FALSE)
+draft_tines(file_path, overwrite = FALSE)
 }
 \arguments{
-\item{file_path}{Where to save the template. If \code{NULL}, it is written to
-the working directory as \code{schema_template.yml}.}
+\item{file_path}{Required. Where to save the template.}
 
 \item{overwrite}{Logical. If \code{TRUE}, overwrites an existing file at
 \code{file_path}. Defaults to \code{FALSE}.}

@@ -5,8 +5,7 @@
 #' derived, either by collecting schemas with [as_multiverse()] or by
 #' expanding one with an alternatives file via [expand_tines()].
 #'
-#' @param file_path Where to save the template. If `NULL`, it is written to
-#'   the working directory as `schema_template.yml`.
+#' @param file_path Required. Where to save the template.
 #' @param overwrite Logical. If `TRUE`, overwrites an existing file at
 #'   `file_path`. Defaults to `FALSE`.
 #' @return Invisibly, the path written to; called for its side effect of
@@ -20,10 +19,8 @@
 #' schema_path <- withr::local_tempfile(fileext = ".yml")
 #' draft_tines(file_path = schema_path)
 #'
-draft_tines <- function(file_path = NULL, overwrite = FALSE) {
-  if (is.null(file_path)) {
-    file_path <- "schema_template.yml"
-  }
+draft_tines <- function(file_path, overwrite = FALSE) {
+  if (missing(file_path)) abort_missing_path("file_path")
 
   if (file.exists(file_path) & !overwrite) {
     cli::cli_abort(c(
@@ -75,8 +72,7 @@ draft_tines <- function(file_path = NULL, overwrite = FALSE) {
 #' @param x A `schema` object, or the path to a schema YAML file.
 #' @param id The `id` of the step to draft alternatives for; a vector names
 #'   several, and one node is drafted per step.
-#' @param file_path Where to save the template. If `NULL`, it is written to
-#'   the working directory, named after the steps it covers.
+#' @param file_path Required. Where to save the template.
 #' @param branch Required: either `"multi"` (drafts 2 placeholder
 #'   alternatives per node) or `"single"` (drafts exactly 1 per node). See
 #'   `vignette("alternatives")` for what the two modes mean when expanded.
@@ -106,7 +102,7 @@ draft_tines <- function(file_path = NULL, overwrite = FALSE) {
 #'   branch = "single"
 #' )
 #'
-draft_alternatives <- function(x, id, file_path = NULL, branch) {
+draft_alternatives <- function(x, id, file_path, branch) {
   if (missing(branch)) {
     cli::cli_abort(
       "{.arg branch} must be specified: either \"single\" or \"multi\"."
@@ -150,7 +146,7 @@ draft_alternatives <- function(x, id, file_path = NULL, branch) {
     unlist(lapply(id, node_lines))
   )
 
-  if (is.null(file_path)) file_path <- paste0("alt_", paste(id, collapse = "-"), ".yml")
+  if (missing(file_path)) abort_missing_path("file_path")
   writeLines(lines, file_path)
 
   cli::cli_alert_success("Created template at {.file {file_path}}")

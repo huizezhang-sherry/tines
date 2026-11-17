@@ -8,8 +8,8 @@
 #'   or a string like `"packagename::dataset"` for a package dataset.
 #'   Defaults to the schema's own data reference (see [update_data()]); if
 #'   there is none, the LLM receives no data instructions.
-#' @param output For schemas: file path (ending in .R) or directory.
-#'   For multiverses: must be a directory. Defaults to "scripts".
+#' @param output Required. For schemas: a file path (ending in .R) or a
+#'   directory. For multiverses: must be a directory.
 #' @param model The LLM to use for code generation, as a string in
 #'   `"provider/model"` form (e.g. `"anthropic/claude-opus-4-5"`,
 #'   `"openai/gpt-5"`, `"google_gemini/gemini-2.5-flash"`), passed to
@@ -25,27 +25,27 @@
 #' # Requires an LLM API key (e.g. ANTHROPIC_API_KEY); not run automatically.
 #' # Generate from a single schema
 #' schema <- example_hdi()
-#' gen_code(schema, output = "analysis.R")
+#' gen_code(schema, output = file.path(tempdir(), "analysis.R"))
 #'
 #' # Generate from a multiverse (use expand_tines first)
 #' schema |>
-#'   expand_tines(alternatives) |>
-#'   gen_code(output = "scripts/")
+#'   expand_tines(example_hdi_alternatives()) |>
+#'   gen_code(output = file.path(tempdir(), "scripts"))
 #' }
 #'
 #' # The prompt generation function can be used directly to see the full
 #' # prompt sent to the LLM
 #' prompt_gen_code(data = "inst/football.csv")
-gen_code <- function(x, base_code = NULL, data = NULL,
-                     output = "scripts",
+gen_code <- function(x, base_code = NULL, data = NULL, output,
                      model = "anthropic/claude-opus-4-5", ...) {
+  if (missing(output)) abort_missing_path("output")
   UseMethod("gen_code")
 }
 
 #' @export
 #' @rdname gen_code
 gen_code.character <- function(x, base_code = NULL, data = NULL,
-                               output = "scripts",
+                               output,
                                model = "anthropic/claude-opus-4-5", ...) {
   if (!file.exists(x)) {
     cli::cli_abort("File not found: {.val {x}}")
@@ -59,7 +59,7 @@ gen_code.character <- function(x, base_code = NULL, data = NULL,
 #' @export
 #' @rdname gen_code
 gen_code.schema <- function(x, base_code = NULL, data = NULL,
-                            output = "scripts",
+                            output,
                             model = "anthropic/claude-opus-4-5", ...) {
   is_file <- grepl("\\.[Rr]$", output)
 
@@ -96,7 +96,7 @@ gen_code.schema <- function(x, base_code = NULL, data = NULL,
 #' @export
 #' @rdname gen_code
 gen_code.multiverse <- function(x, base_code = NULL, data = NULL,
-                                output = "scripts",
+                                output,
                                 model = "anthropic/claude-opus-4-5", ...) {
   if (grepl("\\.[Rr]$", output)) {
     cli::cli_abort(c(

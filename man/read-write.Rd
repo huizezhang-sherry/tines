@@ -5,15 +5,15 @@
 \alias{read_tines}
 \title{Read and write tines schemas and multiverses to YAML files}
 \usage{
-write_tines(x, path = NULL, ...)
+write_tines(x, path, ...)
 
 read_tines(path, data = NULL, validate = c("ask", "always", "never"), ...)
 }
 \arguments{
 \item{x}{An object of class \code{schema} or \code{multiverse}.}
 
-\item{path}{A single string specifying the file path. Optional for
-\code{\link[=write_tines]{write_tines()}}.}
+\item{path}{A single string specifying the file path. Required for both
+functions: \code{\link[=write_tines]{write_tines()}} does not pick a default location.}
 
 \item{...}{Arguments passed on to \code{yaml::as.yaml()} or
 \code{yaml::read_yaml()}.}

@@ -14,7 +14,8 @@ Description: Documents a data analysis as a schema, a set of steps that
     models are used to generate and validate the R code for each step. A
     schema can be expanded with an alternative file into a multiverse of
     related analyses, making it possible to compare alternative decisions
-    systematically.
+    systematically. For details of the approach, see Zhang and Peng (2026)
+    <https://github.com/huizezhang-sherry/paper-schema>.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

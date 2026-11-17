@@ -140,3 +140,12 @@ print_prompt <- function(prompt, print, width = 70) {
     prompt
   }
 }
+
+# Nothing is written to a default location (CRAN policy), so every function
+# that writes a file takes its path explicitly and says so when it is missing.
+abort_missing_path <- function(arg) {
+  cli::cli_abort(c(
+    "{.arg {arg}} is required: give the path to write to.",
+    "i" = "For example, {.code {arg} = tempfile(fileext = \".yml\")}."
+  ), call = NULL)
+}

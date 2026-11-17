@@ -4,7 +4,7 @@
 \alias{draft_alternatives}
 \title{Draft an alternatives template}
 \usage{
-draft_alternatives(x, id, file_path = NULL, branch)
+draft_alternatives(x, id, file_path, branch)
 }
 \arguments{
 \item{x}{A \code{schema} object, or the path to a schema YAML file.}
@@ -12,8 +12,7 @@ draft_alternatives(x, id, file_path = NULL, branch)
 \item{id}{The \code{id} of the step to draft alternatives for; a vector names
 several, and one node is drafted per step.}
 
-\item{file_path}{Where to save the template. If \code{NULL}, it is written to
-the working directory, named after the steps it covers.}
+\item{file_path}{Required. Where to save the template.}
 
 \item{branch}{Required: either \code{"multi"} (drafts 2 placeholder
 alternatives per node) or \code{"single"} (drafts exactly 1 per node). See

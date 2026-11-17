@@ -142,3 +142,18 @@ test_that("a data frame is noted, not written, as the data reference", {
   expect_message(write_tines(schema, path), "no data reference was written")
   expect_false(any(grepl("data:", readLines(path))))
 })
+
+test_that("no function writes to a default location", {
+  # CRAN policy: a path is always given explicitly, never defaulted into the
+  # working directory
+  schema <- example_hdi()
+  expect_error(write_tines(schema), "`path` is required")
+  expect_error(draft_tines(), "`file_path` is required")
+  expect_error(
+    draft_alternatives(schema, id = "step-scaling", branch = "multi"),
+    "`file_path` is required"
+  )
+  expect_error(gen_code(schema), "`output` is required")
+  expect_error(gen_alternatives(schema, step = "step-combine"), "`file_path` is required")
+  expect_error(extract_schema("text", "x"), "`output_file` is required")
+})

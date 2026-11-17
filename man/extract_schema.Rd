@@ -8,7 +8,7 @@
 extract_schema(
   text,
   data_dict,
-  output_file = "draft_schema.yml",
+  output_file,
   model = "anthropic/claude-opus-4-5"
 )
 
@@ -20,7 +20,7 @@ prompt_extract_schema(data_dict, text, print = TRUE, width = 70)
 \item{data_dict}{Either a character vector of column names, or a data frame
 with at least a \code{name} column and an optional \code{description} column.}
 
-\item{output_file}{The file path where the YAML should be saved.}
+\item{output_file}{Required. The file path where the YAML should be saved.}
 
 \item{model}{The LLM to use, as a string in \code{"provider/model"} form (e.g.
 \code{"anthropic/claude-opus-4-5"}, \code{"openai/gpt-5"},
@@ -56,7 +56,7 @@ data_dict <- c(
 
 \dontrun{
 # Requires an LLM API key (e.g. ANTHROPIC_API_KEY); not run automatically.
-extract_schema(text, data_dict, output_file = "draft_schema.yml")
+extract_schema(text, data_dict, output_file = tempfile(fileext = ".yml"))
 }
 
 # The prompt generation function can be used directly to see the full

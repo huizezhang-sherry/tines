@@ -17,8 +17,8 @@
 #' decides whether that happens.
 #'
 #' @param x An object of class `schema` or `multiverse`.
-#' @param path A single string specifying the file path. Optional for
-#'   [write_tines()].
+#' @param path A single string specifying the file path. Required for both
+#'   functions: [write_tines()] does not pick a default location.
 #' @param data Optional. Data to check the schema against instead of the one
 #'   the file references; see [update_data()] for the forms it takes.
 #' @param validate How to handle a data source that is an R script:
@@ -50,7 +50,8 @@
 #' write_tines(mapped, temp_path)
 #' read_tines(temp_path, data = my_data)
 #'
-write_tines <- function(x, path = NULL, ...) {
+write_tines <- function(x, path, ...) {
+  if (missing(path)) abort_missing_path("path")
   if (!inherits(x, c("schema", "multiverse"))) {
     cli::cli_abort(c(
       paste0(
@@ -61,10 +62,6 @@ write_tines <- function(x, path = NULL, ...) {
     ))
   }
 
-  if (is.null(path)) {
-    prefix <- if (inherits(x, "schema")) "schema" else "multiverse"
-    path <- paste0(prefix, ".yml")
-  }
 
   if (inherits(x, "multiverse")) {
     header <- list(meta = list(

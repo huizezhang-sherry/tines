@@ -277,7 +277,7 @@ cat("\n```\n")
 gen_alternatives(
   schema,
   step = "step-combine", n = 3,
-  file_path = "step-combine-alt.yml"
+  file_path = tempfile(fileext = ".yml")
 )
 ```
 

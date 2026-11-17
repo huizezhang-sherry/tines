@@ -191,3 +191,9 @@ cat("```yaml\n")
 cat(readLines(here::here("inst/football-grp5/gm3_iter2.R")), sep = "\n")
 cat("\n```\n\n</details>\n")
 ```
+
+## Reference
+
+Zhang, H. S. and Peng, R. D. (2026). Code availability is not enough:
+schemas for documenting and extending data analysis.
+<https://github.com/huizezhang-sherry/paper-schema>

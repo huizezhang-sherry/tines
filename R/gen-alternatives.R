@@ -29,9 +29,8 @@
 #'   `"openai/gpt-5"`, `"google_gemini/gemini-2.5-flash"`), passed to
 #'   `ellmer::chat()`. See [ellmer::chat()] for the full list of supported
 #'   providers. Defaults to `"anthropic/claude-opus-4-5"`.
-#' @param file_path A character string specifying where to save the generated
-#'   YML output. If `NULL` (the default), `capture.output()` will return the
-#'   result as a character vector.
+#' @param file_path Required. A character string specifying where to save the
+#'   generated YML output.
 #' @param print If `TRUE`, prints the prompt to console instead of returning
 #'   it.
 #' @param width If `print = TRUE`, the width to wrap the printed prompt
@@ -54,7 +53,7 @@
 #' # Requires an LLM API key (e.g. ANTHROPIC_API_KEY); not run automatically.
 #' gen_alternatives(hdi,
 #'   step = "step-combine", n = 1,
-#'   file_path = "step-combine-alt.yml"
+#'   file_path = tempfile(fileext = ".yml")
 #' )
 #' }
 #'
@@ -64,7 +63,8 @@
 #'
 gen_alternatives <- function(x, step, n = 3, data = NULL,
                              model = "anthropic/claude-opus-4-5",
-                             file_path = NULL, ...) {
+                             file_path, ...) {
+  if (missing(file_path)) abort_missing_path("file_path")
   UseMethod("gen_alternatives")
 }
 
@@ -80,12 +80,8 @@ gen_alternatives.character <- function(x, ...) {
 #' @rdname gen_alternatives
 gen_alternatives.schema <- function(x, step, n = 3, data = NULL,
                                     model = "anthropic/claude-opus-4-5",
-                                    file_path = NULL, ...) {
-  if (is.null(file_path)) {
-    cli::cli_abort(
-      "You must provide a {.arg file_path} to save the generated alternatives."
-    )
-  }
+                                    file_path, ...) {
+  if (missing(file_path)) abort_missing_path("file_path")
 
   # Check if step exists in the schema
   if (!step %in% x$id) {

@@ -2,21 +2,18 @@
 
 This is a resubmission. In this version I have:
 
-* Rewritten the Description field so that it no longer starts with "Tools
-  for", the package name or the title.
-* Added `\value` to the Rd files of all exported functions.
-* Replaced `\dontrun{}` with examples that run wherever possible. The
-  remaining `\dontrun{}` blocks wrap only calls that need an LLM API key,
-  and each says so in a comment.
-* Removed commented-out code from the examples, using small toy examples
-  that run instead.
-* Kept non-standard files out of the package: `_pkgdown.yml` is now in
-  `inst/`, and `README.Rmd`, `LICENSE.md`, `cran-comments.md` and `docs/`
-  are listed in `.Rbuildignore`.
+* Removed every default output path. `write_tines()`, `extract_schema()`,
+  `gen_code()`, `draft_tines()`, `draft_alternatives()` and
+  `gen_alternatives()` now require the path to write to, and stop with an
+  informative error when it is not given.
+* Changed all examples and vignettes to write to `tempdir()` or
+  `tempfile()`. The tests already did, and a check run leaves no files in
+  the package directory.
 
 ## Test environments
 
 * local macOS, R 4.6.1
+* win-builder, R-devel and R-release
 
 ## R CMD check results
 

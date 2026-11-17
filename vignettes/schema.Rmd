@@ -191,7 +191,7 @@ methodology, such as the methods section of a paper:
 extract_schema(
   text = football_grp5,
   data_dict = c("player", "redCards", "rater1", "rater2"),
-  output_file = "draft_schema.yml"
+  output_file = tempfile(fileext = ".yml")
 )
 ```
 

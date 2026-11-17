@@ -11,7 +11,7 @@
 #' @param text A character string containing the methodology description.
 #' @param data_dict Either a character vector of column names, or a data frame
 #'   with at least a `name` column and an optional `description` column.
-#' @param output_file The file path where the YAML should be saved.
+#' @param output_file Required. The file path where the YAML should be saved.
 #' @param model The LLM to use, as a string in `"provider/model"` form (e.g.
 #'   `"anthropic/claude-opus-4-5"`, `"openai/gpt-5"`,
 #'   `"google_gemini/gemini-2.5-flash"`), passed to `ellmer::chat()`. See
@@ -36,7 +36,7 @@
 #'
 #' \dontrun{
 #' # Requires an LLM API key (e.g. ANTHROPIC_API_KEY); not run automatically.
-#' extract_schema(text, data_dict, output_file = "draft_schema.yml")
+#' extract_schema(text, data_dict, output_file = tempfile(fileext = ".yml"))
 #' }
 #'
 #' # The prompt generation function can be used directly to see the full
@@ -47,8 +47,9 @@
 #'   print = TRUE
 #' )
 #'
-extract_schema <- function(text, data_dict, output_file = "draft_schema.yml",
+extract_schema <- function(text, data_dict, output_file,
                            model = "anthropic/claude-opus-4-5") {
+  if (missing(output_file)) abort_missing_path("output_file")
   # Create the chat client before doing any other work, so an unsupported
   # `model` string fails fast.
   chat <- ellmer::chat(model, echo = "none")

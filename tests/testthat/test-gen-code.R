@@ -31,7 +31,7 @@ test_that("prompt_gen_code errors when base_code file doesn't exist", {
 })
 
 test_that("gen_code.character errors when the file doesn't exist", {
-  expect_error(gen_code("no/such/schema.yml"), "File not found")
+  expect_error(gen_code("no/such/schema.yml", output = tempdir()), "File not found")
 })
 
 test_that("gen_code.schema resolves the output path correctly", {
