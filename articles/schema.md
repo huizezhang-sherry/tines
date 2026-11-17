@@ -77,7 +77,7 @@ two placeholder steps, ready to fill in by hand:
 
 draft_path <- withr::local_tempfile(fileext = ".yml")
 draft_tines(file_path = draft_path)
-#> ✔ Drafted "schema" template at /tmp/RtmpchBdNg/file1e03a5b716c.yml
+#> ✔ Drafted "schema" template at /tmp/RtmpNtaaLO/file1cd92adfd8cc.yml
 #> ℹ Open this file to start defining your steps!
 ```
 
@@ -131,13 +131,13 @@ YAML:
 
 out_path <- withr::local_tempfile(fileext = ".yml")
 write_tines(hdi, out_path)
-#> ✔ File saved: /tmp/RtmpchBdNg/file1e03638cb0b.yml
+#> ✔ File saved: /tmp/RtmpNtaaLO/file1cd959243ad9.yml
 ```
 
 ``` yaml
 meta:
   type: schema
-  date: '2026-10-12'
+  date: '2026-11-17'
   name: HDI Example
 nodes:
 - id: step-scaling
@@ -251,7 +251,7 @@ of a paper:
 extract_schema(
   text = football_grp5,
   data_dict = c("player", "redCards", "rater1", "rater2"),
-  output_file = "draft_schema.yml"
+  output_file = tempfile(fileext = ".yml")
 )
 ```
 

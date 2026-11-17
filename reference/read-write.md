@@ -18,7 +18,7 @@ file, so `validate` decides whether that happens.
 ## Usage
 
 ``` r
-write_tines(x, path = NULL, ...)
+write_tines(x, path, ...)
 
 read_tines(path, data = NULL, validate = c("ask", "always", "never"), ...)
 ```
@@ -31,8 +31,8 @@ read_tines(path, data = NULL, validate = c("ask", "always", "never"), ...)
 
 - path:
 
-  A single string specifying the file path. Optional for
-  `write_tines()`.
+  A single string specifying the file path. Required for both functions:
+  `write_tines()` does not pick a default location.
 
 - ...:
 
@@ -64,7 +64,7 @@ object of class `schema` or `multiverse`.
 schema <- example_hdi()
 temp_path <- withr::local_tempfile(fileext = ".yml")
 write_tines(schema, temp_path)
-#> ✔ File saved: /tmp/RtmpKSp3wS/file1b3e77f35da8.yml
+#> ✔ File saved: /tmp/RtmpKgFKXG/file1a3f64123b1e.yml
 schema_read <- read_tines(temp_path)
 
 # a mapped schema, checked against a data frame on read
@@ -75,7 +75,7 @@ mapped <- build_schema("Income") |>
     inputs = "income", outputs = "log_income"
   )
 write_tines(mapped, temp_path)
-#> ✔ File saved: /tmp/RtmpKSp3wS/file1b3e77f35da8.yml
+#> ✔ File saved: /tmp/RtmpKgFKXG/file1a3f64123b1e.yml
 read_tines(temp_path, data = my_data)
 #> # A schema: Income
 #> # Data:     a data frame (not written to file)

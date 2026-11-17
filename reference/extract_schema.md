@@ -13,7 +13,7 @@ the analysis pipeline.
 extract_schema(
   text,
   data_dict,
-  output_file = "draft_schema.yml",
+  output_file,
   model = "anthropic/claude-opus-4-5"
 )
 
@@ -33,7 +33,7 @@ prompt_extract_schema(data_dict, text, print = TRUE, width = 70)
 
 - output_file:
 
-  The file path where the YAML should be saved.
+  Required. The file path where the YAML should be saved.
 
 - model:
 
@@ -72,7 +72,7 @@ data_dict <- c(
 
 if (FALSE) { # \dontrun{
 # Requires an LLM API key (e.g. ANTHROPIC_API_KEY); not run automatically.
-extract_schema(text, data_dict, output_file = "draft_schema.yml")
+extract_schema(text, data_dict, output_file = tempfile(fileext = ".yml"))
 } # }
 
 # The prompt generation function can be used directly to see the full

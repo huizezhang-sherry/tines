@@ -6,7 +6,7 @@ Writes a starter alternatives YAML file, with one node per step named in
 ## Usage
 
 ``` r
-draft_alternatives(x, id, file_path = NULL, branch)
+draft_alternatives(x, id, file_path, branch)
 ```
 
 ## Arguments
@@ -22,8 +22,7 @@ draft_alternatives(x, id, file_path = NULL, branch)
 
 - file_path:
 
-  Where to save the template. If `NULL`, it is written to the working
-  directory, named after the steps it covers.
+  Required. Where to save the template.
 
 - branch:
 
@@ -54,7 +53,7 @@ draft_alternatives(
   file_path = withr::local_tempfile(fileext = ".yml"),
   branch = "multi"
 )
-#> ✔ Created template at /tmp/RtmpKSp3wS/file1b3e172f8b5f.yml
+#> ✔ Created template at /tmp/RtmpKgFKXG/file1a3f651485ad.yml
 
 # `x` also accepts a path to a schema file -- draft a single-branch
 # template combining two steps together
@@ -64,5 +63,5 @@ draft_alternatives(
   file_path = withr::local_tempfile(fileext = ".yml"),
   branch = "single"
 )
-#> ✔ Created template at /tmp/RtmpKSp3wS/file1b3e28470a13.yml
+#> ✔ Created template at /tmp/RtmpKgFKXG/file1a3f5717efce.yml
 ```

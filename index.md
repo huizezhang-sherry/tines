@@ -603,3 +603,9 @@ glmm_model <- glmmTMB(
 # Display model summary
 summary(glmm_model)
 ```
+
+## Reference
+
+Zhang, H. S. and Peng, R. D. (2026). Code availability is not enough:
+schemas for documenting and extending data analysis.
+<https://github.com/huizezhang-sherry/paper-schema>

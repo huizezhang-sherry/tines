@@ -4,7 +4,9 @@ Documents a data analysis as a schema, a set of steps that each record
 an analytical decision in natural language. Large language models are
 used to generate and validate the R code for each step. A schema can be
 expanded with an alternative file into a multiverse of related analyses,
-making it possible to compare alternative decisions systematically.
+making it possible to compare alternative decisions systematically. For
+details of the approach, see Zhang and Peng (2026)
+<https://github.com/huizezhang-sherry/paper-schema>.
 
 ## See also
 

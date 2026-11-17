@@ -9,15 +9,14 @@ an alternatives file via [`expand_tines()`](expand.md).
 ## Usage
 
 ``` r
-draft_tines(file_path = NULL, overwrite = FALSE)
+draft_tines(file_path, overwrite = FALSE)
 ```
 
 ## Arguments
 
 - file_path:
 
-  Where to save the template. If `NULL`, it is written to the working
-  directory as `schema_template.yml`.
+  Required. Where to save the template.
 
 - overwrite:
 
@@ -40,6 +39,6 @@ read the filled-in template back.
 ``` r
 schema_path <- withr::local_tempfile(fileext = ".yml")
 draft_tines(file_path = schema_path)
-#> ✔ Drafted "schema" template at /tmp/RtmpKSp3wS/file1b3e5bb921c1.yml
+#> ✔ Drafted "schema" template at /tmp/RtmpKgFKXG/file1a3f3c94907d.yml
 #> ℹ Open this file to start defining your steps!
 ```

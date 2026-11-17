@@ -16,7 +16,7 @@ gen_alternatives(
   n = 3,
   data = NULL,
   model = "anthropic/claude-opus-4-5",
-  file_path = NULL,
+  file_path,
   ...
 )
 
@@ -30,7 +30,7 @@ gen_alternatives(
   n = 3,
   data = NULL,
   model = "anthropic/claude-opus-4-5",
-  file_path = NULL,
+  file_path,
   ...
 )
 
@@ -83,10 +83,8 @@ prompt_alternatives(
 
 - file_path:
 
-  A character string specifying where to save the generated YML output.
-  If `NULL` (the default),
-  [`capture.output()`](https://rdrr.io/r/utils/capture.output.html) will
-  return the result as a character vector.
+  Required. A character string specifying where to save the generated
+  YML output.
 
 - ...:
 
@@ -135,7 +133,7 @@ if (FALSE) { # \dontrun{
 # Requires an LLM API key (e.g. ANTHROPIC_API_KEY); not run automatically.
 gen_alternatives(hdi,
   step = "step-combine", n = 1,
-  file_path = "step-combine-alt.yml"
+  file_path = tempfile(fileext = ".yml")
 )
 } # }
 

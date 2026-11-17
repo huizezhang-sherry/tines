@@ -65,7 +65,7 @@ expand_tines(base_schema, alts)
 # read the alternatives from a YML file
 tmp_file <- tempfile(fileext = ".yml")
 write_alternatives(alts, tmp_file)
-#> ✔ Successfully wrote alternatives to /tmp/RtmpKSp3wS/file1b3e68736ee2.yml
+#> ✔ Successfully wrote alternatives to /tmp/RtmpKgFKXG/file1a3fd080d1d.yml
 expand_tines(base_schema, tmp_file)
 #> ℹ 3 branches have an incomplete mapping: their alternatives give no
 #>   inputs/outputs for the steps they replace.

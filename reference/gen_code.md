@@ -9,7 +9,7 @@ gen_code(
   x,
   base_code = NULL,
   data = NULL,
-  output = "scripts",
+  output,
   model = "anthropic/claude-opus-4-5",
   ...
 )
@@ -19,7 +19,7 @@ gen_code(
   x,
   base_code = NULL,
   data = NULL,
-  output = "scripts",
+  output,
   model = "anthropic/claude-opus-4-5",
   ...
 )
@@ -29,7 +29,7 @@ gen_code(
   x,
   base_code = NULL,
   data = NULL,
-  output = "scripts",
+  output,
   model = "anthropic/claude-opus-4-5",
   ...
 )
@@ -39,7 +39,7 @@ gen_code(
   x,
   base_code = NULL,
   data = NULL,
-  output = "scripts",
+  output,
   model = "anthropic/claude-opus-4-5",
   ...
 )
@@ -71,8 +71,8 @@ prompt_gen_code(
 
 - output:
 
-  For schemas: file path (ending in .R) or directory. For multiverses:
-  must be a directory. Defaults to "scripts".
+  Required. For schemas: a file path (ending in .R) or a directory. For
+  multiverses: must be a directory.
 
 - model:
 
@@ -117,12 +117,12 @@ if (FALSE) { # \dontrun{
 # Requires an LLM API key (e.g. ANTHROPIC_API_KEY); not run automatically.
 # Generate from a single schema
 schema <- example_hdi()
-gen_code(schema, output = "analysis.R")
+gen_code(schema, output = file.path(tempdir(), "analysis.R"))
 
 # Generate from a multiverse (use expand_tines first)
 schema |>
-  expand_tines(alternatives) |>
-  gen_code(output = "scripts/")
+  expand_tines(example_hdi_alternatives()) |>
+  gen_code(output = file.path(tempdir(), "scripts"))
 } # }
 
 # The prompt generation function can be used directly to see the full
